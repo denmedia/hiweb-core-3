@@ -272,7 +272,7 @@
 	 * @param string $pageSlug
 	 * @return bool
 	 */
-	function is( $pageSlug = '' ){
+	function is_page( $pageSlug = '' ){
 		$currentUrl = ltrim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
 		$pageSlug = ltrim( $pageSlug, '/\\' );
 		return ( strpos( $currentUrl, $pageSlug ) === 0 );
@@ -606,22 +606,6 @@
 	}
 
 	/**
-	 * Возвращает объект файла
-	 * @version 1.0
-	 * @param $pathOrUrl
-	 * @return hw_path_file
-	 */
-	function file( $pathOrUrl ){
-		if( !array_key_exists( $pathOrUrl, self::files ) ){
-			$file = new \hiweb\path\file( $pathOrUrl );
-			self::$files[ $pathOrUrl ] = $file;
-			self::$files[ $file->path ] = $file;
-			self::$files[ $file->url ] = $file;
-		}
-		return self::files[ $pathOrUrl ];
-	}
-
-	/**
 	 * Upload file or files
 	 * @param $_fileOrUrl - $_FILES[file_id]
 	 * @return int|WP_Error
@@ -698,13 +682,4 @@
 			}
 		}
 		return $attachment_id;
-	}
-
-
-	class path{
-
-		/** @var array|hw_path_file[] */
-		static $files = [];
-
-
 	}

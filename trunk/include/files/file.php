@@ -1,9 +1,6 @@
 <?php
 
-	namespace hiweb\path;
-
-
-	use hiweb\path;
+	namespace hiweb\files;
 
 
 	class file{
@@ -40,16 +37,16 @@
 
 
 		public function __construct( $path ){
-			if( path::is_url( $path ) ){
-				$this->path = path::url_to_path( $path );
-				$this->url = path::prepare_url( $path );
+			if( \hiweb\path\is_url( $path ) ){
+				$this->path = \hiweb\path\url_to_path( $path );
+				$this->url = \hiweb\path\prepare_url( $path );
 			} else {
-				$this->path = path::realpath( $path );
-				$this->url = path::path_to_url( $this->path );
+				$this->path = \hiweb\path\realpath( $path );
+				$this->url = \hiweb\path\path_to_url( $this->path );
 			}
 			////
 			$this->basename = basename( $this->path );
-			$this->extension = path::file_extension( $this->path );
+			$this->extension = \hiweb\path\file_extension( $this->path );
 			$this->filename = basename( $this->path, '.' . $this->extension );
 			$this->dirname = dirname( $this->path );
 			////
@@ -99,7 +96,7 @@
 				if( $this->is_dir ) foreach( scandir( $this->path ) as $subFileName ){
 					if( $subFileName == '.' || $subFileName == '..' ) continue;
 					$subFilePath = $this->path . '/' . $subFileName;
-					$subFile = path::file( $subFilePath );
+					$subFile = \hiweb\path\file( $subFilePath );
 					$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
 					$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
 				}

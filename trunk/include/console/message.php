@@ -13,7 +13,6 @@
 		public function __construct( $content = '', $type = 'info' ){
 			$this->content = $content;
 			$this->type = $type;
-			add_action( 'shutdown', [ $this, 'the' ] );
 		}
 
 

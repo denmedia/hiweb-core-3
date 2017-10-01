@@ -32,3 +32,5 @@
 	}
 
 	//require 'include/home.php';
+
+hiweb\console::warn('This is log');

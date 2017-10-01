@@ -1,117 +1,101 @@
 <?php
 
-
-	class hiweb{
-
-		/**
-		 * Return path to base hiweb core dir
-		 * @return string
-		 */
-		static function DIR(){
-			return dirname( __DIR__ );
-		}
+	namespace hiweb;
 
 
-		/**
-		 * Return url to base hiweb core dir
-		 * @return string
-		 */
-		static function URL(){
-			return hiweb\path::path_to_url( self::DIR() );
-		}
+	/**
+	 * Return path to base hiweb core dir
+	 * @return string
+	 */
+	function DIR(){
+		return dirname( __DIR__ );
+	}
 
+	/**
+	 * Return url to base hiweb core dir
+	 * @return string
+	 */
+	function URL(){
+		return path\path_to_url( DIR() );
+	}
 
-		/**
-		 * @return string
-		 */
-		static function DIR_INCLUDE(){
-			return self::DIR() . '/include';
-		}
+	/**
+	 * @return string
+	 */
+	function DIR_INCLUDE(){
+		return DIR() . '/include';
+	}
 
+	/**
+	 * @return string
+	 */
+	function URL_INCLUDE(){
+		return path\path_to_url( DIR_INCLUDE() );
+	}
 
-		/**
-		 * @return string
-		 */
-		static function URL_INCLUDE(){
-			return hiweb\path::path_to_url( self::DIR_INCLUDE() );
-		}
+	function DIR_VIEWS(){
+		return DIR() . '/views';
+	}
 
+	/**
+	 * @return mixed
+	 */
+	function URL_VIEWS(){
+		return path\path_to_url( DIR_VIEWS() );
+	}
 
-		static function DIR_VIEWS(){
-			return self::DIR() . '/views';
-		}
+	/**
+	 * @return string
+	 */
+	function DIR_ASSETS(){
+		return DIR() . '/assets';
+	}
 
+	/**
+	 * @return mixed
+	 */
+	function URL_ASSETS(){
+		return path\path_to_url( DIR_ASSETS() );
+	}
 
-		/**
-		 * @return mixed
-		 */
-		static function URL_VIEWS(){
-			return hiweb\path::path_to_url( self::DIR_VIEWS() );
-		}
+	/**
+	 * @return string
+	 */
+	function DIR_CSS(){
+		return DIR_ASSETS() . '/css';
+	}
 
+	/**
+	 * @return mixed
+	 */
+	function URL_CSS(){
+		return path\path_to_url( DIR_CSS() );
+	}
 
-		/**
-		 * @return string
-		 */
-		static function DIR_ASSETS(){
-			return self::DIR() . '/assets';
-		}
+	/**
+	 * @return string
+	 */
+	function DIR_JS(){
+		return DIR_ASSETS() . '/js';
+	}
 
+	/**
+	 * @return mixed
+	 */
+	function URL_JS(){
+		return path\path_to_url( DIR_JS() );
+	}
 
-		/**
-		 * @return mixed
-		 */
-		static function URL_ASSETS(){
-			return hiweb\path::path_to_url( self::DIR_ASSETS() );
-		}
+	/**
+	 * @return string
+	 */
+	function DIR_VENDORS(){
+		return DIR() . '/vendors';
+	}
 
-
-		/**
-		 * @return string
-		 */
-		static function DIR_CSS(){
-			return self::DIR_ASSETS() . '/css';
-		}
-
-
-		/**
-		 * @return mixed
-		 */
-		static function URL_CSS(){
-			return hiweb\path::path_to_url( self::DIR_CSS() );
-		}
-
-
-		/**
-		 * @return string
-		 */
-		static function DIR_JS(){
-			return self::DIR_ASSETS() . '/js';
-		}
-
-
-		/**
-		 * @return mixed
-		 */
-		static function URL_JS(){
-			return hiweb\path::path_to_url( self::DIR_JS() );
-		}
-
-
-		/**
-		 * @return string
-		 */
-		static function DIR_VENDORS(){
-			return self::DIR() . '/vendors';
-		}
-
-
-		/**
-		 * @return mixed
-		 */
-		static function URL_VENDORS(){
-			return hiweb\path::path_to_url( self::DIR_VENDORS() );
-		}
-
-
+	/**
+	 * @return mixed
+	 */
+	function URL_VENDORS(){
+		return path\path_to_url( DIR_VENDORS() );
 	}
