@@ -36,7 +36,12 @@
 		return $return_key;
 	}
 
-	function utf8_to_ansii( $utf8 = '' ){
+	/**
+	 * Convert string utf8 to ansii
+	 * @param string $utf8
+	 * @return string
+	 */
+	function utf8_to_ansii( $utf8 ){
 		if( function_exists( 'iconv' ) ){
 			$returnStr = @iconv( 'UTF-8', 'windows-1251//IGNORE', $utf8 );
 		} else {
@@ -120,7 +125,12 @@
 		return $returnStr;
 	}
 
-	function ansii_to_utf8( $ansii = '' ){
+	/**
+	 * Convert ansii to utf-8
+	 * @param string $ansii
+	 * @return string
+	 */
+	function ansii_to_utf8( $ansii ){
 		if( function_exists( 'iconv' ) ){
 			return iconv( 'windows-1251//IGNORE', 'UTF-8', $ansii );
 		} else {
@@ -202,9 +212,13 @@
 		}
 	}
 
+	/**
+	 * @param string $parseStr
+	 * @return array
+	 */
 	function explode_to_string_numeric( $parseStr ){
 		$r = [];
-		foreach( self::explode_by_symbol( $parseStr ) as $s ){
+		foreach( explode_by_symbol( $parseStr ) as $s ){
 			end( $r );
 			$lastVal = current( $r );
 			$lastKey = key( $r );
@@ -223,6 +237,11 @@
 		return $r;
 	}
 
+	/**
+	 * Formatting JSON string
+	 * @param string $json
+	 * @return string
+	 */
 	function json_format( $json ){
 		if( !is_string( $json ) ){
 			$json = json_encode( $json );
@@ -261,8 +280,20 @@
 		return $result;
 	}
 
-	function is_regex( $testStr ){ return preg_match( "/^\/[\s\S]+\/$/", $testStr ) > 0; }
+	/**
+	 * Return TRUE, if haystack string is REGEX
+	 * @param string $haystackString
+	 * @return bool
+	 */
+	function is_regex( $haystackString ){ return preg_match( "/^\/[\s\S]+\/$/", $haystackString ) > 0; }
 
+	/**
+	 * Return TRUE, if haystack string is JSON
+	 * @param string $haystack
+	 * @param bool   $returnIfFalse
+	 * @param bool   $returnDecodeIfJson
+	 * @return bool|mixed
+	 */
 	function is_json( $haystack, $returnIfFalse = false, $returnDecodeIfJson = true ){
 		if( !is_string( $haystack ) || empty( $haystack ) ){
 			return $returnIfFalse;
@@ -272,10 +303,12 @@
 		return ( json_last_error() == JSON_ERROR_NONE ) ? ( $returnDecodeIfJson ? $decode : true ) : $returnIfFalse;
 	}
 
-	function is_empty( $str, $default = true ){
-		return ( !is_array( $str ) && ( is_null( $str ) || $str === false || trim( (string)$str ) == '' ) ) ? $default : false;
-	}
-
-	function if_empty( $str, $ifEmpty = '' ){
-		return is_empty( $str ) ? $ifEmpty : $str;
+	/**
+	 * Return TRUE, if haystack variable is empty. Functions convertvariable to string
+	 * @param      $haystack
+	 * @param bool $default
+	 * @return bool
+	 */
+	function is_empty( $haystack, $default = true ){
+		return ( !is_array( $haystack ) && ( is_null( $haystack ) || $haystack === false || trim( (string)$haystack ) == '' ) ) ? $default : false;
 	}
