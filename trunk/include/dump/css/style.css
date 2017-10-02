@@ -1,0 +1,29 @@
+.hiweb-core-dump-the {
+  font-family: Monaco, monospace;
+  font-size: 9pt;
+  padding: 10px;
+  background-color: #333;
+  color: #edc;
+  position: relative;
+  z-index: 999999999999999; }
+  .hiweb-core-dump-the ul {
+    margin: 10px 0;
+    padding: 0; }
+  .hiweb-core-dump-the li {
+    clear: both;
+    list-style: none;
+    margin-bottom: 8px; }
+    .hiweb-core-dump-the li [data-key] {
+      display: block;
+      color: #779;
+      float: left;
+      margin-right: 8pt; }
+      .hiweb-core-dump-the li [data-key]:before {
+        content: "> "; }
+      .hiweb-core-dump-the li [data-key]:after {
+        content: ": "; }
+    .hiweb-core-dump-the li [data-type] {
+      color: #565;
+      margin-left: 8pt; }
+
+/*# sourceMappingURL=style.css.map */

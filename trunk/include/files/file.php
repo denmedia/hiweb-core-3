@@ -87,7 +87,7 @@
 		/**
 		 * Возвращает массив вложенных файлов
 		 * @param array $mask - маска файлов
-		 * @return array|hw_path_file[]
+		 * @return array|file[]
 		 */
 		public function get_sub_files( $mask = [] ){
 			$maskKey = json_encode( $mask );

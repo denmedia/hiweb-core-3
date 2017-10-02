@@ -35,11 +35,11 @@
 	 */
 	function base_url( $url = null ){
 		if( is_string( $url ) ){
-			$url = self::prepare_url( $url, null, true );
+			$url = prepare_url( $url, null, true );
 			return $url['base'];
 		} else {
 			//if(hiweb()->cacheExists()) return hiweb()->cache();
-			$root = ltrim( self::base_dir(), '/' );
+			$root = ltrim( base_dir(), '/' );
 			$query = ltrim( str_replace( '\\', '/', dirname( $_SERVER['PHP_SELF'] ) ), '/' );
 			$rootArr = [];
 			$queryArr = [];
@@ -86,7 +86,7 @@
 	 */
 	function query( $url = null, $addData = [], $removeKeys = [] ){
 		if( is_null( $url ) || trim( $url ) == '' ){
-			$url = self::url_full();
+			$url = url_full();
 		}
 		$url = explode( '?', $url );
 		$urlPath = array_shift( $url );
@@ -148,8 +148,8 @@
 	 */
 	function path_to_url( $path ){
 		if( strpos( $path, 'http' ) === 0 ) return $path;
-		$path = str_replace( '\\', '/', self::realpath( $path ) );
-		return str_replace( self::base_dir(), self::base_url(), $path );
+		$path = str_replace( '\\', '/', realpath( $path ) );
+		return str_replace( base_dir(), base_url(), $path );
 	}
 
 	/**
@@ -159,7 +159,7 @@
 	 */
 	function url_to_path( $url ){
 		$url = str_replace( '\\', '/', $url );
-		return str_replace( self::base_url(), self::base_dir(), $url );
+		return str_replace( base_url(), base_dir(), $url );
 	}
 
 	/**
@@ -168,7 +168,7 @@
 	 */
 	function url_info( $url = null ){
 		if( is_null( $url ) || trim( $url ) == '' ){
-			$url = self::url_full();
+			$url = url_full();
 		}
 		$urlExplode = explode( '?', $url );
 		$urlPath = array_shift( $urlExplode );
@@ -183,7 +183,7 @@
 			}
 		}
 		///
-		$baseUrl = self::base_url();
+		$baseUrl = base_url();
 		$baseUrl = strpos( $url, $baseUrl ) === 0 ? $baseUrl : false;
 		$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
 		$shema = $https ? 'https://' : 'http://';
@@ -204,7 +204,7 @@
 	 * @return bool|array|string
 	 */
 	function get_dirs_from_url( $url = null, $index = null ){
-		$urlArr = self::url_info( self::prepare_url( $url, self::base_url() ) );
+		$urlArr = url_info( prepare_url( $url, base_url() ) );
 		$R = is_int( $index ) ? ( isset( $urlArr['dirs_arr'][ $index ] ) ? $urlArr['dirs_arr'][ $index ] : false ) : $urlArr['dirs_arr'];
 		return $R;
 	}
@@ -216,7 +216,7 @@
 	 * @return string|array|null
 	 */
 	function get_paramas_from_url( $url = null, $indexOrKey = null ){
-		$urlArr = self::url_info( self::prepare_url( $url, self::base_url() ) );
+		$urlArr = url_info( prepare_url( $url, base_url() ) );
 		$paramsArr = $urlArr['params_arr'];
 		return is_null( $indexOrKey ) ? $paramsArr : ( isset( $paramsArr[ $indexOrKey ] ) ? $paramsArr[ $indexOrKey ] : null );
 	}
@@ -264,7 +264,7 @@
 	 * @return bool
 	 */
 	function is_home(){
-		return self::base_url() == self::url_full();
+		return base_url() == url_full();
 	}
 
 	/**
@@ -273,7 +273,7 @@
 	 * @return bool
 	 */
 	function is_page( $pageSlug = '' ){
-		$currentUrl = ltrim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
+		$currentUrl = ltrim( str_replace( base_url(), '', url_full() ), '/\\' );
 		$pageSlug = ltrim( $pageSlug, '/\\' );
 		return ( strpos( $currentUrl, $pageSlug ) === 0 );
 	}
@@ -285,7 +285,7 @@
 	 */
 	function is_readable( $pathOrUrl ){
 		if( trim( $pathOrUrl ) == '' ) return false;
-		$path = self::url_to_path( $pathOrUrl );
+		$path = url_to_path( $pathOrUrl );
 		return file_exists( $path ) && is_readable( $path );
 	}
 
@@ -310,8 +310,8 @@
 			hiweb()->console()->warn( 'Путь должен быть строкой', 1 );
 			return false;
 		}
-		$r = strtr( $path, [ '\\' => self::separator(), '/' => self::separator() ] );
-		return $removeLastSeparators ? rtrim( $r, self::separator() ) : $r;
+		$r = strtr( $path, [ '\\' => separator(), '/' => separator() ] );
+		return $removeLastSeparators ? rtrim( $r, separator() ) : $r;
 	}
 
 	/**
@@ -321,8 +321,8 @@
 	 * @return string
 	 */
 	function realpath( $fileOrDirPath ){
-		$fileOrDirPath = self::prepare_separator( $fileOrDirPath );
-		return ( strpos( $fileOrDirPath, self::base_dir() ) !== 0 ) ? self::base_dir() . self::separator() . $fileOrDirPath : $fileOrDirPath;
+		$fileOrDirPath = prepare_separator( $fileOrDirPath );
+		return ( strpos( $fileOrDirPath, base_dir() ) !== 0 ) ? base_dir() . separator() . $fileOrDirPath : $fileOrDirPath;
 	}
 
 	/**
@@ -330,7 +330,7 @@
 	 * @return bool|string
 	 */
 	function simplepath( $fileOrDirPath ){
-		return strpos( $fileOrDirPath, self::base_dir() ) === 0 ? substr( $fileOrDirPath, strlen( self::base_dir() ) ) : $fileOrDirPath;
+		return strpos( $fileOrDirPath, base_dir() ) === 0 ? substr( $fileOrDirPath, strlen( base_dir() ) ) : $fileOrDirPath;
 	}
 
 	/**
@@ -339,7 +339,7 @@
 	 * @return string
 	 */
 	function mkdir( $dirPath ){
-		$dirPath = self::realpath( $dirPath );
+		$dirPath = realpath( $dirPath );
 		if( @file_exists( $dirPath ) ){
 			return is_dir( $dirPath ) ? $dirPath : false;
 		}
@@ -375,7 +375,7 @@
 		$files = glob( $dirPath . '*', GLOB_MARK );
 		foreach( $files as $file ){
 			if( is_dir( $file ) ){
-				self::rmdir( $file );
+				rmdir( $file );
 			} else {
 				unlink( $file );
 			}
@@ -391,12 +391,12 @@
 	 */
 	function copy_dir( $sourcePath, $destinationDir ){
 		$dir = opendir( $sourcePath );
-		self::mkdir( $destinationDir );
+		mkdir( $destinationDir );
 		$r = true;
 		while( false !== ( $file = readdir( $dir ) ) ){
 			if( ( $file != '.' ) && ( $file != '..' ) ){
 				if( is_dir( $sourcePath . '/' . $file ) ){
-					$r = $r && self::copy_dir( $sourcePath . '/' . $file, $destinationDir . '/' . $file );
+					$r = $r && copy_dir( $sourcePath . '/' . $file, $destinationDir . '/' . $file );
 				} else {
 					$r = $r && copy( $sourcePath . '/' . $file, $destinationDir . '/' . $file );
 				}
@@ -443,7 +443,7 @@
 	 * @return array
 	 */
 	function scan_directory( $path, $returnDirs = true, $returnFiles = true, $getSubDirs = true ){
-		$path = self::realpath( $path );
+		$path = realpath( $path );
 		if( !file_exists( $path ) ){
 			return [];
 		}
@@ -460,7 +460,7 @@
 					}
 					///
 					if( $getSubDirs && is_dir( $nextpath ) ){
-						$R = $R + self::scan_directory( $nextpath, $returnDirs, $returnFiles, $getSubDirs );
+						$R = $R + scan_directory( $nextpath, $returnDirs, $returnFiles, $getSubDirs );
 					}
 				}
 			}
@@ -479,11 +479,11 @@
 	 * @return bool|string
 	 */
 	function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ){
-		$pathInput = self::realpath( $pathInput );
+		$pathInput = realpath( $pathInput );
 		if( !is_file( $pathOut ) ){
-			self::mkdir( $pathOut );
+			mkdir( $pathOut );
 		}
-		$pathOut = $pathOut == '' ? $pathInput : self::realpath( $pathOut );
+		$pathOut = $pathOut == '' ? $pathInput : realpath( $pathOut );
 		if( !file_exists( $pathInput ) ){
 			return false;
 		}
@@ -495,7 +495,7 @@
 		}
 		$zip = new ZipArchive; // класс для работы с архивами
 		if( $zip->open( $pathOut . '/' . $arhiveName, ZipArchive::CREATE ) === true ){ // создаем архив, если все прошло удачно продолжаем
-			$files = self::scan_directory( $pathInput, false );
+			$files = scan_directory( $pathInput, false );
 			foreach( $files as $path => $fileArr ){
 				$zip->addFile( $path, $baseDirInArhive . str_replace( rtrim( $pathInput, '/' ) . '/', '', $path ) );
 			}
@@ -513,7 +513,7 @@
 	 * @return bool
 	 */
 	function unpack( $archivePath, $destinationDir = '' ){
-		$archivePath = self::realpath( $archivePath );
+		$archivePath = realpath( $archivePath );
 		if( !file_exists( $archivePath ) ){
 			return false;
 		}
@@ -549,7 +549,7 @@
 	 * @return bool|string
 	 */
 	function get_content( $path, $vars = [] ){
-		$path = self::realpath( $path );
+		$path = realpath( $path );
 		if( is_array( $vars ) ) extract( $vars, EXTR_OVERWRITE );
 		if( file_exists( $path ) && is_readable( $path ) ){
 			if( function_exists( 'ob_start' ) ){
@@ -583,7 +583,7 @@
 	 * @return array
 	 */
 	function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
-		$subFiles = self::file( $path )->get_sub_files( $fileExtension );
+		$subFiles = file( $path )->get_sub_files( $fileExtension );
 		$R = [];
 		foreach( $subFiles as $file ){
 			if( !$file->is_readable ) continue;
@@ -626,8 +626,8 @@
 			if( !is_readable( $tmp_name ) ){
 				return - 1;
 			}
-		} elseif( is_string( $_fileOrUrl ) && self::is_url( $_fileOrUrl ) ) {
-			$fileName = self::file( $_fileOrUrl )->basename;
+		} elseif( is_string( $_fileOrUrl ) && is_url( $_fileOrUrl ) ) {
+			$fileName = file( $_fileOrUrl )->basename;
 			$tmp_name = $_fileOrUrl;
 		} else return - 2;
 

@@ -3,15 +3,6 @@
 	namespace hiweb;
 
 
-	/**
-	 * @param $pathOrUrl
-	 * @return files\file
-	 */
-	function file( $pathOrUrl ){
-		return files::get( $pathOrUrl );
-	}
-
-
 	class files{
 
 		/** @var array|files\file[] */

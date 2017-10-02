@@ -1,18 +1,9 @@
 <?php
 
-	namespace hiweb;
+	namespace hiweb\dump;
 
 
-	/**
-	 * @param $variable
-	 * @return string
-	 */
-	function dump( $variable ){
-		return dump::print_r( $variable );
-	}
-
-
-	class dump{
+	class subfunctions{
 
 
 		/**
@@ -25,7 +16,7 @@
 		 */
 		static function getHtml_arrayPrint( $mixed, $depth = 6, $showObjects = true ){
 			if( $depth < 1 ){
-				return '<div class="hiweb-string-printarr">...</div>';
+				return '<div class="hiweb-core-dump-the-endless">...</div>';
 			}
 			$r = '';
 			$type_of_var = gettype( $mixed );
@@ -35,13 +26,13 @@
 				'object' => ''
 			] ) ){
 				if( $type_of_var == 'object' ) $type_of_var_name = $type_of_var . ':' . get_class( $mixed );
-				$r .= ' <span class="hiweb-string-printarr-gettype">[' . $type_of_var_name . ']</span>';
+				$r .= ' <span data-type>[' . $type_of_var_name . ']</span>';
 			}
 			switch( $type_of_var ){
 				case 'array':
 					$r .= '<ul>';
 					foreach( $mixed as $k => $v ){
-						$r .= '<li><span data-key>' . $k . '</span>: ' . ( self::getHtml_arrayPrint( $v, $depth - 1, $showObjects ) ) . '</li>';
+						$r .= '<li><span data-key>' . $k . '</span>' . ( self::getHtml_arrayPrint( $v, $depth - 1, $showObjects ) ) . '</li>';
 					}
 					$r .= '</ul>';
 					break;
@@ -49,7 +40,7 @@
 					$r .= '<ul>';
 					if( $showObjects ){
 						foreach( $mixed as $k => $v ){
-							$r .= '<li><span data-key>' . $k . '</span>: ' . ( self::getHtml_arrayPrint( $v, $depth - 1, $showObjects ) ) . '</li>';
+							$r .= '<li><span data-key>' . $k . '</span>' . ( self::getHtml_arrayPrint( $v, $depth - 1, $showObjects ) ) . '</li>';
 						}
 					}
 					$r .= '</ul>';
@@ -61,22 +52,32 @@
 					$r .= 'NULL';
 					break;
 				default:
-					$r .= ( trim( $mixed ) == '' ? '<span class="hiweb-string-printarr-gettype">пусто</span>' : nl2br( htmlentities( $mixed, ENT_COMPAT, 'UTF-8' ) ) );
+					$r .= ( trim( $mixed ) == '' ? '<span data-type>пусто</span>' : nl2br( htmlentities( $mixed, ENT_COMPAT, 'UTF-8' ) ) );
 					break;
 			}
 			if( !in_array( gettype( $mixed ), [
 				'array',
 				'object'
 			] ) ){
-				$r .= ' <span class="hiweb-string-printarr-gettype">' . ( gettype( $mixed ) == 'string' && mb_strlen( $mixed ) == 1 ? '[ord:<b>' . ord( $mixed ) . '</b>]' : '' ) . '[' . $type_of_var_name . ']</span>';
+				$r .= ' <span data-type>' . ( gettype( $mixed ) == 'string' && mb_strlen( $mixed ) == 1 ? '[ord:<b>' . ord( $mixed ) . '</b>]' : '' ) . '[' . $type_of_var_name . ']</span>';
 			}
-			return "<div class='hiweb-string-printarr'>$r</div>";
+			return "<div class='hiweb-core-dump-the-level'>$r</div>";
 		}
 
 
-		static protected function print_this( $mixed, $depth = 6, $showObjects = true ){
-			echo '<link rel="stylesheet" href="' . hiweb()->url_css . '/arrays.css"/>';
-			echo self::getHtml_arrayPrint( $mixed, $depth, $showObjects );
+		/**
+		 * @param mixed $mixed
+		 * @param int   $depth
+		 * @param bool  $showObjects
+		 */
+		static function the( $mixed, $depth = 6, $showObjects = true ){
+			$css = \hiweb\file( __DIR__ . '/css/style.css' );
+			?>
+			<link rel="stylesheet" href="<?= $css->url ?>"/>
+			<div class="hiweb-core-dump-the">
+				<?= self::getHtml_arrayPrint( $mixed, $depth, $showObjects ); ?>
+			</div>
+			<?php
 		}
 
 
