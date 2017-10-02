@@ -5,7 +5,7 @@
 		if( preg_match( '/(\.|\.\.)/', $dir ) > 0 ) continue;
 		$path = __DIR__ . '/' . $dir;
 		if( !is_dir( $path ) ) continue;
-		$include_array = [ 'functions.php', 'hooks.php' ];
+		$include_array = [ 'functions.php', 'subfunctions.php', 'hooks.php' ];
 		foreach( $include_array as $fileName ){
 			$filePath = $path . '/' . $fileName;
 			if( is_file( $filePath ) && is_readable( $filePath ) ){

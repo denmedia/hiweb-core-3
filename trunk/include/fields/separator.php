@@ -1,10 +1,6 @@
 <?php
 
-	namespace hiweb\fields\field;
-
-
-	use hiweb\fields\field;
-	use hiweb\string;
+	namespace hiweb\fields;
 
 
 	class separator{
@@ -23,7 +19,7 @@
 		public function __construct( $label, $description = '', $global_id = '' ){
 			$this->label = $label;
 			$this->description = $description;
-			if( trim( $global_id ) == '' ) $global_id = string::rand();
+			if( trim( $global_id ) == '' ) $global_id = \hiweb\string\rand();
 			$this->global_id = $global_id;
 		}
 
@@ -39,7 +35,7 @@
 		/**
 		 * Установить/получить имя поля
 		 * @param null $set
-		 * @return field\separator|string
+		 * @return separator|string
 		 */
 		public function label( $set = null ){
 			if( is_null( $set ) ){
@@ -53,7 +49,7 @@
 		/**
 		 * Установить/получить пояснение для поля
 		 * @param null $set
-		 * @return field\separator|string
+		 * @return separator|string
 		 */
 		public function description( $set = null ){
 			if( is_null( $set ) ){
@@ -66,7 +62,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field_separator|string
+		 * @return separator|string
 		 */
 		public function tag_label( $set = null ){
 			if( is_null( $set ) ){
@@ -79,7 +75,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field_separator|string
+		 * @return separator|string
 		 */
 		public function tag_description( $set = null ){
 			if( is_null( $set ) ){
@@ -92,7 +88,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field_separator|string
+		 * @return separator|string
 		 */
 		public function form_template( $set = null ){
 			if( is_string( $set ) && trim( $set ) != '' ){

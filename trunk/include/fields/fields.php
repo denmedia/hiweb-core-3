@@ -1,4 +1,10 @@
 <?php
+	/**
+	 * Created by PhpStorm.
+	 * User: d9251
+	 * Date: 02.10.2017
+	 * Time: 15:24
+	 */
 
 	namespace hiweb;
 
@@ -8,7 +14,7 @@
 
 	class fields{
 
-		/** @var fields\field[] */
+		/** @var field[] */
 		static $fields = [];
 		//		/** @var hw_field_frontend[] */
 		//		static $fields_byContext = [];
@@ -20,7 +26,7 @@
 
 		/**
 		 * Return array of all existing fields
-		 * @return fields\field[]
+		 * @return field[]
 		 */
 		static function fields(){
 			return self::$fields;

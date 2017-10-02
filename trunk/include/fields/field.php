@@ -32,7 +32,7 @@
 			$this->id = mb_strtolower( $fieldId );
 			$this->global_id = $globalId;
 			$this->name = $fieldId;
-			$this->make_input( $fieldType );
+			//$this->make_input( $fieldType );
 		}
 
 
