@@ -10,6 +10,6 @@
 	 * @param $variable
 	 * @return string
 	 */
-	function the( $variable ){
+	function dump( $variable ){
 		subfunctions::the( $variable );
 	}

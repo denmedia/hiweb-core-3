@@ -35,3 +35,5 @@
 	//require 'include/home.php';
 
 
+	$field = hiweb\fields::register('TEST');
+	hiweb\dump( '21312' );
