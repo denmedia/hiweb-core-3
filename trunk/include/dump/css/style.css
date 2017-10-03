@@ -1,6 +1,6 @@
 .hiweb-core-dump-the {
   font-family: Monaco, monospace;
-  font-size: 9pt;
+  font-size: 10pt;
   padding: 10px;
   background-color: #333;
   color: #edc;
@@ -8,7 +8,10 @@
   z-index: 999999999999999; }
   .hiweb-core-dump-the ul {
     margin: 10px 0;
-    padding: 0; }
+    padding: 0 0 0 16pt;
+    font-size: 95%; }
+    .hiweb-core-dump-the ul ul {
+      border-left: 1px dotted #445; }
   .hiweb-core-dump-the li {
     clear: both;
     list-style: none;

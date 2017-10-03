@@ -3,6 +3,9 @@
 	namespace hiweb\fields;
 
 
+	use hiweb\fields\locations;
+
+
 	class field{
 
 		//use hw_hidden_methods_props;
@@ -23,14 +26,13 @@
 
 
 		/**
-		 * hw_field constructor.
-		 * @param        $fieldId  - индификатор поля
-		 * @param        $globalId - глобальный ID
+		 * field constructor.
+		 * @param        $fieldId - индификатор поля
 		 * @param string $fieldType
 		 */
-		public function __construct( $fieldId, $globalId, $fieldType = 'text' ){
+		public function __construct( $fieldId, $fieldType = 'text' ){
 			$this->id = mb_strtolower( $fieldId );
-			$this->global_id = $globalId;
+			$this->global_id = spl_object_hash( $this );
 			$this->name = $fieldId;
 			//$this->make_input( $fieldType );
 		}
@@ -41,6 +43,9 @@
 		}
 
 
+		/**
+		 * @return string
+		 */
 		public function global_id(){
 			return $this->global_id;
 		}
@@ -49,7 +54,7 @@
 		/**
 		 * Установить/получить имя поля
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function label( $set = null ){
 			if( is_null( $set ) ){
@@ -63,7 +68,7 @@
 		/**
 		 * Установить/получить пояснение для поля
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function description( $set = null ){
 			if( is_null( $set ) ){
@@ -76,7 +81,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function prepend( $set = null ){
 			if( is_null( $set ) ){
@@ -90,7 +95,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function append( $set = null ){
 			if( is_null( $set ) ){
@@ -105,7 +110,7 @@
 		/**
 		 * Установить/получить значение поля по-умолчания
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function value_default( $set = null ){
 			if( is_null( $set ) ){
@@ -120,7 +125,7 @@
 
 		/**
 		 * @param null $set
-		 * @return hw_field|string
+		 * @return field|string
 		 */
 		public function form_template( $set = null ){
 			if( is_string( $set ) && trim( $set ) != '' ){
@@ -133,16 +138,16 @@
 
 
 		/**
-		 * @return hw_fields_location_root
+		 * @return locations\root
 		 */
 		public function location(){
-			return hiweb()->fields()->locations()->add( $this );
+			return locations::add( $this );
 		}
 
 
 		/**
 		 * @param null $callback
-		 * @return array|hw_field
+		 * @return array|field
 		 */
 		public function on_change( $callback = null ){
 			if( is_null( $callback ) ){

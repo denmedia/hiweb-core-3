@@ -27,9 +27,9 @@
 		$return_key = '';
 		for( $list_n = 0; $list_n < $return_col; $list_n ++ ){
 			if( $in_use_latin and $list_n == 0 ){
-				$return_key .= chr( $symb_only_latin_arr[ rand( 0, count( $symb_only_latin_arr ) - 1 ) ] );
+				$return_key .= chr( $symb_only_latin_arr[ \rand( 0, count( $symb_only_latin_arr ) - 1 ) ] );
 			} else {
-				$return_key .= chr( $symb_arr[ rand( 0, count( $symb_arr ) - 1 ) ] );
+				$return_key .= chr( $symb_arr[ \rand( 0, count( $symb_arr ) - 1 ) ] );
 			}
 		}
 

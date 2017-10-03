@@ -35,5 +35,7 @@
 	//require 'include/home.php';
 
 
-	$field = hiweb\fields::register('TEST');
-	hiweb\dump( '21312' );
+	$field = hiweb\fields::register_field('TEST', 'text');
+	$field->label('Test')->location()->post_type('page')->front_page(1);
+
+	hiweb\dump(hiweb\fields\locations::$locations);
