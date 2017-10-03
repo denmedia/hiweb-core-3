@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\locations;
+	namespace hiweb\fields\set;
 
 
 	use hiweb\fields\field;

@@ -3,7 +3,7 @@
 	namespace hiweb\fields;
 
 
-	use hiweb\fields\locations\root;
+	use hiweb\fields\set\root;
 
 
 	class locations{

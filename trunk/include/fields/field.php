@@ -3,7 +3,7 @@
 	namespace hiweb\fields;
 
 
-	use hiweb\fields\locations;
+	use hiweb\fields\set;
 
 
 	class field{
@@ -138,7 +138,7 @@
 
 
 		/**
-		 * @return locations\root
+		 * @return set\root
 		 */
 		public function location(){
 			return locations::add( $this );

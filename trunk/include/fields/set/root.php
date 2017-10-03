@@ -1,10 +1,10 @@
 <?php
 
-	namespace hiweb\fields\locations;
+	namespace hiweb\fields\set;
 
 
 	use hiweb\fields\field;
-	use hiweb\fields\locations;
+	use hiweb\fields\set;
 	use hiweb\fields\separator;
 
 
