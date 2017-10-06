@@ -13,10 +13,8 @@
 		private $id;
 		private $global_id;
 		///
-		private $name;
-		private $description;
-		private $prepend = '';
-		private $append = '';
+		public $name;
+		public $description;
 		private $on_change = [];
 		///
 		/** @var mixed Значение по-умолчанию */
