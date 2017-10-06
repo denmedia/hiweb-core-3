@@ -1,21 +1,21 @@
 <?php
 
-	namespace hiweb\fields\set;
+	namespace hiweb\fields\options;
 
 
 	use hiweb\fields\field;
 	use hiweb\fields\separator;
 
 
-	class options{
+	class options_page{
 
-		/** @var root */
+		/** @var location */
 		private $location_root;
 
 		private $slug = '';
 
 
-		public function __construct( root $location_root ){
+		public function __construct( location $location_root ){
 			$this->location_root = $location_root;
 			$this->location_root->rules['options_page']['section_title'] = [ '' ];
 			$this->location_root->update_rulesId();
@@ -59,7 +59,7 @@
 
 
 		/**
-		 * @return root
+		 * @return location
 		 */
 		public function get_location(){
 			return $this->location_root;

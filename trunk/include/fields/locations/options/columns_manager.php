@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\set;
+	namespace hiweb\fields\options;
 
 
 	class columns_manager{

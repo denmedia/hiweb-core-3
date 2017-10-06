@@ -3,12 +3,12 @@
 	namespace hiweb\fields;
 
 
-	use hiweb\fields\set\root;
+	use hiweb\fields\options\location;
 
 
 	class locations{
 
-		/** @var root[] */
+		/** @var location[] */
 		static $locations = [];
 		/** @var array */
 		static $rules = [];
@@ -17,11 +17,10 @@
 
 
 		/**
-		 * @param field|separator $field - hw_field or hw_field_separator
-		 * @return root
+		 * @return location
 		 */
-		static function add( $field ){
-			$location = new root( $field );
+		static function register(){
+			$location = new location();
 			self::$locations[ $location->global_id() ] = $location;
 			self::$rules[ $location->global_id() ] = [];
 			self::$rulesId[ $location->global_id() ] = '';
@@ -31,7 +30,7 @@
 
 		/**
 		 * @param $globalId
-		 * @return bool|root
+		 * @return bool|location
 		 */
 		static function get( $globalId ){
 			if( !isset( self::$locations[ $globalId ] ) ) return false;
@@ -42,7 +41,7 @@
 		/**
 		 * Return array of locations
 		 * @param string|array $groups - allow forms: 'post_type','taxonomy','user','options'
-		 * @return root[]
+		 * @return location[]
 		 * @internal param bool $like
 		 */
 		static function get_byGroup( $groups = [ 'post_type' ] ){
@@ -123,7 +122,7 @@
 		 * @param string $group
 		 * @param array  $filter
 		 * @param array  $required_filter
-		 * @return root[]
+		 * @return location[]
 		 */
 		static function get_by( $group, $filter = [], $required_filter = [] ){
 			$R = [];

@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\set;
+	namespace hiweb\fields\options;
 
 
 	use hiweb\fields\field;
@@ -9,11 +9,11 @@
 
 	class taxonomy{
 
-		/** @var root */
+		/** @var location */
 		private $location_root;
 
 
-		public function __construct( root $location_root ){
+		public function __construct( location $location_root ){
 			$this->location_root = $location_root;
 		}
 
@@ -55,7 +55,7 @@
 
 
 		/**
-		 * @return root
+		 * @return location
 		 */
 		public function get_location(){
 			return $this->location_root;

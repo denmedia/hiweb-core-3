@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\set;
+	namespace hiweb\fields\options;
 
 
 	use hiweb\fields\field;
@@ -9,14 +9,14 @@
 
 	class post_type{
 
-		/** @var root */
+		/** @var location */
 		private $location_root;
 		private $columns_manager;
 
 		private $save_post_callback;
 
 
-		public function __construct( root $location_root ){
+		public function __construct( location $location_root ){
 			$this->location_root = $location_root;
 			$this->location_root->rules['post_type']['position'] = [ 3 ];
 			$this->location_root->update_rulesId();
@@ -119,7 +119,7 @@
 
 
 		/**
-		 * @return root
+		 * @return location
 		 */
 		public function get_location(){
 			return $this->location_root;

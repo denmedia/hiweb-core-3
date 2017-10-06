@@ -42,6 +42,15 @@
 
 
 		/**
+		 * @param $haystack
+		 * @return bool
+		 */
+		static function is_field($haystack){
+			return ($haystack instanceof field) || ($haystack instanceof separator);
+		}
+
+
+		/**
 		 * @param        $label
 		 * @param string $description
 		 * @return separator
