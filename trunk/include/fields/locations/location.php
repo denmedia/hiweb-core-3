@@ -47,12 +47,15 @@
 
 		public function add_field( $fieldOrFields ){
 			if( is_array( $fieldOrFields ) ){
-				foreach( $fieldOrFields as $field ){
-					$this->add_field( $field );
+				$R = [];
+				foreach( $fieldOrFields as $index => $field ){
+					$R[ $index ] = $this->add_field( $field );
 				}
+				return $R;
 			} elseif( fields::is_field( $fieldOrFields ) ) {
 				/** @var field|separator $fieldOrFields */
 				$this->fields[ $fieldOrFields->global_id() ] = $fieldOrFields;
+				return true;
 			} else {
 				return false;
 			}
@@ -64,6 +67,17 @@
 		 */
 		public function get_fields(){
 			return $this->fields;
+		}
+
+
+		/**
+		 * Set post type options
+		 * @param $post_type
+		 * @return mixed
+		 */
+		public function post_type( $post_type ){
+			if( !isset( $this->rules['post_type'][ $post_type ] ) ) $this->rules['post_type'][ $post_type ] = new post_type( $this );
+			return $this->rules['post_type'][ $post_type ];
 		}
 
 

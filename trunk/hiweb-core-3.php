@@ -35,5 +35,5 @@
 	//require 'include/home.php';
 
 	$location = hiweb\fields\locations::register();
-
+	$location->post_type('page');
 	hiweb\dump($location);
