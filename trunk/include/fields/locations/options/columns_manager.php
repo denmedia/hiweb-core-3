@@ -1,19 +1,15 @@
 <?php
 
-	namespace hiweb\fields\options;
+	namespace hiweb\fields\locations\options;
 
 
-	class columns_manager{
+	class columns_manager extends options{
 
-		private $root_location_post_type;
-		private $position = 3;
-		private $name = null;
-		private $callback = null;
-		private $sort = false;
+		private $parent_options;
 
 
-		public function __construct( post_type $location_post_type ){
-			$this->root_location_post_type = $location_post_type;
+		public function __construct( options $parent_options ){
+			$this->parent_options = $parent_options;
 			$this->position( 3 );
 		}
 
@@ -23,9 +19,7 @@
 		 * @return $this
 		 */
 		public function position( $set = 3 ){
-			$this->position = $set;
-			$this->root_location_post_type->get_location()->rules['post_type']['columns_manager'][ __FUNCTION__ ] = $set;
-			$this->root_location_post_type->get_location()->update_rulesId();
+			$this->set_option( __FUNCTION__, $set );
 			return $this;
 		}
 
@@ -35,31 +29,28 @@
 		 * @return $this
 		 */
 		public function name( $set = null ){
-			$this->name = $set;
-			$this->root_location_post_type->get_location()->rules['post_type']['columns_manager'][ __FUNCTION__ ] = $set;
-			$this->root_location_post_type->get_location()->update_rulesId();
+			$this->set_option( __FUNCTION__, $set );
 			return $this;
-		}
-
-
-		public function callback( $set ){
-			$this->callback = $set;
-			$this->root_location_post_type->get_location()->rules['post_type']['columns_manager'][ __FUNCTION__ ] = $set;
-			$this->root_location_post_type->get_location()->update_rulesId();
-			return $this;
-		}
-
-
-		public function sortable(){
-			//TODO!
 		}
 
 
 		/**
-		 *
+		 * @param $set
+		 * @return $this
 		 */
-		public function get_field(){
-			$this->root_location_post_type->get_field();
+		public function callback( $set ){
+			$this->set_option( __FUNCTION__, $set );
+			return $this;
+		}
+
+
+		/**
+		 * @param bool $set
+		 * @return $this
+		 */
+		public function sortable( $set = true ){
+			$this->set_option( __FUNCTION__, $set );
+			return $this;
 		}
 
 	}

@@ -1,50 +1,35 @@
 <?php
 
-	namespace hiweb\fields\options;
+	namespace hiweb\fields\locations;
 
 
 	use hiweb\fields;
 	use hiweb\fields\field;
-	use hiweb\fields\options;
 	use hiweb\fields\separator;
+	use hiweb\fields\locations\options\post_type;
 
 
 	class location{
 
-		public $rules = [];
+		/** @var options\options[] */
+		public $options = [];
 		public $rulesId = '';
-		public $globalId = '';
 		/** @var field[]|separator[] */
 		private $fields = [];
-		/** @var  post_type */
-		private $post_type;
-		/** @var  taxonomy */
-		private $taxonomy;
-		/** @var  user */
-		private $users;
-		/** @var  options_page */
-		private $options_page;
-		/** @var admin_menu */
-		private $admin_menu;
-
-
-		/**
-		 * fields_location constructor.
-		 * @internal param field|separator $field
-		 */
-		public function __construct(){
-			$this->globalId = spl_object_hash( $this );
-		}
 
 
 		/**
 		 * @return string
 		 */
 		public function global_id(){
-			return $this->globalId;
+			return spl_object_hash( $this );
 		}
 
 
+		/**
+		 * @param $fieldOrFields
+		 * @return array|bool
+		 */
 		public function add_field( $fieldOrFields ){
 			if( is_array( $fieldOrFields ) ){
 				$R = [];
@@ -71,13 +56,49 @@
 
 
 		/**
+		 * @param string $type
+		 * @return array|bool
+		 */
+		public function get_options_by_type( $type = 'post_types' ){
+			if( !isset( $this->options[ $type ] ) || !$this->options[ $type ] instanceof fields\locations\options\options ) return [];
+			$location_options = [];
+			if( is_array( $this->options[ $type ]->options ) ){
+				foreach( $this->options[ $type ]->options as $key => $option ){
+					if( $option instanceof fields\locations\options\options ){
+						$location_options[ $key ] = $option->options;
+					} else {
+						$location_options[ $key ] = $option;
+					}
+				}
+			} else $location_options = $this->options[ $type ]->options;
+			return is_array( $location_options ) ? $location_options : false;
+		}
+
+
+		/**
+		 * @return array
+		 */
+		public function get_options(){
+			$R = [];
+			if( is_array( $this->options ) ) foreach( $this->options as $rule_type => $rules_of_type ){
+				$type_options = $this->get_options_by_type( $rule_type );
+				if( is_array( $type_options ) ) $R[ $rule_type ] = $type_options;
+			}
+			return $R;
+		}
+
+
+		/**
 		 * Set post type options
 		 * @param $post_type
-		 * @return mixed
+		 * @return post_type
 		 */
-		public function post_type( $post_type ){
-			if( !isset( $this->rules['post_type'][ $post_type ] ) ) $this->rules['post_type'][ $post_type ] = new post_type( $this );
-			return $this->rules['post_type'][ $post_type ];
+		public function post_types( $post_type = null ){
+			if( !isset( $this->options['post_types'] ) ) $this->options['post_types'] = new post_type( $this );
+			/** @var post_type $post_types */
+			$post_types = $this->options['post_types'];
+			$post_types->post_type( $post_type );
+			return $post_types;
 		}
 
 

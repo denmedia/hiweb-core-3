@@ -34,6 +34,8 @@
 
 	//require 'include/home.php';
 
-	$location = hiweb\fields\locations::register();
-	$location->post_type('page');
-	hiweb\dump($location);
+	$fields = \hiweb\fields::register_field('test');
+	$fields->location()->post_types( [ 'page', 'post' ] )->position( 3 )->post_name( [ 'home', 'my-new-test' ] )->columns_manager()->name( 'Проверка имени' );
+
+
+	hiweb\dump( $fields->location()->options );

@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\options;
+	namespace hiweb\fields\locations;
 
 
 	use hiweb\fields\field;
@@ -17,7 +17,7 @@
 
 		public function __construct( location $location_root ){
 			$this->location_root = $location_root;
-			$this->location_root->rules['options_page']['section_title'] = [ '' ];
+			$this->location_root->options['options_page']['section_title'] = [ '' ];
 			$this->location_root->update_rulesId();
 		}
 
@@ -29,7 +29,7 @@
 		public function slug( $set ){
 			$set = preg_replace( [ '/^options-/', '/.php$/' ], '', $set );
 			$this->slug = $set;
-			$this->location_root->rules['options_page'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
+			$this->location_root->options['options_page'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}
@@ -44,7 +44,7 @@
 
 
 		public function section_title( $set ){
-			$this->location_root->rules['options_page'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
+			$this->location_root->options['options_page'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}

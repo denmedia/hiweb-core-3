@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\options;
+	namespace hiweb\fields\locations;
 
 
 	use hiweb\fields\field;
@@ -23,7 +23,7 @@
 		 * @return $this
 		 */
 		public function slug( $set ){
-			$this->location_root->rules['admin_menu'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
+			$this->location_root->options['admin_menu'][ __FUNCTION__ ] = is_array( $set ) ? $set : [ $set ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}

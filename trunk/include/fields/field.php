@@ -3,7 +3,7 @@
 	namespace hiweb\fields;
 
 
-	use hiweb\fields\options;
+	use hiweb\fields\locations\location;
 
 
 	class field{
@@ -12,6 +12,9 @@
 
 		private $id;
 		private $global_id;
+		///
+		/** @var  location */
+		private $location;
 		///
 		public $name;
 		public $description;
@@ -136,10 +139,14 @@
 
 
 		/**
-		 * @return options\location
+		 * @return location
 		 */
 		public function location(){
-			return locations::register( $this );
+			if( !$this->location instanceof location ){
+				$this->location = locations\locations::register();
+				$this->location->add_field( $this );
+			}
+			return $this->location;
 		}
 
 

@@ -1,27 +1,29 @@
 <?php
 
-	namespace hiweb;
+	namespace hiweb\forms;
 
 
 	class forms{
 
-		/** @var forms\form[] */
+		/** @var form[] */
 		static $forms = [];
 
 
 		static function register( $id = null ){
-			//TODO
+			$form = new form( $id );
+			self::$forms[ spl_object_hash( $form ) ] = $form;
+			return $form;
 		}
 
 
 		/**
 		 * @param $id
-		 * @return forms\form
+		 * @return form
 		 */
 		static function get( $id ){
 			$id = sanitize_file_name( strtolower( $id ) );
 			if( !array_key_exists( $id, self::$forms ) ){
-				self::$forms[ $id ] = new forms\form( $id );
+				self::$forms[ $id ] = new form( $id );
 			}
 			return self::$forms[ $id ];
 		}

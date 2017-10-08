@@ -1,6 +1,6 @@
 <?php
 
-	namespace hiweb\fields\options;
+	namespace hiweb\fields\locations;
 
 
 	use hiweb\fields\field;
@@ -15,7 +15,7 @@
 
 		public function __construct( location $location_root ){
 			$this->location_root = $location_root;
-			$this->location_root->rules['user']['position'] = [ 2 ];
+			$this->location_root->options['user']['position'] = [ 2 ];
 			$this->location_root->update_rulesId();
 		}
 
@@ -41,7 +41,7 @@
 		 * @return $this
 		 */
 		public function position( $position = 2 ){
-			$this->location_root->rules['user'][ __FUNCTION__ ] = [ $position ];
+			$this->location_root->options['user'][ __FUNCTION__ ] = [ $position ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}
@@ -52,14 +52,14 @@
 		 * @return $this
 		 */
 		public function id( $id ){
-			$this->location_root->rules['user'][ __FUNCTION__ ] = [ $id ];
+			$this->location_root->options['user'][ __FUNCTION__ ] = [ $id ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}
 
 
 		public function role( $role ){
-			$this->location_root->rules['user'][ __FUNCTION__ ] = is_array( $role ) ? $role : [ $role ];
+			$this->location_root->options['user'][ __FUNCTION__ ] = is_array( $role ) ? $role : [ $role ];
 			$this->location_root->update_rulesId();
 			return $this;
 		}

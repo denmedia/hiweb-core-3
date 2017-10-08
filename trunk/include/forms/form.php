@@ -3,6 +3,9 @@
 	namespace hiweb\forms;
 
 
+	use hiweb\fields\field;
+
+
 	class form{
 
 		protected $id = '';
@@ -13,19 +16,19 @@
 		private $submit = false;
 		private $settings_group;
 
-		/** @var hw_field[] */
+		/** @var field[] */
 		private $fields = [];
 
 
 		/**
 		 * Add field or fields to the form
-		 * @param hw_field[] $field_or_fields
-		 * @return hw_form
+		 * @param field[] $field_or_fields
+		 * @return form
 		 */
 		public function add_fields( $field_or_fields = [] ){
 			if( !is_array( $field_or_fields ) ) $field_or_fields = [ $field_or_fields ];
 			foreach( $field_or_fields as $field ){
-				if( $field instanceof hw_field ){
+				if( $field instanceof field ){
 					$this->fields[ $field->id() ] = $field;
 				} else {
 					$this->fields[ $field->global_id() ] = $field;
@@ -37,8 +40,8 @@
 
 		/**
 		 * Add field to the form
-		 * @param hw_field $field
-		 * @return hw_form
+		 * @param field $field
+		 * @return form
 		 */
 		public function add_field( $field ){
 			$this->add_fields( $field );
@@ -48,7 +51,7 @@
 
 		/**
 		 * Get form fields
-		 * @return hw_field[]
+		 * @return field[]
 		 */
 		public function get_fields(){
 			$R = [];
@@ -71,7 +74,7 @@
 
 
 		public function __construct( $id = '' ){
-			$this->id = $id;
+			$this->id = \hiweb\string\is_empty( $id ) ? \hiweb\string\rand() : $id;
 			$this->settings_group = $id;
 		}
 
