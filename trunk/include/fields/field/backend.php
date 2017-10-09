@@ -73,7 +73,7 @@
 
 		public function get_context_value( $context_id = '' ){
 			if( !is_array( $context_id ) ) $context_id = json_encode( $context_id );
-			if( array_key_exists( $context_id, $this->context_value ) ) {
+			if( array_key_exists( $context_id, $this->context_value ) ){
 				///todo!
 			}
 		}
