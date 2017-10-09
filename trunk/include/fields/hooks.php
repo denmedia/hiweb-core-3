@@ -12,10 +12,10 @@
 	add_action( 'edit_page_form', 'hiweb\\fields\\locations\\backend::edit_form_advanced' );
 	add_action( 'dbx_post_sidebar', 'hiweb\\fields\\locations\\backend::dbx_post_sidebar' );
 	///Posts List Columns
-	add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
-	add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
-	add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 1 );
-	add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 2 );
+	//add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
+	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
+	//add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 1 );
+	//add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 2 );
 	//	///Post Save
 	add_action( 'save_post', 'hiweb\\fields\\locations\\backend::save_post', 10, 3 );
 	//	////////

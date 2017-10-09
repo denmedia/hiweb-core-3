@@ -3,12 +3,20 @@
 	namespace hiweb\fields\locations;
 
 
+	use hiweb\fields\field;
+
+
 	class backend{
 
+		/**
+		 * @param     $post
+		 * @param int $position
+		 * @return field[]
+		 */
 		private static function get_post_type_contenxt_fields( $post, $position = 3 ){
+			$R = [];
 			if( !$post instanceof \WP_Post ){
 				\hiweb\console::debug_warn( 'Для функции передан не WP_Post объект!', $post );
-				return [];
 			} else {
 				$context_location = new location();
 				$context_options = $context_location->post_types();
@@ -27,12 +35,20 @@
 					$R = array_merge( $R, $location->get_fields() );
 				}
 			}
+			return $R;
 		}
 
 
 		static function edit_form_top( $post ){
 			$fields = self::get_post_type_contenxt_fields( $post, 0 );
-			//todo: вывести поля
+			foreach( $fields as $field_id => $field ){
+				?>
+				<div>
+					<h3><?= $field->name ?></h3>
+					<?= $field->input() ?>
+				</div>
+				<?php
+			}
 		}
 
 

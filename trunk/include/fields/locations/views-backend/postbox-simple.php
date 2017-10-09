@@ -1,13 +1,16 @@
 <?php
-	/**
-	 * @var hw_form $this
-	 * @var string  $addition_class
-	 */
+
+	use hiweb\fields\field;
+	use hiweb\fields\separator;
+
+
+	/** @var $fields field[] */
+
 ?>
 <div class="hw-form-template-postbox <?php echo $addition_class ?>"><?php
 
-		foreach( $this->get_fields() as $field ){
-			if( $field instanceof hw_field ){
+		foreach( $fields as $field ){
+			if( $field instanceof field ){
 				?>
 				<span class="hw-form-field hw-field-<?= $field->type() ?>" data-field-id="<?= $field->id() ?>" data-field-global-id="<?= $field->global_id() ?>">
 				<p><strong><?php echo $field->label() ?></strong></p>
@@ -15,7 +18,7 @@
 					<?php echo $field->description() != '' ? '<p class="description">' . $field->description() . '</p>' : ''; ?>
 				</span>
 				<?php
-			} elseif( $field instanceof hw_field_separator ) {
+			} elseif( $field instanceof separator ) {
 				?>
 				<div class="hw-form-field-separator"><?php $field->the() ?></div>
 				<?php
