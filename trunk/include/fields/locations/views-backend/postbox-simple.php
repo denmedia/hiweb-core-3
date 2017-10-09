@@ -7,7 +7,7 @@
 	/** @var $fields field[] */
 
 ?>
-<div class="hw-form-template-postbox <?php echo $addition_class ?>"><?php
+<div class="hw-form-template-postbox"><?php
 
 		foreach( $fields as $field ){
 			if( $field instanceof field ){

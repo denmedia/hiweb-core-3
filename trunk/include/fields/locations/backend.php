@@ -41,14 +41,7 @@
 
 		static function edit_form_top( $post ){
 			$fields = self::get_post_type_contenxt_fields( $post, 0 );
-			foreach( $fields as $field_id => $field ){
-				?>
-				<div>
-					<h3><?= $field->name ?></h3>
-					<?= $field->input() ?>
-				</div>
-				<?php
-			}
+			include __DIR__.'/views-backend/postbox-simple.php';
 		}
 
 
