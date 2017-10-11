@@ -3,9 +3,18 @@
 	namespace hiweb\fields\locations\options;
 
 
+	use hiweb\fields\locations\location;
+
+
 	class post_type extends options{
 
 		private $columns_manager;
+
+
+		public function __construct( location $location ){
+			parent::__construct( $location );
+			$this->options['position'] = 3;
+		}
 
 
 		/**

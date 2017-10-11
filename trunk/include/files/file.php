@@ -3,6 +3,9 @@
 	namespace hiweb\files;
 
 
+	use hiweb\files;
+
+
 	class file{
 
 		public $path = '';
@@ -96,7 +99,7 @@
 				if( $this->is_dir ) foreach( scandir( $this->path ) as $subFileName ){
 					if( $subFileName == '.' || $subFileName == '..' ) continue;
 					$subFilePath = $this->path . '/' . $subFileName;
-					$subFile = \hiweb\path\file( $subFilePath );
+					$subFile = files::get( $subFilePath );
 					$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
 					$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
 				}

@@ -3,6 +3,10 @@
 	namespace hiweb\path;
 
 
+	use hiweb\console;
+	use hiweb\files;
+
+
 	/**
 	 * Возвращает текущий адрес URL
 	 * @version 1.0.2
@@ -307,7 +311,7 @@
 	 */
 	function prepare_separator( $path, $removeLastSeparators = false ){
 		if( !is_string( $path ) ){
-			hiweb()->console()->warn( 'Путь должен быть строкой', 1 );
+			console::debug_warn( 'Путь должен быть строкой', $path );
 			return false;
 		}
 		$r = strtr( $path, [ '\\' => separator(), '/' => separator() ] );
@@ -336,7 +340,7 @@
 	/**
 	 * Функция атоматически создает папки
 	 * @param $dirPath - путь до папи, которую необходимо создать
-	 * @return string
+	 * @return array|string
 	 */
 	function mkdir( $dirPath ){
 		$dirPath = realpath( $dirPath );
@@ -352,7 +356,7 @@
 			@chmod( $newDirStr, 0755 );
 			//$stat = @stat( $newDirStr );
 			if( !@file_exists( $newDirStr ) || @is_file( $newDirStr ) ){
-				$newDirDoneArr[ $name ] = @mkdir( $newDirStr, 0755 );
+				$newDirDoneArr[ $name ] = @\mkdir( $newDirStr, 0755 );
 			} else {
 				$newDirDoneArr[ $newDirStr ] = 0;
 			}
@@ -493,8 +497,8 @@
 		if( !$appendToArchive && file_exists( $pathOut . '/' . $arhiveName ) ){
 			@unlink( $pathOut . '/' . $arhiveName );
 		}
-		$zip = new ZipArchive; // класс для работы с архивами
-		if( $zip->open( $pathOut . '/' . $arhiveName, ZipArchive::CREATE ) === true ){ // создаем архив, если все прошло удачно продолжаем
+		$zip = new \ZipArchive; // класс для работы с архивами
+		if( $zip->open( $pathOut . '/' . $arhiveName, \ZipArchive::CREATE ) === true ){ // создаем архив, если все прошло удачно продолжаем
 			$files = scan_directory( $pathInput, false );
 			foreach( $files as $path => $fileArr ){
 				$zip->addFile( $path, $baseDirInArhive . str_replace( rtrim( $pathInput, '/' ) . '/', '', $path ) );
@@ -520,7 +524,7 @@
 		if( $destinationDir == '' ){
 			$destinationDir = dirname( $archivePath );
 		}
-		$zip = new ZipArchive();
+		$zip = new \ZipArchive();
 		if( $zip->open( $archivePath ) === true ){
 			if( !$zip->extractTo( $destinationDir ) ){
 				return false;
@@ -557,11 +561,11 @@
 				include $path;
 				return ob_get_clean();
 			} else {
-				hiweb()->console()->error( 'Функции [ob_start] не установлено на сервере', true );
+				console::debug_error( 'Функции [ob_start] не установлено на сервере' );
 				return false;
 			}
 		} else {
-			hiweb()->console()->error( 'Файла [' . $path . '] нет', true );
+			console::debug_error( 'Файла [' . $path . '] нет', $path );
 			return false;
 		}
 	}
@@ -583,7 +587,7 @@
 	 * @return array
 	 */
 	function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
-		$subFiles = file( $path )->get_sub_files( $fileExtension );
+		$subFiles = files::get( $path )->get_sub_files( $fileExtension );
 		$R = [];
 		foreach( $subFiles as $file ){
 			if( !$file->is_readable ) continue;
@@ -593,11 +597,11 @@
 					$R[ $file->path ] = $file;
 					break;
 				case 'css':
-					hiweb()->css( $file->url );
+					\hiweb\css( $file->url );
 					$R[ $file->path ] = $file;
 					break;
 				case 'js':
-					hiweb()->js( $file->url );
+					\hiweb\js( $file->url );
 					$R[ $file->path ] = $file;
 					break;
 			}
@@ -608,7 +612,7 @@
 	/**
 	 * Upload file or files
 	 * @param $_fileOrUrl - $_FILES[file_id]
-	 * @return int|WP_Error
+	 * @return int|\WP_Error
 	 */
 	function upload( $_fileOrUrl ){
 		if( is_array( $_fileOrUrl ) ){
@@ -668,7 +672,7 @@
 					],
 				]
 			];
-			$query = new WP_Query( $query_args );
+			$query = new \WP_Query( $query_args );
 			if( $query->have_posts() ){
 				foreach( $query->posts as $post_id ){
 					$meta = wp_get_attachment_metadata( $post_id );

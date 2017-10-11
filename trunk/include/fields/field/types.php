@@ -15,7 +15,7 @@
 		static $inputs = [];
 
 
-		static function register( $type = 'text' ){
+		static function get( $type = 'text' ){
 			$class = false;
 			if( self::has_type( $type ) ){
 				$classNames = array_reverse( self::$types[ $type ] );
@@ -53,7 +53,7 @@
 		 * @param null $include_path
 		 * @param int  $priority
 		 */
-		static function register_type( $type, $className, $include_path = null, $priority = 10 ){
+		static function register( $type, $className, $include_path = null, $priority = 10 ){
 			if( is_null( $include_path ) || trim( $include_path ) == '' ){
 				$include_file = \hiweb\file( $include_path );
 				if( $include_file->extension == 'php' ) include_once $include_file->path; else console::debug_warn( 'Путь до файла регистрируемого типа указан не верно', $include_path );
@@ -67,7 +67,7 @@
 			}
 			if( array_key_exists( $priority, self::$types[ $type ] ) ){
 				$movedClassName = self::$types[ $type ][ $priority ];
-				self::register_type( $type, $priority + 1, $movedClassName );
+				self::register( $type, $priority + 1, $movedClassName );
 			}
 			self::$types[ $type ][ $priority ] = $className;
 		}

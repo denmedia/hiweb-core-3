@@ -105,7 +105,7 @@
 		 */
 		public function type(){
 			if( !$this->type instanceof type ){
-				$this->type = types::register( $this->type_name );
+				$this->type = types::get( $this->type_name );
 				$this->type->tags['name'] = 'hiweb-field-' . $this->id;
 			}
 			return $this->type;

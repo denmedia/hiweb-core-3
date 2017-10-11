@@ -1,5 +1,7 @@
 <?php
 
+	
+
 	hiweb()->inputs()->register_type( 'bool', 'hw_input_checkbox' );
 	hiweb()->inputs()->register_type( 'check', 'hw_input_checkbox' );
 	hiweb()->inputs()->register_type( 'checkbox', 'hw_input_checkbox' );
@@ -7,7 +9,7 @@
 	hiweb()->inputs()->register_type( 'radiobutton', 'hw_input_checkbox' );
 
 
-	class hw_input_checkbox extends hw_input{
+	class checkbox extends \hiweb\fields\field\type{
 
 		use hw_hidden_methods_props;
 

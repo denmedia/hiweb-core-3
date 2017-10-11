@@ -1,22 +1,8 @@
 <?php
 
-	///INCLUDE FUNCTIONS FILE
-	foreach( scandir( __DIR__ ) as $dir ){
-		if( preg_match( '/(\.|\.\.)/', $dir ) > 0 ) continue;
-		$path = __DIR__ . '/' . $dir;
-		if( !is_dir( $path ) ) continue;
-		$include_array = [ 'functions.php', 'subfunctions.php', 'hooks.php' ];
-		foreach( $include_array as $fileName ){
-			$filePath = $path . '/' . $fileName;
-			if( is_file( $filePath ) && is_readable( $filePath ) ){
-				include_once $filePath;
-			}
-		}
-	}
-
 	spl_autoload_register( function( $class_name ){
 		if( $class_name == 'hiweb' ){
-			include_once __DIR__ . '/hiweb.php';
+			//include_once __DIR__ . '/hiweb.php';
 		} elseif( preg_match( '/^hiweb\\\\/i', $class_name ) > 0 ) {
 			$class_name = preg_replace( '/^hiweb\\\\/i', '', $class_name );
 			$class_path = __DIR__ . '/' . str_replace( '\\', '/', $class_name );
@@ -34,3 +20,17 @@
 			}
 		}
 	} );
+
+	///INCLUDE FUNCTIONS FILE
+	foreach( scandir( __DIR__ ) as $dir ){
+		if( preg_match( '/(\.|\.\.)/', $dir ) > 0 ) continue;
+		$path = __DIR__ . '/' . $dir;
+		if( !is_dir( $path ) ) continue;
+		$include_array = [ 'functions.php', 'subfunctions.php', 'hooks.php' ];
+		foreach( $include_array as $fileName ){
+			$filePath = $path . '/' . $fileName;
+			if( is_file( $filePath ) && is_readable( $filePath ) ){
+				include_once $filePath;
+			}
+		}
+	}

@@ -1,12 +1,14 @@
 <?php
 
-	hiweb()->inputs()->register_type( 'text', 'hw_input_text' );
-	hiweb()->fields()->register_content_type('text', function($value){
-		return $value;
-	});
+	namespace hiweb\fields\field\types;
+
+	use hiweb\fields\field\type;
+	use hiweb\fields\field\types;
 
 
-	class hw_input_text extends hw_input{
+	types::register('text', __NAMESPACE__.'\text');
+
+	class text extends type{
 
 		public function __construct( $id = false ){ parent::__construct( $id ); }
 
