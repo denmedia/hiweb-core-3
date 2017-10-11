@@ -3,7 +3,7 @@
 	namespace hiweb;
 
 
-	use hiweb\dump\subfunctions;
+	use hiweb\dump;
 
 
 	/**
@@ -11,5 +11,5 @@
 	 * @return string
 	 */
 	function dump( $variable ){
-		subfunctions::the( $variable );
+		dump::the( $variable );
 	}

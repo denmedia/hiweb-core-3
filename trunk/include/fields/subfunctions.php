@@ -7,6 +7,14 @@
 
 
 	/**
+	 * @param $id
+	 * @return string
+	 */
+	function get_field_input_name( $id ){
+		return 'hiweb-field-' . $id;
+	}
+
+	/**
 	 * @param string $field_id
 	 * @param string $page_slug
 	 * @return string

@@ -71,19 +71,12 @@
 		}
 
 
-		public function get_context_value( $context_id = '' ){
-			if( !is_array( $context_id ) ) $context_id = json_encode( $context_id );
-			if( array_key_exists( $context_id, $this->context_value ) ){
-				///todo!
-			}
-		}
-
-
 		/**
-		 * @param string $context_id
+		 * @param null $value
 		 */
-		public function the( $context_id = '' ){
-
+		public function the( $value = null ){
+			$this->field->type()->value = $value;
+			$this->field->type()->the();
 		}
 
 	}

@@ -36,4 +36,6 @@
 			return isset( $a[ $fullName ? 1 : 0 ][ $weekNum ] ) ? $a[ $fullName ? 1 : 0 ][ $weekNum ] : false;
 		}
 
+
+
 	}

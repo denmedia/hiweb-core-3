@@ -39,7 +39,7 @@
 				return $R;
 			} elseif( fields::is_field( $fieldOrFields ) ) {
 				/** @var field|separator $fieldOrFields */
-				$this->fields[ $fieldOrFields->global_id() ] = $fieldOrFields;
+				$this->fields[ $fieldOrFields->id() ] = $fieldOrFields;
 				return true;
 			} else {
 				return false;

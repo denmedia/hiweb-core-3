@@ -28,12 +28,10 @@
 		/**
 		 * @param        $fieldId
 		 * @param string $type
-		 * @param null   $fieldName
 		 * @return field
 		 */
-		static function register_field( $fieldId, $type = 'text', $fieldName = null ){
+		static function register_field( $fieldId, $type = 'text' ){
 			$field = new field( $fieldId, $type );
-			$field->label( $fieldName );
 			self::$fields[ $field->global_id() ] = $field;
 			self::$fieldId_globalId[ $fieldId ][] = $field;
 			self::$globalId_fieldId[ $field->global_id() ][] = $field;
@@ -45,8 +43,8 @@
 		 * @param $haystack
 		 * @return bool
 		 */
-		static function is_field($haystack){
-			return ($haystack instanceof field) || ($haystack instanceof separator);
+		static function is_field( $haystack ){
+			return ( $haystack instanceof field ) || ( $haystack instanceof separator );
 		}
 
 

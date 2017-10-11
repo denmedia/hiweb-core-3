@@ -1,9 +1,9 @@
 <?php
 
-	namespace hiweb\dump;
+	namespace hiweb;
 
 
-	class subfunctions{
+	class dump{
 
 
 		/**
@@ -107,14 +107,14 @@
 		 * @return int
 		 */
 		static function to_file( $dataMix, $filePath = 'log.html', $append = true, $autoDeleteOldFile = 5 ){
-			$filePath = hiweb()->path()->realpath( $filePath );
+			$filePath = \hiweb\path\realpath( $filePath );
 			if( !file_exists( dirname( $filePath ) ) ){
-				file_put_contents( hiweb()->path()->realpath( 'error.txt' ), dirname( $filePath ) . ' => not exists' );
+				file_put_contents( \hiweb\path\realpath( 'error.txt' ), dirname( $filePath ) . ' => not exists' );
 				return false;
 			}
 			$returnStr = '<style type="text/css">.sep { border-bottom: 1px dotted #ccc; } .sepLast { margin-bottom: 35px; }</style>';
 			$separatorHtml = '<div class="sep"></div>';
-			$returnStr .= hiweb()->date()->dateTime() . ' / ' . microtime( true ) . ' / ' . $separatorHtml . self::getHtml_arrayPrint( $dataMix ) . $separatorHtml;
+			$returnStr .= date::format() . ' / ' . microtime( true ) . ' / ' . $separatorHtml . self::getHtml_arrayPrint( $dataMix ) . $separatorHtml;
 			$fileContent = '';
 			if( file_exists( $filePath ) && is_file( $filePath ) ){
 				$time = time();
