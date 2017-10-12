@@ -1,20 +1,18 @@
 <?php
 
-	hiweb()->inputs()->register_type( 'color', 'hw_input_color' );
+	use hiweb\fields\field\type;
 
 
-	class hw_input_color extends hw_input{
+	\hiweb\fields\field\types::register( 'color', __NAMESPACE__ . '\color' );
 
-		public function html(){
-			ob_start();
-			$this->tag_add('type','text');
-			$this->tag_add('data-type-color',' ');
-			$this->tag_add('value',$this->value());
-			hiweb()->js(hiweb()->dir_js.'/input-color.js');
-			hiweb()->js(hiweb()->dir_vendors.'/tinyColorPicker/jqColorPicker.min.js');
-			?>
-			<input <?= $this->tags_html() ?>>
-			<?php
+
+	class color extends type{
+
+		public function the_input(){
+			$this->tags['data-type-color'] = '';
+			\hiweb\js( HIWEB_DIR_JS . '/input-color.js' );
+			\hiweb\js( HIWEB_DIR_VENDORS . '/tinyColorPicker/jqColorPicker.min.js' );
+			parent::the_input();
 			return ob_get_clean();
 		}
 

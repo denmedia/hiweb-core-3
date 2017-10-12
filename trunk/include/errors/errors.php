@@ -11,7 +11,7 @@
 
 		function __construct( $showBacktrace = false ){
 			if( !hiweb()->context()->is_frontend_page() && !hiweb()->context()->is_backend_page() ) return;
-			css( hiweb()->dir_css . '/errors.css' );
+			css( HIWEB_DIR_CSS . '/errors.css' );
 			self::$showBacktrace = $showBacktrace;
 			@ini_set( 'display_errors', 'off' );
 			error_reporting( E_ALL & ~E_NOTICE );

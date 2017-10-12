@@ -11,7 +11,7 @@
 
 
 		public function html(){
-			hiweb()->js(hiweb()->dir_js.'/input-editor.js');
+			hiweb()->js(HIWEB_DIR_JS.'/input-editor.js');
 			ob_start();
 			add_filter( 'the_editor', [ $this, 'editor_html_filter' ], 10, 2 );
 			wp_editor( $this->get_value(), $this->id(), $this->attributes() );

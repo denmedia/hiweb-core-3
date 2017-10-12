@@ -6,7 +6,7 @@
 	class hw_input_select extends hw_input{
 
 		public function html(){
-			hiweb()->css( hiweb()->dir_css . '/input-select.css' );
+			hiweb()->css( HIWEB_DIR_CSS . '/input-select.css' );
 			$options = array();
 			if( is_array( $this->attributes( 'options' ) ) )
 				$options = $this->attributes( 'options' );

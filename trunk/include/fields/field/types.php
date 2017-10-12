@@ -4,6 +4,7 @@
 
 
 	use hiweb\console;
+	use hiweb\fields\field;
 
 
 	class types{
@@ -15,7 +16,12 @@
 		static $inputs = [];
 
 
-		static function get( $type = 'text' ){
+		/**
+		 * @param string $type
+		 * @param field  $field
+		 * @return bool|type
+		 */
+		static function get( $type = 'text', $field = null ){
 			$class = false;
 			if( self::has_type( $type ) ){
 				$classNames = array_reverse( self::$types[ $type ] );
@@ -25,7 +31,7 @@
 						continue;
 					}
 					///Make input
-					$class = new $className( $type );
+					$class = new $className( $field, $type );
 					if( !$class instanceof type ){
 						console::debug_warn( sprintf( __( 'Class [%s] dosen\'t extends hw_input! For this class Assign heir:\n<?php class %s  extends hw_input{ ... }' ), $className ) );
 						continue;
@@ -37,7 +43,7 @@
 			if( !$class instanceof type ){
 				console::debug_warn( sprintf( __( 'Type of input [%s] not found', 'hw-core-2' ), $type ) );
 				///Make default input
-				$class = new type( $type );
+				$class = new type( $field, $type );
 			}
 
 			//$class->tag_add( 'data-global-id', $global_id );

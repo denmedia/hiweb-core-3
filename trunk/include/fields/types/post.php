@@ -16,10 +16,10 @@
 				hiweb()->console()->error( __( 'Can not display INPUT [IMAGE], it works only in the back-End' ) );
 				return '';
 			}
-			hiweb()->css( hiweb()->dir_vendors . '/fm.selectator.jquery/fm.selectator.jquery.css' );
-			$js_id = hiweb()->js( hiweb()->dir_vendors . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
-			hiweb()->js( hiweb()->dir_js . '/input-post.js', [ 'jquery', $js_id ], true );
-			hiweb()->css( hiweb()->dir_css . '/input-post.css' );
+			hiweb()->css( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.css' );
+			$js_id = hiweb()->js( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
+			hiweb()->js( HIWEB_DIR_JS . '/input-post.js', [ 'jquery', $js_id ], true );
+			hiweb()->css( HIWEB_DIR_CSS . '/input-post.css' );
 
 			$post_types = $this->attributes( 'post_type' );
 			if( is_string( $post_types ) ) $post_types = [ $post_types ];

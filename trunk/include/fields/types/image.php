@@ -66,8 +66,8 @@
 				return '';
 			}
 			wp_enqueue_media();
-			hiweb()->js( hiweb()->dir_js . '/input_image.js', [ 'jquery' ] );
-			hiweb()->css( hiweb()->dir_css . '/input_image.css' );
+			hiweb()->js( HIWEB_DIR_JS . '/input_image.js', [ 'jquery' ] );
+			hiweb()->css( HIWEB_DIR_CSS . '/input_image.css' );
 
 			$attr_width = $this->attributes( 'width' );
 			$attr_height = $this->attributes( 'height' );

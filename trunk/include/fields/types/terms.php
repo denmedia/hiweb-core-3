@@ -39,10 +39,10 @@
 
 
 		public function html(){
-			hiweb()->css( hiweb()->dir_css . '/input-terms.css' );
-			hiweb()->js( hiweb()->dir_js . '/input-terms.js', [ 'jquery' ] );
-			hiweb()->css( hiweb()->dir_vendors . '/chosen/chosen.min.css' );
-			hiweb()->js( hiweb()->dir_vendors . '/chosen/chosen.jquery.min.js', [ 'jquery' ] );
+			hiweb()->css( HIWEB_DIR_CSS . '/input-terms.css' );
+			hiweb()->js( HIWEB_DIR_JS . '/input-terms.js', [ 'jquery' ] );
+			hiweb()->css( HIWEB_DIR_VENDORS . '/chosen/chosen.min.css' );
+			hiweb()->js( HIWEB_DIR_VENDORS . '/chosen/chosen.jquery.min.js', [ 'jquery' ] );
 			ob_start();
 			$terms_by_taxonomy = $this->get_terms_by_taxonomy();
 			?>
