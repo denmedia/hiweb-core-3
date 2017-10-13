@@ -17,7 +17,7 @@
 			\hiweb\js( HIWEB_DIR_JS . '/input-editor.js' );
 			ob_start();
 			add_filter( 'the_editor', [ $this, 'editor_html_filter' ], 10, 2 );
-			wp_editor( $this->value(), $this->field->id(), $this->tags );
+			wp_editor( $this->value(), $this->id(), $this->tags );
 			remove_filter( 'the_editor', [ $this, 'editor_html_filter' ] );
 			return ob_get_clean();
 		}
@@ -26,9 +26,9 @@
 		public function editor_html_filter( $html ){
 			ob_start();
 			?>
-			<div id="wp-<?= $this->field->id() ?>-editor-container" class="wp-editor-container">
-				<div id="qt_<?= $this->field->id() ?>_toolbar" class="quicktags-toolbar"></div>
-				<textarea class="wp-editor-area" rows="10" autocomplete="off" cols="40" name="<?= $this->tags['name'] ?>" id="<?= $this->field->id() ?>">%s</textarea>
+			<div id="wp-<?= $this->id() ?>-editor-container" class="wp-editor-container">
+				<div id="qt_<?= $this->id() ?>_toolbar" class="quicktags-toolbar"></div>
+				<textarea class="wp-editor-area" rows="10" autocomplete="off" cols="40" name="<?= $this->tags['name'] ?>" id="<?= $this->id() ?>">%s</textarea>
 			</div>
 			<?php
 			return ob_get_clean();

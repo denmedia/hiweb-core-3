@@ -87,7 +87,7 @@
 			ob_start();
 			?>
 			<div class="hw-input-image" id="<?= $this->id() ?>" data-has-image="<?= $this->have_image() ? '1' : '0' ?>" data-image-small="<?= $image_small ? '1' : '0' ?>">
-				<input type="hidden" <?= $this->tags_html() ?> value="<?= ( $this->has_image ? $this->value() : '' ) ?>"/>
+				<input type="hidden" <?= $this->get_tags_html() ?> value="<?= ( $this->has_image ? $this->value() : '' ) ?>"/>
 				<a href="#" class="image-select" title="<?= __( 'Select/Deselect image...' ) ?>" data-click="<?= ( $this->have_image() ? 'deselect' : 'select' ) ?>" style="width: <?= $attr_width ?>px; height: <?= $attr_height ?>px;">
 					<div class="thumbnail" style="<?= $this->have_image() ? 'background-image:url(' . $preview[0] . ')' : '' ?>"></div>
 					<div class="overlay"></div>

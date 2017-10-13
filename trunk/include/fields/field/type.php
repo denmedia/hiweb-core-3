@@ -27,6 +27,11 @@
 		}
 
 
+		public function id(){
+			return $this->field->id() . '-' . md5( json_encode( $this->field->location()->options ) );
+		}
+
+
 		/**
 		 * @param string $key
 		 * @param null   $value
@@ -52,7 +57,7 @@
 		/**
 		 * @return string
 		 */
-		public function get_tags(){
+		public function get_tags_html(){
 			$R = [];
 			if( is_array( $this->tags ) ) foreach( $this->tags as $key => $value ){
 				$R[] = $key . '="' . htmlentities( is_array( $value ) ? json_encode( $value ) : $value, ENT_QUOTES, 'UTF-8' ) . '"';
@@ -85,14 +90,13 @@
 			$this->tags['type'] = $this->type;
 			$this->tags['value'] = $this->sanitize( $this->value );
 			ob_start();
-			?><input <?= $this->get_tags() ?>/><?php
+			?><input <?= $this->get_tags_html() ?>/><?php
 			return ob_get_clean();
 		}
 
 
 		/**
-		 * Get html string of the input
-		 * @return string
+		 * Echo html of the input
 		 */
 		final public function HTML(){
 			return $this->get_input();

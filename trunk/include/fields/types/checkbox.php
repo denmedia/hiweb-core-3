@@ -49,7 +49,7 @@
 			$this->tags['id'] = \hiweb\string\rand();
 			?>
 			<div class="hw-input-checkbox">
-				<input <?= $this->get_tags() ?> <?= $this->value() ? 'checked="checked"' : '' ?>>
+				<input <?= $this->get_tags_html() ?> <?= $this->value() ? 'checked="checked"' : '' ?>>
 				<label for="<?= $this->tags['name'] ?>"><?= $this->field->backend()->label() ?></label>
 			</div>
 			<?php

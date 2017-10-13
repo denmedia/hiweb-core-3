@@ -1,29 +1,33 @@
 <?php
 
-	hiweb()->inputs()->register_type( 'images', 'hw_input_images' );
+	use hiweb\fields\field\type;
 
 
-	class hw_input_images extends hw_input{
+	\hiweb\fields\field\types::register( 'images', __NAMESPACE__ . '\images' );
+
+
+	class images extends type{
 
 
 		protected $dimension = 1;
 
-		protected $attributes = array(
+		protected $attributes = [
 			'width' => 150,
 			'height' => 80,
 			'cols' => 10
-		);
+		];
 
 
 		/**
 		 * @return array
 		 */
-		public function get_value(){
-			if(!is_array($this->value)){
+		public function sanitize( $value ){
+			if( !is_array( $value ) ){
 				return [];
 			}
-			return $this->value;
+			return $value;
 		}
+
 
 		/**
 		 * @return string
@@ -44,7 +48,7 @@
 					$this->attributes( 'height' )
 				] );
 				if( $img_url !== false ){
-					$img_path = hiweb()->path()->url_to_path( $img_url[0] );
+					$img_path = \hiweb\path\url_to_path( $img_url[0] );
 				}
 				if( trim( $img_path ) != '' && file_exists( $img_path ) && is_file( $img_path ) && is_readable( $img_path ) ){
 					$img_src = $img_url[0];
@@ -53,7 +57,7 @@
 			if( is_null( $img_id ) || ( is_string( $img_src ) && trim( $img_src ) != '' ) ){
 				?>
 				<li tabindex="0" <?= is_null( $img_id ) ? 'data-source' : 'data-image-id="' . $img_id . '"' ?> class="attachment" style="width: <?= $this->get_col_width() ?>;">
-					<input type="hidden" value="<?= $img_id ?>" <?= is_null( $img_id ) ? 'data-' : '' ?>name="<?= $this->name() ?>[]" />
+					<input type="hidden" value="<?= $img_id ?>" <?= is_null( $img_id ) ? 'data-' : '' ?>name="<?= $this->field->backend()->label() ?>[]"/>
 					<div class="attachment-preview type-image subtype-png landscape">
 						<div class="thumbnail">
 							<div data-click-remove=""><i class="dashicons dashicons-dismiss"></i></div>
@@ -70,18 +74,18 @@
 		}
 
 
-		public function html(){
-			if( !hiweb()->context()->is_backend_page() ){
-				hiweb()->console()->error( __( 'Input [IMAGES] can not be displayed, it only works in the back end' ) );
+		public function get_input(){
+			if( !\hiweb\context::is_backend_page() ){
+				\hiweb\console::debug_error( __( 'Input [IMAGES] can not be displayed, it only works in the back end' ) );
 				return '';
 			}
 			wp_enqueue_media();
-			hiweb()->js( hiweb()->url_js . '/input_images.js', array( 'jquery-ui-sortable' ) );
-			hiweb()->css( hiweb()->url_css . '/input_images.css' );
+			\hiweb\js( HIWEB_DIR_JS . '/input_images.js', [ 'jquery-ui-sortable' ] );
+			\hiweb\css( HIWEB_DIR_CSS . '/input_images.css' );
 			////
 			ob_start();
 			?>
-			<div class="postbox hw-input-images" <?= $this->tags_html() ?>>
+			<div class="postbox hw-input-images" <?= $this->get_tags_html() ?>>
 
 				<div data-ctrl>
 					<button><i class="dashicons dashicons-update" data-click-reverse></i></button>
@@ -100,10 +104,8 @@
 					<?php $this->html_row() ?>
 					<div class="items">
 						<?php
-							if( $this->have_rows() ){
-								foreach( $this->value() as $item ){
-									$this->html_row( $item );
-								}
+							foreach( $this->value() as $item ){
+								$this->html_row( $item );
 							}
 						?>
 					</div>
