@@ -18,6 +18,10 @@
 
 	class checkbox extends type{
 
+		public function sanitize(){
+			
+		}
+
 		/**
 		 * @return string
 		 */
@@ -27,12 +31,7 @@
 		}
 
 
-		public function get_value(){
-			return $this->value != '';
-		}
-
-
-		public function html(){
+		public function get_input(){
 			if( !context::is_backend_page() ){
 				console::debug_error( __( 'Can not display INPUT [' . $this->type . '], it works only in the back-End' ) );
 				return '';
@@ -40,11 +39,13 @@
 			wp_enqueue_media();
 			\hiweb\css( HIWEB_DIR_CSS . '/input-checkbox.css' );
 			ob_start();
-			$id = \hiweb\string\rand();
+			$this->tags['type'] =$this->get_sub_type();
+			$this->tags['class'] =$this->get_sub_type();
+			$this->tags['id'] =\hiweb\string\rand();
 			?>
 			<div class="hw-input-checkbox">
-				<input type="<?= $this->get_sub_type() ?>" class="<?= $this->get_sub_type() ?>" id="<?= $this->id() ?>" name="<?= $this->name() ?>" <?= $this->value() ? 'checked="checked"' : '' ?>>
-				<label for="<?= $this->tags['name'] ?>"><?= $this->attributes( 'label' ) ?></label>
+				<input <?=$this->get_tags()?> <?= $this->value() ? 'checked="checked"' : '' ?>>
+				<label for="<?= $this->tags['name'] ?>"><?= $this->field->backend()->label() ?></label>
 			</div>
 			<?php
 			return ob_get_clean();

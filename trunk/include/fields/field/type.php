@@ -47,6 +47,14 @@
 
 
 		/**
+		 * @return mixed
+		 */
+		final public function value(){
+			return $this->sanitize( $this->value );
+		}
+
+
+		/**
 		 * @return string
 		 */
 		protected function get_input(){
