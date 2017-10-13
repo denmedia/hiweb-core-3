@@ -1,18 +1,13 @@
 <?php
 
-	hiweb()->inputs()->register_type( 'image', 'hw_input_image' );
-	hiweb()->fields()->register_content_type( 'image', function( $value, $size = 'thumbnail', $return_image_html = false ){
-		if( !is_numeric( $value ) ) return false;
-		if( $return_image_html ){
-			return wp_get_attachment_image( $value, $size );
-		}
-		$R = wp_get_attachment_image_src( $value, $size );
-		if( !is_array( $R ) || !array_key_exists( 0, $R ) ) return false;
-		return $R[0];
-	} );
+	use hiweb\console;
+	use hiweb\fields\field\type;
 
 
-	class hw_input_image extends hw_input{
+	\hiweb\fields\field\types::register( 'image', 'image' );
+
+
+	class image extends type{
 
 		protected $attributes = [
 			'width' => 250,
@@ -20,6 +15,17 @@
 		];
 
 		private $has_image = [];
+
+
+		public function sanitize( $value, $size = 'thumbnail', $return_image_html = false ){
+			if( !is_numeric( $value ) ) return false;
+			if( $return_image_html ){
+				return wp_get_attachment_image( $value, $size );
+			}
+			$R = wp_get_attachment_image_src( $value, $size );
+			if( !is_array( $R ) || !array_key_exists( 0, $R ) ) return false;
+			return $R[0];
+		}
 
 
 		/**
@@ -51,7 +57,7 @@
 			}
 			$img_url = $this->get_src( $size );
 			if( $img_url === false ) return false;
-			$img_path = hiweb()->path()->url_to_path( $img_url );
+			$img_path = \hiweb\path\url_to_path( $img_url );
 			$this->has_image[ $key ] = file_exists( $img_path );
 			return $this->has_image[ $key ];
 		}
@@ -60,14 +66,14 @@
 		/**
 		 * @return string
 		 */
-		public function html(){
-			if( !hiweb()->context()->is_backend_page() ){
-				hiweb()->console()->error( __( 'Can not display INPUT [IMAGE], it works only in the back-End' ) );
+		public function get_input(){
+			if( !\hiweb\context::is_backend_page() ){
+				console::debug_error( __( 'Can not display INPUT [IMAGE], it works only in the back-End' ) );
 				return '';
 			}
 			wp_enqueue_media();
-			hiweb()->js( HIWEB_DIR_JS . '/input_image.js', [ 'jquery' ] );
-			hiweb()->css( HIWEB_DIR_CSS . '/input_image.css' );
+			\hiweb\js( HIWEB_DIR_JS . '/input_image.js', [ 'jquery' ] );
+			\hiweb\css( HIWEB_DIR_CSS . '/input_image.css' );
 
 			$attr_width = $this->attributes( 'width' );
 			$attr_height = $this->attributes( 'height' );

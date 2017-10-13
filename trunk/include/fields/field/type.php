@@ -3,6 +3,7 @@
 	namespace hiweb\fields\field;
 
 
+	use hiweb\console;
 	use hiweb\fields\field;
 
 
@@ -12,6 +13,7 @@
 		public $type = 'text';
 		public $tags = [];
 		public $value;
+		public $attributes = [];
 
 
 		/**
@@ -22,6 +24,28 @@
 		public function __construct( field $field, $type = 'text' ){
 			$this->type = $type;
 			$this->field = $field;
+		}
+
+
+		/**
+		 * @param string $key
+		 * @param null   $value
+		 * @return $this|mixed|null
+		 */
+		public function attributes( $key = '', $value = null ){
+			if( !is_array( $this->attributes ) ){
+				console::debug_error( 'Свойство attributes не являеться массивом', $this->attributes );
+			}
+			if( is_null( $value ) ){
+				if( !is_array( $this->attributes ) ){
+					return null;
+				} else {
+					return array_key_exists( $key, $this->attributes ) ? $this->attributes[ $key ] : null;
+				}
+			} else {
+				$this->attributes[ $key ] = $value;
+				return $this;
+			}
 		}
 
 

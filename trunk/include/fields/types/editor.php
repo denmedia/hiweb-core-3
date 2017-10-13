@@ -23,7 +23,7 @@
 		}
 
 
-		protected function editor_html_filter( $html ){
+		public function editor_html_filter( $html ){
 			ob_start();
 			?>
 			<div id="wp-<?= $this->field->id() ?>-editor-container" class="wp-editor-container">
