@@ -35,7 +35,5 @@
 
 	$contextObjectOther = get_post( 405 );
 	$contextObject = get_post( 407 );
-	$field = add_field_text( 'test2' )->admin_label( 'Проверка поля' )->admin_description( 'Данное поле ялвяеться проверочным для использования в админ-панеле' );
-	$field->location()->post_types()->ID( 407 )->position( 0 );
-
-	add_field_text( 'test' )->admin_label( 'Вторая проверка' )->admin_description( 'Второе поле для проверка и прочее' )->location()->post_types( 'page' );
+	$field = add_field_text( 'test2' )->admin_label( 'Проверка поля' )->admin_description( 'Данное поле ялвяеться проверочным для использования в админ-панеле' )->value_default('123123')->extend_function();
+	//$field->location()->post_types()->ID( 407 )->position( 0 );

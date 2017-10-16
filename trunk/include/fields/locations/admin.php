@@ -6,6 +6,7 @@
 	use hiweb\console;
 	use hiweb\dump;
 	use hiweb\fields\field;
+	use function hiweb\fields\functions\get_newLocation_from_contextObject;
 	use hiweb\fields\locations;
 
 
@@ -81,9 +82,11 @@
 			//todo
 		}
 
-//TODO!!!
+
 		static function save_post( $post_id, $post, $update ){
-			$fields = locations::get_fields_by_contextObject( $post );
+			$location = get_newLocation_from_contextObject( $post );
+			unset( $location->post_types()->options['position'] );
+			$fields = locations::get_fields_by_contextLocation( $location );
 			foreach( $fields as $field_id => $field ){
 				update_post_meta( $post_id, $field->id(), \hiweb\path\request( $field->admin_input_name() ) );
 				dump::to_file( [ $post_id, $field->id(), $field->admin_input_name(), \hiweb\path\request( $field->admin_input_name() ) ] );

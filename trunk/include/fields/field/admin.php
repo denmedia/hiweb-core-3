@@ -42,7 +42,7 @@
 
 
 		public function admin_get_input( $value = null ){
-			$R = '<input name="' . $this->admin_input_name() . '" value="' . htmlentities( $this->value_sanitize( $value ), ENT_QUOTES, 'UTF-8' ) . '">';
+			$R = '<input placeholder="' . htmlentities( $this->value_default(), ENT_QUOTES, 'UTF-8' ) . '" name="' . $this->admin_input_name() . '" value="' . htmlentities( $this->value_sanitize( $value ), ENT_QUOTES, 'UTF-8' ) . '">';
 			return $R;
 		}
 
@@ -56,7 +56,7 @@
 
 		/**
 		 * @param null|string $label
-		 * @return field|string
+		 * @return $this|string
 		 */
 		public function admin_label( $label = null ){
 			if( !is_null( $label ) ){
@@ -70,7 +70,7 @@
 
 		/**
 		 * @param null|string $description
-		 * @return field|string
+		 * @return $this|string
 		 */
 		public function admin_description( $description = null ){
 			if( !is_null( $description ) ){
@@ -84,7 +84,7 @@
 
 		/**
 		 * @param null $template
-		 * @return field|string
+		 * @return $this|string
 		 */
 		public function admin_template( $template = null ){
 			if( !is_null( $template ) ){
