@@ -33,8 +33,9 @@
 		//		add_action( 'admin_notices', 'hw_core_php_version_error' );
 	}
 
-	//require 'include/home.php';
+	$contextObjectOther = get_post( 405 );
+	$contextObject = get_post( 407 );
+	$field = add_field_text( 'test2' )->admin_label( 'Проверка поля' )->admin_description( 'Данное поле ялвяеться проверочным для использования в админ-панеле' );
+	$field->location()->post_types()->ID( 407 )->position( 0 );
 
-	$field = hiweb\fields::register_field( 'test' );
-	$field->location()->post_types( [ 'page', 'post' ] )->front_page( true )->columns_manager()->name( 'Проверка имени' );
-	$field->backend()->label( 'Тест и проверка поля' )->description( 'Продолжение проверки поля' )->template( 'test' );
+	add_field_text( 'test' )->admin_label( 'Вторая проверка' )->admin_description( 'Второе поле для проверка и прочее' )->location()->post_types( 'page' );

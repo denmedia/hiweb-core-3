@@ -26,14 +26,12 @@
 
 
 		/**
-		 * @param        $fieldId
-		 * @param string $type
+		 * @param field $field
 		 * @return field
 		 */
-		static function register_field( $fieldId, $type = 'text' ){
-			$field = new field( $fieldId, $type );
+		static function register_field( field $field ){
 			self::$fields[ $field->global_id() ] = $field;
-			self::$fieldId_globalId[ $fieldId ][] = $field;
+			self::$fieldId_globalId[ $field->id() ][] = $field;
 			self::$globalId_fieldId[ $field->global_id() ][] = $field;
 			return $field;
 		}
@@ -45,18 +43,6 @@
 		 */
 		static function is_field( $haystack ){
 			return ( $haystack instanceof field ) || ( $haystack instanceof separator );
-		}
-
-
-		/**
-		 * @param        $label
-		 * @param string $description
-		 * @return separator
-		 */
-		static function register_separator( $label, $description = '' ){
-			$field_separator = new separator( $label, $description );
-			self::$fields[ $field_separator->global_id() ] = $field_separator;
-			return $field_separator;
 		}
 
 

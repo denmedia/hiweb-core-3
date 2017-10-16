@@ -587,23 +587,28 @@
 	 * @return array
 	 */
 	function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
-		$subFiles = files::get( $path )->get_sub_files( $fileExtension );
+		$dir = files::get( $path );
 		$R = [];
-		foreach( $subFiles as $file ){
-			if( !$file->is_readable ) continue;
-			switch( $file->extension ){
-				case 'php':
-					include_once $file->path;
-					$R[ $file->path ] = $file;
-					break;
-				case 'css':
-					\hiweb\css( $file->url );
-					$R[ $file->path ] = $file;
-					break;
-				case 'js':
-					\hiweb\js( $file->url );
-					$R[ $file->path ] = $file;
-					break;
+		if( !$dir->is_readable || !$dir->is_dir ){
+			console::debug_error( 'Ошибка подключения целой папки', $dir );
+		} else {
+			$subFiles = files::get( $path )->get_sub_files( $fileExtension );
+			foreach( $subFiles as $file ){
+				if( !$file->is_readable ) continue;
+				switch( $file->extension ){
+					case 'php':
+						include_once $file->path;
+						$R[ $file->path ] = $file;
+						break;
+					case 'css':
+						\hiweb\css( $file->url );
+						$R[ $file->path ] = $file;
+						break;
+					case 'js':
+						\hiweb\js( $file->url );
+						$R[ $file->path ] = $file;
+						break;
+				}
 			}
 		}
 		return $R;

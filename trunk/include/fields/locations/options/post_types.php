@@ -6,7 +6,7 @@
 	use hiweb\fields\locations\location;
 
 
-	class post_type extends options{
+	class post_types extends options{
 
 		private $columns_manager;
 

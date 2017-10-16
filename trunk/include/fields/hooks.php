@@ -2,22 +2,22 @@
 
 	//BACKEND HOOKS
 	//Post Type
-	add_action( 'edit_form_top', 'hiweb\\fields\\locations\\backend::edit_form_top' );
-	add_action( 'edit_form_before_permalink', 'hiweb\\fields\\locations\\backend::edit_form_before_permalink' );
-	add_action( 'edit_form_after_title', 'hiweb\\fields\\locations\\backend::edit_form_after_title' );
-	add_action( 'edit_form_after_editor', 'hiweb\\fields\\locations\\backend::edit_form_after_editor' );
-	add_action( 'submitpost_box', 'hiweb\\fields\\locations\\backend::submitpost_box' );
-	add_action( 'submitpage_box', 'hiweb\\fields\\locations\\backend::submitpost_box' );
-	add_action( 'edit_form_advanced', 'hiweb\\fields\\locations\\backend::edit_form_advanced' );
-	add_action( 'edit_page_form', 'hiweb\\fields\\locations\\backend::edit_form_advanced' );
-	add_action( 'dbx_post_sidebar', 'hiweb\\fields\\locations\\backend::dbx_post_sidebar' );
+	add_action( 'edit_form_top', 'hiweb\\fields\\locations\\admin::edit_form_top' );
+	add_action( 'edit_form_before_permalink', 'hiweb\\fields\\locations\\admin::edit_form_before_permalink' );
+	add_action( 'edit_form_after_title', 'hiweb\\fields\\locations\\admin::edit_form_after_title' );
+	add_action( 'edit_form_after_editor', 'hiweb\\fields\\locations\\admin::edit_form_after_editor' );
+	add_action( 'submitpost_box', 'hiweb\\fields\\locations\\admin::submitpost_box' );
+	add_action( 'submitpage_box', 'hiweb\\fields\\locations\\admin::submitpost_box' );
+	add_action( 'edit_form_advanced', 'hiweb\\fields\\locations\\admin::edit_form_advanced' );
+	add_action( 'edit_page_form', 'hiweb\\fields\\locations\\admin::edit_form_advanced' );
+	add_action( 'dbx_post_sidebar', 'hiweb\\fields\\locations\\admin::dbx_post_sidebar' );
 	///Posts List Columns
-	//add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
-	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\backend::manage_posts_custom_column', 10, 2 );
-	//add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 1 );
-	//add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\backend::manage_posts_columns', 10, 2 );
+	//add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
+	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
+	//add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 1 );
+	//add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 2 );
 	//	///Post Save
-	add_action( 'save_post', 'hiweb\\fields\\locations\\backend::save_post', 10, 3 );
+	add_action( 'save_post', 'hiweb\\fields\\locations\\admin::save_post', 10, 3 );
 	//	////////
 	//	///TAXONOMIES BACKEND
 	//	add_action( 'init', function(){

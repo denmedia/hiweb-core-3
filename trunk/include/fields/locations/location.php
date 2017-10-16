@@ -3,10 +3,10 @@
 	namespace hiweb\fields\locations;
 
 
+	use hiweb\console;
 	use hiweb\fields;
 	use hiweb\fields\field;
-	use hiweb\fields\separator;
-	use hiweb\fields\locations\options\post_type;
+	use hiweb\fields\locations\options\post_types;
 
 
 	class location{
@@ -14,8 +14,18 @@
 		/** @var options\options[] */
 		public $options = [];
 		public $rulesId = '';
-		/** @var field[]|separator[] */
-		private $fields = [];
+		/** @var field */
+		private $field;
+
+
+		public function __construct( $field = null ){
+			if( $field instanceof field ) $this->field = $field;
+		}
+
+
+		public function id(){
+			return \hiweb\fields\functions\get_contextId_from_options( $this->options );
+		}
 
 
 		/**
@@ -27,31 +37,10 @@
 
 
 		/**
-		 * @param $fieldOrFields
-		 * @return array|bool
+		 * @return field|null
 		 */
-		public function add_field( $fieldOrFields ){
-			if( is_array( $fieldOrFields ) ){
-				$R = [];
-				foreach( $fieldOrFields as $index => $field ){
-					$R[ $index ] = $this->add_field( $field );
-				}
-				return $R;
-			} elseif( fields::is_field( $fieldOrFields ) ) {
-				/** @var field|separator $fieldOrFields */
-				$this->fields[ $fieldOrFields->id() ] = $fieldOrFields;
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-
-		/**
-		 * @return field[]|separator[]
-		 */
-		public function get_fields(){
-			return $this->fields;
+		public function get_field(){
+			return $this->field;
 		}
 
 
@@ -89,13 +78,53 @@
 
 
 		/**
+		 * @param array $optionsByType
+		 * @return options\options[]
+		 */
+		public function set_options( array $optionsByType ){
+			foreach( $optionsByType as $option_type => $sub_options ){
+				if( !is_array( $sub_options ) ){
+					console::debug_warn( 'Попытка установки опций не массивом', $sub_options );
+					continue;
+				}
+				$options = false;
+				switch( $option_type ){
+					case 'post_types':
+						$options = $this->post_types();
+						break;
+					case 'taxonomies':
+						//$options = $this->taxonomies();
+						break;
+					case 'users':
+						//$options = $this->users();
+						break;
+					case 'admin_menus':
+						//$options = $this->admin_menus();
+						break;
+					default:
+						console::debug_warn( 'Попытка установки неуществующего типа опций для локации', $option_type );
+						break;
+				}
+				if( $options !== false ){
+					foreach( $sub_options as $key => $value ){
+						if( method_exists( $options, $key ) ){
+							$options->{$key}( $value );
+						}
+					}
+				}
+			}
+			return $this->options;
+		}
+
+
+		/**
 		 * Set post type options
 		 * @param $post_type
-		 * @return post_type
+		 * @return post_types
 		 */
 		public function post_types( $post_type = null ){
-			if( !isset( $this->options['post_types'] ) ) $this->options['post_types'] = new post_type( $this );
-			/** @var post_type $post_types */
+			if( !isset( $this->options['post_types'] ) ) $this->options['post_types'] = new post_types( $this );
+			/** @var post_types $post_types */
 			$post_types = $this->options['post_types'];
 			$post_types->post_type( $post_type );
 			return $post_types;
@@ -117,7 +146,7 @@
 
 		/**
 		 * @param null|string|array $post_type - массив и название типа поста, напрмиер 'page'
-		 * @return post_type
+		 * @return post_types
 		 */
 		//		public function post_type( $post_type = null ){
 		//			$this->rules['post_type'] = [];
