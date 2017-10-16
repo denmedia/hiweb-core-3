@@ -36,5 +36,5 @@
 	//require 'include/home.php';
 
 	$field = hiweb\fields::register_field( 'test' );
-	$field->location()->post_types( [ 'page', 'post' ] )->front_page(true)->columns_manager()->name( 'Проверка имени' );
+	$field->location()->post_types( [ 'page', 'post' ] )->front_page( true )->columns_manager()->name( 'Проверка имени' );
 	$field->backend()->label( 'Тест и проверка поля' )->description( 'Продолжение проверки поля' )->template( 'test' );
