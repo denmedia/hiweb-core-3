@@ -1,22 +1,24 @@
 <?php
 
-	hiweb()->inputs()->register_type( 'repeat', 'hw_input_repeat' );
+	use hiweb\fields\field\type;
 
 
-	class hw_input_repeat extends hw_input{
+	\hiweb\fields\field\types::register( 'repeat', __NAMESPACE__ . '\\repeat' );
+
+
+	class repeat extends type{
 
 
 		public function _init(){
 			parent::_init();
-			$this->dimension = 2;
 		}
 
 
-		public function get_value(){
-			if( !is_array( $this->value ) ){
-				return array();
+		public function sanitize( $value ){
+			if( !is_array( $value ) ){
+				return [];
 			} else {
-				return array_slice( $this->value, 1 );
+				return $value;
 			}
 		}
 
@@ -36,7 +38,7 @@
 						$width = ( $col->width() / $width_full * 100 ) . '%';
 						?>
 						<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>">
-							<?= $col->name() . ( $col->description() != '' ? '<p class="description">'.$col->description().'</p>' : '' ) ?>
+							<?= $col->name() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>
 						</th>
 						<?php
 					}
@@ -74,26 +76,27 @@
 			<?php
 		}
 
-		public function ajax_html_row($input_name){
+
+		public function ajax_html_row( $input_name ){
 			ob_start();
-			$this->name( $input_name );
-			$this->the_row_html(0);
+			$this->field->backend()->label( $input_name );
+			$this->the_row_html( 0 );
 			return ob_get_clean();
 		}
 
 
-		public function html( $arguments = null ){
-			if( !hiweb()->context()->is_backend_page() ){
-				hiweb()->console()->error( __( 'Can not display INPUT [IMAGE], it works only in the back-End' ) );
+		public function get_input( $arguments = null ){
+			if( !\hiweb\context::is_backend_page() ){
+				\hiweb\console::debug_error( __( 'Can not display INPUT [IMAGE], it works only in the back-End' ) );
 				return '';
 			}
-			hiweb()->css( hiweb()->url_css . '/input_repeat.css' );
-			hiweb()->js( hiweb()->url_js . '/input_repeat.js', array( 'jquery-ui-sortable' ) );
+			\hiweb\css( HIWEB_DIR_CSS . '/input-repeat.css' );
+			\hiweb\js( HIWEB_DIR_JS . '/input_repeat.js', [ 'jquery-ui-sortable' ] );
 			///
 			ob_start();
-			$this->tag_add('data-input-name', $this->name());
+			$this->tags['data-input-name'] = $this->field->backend()->label();
 			?>
-			<div class="hw-input-repeat" <?= $this->tags_html() ?>>
+			<div class="hw-input-repeat" <?= $this->get_tags_html() ?>>
 				<?php if( !$this->have_cols() ){
 					?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col(\'col-id\')</code>' ), $this->id() ) ?></p><?php
 				} else {

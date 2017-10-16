@@ -24,6 +24,11 @@
 		public function __construct( field $field, $type = 'text' ){
 			$this->type = $type;
 			$this->field = $field;
+			$this->_init();
+		}
+
+		public function _init(){
+			///
 		}
 
 
