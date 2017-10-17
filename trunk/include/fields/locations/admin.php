@@ -6,6 +6,7 @@
 	use hiweb\console;
 	use hiweb\dump;
 	use hiweb\fields\field;
+	use function hiweb\fields\functions\get_locationOptions_from_contextObject;
 	use function hiweb\fields\functions\get_newLocation_from_contextObject;
 	use hiweb\fields\locations;
 
@@ -89,7 +90,31 @@
 			$fields = locations::get_fields_by_contextLocation( $location );
 			foreach( $fields as $field_id => $field ){
 				update_post_meta( $post_id, $field->id(), \hiweb\path\request( $field->admin_input_name() ) );
-				dump::to_file( [ $post_id, $field->id(), $field->admin_input_name(), \hiweb\path\request( $field->admin_input_name() ) ] );
+			}
+		}
+
+
+		static function taxonomy_add_form_fields( $taxonomy ){
+			$context_location = new location();
+			$context_location->taxonomies( $taxonomy );
+			$fields = locations::get_fields_by_contextLocation( $context_location );
+			\hiweb\fields\functions\the_form_fields($fields);
+		}
+
+		static function taxonomy_edit_form($term, $taxonomy){
+			$context_location = \hiweb\fields\functions\get_newLocation_from_contextObject($term);
+			$fields = locations::get_fields_by_contextLocation(  $context_location );
+			\hiweb\fields\functions\the_form_fields($fields);
+		}
+
+		static function taxonomy_edited_term($term_id, $tt_id, $taxonomy){
+			$term = get_term_by('id', $term_id);
+			if($term instanceof \WP_Term){
+				$location = get_newLocation_from_contextObject( $term );
+				$fields = locations::get_fields_by_contextLocation( $location );
+				foreach( $fields as $field_id => $field ){
+					update_term_meta( $term_id, $field->id(), \hiweb\path\request( $field->admin_input_name() ) );
+				}
 			}
 		}
 

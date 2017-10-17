@@ -19,18 +19,18 @@
 	//	///Post Save
 	add_action( 'save_post', 'hiweb\\fields\\locations\\admin::save_post', 10, 3 );
 	//	////////
-	//	///TAXONOMIES BACKEND
-	//	add_action( 'init', function(){
-	//		if( function_exists( 'get_taxonomies' ) && is_array( get_taxonomies() ) ) foreach( get_taxonomies() as $taxonomy_name ){
-	//			//add
-	//			add_action( $taxonomy_name . '_add_form_fields', [ $this, 'taxonomy_add_form_fields' ] );
-	//			//edit
-	//			add_action( $taxonomy_name . '_edit_form', [ $this, 'taxonomy_edit_form' ], 10, 2 );
-	//		}
-	//	}, 100 );
-	//	///TAXONOMY SAVE
-	//	add_action( 'create_term', [ $this, 'edited_term' ], 10, 3 );
-	//	add_action( 'edited_term', [ $this, 'edited_term' ], 10, 3 );
+	///TAXONOMIES BACKEND
+	add_action( 'init', function(){
+		if( function_exists( 'get_taxonomies' ) && is_array( get_taxonomies() ) ) foreach( get_taxonomies() as $taxonomy_name ){
+			//add
+			add_action( $taxonomy_name . '_add_form_fields', 'hiweb\\fields\\locations\\admin::taxonomy_add_form_fields' );
+			//edit
+			add_action( $taxonomy_name . '_edit_form', 'hiweb\\fields\\locations\\admin::taxonomy_edit_form', 10, 2 );
+		}
+	}, 100 );
+	///TAXONOMY SAVE
+	add_action( 'create_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
+	add_action( 'edited_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
 	//	///OPTIONS FIELDS
 	//	add_action( 'admin_init', [ $this, 'options_page_add_fields' ], 999999 );
 	//	///ADMIN MENU FIELDS

@@ -94,7 +94,7 @@
 						$options = $this->post_types();
 						break;
 					case 'taxonomies':
-						//$options = $this->taxonomies();
+						$options = $this->taxonomies();
 						break;
 					case 'users':
 						//$options = $this->users();
