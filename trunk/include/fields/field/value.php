@@ -18,7 +18,7 @@
 
 
 		/**
-		 * @param null|string|array $value
+		 * @param null|mixed $value
 		 * @return string|$this
 		 */
 		public function value_default( $value = null ){

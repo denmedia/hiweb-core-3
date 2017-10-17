@@ -33,11 +33,10 @@
 		//		add_action( 'admin_notices', 'hw_core_php_version_error' );
 	}
 
-	$contextObjectOther = get_post( 405 );
-	$contextObject = get_post( 407 );
-	$field = add_field_text( 'test2' )->admin_label( 'Проверка поля' )->admin_description( 'Данное поле ялвяеться проверочным для использования в админ-панеле' )->value_default( '123123' );
-	$field->location()->post_types()->ID( 407 )->position( 0 );
 
-	add_action( 'wp', function(){
-		\hiweb\dump(hiweb\fields::get( 'test2' )->value_context()->value());
-	} );
+	//TODO-
+	$field = add_field_text( 'test2' );
+	$field->admin_label( 'Проверка поля' )->admin_description( 'Данное поле ялвяеться проверочным для использования в админ-панеле' );
+	$field->location()->taxonomies('post_tag');
+
+	hiweb\console( hiweb\fields\locations::$locations );

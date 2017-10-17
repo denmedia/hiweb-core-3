@@ -7,6 +7,7 @@
 	use hiweb\fields;
 	use hiweb\fields\field;
 	use hiweb\fields\locations\options\post_types;
+	use hiweb\fields\locations\options\taxonomies;
 
 
 	class location{
@@ -128,6 +129,19 @@
 			$post_types = $this->options['post_types'];
 			$post_types->post_type( $post_type );
 			return $post_types;
+		}
+
+
+		/**
+		 * @param null $taxonomy
+		 * @return taxonomies
+		 */
+		public function taxonomies( $taxonomy = null ){
+			if( !isset( $this->options['taxonomies'] ) ) $this->options['taxonomies'] = new taxonomies( $this );
+			/** @var taxonomies $taxonomies */
+			$taxonomies = $this->options['taxonomies'];
+			$taxonomies->taxonomy( $taxonomy );
+			return $taxonomies;
 		}
 
 
