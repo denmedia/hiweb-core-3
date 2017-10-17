@@ -63,7 +63,7 @@
 		static function get( $field_id ){
 			if( !isset( self::$fieldId_globalId[ $field_id ] ) ){
 				console::warn( sprintf( __( 'Field id:[%s] not found to display value by context', 'hw-core-2' ), $field_id ) );
-				return self::register_field( $field_id );
+				return new field( $field_id );
 			}
 			return end( self::$fieldId_globalId[ $field_id ] );
 		}

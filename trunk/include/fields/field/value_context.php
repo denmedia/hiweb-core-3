@@ -9,8 +9,10 @@
 	class value_context{
 
 		private $field;
+		/** @var null|\WP_Term|\WP_User|string */
 		private $contextObject;
-		private $contextOptions;
+		/** @var array */
+		private $contextOptions = [];
 
 
 		public function __construct( field $field, $contextObject = null ){
@@ -38,6 +40,30 @@
 				$value = get_option( \hiweb\fields\functions\get_options_field_id( $this->contextOptions['admin_menus']['slug'], $this->field->id() ), $this->field->value_default() );
 			}
 			return $this->field->value_sanitize( $value );
+		}
+
+
+		/**
+		 * @return field
+		 */
+		public function get_field(){
+			return $this->field;
+		}
+
+
+		/**
+		 * @return null|string|\WP_Term|\WP_User
+		 */
+		public function get_contextObject(){
+			return $this->contextObject;
+		}
+
+
+		/**
+		 * @return array
+		 */
+		public function get_contextOptions(){
+			return $this->contextOptions;
 		}
 
 
