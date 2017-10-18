@@ -71,11 +71,6 @@
 		}
 
 
-		public function is_row(){
-			//todo
-		}
-
-
 		/**
 		 * Return TRUE, if rows is exists
 		 * @return bool
@@ -85,6 +80,9 @@
 		}
 
 
+		/**
+		 * @return mixed
+		 */
 		public function the_row(){
 			$this->current_row = array_shift( $this->rows );
 			$this->current_row_index ++;
@@ -92,28 +90,46 @@
 		}
 
 
+		/**
+		 * @return mixed
+		 */
 		public function get_row(){
-			//todo
+			return $this->current_row;
 		}
 
 
+		/**
+		 * @return int
+		 */
 		public function get_row_index(){
 			return $this->current_row_index;
 		}
 
 
+		/**
+		 * @return mixed
+		 */
 		public function reset_row(){
-			//todo
+			return reset( $this->rows );
 		}
 
 
+		/**
+		 * @param $subFieldId
+		 * @return mixed
+		 */
 		public function get_sub_field( $subFieldId ){
-
+			$std = (object)$this->current_row;
+			return $std->{$subFieldId};
 		}
 
 
+		/**
+		 * @param $subFieldId
+		 * @return bool
+		 */
 		public function has_sub_field( $subFieldId ){
-
+			return is_array( $this->current_row ) && array_key_exists( $subFieldId, $this->current_row );
 		}
 
 
