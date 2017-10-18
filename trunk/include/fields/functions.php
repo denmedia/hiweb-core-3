@@ -1,8 +1,32 @@
 <?php
 
+	namespace {
 
 
+		use hiweb\fields;
 
+
+		if( !function_exists( 'get_field' ) ){
+			/**
+			 * @param string                                      $fieldId
+			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
+			 * @return mixed
+			 */
+			function get_field( $fieldId, $contextObject = null ){
+				return fields::get( $fieldId )->value_context( $contextObject )->value();
+			}
+		}
+
+		if( !function_exists( 'the_field' ) ){
+			/**
+			 * @param string                                      $fieldId
+			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
+			 */
+			function the_field( $fieldId, $contextObject = null ){
+				echo fields::get( $fieldId )->value_context( $contextObject )->value();
+			}
+		}
+	}
 
 	namespace hiweb\fields\functions {
 
@@ -157,7 +181,8 @@
 		}
 
 		/**
-		 * @param array $fields
+		 * @param array                                   $fields
+		 * @param null|\WP_Post|\WP_Term|\WP_User|\string $contextObjects
 		 */
 		function the_form_fields( array $fields, $contextObjects = null ){
 			$fields_by_template = [];
@@ -180,7 +205,9 @@
 				foreach( $fields_by_template as $index => $fields ){
 					$template_name = $templates_by_index[ $index ];
 					ob_start();
-					include __DIR__ . '/field/templates/' . $template_name . '-form.php';
+					$template_path = __DIR__ . '/templates/' . $template_name . '-form.php';
+					if( !\hiweb\file( $template_path )->is_readable ) $template_path = __DIR__ . '/templates/default-form.php';
+					include $template_path;
 					$form_html = ob_get_clean();
 					$fields_html = [];
 					/**

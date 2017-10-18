@@ -6,7 +6,6 @@
 	use hiweb\console;
 	use hiweb\dump;
 	use hiweb\fields\field;
-	use function hiweb\fields\functions\get_locationOptions_from_contextObject;
 	use function hiweb\fields\functions\get_newLocation_from_contextObject;
 	use hiweb\fields\locations;
 
@@ -25,7 +24,7 @@
 			} else {
 				$context_location = \hiweb\fields\functions\get_newLocation_from_contextObject( $post );
 				if( !is_null( $position ) ) $context_location->post_types()->position( $position );
-				$locations = locations::get_locations_by_context( $context_location );
+				$locations = locations::get_locations_by_contextLocation( $context_location );
 				$R = [];
 				foreach( $locations as $location_id => $location ){
 					if( $location->get_field() instanceof field ){
@@ -48,7 +47,11 @@
 
 
 		static function edit_form_after_title( $post ){
-			\hiweb\fields\functions\the_form_fields( self::get_post_type_context_fields( $post, 2 ), $post );
+			$fields = self::get_post_type_context_fields( $post, 2 );
+			foreach( $fields as $field ){
+				if( $field->admin_template() == 'default' ) $field->admin_template( 'post-box' );
+			}
+			\hiweb\fields\functions\the_form_fields( $fields, $post );
 		}
 
 
@@ -98,20 +101,29 @@
 			$context_location = new location();
 			$context_location->taxonomies( $taxonomy );
 			$fields = locations::get_fields_by_contextLocation( $context_location );
-			\hiweb\fields\functions\the_form_fields($fields);
+			foreach( $fields as $field ){
+				if( trim( $field->admin_template() ) == 'default' ) $field->admin_template( 'term-add' );
+			}
+			\hiweb\fields\functions\the_form_fields( $fields );
 		}
 
-		static function taxonomy_edit_form($term, $taxonomy){
-			$context_location = \hiweb\fields\functions\get_newLocation_from_contextObject($term);
-			$fields = locations::get_fields_by_contextLocation(  $context_location );
-			\hiweb\fields\functions\the_form_fields($fields);
+
+		static function taxonomy_edit_form( $term, $taxonomy ){
+			$context_location = \hiweb\fields\functions\get_newLocation_from_contextObject( $term );
+			$fields = locations::get_fields_by_contextLocation( $context_location );
+			foreach( $fields as $field ){
+				if( trim( $field->admin_template() ) == 'default' ) $field->admin_template( 'term-edit' );
+			}
+			\hiweb\fields\functions\the_form_fields( $fields );
 		}
 
-		static function taxonomy_edited_term($term_id, $tt_id, $taxonomy){
-			$term = get_term_by('id', $term_id);
-			if($term instanceof \WP_Term){
+
+		static function taxonomy_edited_term( $term_id, $tt_id, $taxonomy ){
+			$term = get_term_by( 'id', $term_id );
+			if( $term instanceof \WP_Term ){
 				$location = get_newLocation_from_contextObject( $term );
 				$fields = locations::get_fields_by_contextLocation( $location );
+				dump::to_file( $fields ); //todo-
 				foreach( $fields as $field_id => $field ){
 					update_term_meta( $term_id, $field->id(), \hiweb\path\request( $field->admin_input_name() ) );
 				}

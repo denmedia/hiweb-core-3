@@ -38,15 +38,6 @@
 
 
 		/**
-		 * @param $haystack
-		 * @return bool
-		 */
-		static function is_field( $haystack ){
-			return ( $haystack instanceof field ) || ( $haystack instanceof separator );
-		}
-
-
-		/**
 		 * Return TRUE, if field exists
 		 * @param $fieldOrGlobalId
 		 * @return bool

@@ -42,7 +42,7 @@
 
 
 		public function admin_get_input( $value = null ){
-			$R = '<input placeholder="' . htmlentities( $this->value_default(), ENT_QUOTES, 'UTF-8' ) . '" name="' . $this->admin_input_name() . '" value="' . htmlentities( $this->value_sanitize( $value ), ENT_QUOTES, 'UTF-8' ) . '">';
+			$R = '<input type="text" placeholder="' . htmlentities( $this->value_default(), ENT_QUOTES, 'UTF-8' ) . '" id="' . $this->admin_input_name() . '" name="' . $this->admin_input_name() . '" value="' . htmlentities( $this->value_sanitize( $value ), ENT_QUOTES, 'UTF-8' ) . '">';
 			return $R;
 		}
 
@@ -107,10 +107,10 @@
 		 */
 		public function admin_get_field( $value = null ){
 			$R = '';
-			$template_path = __DIR__ . '/templates/' . $this->template . '.php';
+			$template_path = dirname( __DIR__ ) . '/templates/' . $this->template . '.php';
 			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
 				console::debug_warn( 'Не удалось найти шаблон для поля', $this->template );
-				$template_path = __DIR__ . '/templates/default.php';
+				$template_path = dirname( __DIR__ ) . '/templates/default.php';
 			}
 			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
 				console::debug_error( 'Не удалось найти шаблон для поля DEFAULT', $this->template );

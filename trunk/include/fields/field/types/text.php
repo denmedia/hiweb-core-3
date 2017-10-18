@@ -24,13 +24,7 @@
 
 		class text extends field{
 
-			/**
-			 * @param string $test
-			 * @return string
-			 */
-			public function extend_function($test = 'My TEST'){
-				return 'TEST';
-			}
+
 
 		}
 	}

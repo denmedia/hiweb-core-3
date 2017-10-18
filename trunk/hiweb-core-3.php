@@ -32,3 +32,17 @@
 		//
 		//		add_action( 'admin_notices', 'hw_core_php_version_error' );
 	}
+
+	//TODO-
+	$field = add_field_text( 'test' );
+	$field->admin_label( 'Проверка поля в таксономии и даже длинного названия' )->admin_description( 'Првоерка дополниетльного текста для поля ввода' );
+	$field->location()->post_types( 'page' )->position( 2 );
+
+	$field = add_field_text( 'test2' );
+	$field->admin_label( 'Проверка второго поля' );
+	$field->location()->post_types( 'page' )->position( 2 );
+
+
+	add_action( 'wp', function(){
+		hiweb\dump( get_field('test2') );
+	} );
