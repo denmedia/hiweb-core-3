@@ -9,6 +9,9 @@
 	namespace hiweb\fields\field;
 
 
+	use hiweb\fields\field;
+
+
 	trait value{
 
 		/** @var mixed */
@@ -48,6 +51,7 @@
 			$location_id = \hiweb\fields\functions\get_contextId_from_contextObject( $contextObject );
 			///
 			if( !array_key_exists( $location_id, $this->value_contexts ) ){
+				/** @var field $this */
 				$this->value_contexts[ $location_id ] = new value_context( $this, $contextObject );
 			}
 			return $this->value_contexts[ $location_id ];

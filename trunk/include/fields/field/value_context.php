@@ -14,6 +14,10 @@
 		/** @var array */
 		private $contextOptions = [];
 
+		private $rows = [];
+		private $current_row;
+		private $current_row_index = - 1;
+
 
 		public function __construct( field $field, $contextObject = null ){
 			$this->field = $field;
@@ -64,6 +68,52 @@
 		 */
 		public function get_contextOptions(){
 			return $this->contextOptions;
+		}
+
+
+		public function is_row(){
+			//todo
+		}
+
+
+		/**
+		 * Return TRUE, if rows is exists
+		 * @return bool
+		 */
+		public function have_rows(){
+			return is_array( $this->rows ) && count( $this->rows ) > 0;
+		}
+
+
+		public function the_row(){
+			$this->current_row = array_shift( $this->rows );
+			$this->current_row_index ++;
+			return $this->current_row;
+		}
+
+
+		public function get_row(){
+			//todo
+		}
+
+
+		public function get_row_index(){
+			return $this->current_row_index;
+		}
+
+
+		public function reset_row(){
+			//todo
+		}
+
+
+		public function get_sub_field( $subFieldId ){
+
+		}
+
+
+		public function has_sub_field( $subFieldId ){
+
 		}
 
 
