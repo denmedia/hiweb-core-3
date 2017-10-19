@@ -2,8 +2,12 @@
 
 	namespace {
 
-		function have_rows($fieldId){
-			//ф\ч\\\\\\\\\\\\\\\\\\\\\\\\\\\
+		function have_rows($fieldId, $contextId){
+
+		}
+
+		function the_row(){
+			
 		}
 
 	}

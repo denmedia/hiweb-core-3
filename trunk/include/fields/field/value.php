@@ -16,7 +16,7 @@
 
 		/** @var mixed */
 		private $value;
-		/** @var array|value_context[] */
+		/** @var array|context[] */
 		private $value_contexts = [];
 
 
@@ -45,14 +45,14 @@
 
 		/**
 		 * @param null $contextObject
-		 * @return value_context
+		 * @return context
 		 */
-		public function value_context( $contextObject = null ){
+		public function context( $contextObject = null ){
 			$location_id = \hiweb\fields\functions\get_contextId_from_contextObject( $contextObject );
 			///
 			if( !array_key_exists( $location_id, $this->value_contexts ) ){
 				/** @var field $this */
-				$this->value_contexts[ $location_id ] = new value_context( $this, $contextObject );
+				$this->value_contexts[ $location_id ] = new context( $this, $contextObject );
 			}
 			return $this->value_contexts[ $location_id ];
 		}

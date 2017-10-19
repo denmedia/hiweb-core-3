@@ -26,44 +26,6 @@
 			private $tag_label = 'h2';
 			private $tag_description = 'p';
 
-			private $form_template;
-
-
-			/**
-			 * @return string
-			 */
-			public function global_id(){
-				return $this->global_id;
-			}
-
-
-			/**
-			 * Установить/получить имя поля
-			 * @param null $set
-			 * @return separator|string
-			 */
-			public function label( $set = null ){
-				if( is_null( $set ) ){
-					return $this->label;
-				}
-				$this->label = $set;
-				return $this;
-			}
-
-
-			/**
-			 * Установить/получить пояснение для поля
-			 * @param null $set
-			 * @return separator|string
-			 */
-			public function description( $set = null ){
-				if( is_null( $set ) ){
-					return $this->description;
-				}
-				$this->description = $set;
-				return $this;
-			}
-
 
 			/**
 			 * @param null $set
@@ -92,44 +54,24 @@
 
 
 			/**
-			 * @param null $set
-			 * @return separator|string
-			 */
-			public function form_template( $set = null ){
-				if( is_string( $set ) && trim( $set ) != '' ){
-					$this->form_template = $set;
-					return $this;
-				} else {
-					return $this->form_template;
-				}
-			}
-
-
-			/**
+			 * echo (print) separator html
+			 * @param null  $value
+			 * @param array $attributes
 			 * @return string
 			 */
-			public function html(){
+			public function admin_get_input( $value = null, $attributes = [] ){
 				ob_start();
-				$this->the();
-				return ob_get_clean();
-			}
-
-
-			/**
-			 * echo (print) separator html
-			 * @param null $value
-			 */
-			public function the( $value = null ){
 				?>
 				<div class="hw_field_separator">
-				<<?= $this->tag_label() ?> class="hw-field-separator-title<?= $this->description() != '' ? ' has-description' : ' no-description' ?>"><?= $this->label() ?></<?= $this->tag_label() ?>>
-				<?php if( $this->description() != '' ){
+				<<?= $this->tag_label() ?> class="hw-field-separator-title<?= $this->admin_description() != '' ? ' has-description' : ' no-description' ?>"><?= $this->admin_label() ?></<?= $this->tag_label() ?>>
+				<?php if( $this->admin_description() != '' ){
 					?>
-					<<?= $this->tag_description() ?>  class="hw-field-separator-description"><?= $this->description() ?></<?= $this->tag_description() ?>>
+					<<?= $this->tag_description() ?>  class="hw-field-separator-description"><?= $this->admin_description() ?></<?= $this->tag_description() ?>>
 					<?php
 				} ?>
 				</div>
 				<?php
+				return ob_get_clean();
 			}
 
 		}

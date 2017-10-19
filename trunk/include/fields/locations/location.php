@@ -24,7 +24,7 @@
 		}
 
 
-		public function id(){
+		public function rules_id(){
 			return \hiweb\fields\functions\get_contextId_from_options( $this->options );
 		}
 

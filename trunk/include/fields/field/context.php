@@ -6,7 +6,7 @@
 	use hiweb\fields\field;
 
 
-	class value_context{
+	class context{
 
 		private $field;
 		/** @var null|\WP_Term|\WP_User|string */
@@ -14,7 +14,7 @@
 		/** @var array */
 		private $contextOptions = [];
 
-		private $rows = [];
+		private $rows;
 		private $current_row;
 		private $current_row_index = - 1;
 
@@ -71,12 +71,34 @@
 		}
 
 
+		///ROWS
+
+
+		/**
+		 * @return mixed
+		 */
+		public function reset_rows(){
+			$this->rows = $this->value();
+			$this->current_row_index = - 1;
+			return reset( $this->rows );
+		}
+
+
 		/**
 		 * Return TRUE, if rows is exists
 		 * @return bool
 		 */
 		public function have_rows(){
-			return is_array( $this->rows ) && count( $this->rows ) > 0;
+			if( !is_array( $this->value() ) || count( $this->value() ) == 0 ) return true;
+			if( $this->current_row_index == - 1 ){
+				$this->reset_rows();
+				return true;
+			}elseif($this->current_row_index < count($this->value()) - 1){
+				return true;
+			} else {
+				$this->reset_rows();
+				return false;
+			}
 		}
 
 
@@ -107,14 +129,6 @@
 
 
 		/**
-		 * @return mixed
-		 */
-		public function reset_row(){
-			return reset( $this->rows );
-		}
-
-
-		/**
 		 * @param $subFieldId
 		 * @return mixed
 		 */
@@ -130,6 +144,23 @@
 		 */
 		public function has_sub_field( $subFieldId ){
 			return is_array( $this->current_row ) && array_key_exists( $subFieldId, $this->current_row );
+		}
+
+
+		/**
+		 * Get input html
+		 * @return string
+		 */
+		public function get_input(){
+			return $this->field->admin_get_input( $this->value() );
+		}
+
+
+		/**
+		 * Echo input
+		 */
+		public function the_input(){
+			echo $this->get_input();
 		}
 
 

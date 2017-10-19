@@ -13,7 +13,7 @@
 			 * @return mixed
 			 */
 			function get_field( $fieldId, $contextObject = null ){
-				return fields::get( $fieldId )->value_context( $contextObject )->value();
+				return fields::get( $fieldId )->context( $contextObject )->value();
 			}
 		}
 
@@ -23,7 +23,7 @@
 			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
 			 */
 			function the_field( $fieldId, $contextObject = null ){
-				echo fields::get( $fieldId )->value_context( $contextObject )->value();
+				echo fields::get( $fieldId )->context( $contextObject )->value();
 			}
 		}
 	}
@@ -215,7 +215,7 @@
 					 * @var field  $field
 					 */
 					foreach( $fields as $field_id => $field ){
-						$fields_html[] = $field->admin_get_field( $field->value_context( $contextObjects )->value() );
+						$fields_html[] = $field->context( $contextObjects )->get_input();
 					}
 					$R[] = str_replace( '<!--fields-->', implode( '<!--field-->', $fields_html ), $form_html );
 				}

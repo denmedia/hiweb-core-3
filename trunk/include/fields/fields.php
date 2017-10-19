@@ -25,15 +25,29 @@
 		static $globalId_fieldId = [];
 
 
+		static private function get_free_global_id( $fieldId ){
+			for( $count = 0; $count < 999; $count ++ ){
+				$count = sprintf( '%03u', $count );
+				$input_name_id = $fieldId . '_' . $count;
+				if( !isset( self::$fields[ $input_name_id ] ) ) return $input_name_id;
+			}
+			return false;
+		}
+
+
 		/**
 		 * @param field $field
-		 * @return field
+		 * @return false|string
 		 */
 		static function register_field( field $field ){
-			self::$fields[ $field->global_id() ] = $field;
+			$global_id = self::get_free_global_id( $field->id() );
+			if( $global_id === false ) return false;
+			//
+			$field->global_id( $global_id );
+			self::$fields[ $global_id ] = $field;
 			self::$fieldId_globalId[ $field->id() ][] = $field;
-			self::$globalId_fieldId[ $field->global_id() ][] = $field;
-			return $field;
+			self::$globalId_fieldId[ $global_id ][] = $field;
+			return $global_id;
 		}
 
 

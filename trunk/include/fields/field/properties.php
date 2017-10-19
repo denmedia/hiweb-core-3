@@ -9,10 +9,15 @@
 	namespace hiweb\fields\field;
 
 
+	use hiweb\fields\field;
+
+
 	trait properties{
 
 		/** @var string */
 		private $id = '';
+		private $global_id = '';
+
 
 		/**
 		 * @return string
@@ -23,10 +28,17 @@
 
 
 		/**
-		 * @return string
+		 * @param null|string $set
+		 * @return field|string
 		 */
-		public function global_id(){
-			return spl_object_hash( $this );
+		public function global_id( $set = null ){
+			if( is_null( $set ) ){
+				/** @var field $this */
+				return $this->global_id;
+			} else {
+				$this->global_id = $set;
+				return $this;
+			}
 		}
 
 	}

@@ -268,7 +268,6 @@
 		}
 		if( is_array( $keyMix ) && count( $keyMix ) > 1 ){
 			$key = array_shift( $keyMix );
-
 			return get_byKey( get_byKey( $haystack, $key, $def ), $keyMix, $def );
 		} elseif( is_array( $keyMix ) && count( $keyMix ) == 1 ) {
 			$keyMix = array_shift( $keyMix );
