@@ -73,6 +73,14 @@
 		}
 
 
+		/**
+		 * @return string
+		 */
+		public function id(){
+			return md5(json_encode($this->get_contextOptions()));
+		}
+
+
 		///ROWS
 
 
