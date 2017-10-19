@@ -3,6 +3,7 @@
 	namespace hiweb\fields\field;
 
 
+	use hiweb\console;
 	use hiweb\fields\field;
 
 
@@ -14,9 +15,10 @@
 		/** @var array */
 		private $contextOptions = [];
 
-		private $rows;
+		private $rows = [];
 		private $current_row;
 		private $current_row_index = - 1;
+		private $rows_limit = 9999;
 
 
 		public function __construct( field $field, $contextObject = null ){
@@ -78,9 +80,12 @@
 		 * @return mixed
 		 */
 		public function reset_rows(){
+			$value = $this->value();
+			if( !is_array( $value ) ) return false;
 			$this->rows = $this->value();
 			$this->current_row_index = - 1;
-			return reset( $this->rows );
+			reset( $this->rows );
+			return true;
 		}
 
 
@@ -89,13 +94,17 @@
 		 * @return bool
 		 */
 		public function have_rows(){
-			if( !is_array( $this->value() ) || count( $this->value() ) == 0 ) return true;
+			if( !is_array( $this->value() ) || count( $this->value() ) == 0 ) return false;
 			if( $this->current_row_index == - 1 ){
 				$this->reset_rows();
 				return true;
-			}elseif($this->current_row_index < count($this->value()) - 1){
+			} elseif( ( $this->current_row_index < count( $this->value() ) - 1 ) && $this->current_row_index < $this->rows_limit ) {
 				return true;
+			} elseif( $this->current_row_index >= $this->rows_limit ) {
+				console::debug_warn( 'Превышен лимит строк массива для функции have_rows в поле [' . $this->field->id() . ']' );
+				return false;
 			} else {
+				console::debug_info( 'Перебор строк массива для функции have_rows в поле [' . $this->field->id() . '] окончен' );
 				$this->reset_rows();
 				return false;
 			}
