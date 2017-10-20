@@ -4,6 +4,7 @@
 
 
 	use hiweb\post_types\post_type\labels;
+	use hiweb\post_types\post_type\rewrite;
 	use hiweb\post_types\post_type\supports;
 
 
@@ -45,12 +46,14 @@
 		];
 
 		public $labels;
+		public $rewrite;
 		public $supports;
 
 
 		public function __construct( $post_type ){
 			$this->_type = sanitize_file_name( strtolower( $post_type ) );
 			$this->labels = new labels();
+			$this->rewrite = new rewrite();
 			$this->supports = new supports();
 		}
 
@@ -206,11 +209,10 @@
 
 
 		/**
-		 * @param null $set
-		 * @return post_type|mixed|null
+		 * @return supports
 		 */
-		public function supports( $set = null ){
-			return $this->set_arg( __FUNCTION__, $set );
+		public function supports(  ){
+			return $this->supports;
 		}
 
 
@@ -242,11 +244,10 @@
 
 
 		/**
-		 * @param null $set
-		 * @return post_type|mixed|null
+		 * @return rewrite
 		 */
-		public function rewrite( $set = null ){
-			return $this->set_arg( __FUNCTION__, $set );
+		public function rewrite(  ){
+			return $this->rewrite;
 		}
 
 
@@ -307,11 +308,10 @@
 
 
 		/**
-		 * @param null $set
-		 * @return post_type|mixed|null
+		 * @return labels
 		 */
-		public function labels( $set = null ){
-			return $this->set_arg( __FUNCTION__, $set );
+		public function labels( ){
+			return $this->labels;
 		}
 
 

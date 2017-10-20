@@ -36,7 +36,7 @@
 	//TODO-
 	$post_type = add_post_type('new_type');
 	$post_type->labels_set('name','Тестовый тип')->show_in_menu(true);
-	$post_type->public_(true);
+	$post_type->public_(true)->supports();
 
 	add_action('init', function(){
 		global $post_type;
