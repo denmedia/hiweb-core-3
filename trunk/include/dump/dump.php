@@ -71,7 +71,7 @@
 		 * @param bool  $showObjects
 		 */
 		static function the( $mixed, $depth = 6, $showObjects = true ){
-			$css = \hiweb\file( __DIR__ . '/css/style.css' );
+			$css = \hiweb\file( HIWEB_DIR_CSS . '/dump-the.css' );
 			?>
 			<link rel="stylesheet" href="<?= $css->url ?>"/>
 			<div class="hiweb-core-dump-the">

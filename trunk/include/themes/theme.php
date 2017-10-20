@@ -10,7 +10,7 @@
 		/** @var  \WP_Theme */
 		private $wp_theme;
 
-		/** @var hw_wp_location[] */
+		/** @var location[] */
 		private $locations = [];
 
 
@@ -50,11 +50,11 @@
 
 		/**
 		 * @param $location
-		 * @return hw_wp_location
+		 * @return location
 		 */
 		public function location( $location = null ){
 			if( !array_key_exists( $location, $this->locations ) ){
-				$this->locations[ $location ] = new hw_wp_location( $location );
+				$this->locations[ $location ] = new location( $location );
 			}
 
 			return $this->locations[ $location ];
@@ -102,7 +102,7 @@
 		 * Return post (or posts array) by template file name, like 'page-template.php', or FALSE, if them not exists
 		 * @param string $template_name
 		 * @param bool   $return_array
-		 * @return bool|WP_Post|WP_Post[]
+		 * @return bool|\WP_Post|\WP_Post[]
 		 */
 		public function get_post_by_template( $template_name = 'page-template.php', $return_array = false ){
 			$args = [
@@ -119,7 +119,7 @@
 
 		/**
 		 * Return front page WP_Post
-		 * @return array|null|WP_Post
+		 * @return array|null|\WP_Post
 		 */
 		public function get_front_page(){
 			return get_post( get_option( 'page_on_front' ) );
@@ -128,7 +128,7 @@
 
 		/**
 		 * Return blog WP_Post
-		 * @return array|null|WP_Post
+		 * @return array|null|\WP_Post
 		 */
 		public function get_blog_page(){
 			return get_post( get_option( 'page_for_posts' ) );

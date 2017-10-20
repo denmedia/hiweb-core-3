@@ -54,6 +54,8 @@
 
 
 		/**
+		 * @param string $prepend
+		 * @param string $append
 		 * @return string
 		 */
 		public function admin_input_name( $prepend = '', $append = '' ){

@@ -4,6 +4,7 @@
 
 
 	use hiweb\files;
+	use hiweb\path;
 
 
 	class file{
@@ -40,16 +41,16 @@
 
 
 		public function __construct( $path ){
-			if( \hiweb\path\is_url( $path ) ){
-				$this->path = \hiweb\path\url_to_path( $path );
-				$this->url = \hiweb\path\prepare_url( $path );
+			if( path::is_url( $path ) ){
+				$this->path = path::url_to_path( $path );
+				$this->url = path::prepare_url( $path );
 			} else {
-				$this->path = \hiweb\path\realpath( $path );
-				$this->url = \hiweb\path\path_to_url( $this->path );
+				$this->path = path::realpath( $path );
+				$this->url = path::path_to_url( $this->path );
 			}
 			////
 			$this->basename = basename( $this->path );
-			$this->extension = \hiweb\path\file_extension( $this->path );
+			$this->extension = path::file_extension( $this->path );
 			$this->filename = basename( $this->path, '.' . $this->extension );
 			$this->dirname = dirname( $this->path );
 			////

@@ -6,9 +6,9 @@
 	class post_type{
 
 		private $_type;
-		/** @var WP_Error|WP_Post_Type */
-		private $_object;
-		private $_defaults = [
+		/** @var \WP_Error|\WP_Post_Type */
+		public $wp_post_type;
+		private $args = [
 			'label' => null,
 			'labels' => [],
 			'description' => '',
@@ -66,80 +66,68 @@
 
 		private $columns_manager_thumbnail = false;
 
-		/** @var  hw_taxonomy[] */
-		private $_taxonomies = [];
-		/** @var array */
-		private $_meta_boxes = [];
-
 
 		public function __construct( $post_type ){
 			$this->_type = sanitize_file_name( strtolower( $post_type ) );
 			$this->label = $post_type;
 			$this->set_props();
-			add_action( 'init', [ $this, 'add_action_init_create' ] );
-			///Add metas...
-			add_action( 'edit_form_top', [ $this, 'add_action_edit_form_top' ] );
-			add_action( 'edit_form_before_permalink', [ $this, 'add_action_edit_form_before_permalink' ] );
-			add_action( 'edit_form_after_title', [ $this, 'add_action_edit_form_after_title' ] );
-			add_action( 'edit_form_after_editor', [ $this, 'add_action_edit_form_after_editor' ] );
-			if( $post_type == 'page' ) add_action( 'submitpage_box', [ $this, 'add_action_submitpage_box' ] ); else
-				add_action( 'submitpost_box', [ $this, 'add_action_submitpage_box' ] );
-			if( $post_type == 'page' ) add_action( 'edit_page_form', [ $this, 'add_action_edit_form_advanced' ] ); else
-				add_action( 'edit_form_advanced', [ $this, 'add_action_edit_form_advanced' ] );
-			///Save Meta
-			add_action( 'save_post', [ $this, 'add_action_save_post' ], 99999, 2 );
+		}
+
+
+		public function get_args(){
+			return $this->args;
+		}
+
+
+		/**
+		 * Set argument value
+		 * @param string $arg_name
+		 * @param mixed $value
+		 * @return post_type|mixed|null
+		 */
+		public function set_arg( $arg_name, $value = null ){
+			if( is_null( $value ) ){
+				return array_key_exists( $arg_name, $this->args ) ? $this->args[ $arg_name ] : null;
+			} else {
+				$this->args[ $arg_name ] = $value;
+				return $this;
+			}
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function description( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function public_( $set = null ){
-			if( !is_null( $set ) ){
-				$this->public = $set;
-				return $this;
-			}
-			return $this->public;
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function hierarchical( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function exclude_from_search( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
@@ -148,245 +136,169 @@
 		 * @return $this
 		 */
 		public function publicly_queryable( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function show_ui( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function show_in_menu( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function show_in_nav_menus( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function show_in_admin_bar( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function menu_position( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function menu_icon( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function capability_type( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function map_meta_cap( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function supports( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function register_meta_box_cb( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function taxonomies( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function has_archive( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function rewrite( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function query_var( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function can_export( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function _edit_link( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function _builtin( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function delete_with_user( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 		///////
@@ -394,29 +306,19 @@
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function label( $set = null ){
-			if( !is_null( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
 		/**
 		 * @param null $set
-		 * @return $this
+		 * @return post_type|mixed|null
 		 */
 		public function labels( $set = null ){
-			if( is_array( $set ) ){
-				$this->{__FUNCTION__} = $set;
-				return $this;
-			} elseif( is_string( $set ) ) {
-				$this->label = $set;
-			}
-			return $this->{__FUNCTION__};
+			return $this->set_arg(__FUNCTION__, $set);
 		}
 
 
@@ -454,7 +356,7 @@
 		 */
 		public function props(){
 			$R = [];
-			foreach( $this->_defaults as $key => $def_value ){
+			foreach( $this->args as $key => $def_value ){
 				$R[ $key ] = ( !property_exists( $this, $key ) || is_null( $this->{$key} ) ) ? $def_value : $this->{$key};
 			}
 			return $R;
@@ -465,12 +367,12 @@
 		 * @return WP_Error|WP_Post_Type
 		 */
 		public function get(){
-			return $this->_object;
+			return $this->wp_post_type;
 		}
 
 
 		/**
-		 * @param string|int              $id
+		 * @param string|int $id
 		 * @param hw_post_type_meta_boxes $hiweb_meta_boxes
 		 * @return hw_post_type_meta_boxes
 		 */
@@ -505,7 +407,7 @@
 
 		/**
 		 * @param bool $set
-		 * @return hw_post_type
+		 * @return post_type
 		 */
 		public function columns_manager_thumbnail( $set = true ){
 			if( $set ){
@@ -533,7 +435,7 @@
 
 		/**
 		 * Процедура регистрации типа поста
-		 * @return WP_Error|WP_Post_Type
+		 * @return \WP_Error|\WP_Post_Type
 		 */
 		private function add_action_init_create(){
 			if( post_type_exists( $this->_type ) ){
@@ -560,7 +462,7 @@
 				}
 			} else {
 				//Register PT
-				$this->_object = register_post_type( $this->_type, $this->props() );
+				$this->wp_post_type = register_post_type( $this->_type, $this->props() );
 			}
 			return $this->get();
 		}

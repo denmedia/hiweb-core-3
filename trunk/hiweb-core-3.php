@@ -34,19 +34,4 @@
 	}
 
 	//TODO-
-	$field = add_field_repeat( 'test' );
-	$field->add_col_field( add_field_text( 'a' )->admin_label( 'Поле А' ) );
-	$field->add_col_field( add_field_text( 'b' )->admin_label( 'Поле Б' )->admin_description( 'Это второе поле' ) );
-	$field->location()->post_types( 'page' );
-
-	$field = add_field_text( 'test2' )->admin_label( 'Проврека поля с аттрибутами' );
-	$field->location()->post_types( 'page' )->position( 2 );
-
-	add_action( 'wp', function(){
-		$field = \hiweb\fields::get( 'test' );
-		///
-		while( $field->context()->have_rows()){
-			$row = $field->context()->the_row();
-			hiweb\dump( $row );
-		}
-	} );
+	$post_type = add_post_type('new-type');

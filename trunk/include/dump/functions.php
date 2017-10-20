@@ -3,9 +3,6 @@
 	namespace hiweb;
 
 
-	use hiweb\dump;
-
-
 	/**
 	 * @param $variable
 	 * @return string

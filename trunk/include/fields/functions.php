@@ -102,11 +102,11 @@
 				} elseif( is_object( get_queried_object() ) ) {
 					if( is_numeric( $contextObject ) ){
 						if( $contextObject instanceof \WP_Post ){
-
+							//TODO
 						} elseif( $contextObject instanceof \WP_Term ) {
-
+							//TODO
 						} elseif( $contextObject instanceof \WP_User ) {
-
+							//TODO
 						}
 					} else {
 						return get_locationOptions_from_contextObject( get_queried_object() );

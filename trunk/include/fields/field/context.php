@@ -18,7 +18,7 @@
 		private $rows = [];
 		private $current_row;
 		private $current_row_index = - 1;
-		private $rows_limit = 9999;
+		private $rows_limit = 999;
 
 
 		public function __construct( field $field, $contextObject = null ){
@@ -77,7 +77,7 @@
 		 * @return string
 		 */
 		public function id(){
-			return md5(json_encode($this->get_contextOptions()));
+			return md5( json_encode( $this->get_contextOptions() ) );
 		}
 
 
@@ -98,6 +98,15 @@
 
 
 		/**
+		 * Return TRUE, if row in process
+		 * @return bool
+		 */
+		public function is_row_process(){
+			return is_array( $this->value() ) && ( $this->current_row_index < count( $this->value() ) - 1 ) && $this->current_row_index < $this->rows_limit;
+		}
+
+
+		/**
 		 * Return TRUE, if rows is exists
 		 * @return bool
 		 */
@@ -106,7 +115,7 @@
 			if( $this->current_row_index == - 1 ){
 				$this->reset_rows();
 				return true;
-			} elseif( ( $this->current_row_index < count( $this->value() ) - 1 ) && $this->current_row_index < $this->rows_limit ) {
+			} elseif( $this->is_row_process() ) {
 				return true;
 			} elseif( $this->current_row_index >= $this->rows_limit ) {
 				console::debug_warn( 'Превышен лимит строк массива для функции have_rows в поле [' . $this->field->id() . ']' );
@@ -147,11 +156,10 @@
 
 		/**
 		 * @param $subFieldId
-		 * @return mixed
+		 * @return null|mixed
 		 */
 		public function get_sub_field( $subFieldId ){
-			$std = (object)$this->current_row;
-			return $std->{$subFieldId};
+			return array_key_exists( $subFieldId, $this->current_row ) ? $this->current_row[ $subFieldId ] : null;
 		}
 
 

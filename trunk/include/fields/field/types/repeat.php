@@ -96,7 +96,7 @@
 				if( $this->have_cols() && $this->have_rows( $value ) ){
 					foreach( $value as $row_index => $row ){
 						foreach( $this->get_cols() as $col_id => $col ){
-							$R[ $row_index ][ $col_id ] = isset($value[$row_index][$col_id]) ? $value[$row_index][$col_id] : null;
+							$R[ $row_index ][ $col_id ] = isset( $value[ $row_index ][ $col_id ] ) ? $value[ $row_index ][ $col_id ] : null;
 						}
 					}
 				}
@@ -229,6 +229,8 @@
 			public function __construct( field $parent_field, field $field ){
 				$this->field = $field;
 				$this->parent_field = $parent_field;
+				$this->label = $field->admin_label();
+				$this->description = $field->admin_description();
 			}
 
 
