@@ -10,6 +10,7 @@
 
 
 	use hiweb\fields\field;
+	use hiweb\fields\locations\locations;
 
 
 	trait value{
@@ -48,7 +49,7 @@
 		 * @return context
 		 */
 		public function context( $contextObject = null ){
-			$location_id = \hiweb\fields\functions\get_contextId_from_contextObject( $contextObject );
+			$location_id = locations::get_contextId_from_contextObject( $contextObject );
 			///
 			if( !array_key_exists( $location_id, $this->value_contexts ) ){
 				/** @var field $this */

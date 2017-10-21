@@ -34,11 +34,13 @@
 	}
 
 	//TODO-
-	$post_type = add_post_type('new_type');
-	$post_type->labels_set('name','Тестовый тип')->show_in_menu(true);
-	$post_type->public_(true)->supports();
+	add_admin_menu_page( 'test', 'Просто тест' )->page_title( '⚙️ Просто страница тестовых настроек' )->function_page( function( $params = null, $page = null ){
+		\hiweb\dump( [ $params, $page ] );
+	}, [ 'foo', 'bar' ] );
 
-	add_action('init', function(){
-		global $post_type;
-		//hiweb\dump($post_type);
-	});
+	$field = add_field_text( 'test' );
+	$field->admin_label( 'Проверка ТЕСТ' )->admin_description( 'Комментарий к полю и  прочее' )->value_default('Проверка');
+	$field->location()->admin_menus( 'test' );
+	$field = add_field_text( 'test2' );
+	$field->admin_label( 'Проверка ТЕСТ 2' )->admin_description( 'Комментарий к полю и прочее для второго поля' );
+	$field->location()->admin_menus( 'test' );

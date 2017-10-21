@@ -5,6 +5,7 @@
 
 	use hiweb\console;
 	use hiweb\fields\field;
+	use hiweb\fields\forms;
 
 
 	trait admin{
@@ -41,6 +42,7 @@
 			if( is_null( $attributes ) ) $attributes = $this->admin_input_attributes;
 			if( is_array( $attributes ) ){
 				foreach( $attributes as $key => $val ){
+					if( is_array( $val ) ) $val = json_encode( $val );
 					$R[] = $key . '="' . htmlentities( $val, ENT_QUOTES, 'UTF-8' ) . '"';
 				}
 			}
@@ -59,11 +61,29 @@
 		 * @return string
 		 */
 		public function admin_input_name( $prepend = '', $append = '' ){
-			$R = [ 'hiweb-input' ];
+			$R = [];
 			if( !empty( $prepend ) ) $R[] = $prepend;
 			$R[] = $this->id();
 			if( !empty( $append ) ) $R[] = $append;
 			return implode( '-', $R );
+		}
+
+
+		/**
+		 * @param null $value
+		 * @param array $attributes
+		 * @return string
+		 */
+		public function admin_get_input( $value = null, $attributes = [] ){
+			$attributes_default = [
+				'type' => 'text',
+				'placeholder' => $this->value_default(),
+				'value' => $this->value_sanitize( $value )
+			];
+			$attributes = is_array( $attributes ) ? $attributes : [ $attributes ];
+			$attributes_final = array_merge( $attributes_default, $this->admin_input_attributes, $attributes );
+			$R = '<input ' . $this->admin_get_input_attributes_html( $attributes_final ) . '>';
+			return $R;
 		}
 
 
@@ -76,29 +96,9 @@
 		}
 
 
-		/**
-		 * @param null  $value
-		 * @param array $attributes
-		 * @return string
-		 */
-		public function admin_get_input( $value = null, $attributes = [] ){
-			$attributes_default = [
-				'type' => 'text',
-				'placeholder' => $this->value_default(),
-				'id' => $this->admin_input_name(),
-				'name' => $this->admin_input_name(),
-				'value' => $this->value_sanitize( $value )
-			];
-			$attributes = is_array( $attributes ) ? $attributes : [ $attributes ];
-			$attributes_final = array_merge( $attributes_default, $attributes, $this->admin_input_attributes );
-			$R = '<input ' . $this->admin_get_input_attributes_html( $attributes_final ) . '>';
-			return $R;
-		}
-
-
 		//////FORM FILED
 
-		public function admin_field_wrap_class(){
+		public function admin_fieldset_wrap_class(){
 			return 'hiweb-admin-field-wrap hiweb-admin-field-wrap-' . $this->get_type();
 		}
 
@@ -145,35 +145,19 @@
 		}
 
 
-		protected function admin_get_field_class(){
-			return 'hiweb-admin-the-field';
-		}
-
-
 		/**
 		 * @param null $value
+		 * @param array $attributes
 		 * @return string
 		 */
-		public function admin_get_field( $value = null ){
-			$R = '';
-			$template_path = dirname( __DIR__ ) . '/templates/' . $this->template . '.php';
-			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
-				console::debug_warn( 'Не удалось найти шаблон для поля', $this->template );
-				$template_path = dirname( __DIR__ ) . '/templates/default.php';
-			}
-			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
-				console::debug_error( 'Не удалось найти шаблон для поля DEFAULT', $this->template );
-			} else {
-				ob_start();
-				include $template_path;
-				$R = ob_get_clean();
-			}
-			return $R;
+		public function admin_get_fieldset( $value = null, $attributes = [] ){
+			/** @var field $this */
+			return forms::get_fieldset( $this, $value, $attributes );
 		}
 
 
-		final public function admin_the_field( $value = null ){
-			echo $this->admin_get_field( $value );
+		final public function admin_the_field( $value = null, $attributes = [] ){
+			echo $this->admin_get_fieldset( $value, $attributes );
 		}
 
 	}

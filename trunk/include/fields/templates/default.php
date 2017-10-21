@@ -4,13 +4,14 @@
 
 
 	/**
-	 * @var field $this
+	 * @var field $field
 	 * @var mixed $value
+	 * @var array $attributes
 	 */
 
 ?>
-<div class="<?= $this->admin_field_wrap_class() ?>">
-	<p><?= $this->admin_label() ?></p>
-	<div class="<?= $this->admin_input_wrap_class() ?>"><?= $this->admin_get_input( $value ) ?></div>
-	<p class="description"><?= $this->admin_description() ?></p>
-</div>
+<fieldset class="<?= $field->admin_fieldset_wrap_class() ?>">
+	<p><?= $field->admin_label() ?></p>
+	<div class="<?= $field->admin_input_wrap_class() ?>"><?= $field->admin_get_input( $value, $attributes ) ?></div>
+	<p class="description"><?= $field->admin_description() ?></p>
+</fieldset>

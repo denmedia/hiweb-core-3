@@ -9,9 +9,17 @@
 	namespace hiweb\post_types\post_type;
 
 
+	use hiweb\post_types\post_type;
+
+
 	class supports{
 
-		public $supports = [];
+		private $post_type;
+
+
+		public function __construct( post_type $post_type ){
+			$this->post_type = $post_type;
+		}
 
 
 		/**
@@ -19,7 +27,8 @@
 		 * @return supports
 		 */
 		private function set( $support_name = 'title' ){
-			$this->supports[] = $support_name;
+			$this->post_type->args_custom['supports'][] = $support_name;
+			$this->post_type->args_custom['supports'] = array_unique( $this->post_type->args_custom['supports'] );
 			return $this;
 		}
 

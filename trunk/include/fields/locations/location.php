@@ -6,17 +6,18 @@
 	use hiweb\console;
 	use hiweb\fields;
 	use hiweb\fields\field;
+	use hiweb\fields\locations\options\admin_menus;
 	use hiweb\fields\locations\options\post_types;
 	use hiweb\fields\locations\options\taxonomies;
+	use hiweb\fields\locations\options\users;
 
 
 	class location{
 
 		/** @var options\options[] */
 		public $options = [];
-		public $rulesId = '';
 		/** @var field */
-		private $field;
+		public $field;
 
 
 		public function __construct( $field = null ){
@@ -25,23 +26,7 @@
 
 
 		public function rules_id(){
-			return \hiweb\fields\functions\get_contextId_from_options( $this->options );
-		}
-
-
-		/**
-		 * @return string
-		 */
-		public function global_id(){
-			return spl_object_hash( $this );
-		}
-
-
-		/**
-		 * @return field|null
-		 */
-		public function get_field(){
-			return $this->field;
+			return locations::get_contextId_from_options( $this->options );
 		}
 
 
@@ -97,10 +82,10 @@
 						$options = $this->taxonomies();
 						break;
 					case 'users':
-						//$options = $this->users();
+						$options = $this->users();
 						break;
 					case 'admin_menus':
-						//$options = $this->admin_menus();
+						$options = $this->admin_menus();
 						break;
 					default:
 						console::debug_warn( 'Попытка установки неуществующего типа опций для локации', $option_type );
@@ -142,6 +127,32 @@
 			$taxonomies = $this->options['taxonomies'];
 			$taxonomies->taxonomy( $taxonomy );
 			return $taxonomies;
+		}
+
+
+		/**
+		 * @param string|array $roles
+		 * @return options\options|users
+		 */
+		public function users( $roles = null ){
+			if( !isset( $this->options['users'] ) ) $this->options['users'] = new users( $this );
+			/** @var users $users */
+			$users = $this->options['users'];
+			$users->roles( $roles );
+			return $users;
+		}
+
+
+		/**
+		 * @param null $menu_slug
+		 * @return admin_menus|options\options
+		 */
+		public function admin_menus( $menu_slug = null ){
+			if( !isset( $this->options['admin_menus'] ) ) $this->options['admin_menus'] = new admin_menus( $this );
+			/** @var admin_menus $admin_menu */
+			$admin_menu = $this->options['admin_menus'];
+			$admin_menu->menu_slug( $menu_slug );
+			return $admin_menu;
 		}
 
 

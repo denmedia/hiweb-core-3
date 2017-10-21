@@ -126,7 +126,7 @@
 			static function the_row(){
 				$context = self::get_current_context();
 				if( $context !== false ){
-					console::info( '$context->the_row(' . $context->get_field()->id() . ');' );
+					console::info( '$context->the_row(' . $context->get_field_object()->id() . ');' );
 					return $context->the_row();
 				}
 				return null;

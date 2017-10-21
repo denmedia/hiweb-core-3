@@ -45,24 +45,16 @@
 
 		];
 
-		public $labels;
-		public $rewrite;
-		public $supports;
+		private $labels;
+		private $rewrite;
+		private $supports;
 
 
 		public function __construct( $post_type ){
 			$this->_type = sanitize_file_name( strtolower( $post_type ) );
-			$this->labels = new labels();
-			$this->rewrite = new rewrite();
-			$this->supports = new supports();
-		}
-
-
-		/**
-		 * @return array
-		 */
-		public function get_args(){
-			return is_array( $this->args ) ? $this->args : [];
+			$this->labels = new labels( $this );
+			$this->rewrite = new rewrite( $this );
+			$this->supports = new supports( $this );
 		}
 
 
@@ -77,7 +69,7 @@
 		/**
 		 * Set argument value
 		 * @param string $arg_name
-		 * @param mixed  $value
+		 * @param mixed $value
 		 * @return post_type|mixed|null
 		 */
 		public function set_arg( $arg_name, $value = null ){
@@ -211,7 +203,7 @@
 		/**
 		 * @return supports
 		 */
-		public function supports(  ){
+		public function supports(){
 			return $this->supports;
 		}
 
@@ -246,7 +238,7 @@
 		/**
 		 * @return rewrite
 		 */
-		public function rewrite(  ){
+		public function rewrite(){
 			return $this->rewrite;
 		}
 
@@ -310,20 +302,8 @@
 		/**
 		 * @return labels
 		 */
-		public function labels( ){
+		public function labels(){
 			return $this->labels;
-		}
-
-
-		/**
-		 * @param string $key
-		 * @param string $value
-		 * @return $this
-		 */
-		public function labels_set( $key = 'name', $value = '' ){
-			$this->args_custom['labels'][ $key ] = $value;
-			if( is_object( $this->args['labels'] ) ) $this->args['labels'][ $key ] = $value; else $this->args['labels'][ $key ] = $value;
-			return $this;
 		}
 
 

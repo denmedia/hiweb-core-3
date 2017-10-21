@@ -31,16 +31,20 @@
 	///TAXONOMY SAVE
 	add_action( 'create_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
 	add_action( 'edited_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
+
+	/// USERS SETTINGS
+	/// USER ADD
+	add_action( 'user_new_form', 'hiweb\\fields\\locations\\admin::user_new_form' );
+	/// USER EDIT
+	add_action( 'admin_color_scheme_picker', 'hiweb\\fields\\locations\\admin::admin_color_scheme_picker' );
+	add_action( 'personal_options', 'hiweb\\fields\\locations\\admin::personal_options' );
+	add_action( 'profile_personal_options', 'hiweb\\fields\\locations\\admin::profile_personal_options' );
+	add_action( 'show_user_profile', 'hiweb\\fields\\locations\\admin::edit_user_profile' );
+	add_action( 'edit_user_profile', 'hiweb\\fields\\locations\\admin::edit_user_profile' );
+	/// USERS SAVE
+	add_action( 'personal_options_update', 'hiweb\\fields\\locations\\admin::edit_user_profile_update' );
+	add_action( 'edit_user_profile_update', 'hiweb\\fields\\locations\\admin::edit_user_profile_update' );
 	//	///OPTIONS FIELDS
 	//	add_action( 'admin_init', [ $this, 'options_page_add_fields' ], 999999 );
 	//	///ADMIN MENU FIELDS
 	//	add_action( 'current_screen', [ $this, 'admin_menu_fields' ], 999999 );
-	//	/// USERS SETTINGS
-	//	add_action( 'admin_color_scheme_picker', [ $this, 'admin_color_scheme_picker' ] );
-	//	add_action( 'personal_options', [ $this, 'personal_options' ] );
-	//	add_action( 'profile_personal_options', [ $this, 'profile_personal_options' ] );
-	//	add_action( 'show_user_profile', [ $this, 'show_user_profile' ] );
-	//	add_action( 'edit_user_profile', [ $this, 'edit_user_profile' ] );
-	//	/// USERS SAVE
-	//	add_action( 'personal_options_update', [ $this, 'edit_user_profile_update' ] );
-	//	add_action( 'edit_user_profile_update', [ $this, 'edit_user_profile_update' ] );

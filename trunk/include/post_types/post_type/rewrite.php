@@ -9,58 +9,72 @@
 	namespace hiweb\post_types\post_type;
 
 
-	class rewrite{
+	use hiweb\post_types\post_type;
 
-		public $rewrite = [];
+
+	class rewrite{
+		/** @var post_type */
+		private $post_type;
+
+
+		public function __construct( post_type $post_type ){
+			$this->post_type = $post_type;
+		}
+
+
+		/**
+		 * @param $name
+		 * @param string $value
+		 * @return rewrite
+		 */
+		private function set( $name, $value = '' ){
+			$this->post_type['rewrite'][ $name ] = $value;
+			return $this;
+		}
 
 
 		/**
 		 * @param array $set
-		 * @return $this
+		 * @return rewrite
 		 */
 		public function slug( $set = [] ){
-			$this->rewrite['slug'] = $set;
-			return $this;
+			return $this->set( 'slug', $set );
 		}
 
 
 		/**
 		 * @param bool $set
-		 * @return $this
+		 * @return rewrite
 		 */
 		public function with_front( $set = true ){
-			$this->rewrite['with_front'] = $set;
-			return $this;
+			return $this->set( 'with_front', $set );
 		}
 
 
 		/**
 		 * @param $set
-		 * @return $this
+		 * @return rewrite
 		 */
 		public function feeds( $set ){
-			$this->rewrite['feeds'] = $set;
-			return $this;
+			return $this->set( 'feeds', $set );
 		}
 
 
 		/**
 		 * @param bool $set
-		 * @return $this
+		 * @return rewrite
 		 */
 		public function pages( $set = true ){
-			$this->rewrite['pages'] = $set;
-			return $this;
+			return $this->set( 'pages', $set );
 		}
 
 
 		/**
 		 * @param $set
-		 * @return $this
+		 * @return rewrite
 		 */
 		public function ep_mask( $set ){
-			$this->rewrite['ep_mask'] = $set;
-			return $this;
+			return $this->set( 'ep_mask', $set );
 		}
 
 	}

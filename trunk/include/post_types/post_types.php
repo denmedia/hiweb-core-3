@@ -48,7 +48,6 @@
 					$post_type->wp_post_type = $wp_post_type;
 				} else {
 					$wp_post_type = register_post_type( $post_type_name, $post_type->get_args_custom() );
-					\hiweb\console([$post_type_name, $post_type->get_args_custom()]);
 					if( $wp_post_type instanceof \WP_Post_Type ){
 						$post_type->wp_post_type = $wp_post_type;
 					} else {

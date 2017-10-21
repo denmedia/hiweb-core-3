@@ -23,6 +23,8 @@
 		use hiweb\fields\field\properties;
 		use hiweb\fields\field\value;
 		use hiweb\fields\locations\location;
+		use hiweb\fields\locations\locations;
+		use hiweb\string;
 
 
 		class field{
@@ -36,8 +38,9 @@
 
 
 			public function __construct( $id = null ){
-				$this->id = trim( $id ) == '' ? \hiweb\string\rand() : $id;
+				$this->id = trim( $id ) == '' ? string::rand() : $id;
 				$this->location = locations::register( $this );
+				$this->admin_input_attributes_set( 'name', $this->id );
 			}
 
 

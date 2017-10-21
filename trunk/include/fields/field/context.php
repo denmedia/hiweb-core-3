@@ -4,7 +4,10 @@
 
 
 	use hiweb\console;
+	use hiweb\dump;
 	use hiweb\fields\field;
+	use hiweb\fields\locations\locations;
+	use hiweb\fields\forms;
 
 
 	class context{
@@ -20,11 +23,13 @@
 		private $current_row_index = - 1;
 		private $rows_limit = 999;
 
+		private $input_attributes = [];
+
 
 		public function __construct( field $field, $contextObject = null ){
 			$this->field = $field;
 			$this->contextObject = $contextObject;
-			$this->contextOptions = \hiweb\fields\functions\get_locationOptions_from_contextObject( $contextObject );
+			$this->contextOptions = locations::get_locationOptions_from_contextObject( $contextObject );
 		}
 
 
@@ -42,8 +47,8 @@
 			} elseif( key_exists( 'users', $this->contextOptions ) && key_exists( 'ID', $this->contextOptions['users'] ) ) {
 				$user_id = $this->contextOptions['users']['ID'];
 				$value = metadata_exists( 'user', $user_id, $this->field->id() ) ? get_user_meta( $user_id, $this->field->id(), true ) : $this->field->value_default();
-			} elseif( key_exists( 'admin_menus', $this->contextOptions ) && key_exists( 'slug', $this->contextOptions['admin_menus'] ) ) {
-				$value = get_option( \hiweb\fields\functions\get_options_field_id( $this->contextOptions['admin_menus']['slug'], $this->field->id() ), $this->field->value_default() );
+			} elseif( key_exists( 'admin_menus', $this->contextOptions ) && key_exists( 'menu_slug', $this->contextOptions['admin_menus'] ) ) {
+				$value = get_option( forms::get_field_input_option_name( $this->field ), $this->field->value_default() );
 			}
 			return $this->field->value_sanitize( $value );
 		}
@@ -52,7 +57,7 @@
 		/**
 		 * @return field
 		 */
-		public function get_field(){
+		public function get_field_object(){
 			return $this->field;
 		}
 
@@ -173,19 +178,24 @@
 
 
 		/**
-		 * Get input html
+		 * Get input html by context value
+		 * @param array $attributes
 		 * @return string
 		 */
-		public function get_input(){
-			return $this->field->admin_get_input( $this->value() );
+		public function get_input( $attributes = [] ){
+			if( is_array( $attributes ) && count( $attributes ) ) $this->input_attributes = array_merge( $this->input_attributes, $attributes );
+			return $this->field->admin_get_input( $this->value(), $this->input_attributes );
 		}
 
 
 		/**
-		 * Echo input
+		 * Get fieldset html by context value
+		 * @param array $attributes
+		 * @return string
 		 */
-		public function the_input(){
-			echo $this->get_input();
+		public function get_fieldset( $attributes = [] ){
+			if( is_array( $attributes ) && count( $attributes ) ) $this->input_attributes = array_merge( $this->input_attributes, $attributes );
+			return $this->field->admin_get_fieldset( $this->value(), $this->input_attributes );
 		}
 
 
