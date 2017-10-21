@@ -4,10 +4,11 @@
 
 
 		use hiweb\fields;
+		use hiweb\path;
 
 
 		add_action( 'wp_ajax_hiweb-field-repeat-get-row', function(){
-			$field_global_id = \hiweb\path\request( 'id' );
+			$field_global_id = path::request( 'id' );
 			///
 			$R = [ 'result' => false ];
 			//
@@ -20,7 +21,7 @@
 					$R['result'] = true;
 					/** @var fields\types\repeat $field */
 					$field = fields::$fields[ $field_global_id ];
-					$R['data'] = $field->ajax_html_row( \hiweb\path\request( 'params' ) );
+					$R['data'] = $field->ajax_html_row( path::request( 'params' ) );
 				}
 			}
 			//
@@ -44,6 +45,7 @@
 	namespace hiweb\fields\types {
 
 
+		use hiweb\arrays;
 		use hiweb\fields\field;
 
 
@@ -304,7 +306,7 @@
 				} elseif( array_key_exists( $this->id(), $row ) ) {
 					$cell_value = $row[ $this->id() ];
 				} elseif( array_key_exists( $this->id(), array_values( $row ) ) ) {
-					$cell_value = \hiweb\arrays\get_index( $row, $this->id() );
+					$cell_value = arrays::get_index( $row, $this->id() );
 				}
 				//
 				$attributes = [

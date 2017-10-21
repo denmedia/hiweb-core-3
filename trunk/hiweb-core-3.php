@@ -38,7 +38,8 @@
 		\hiweb\dump( [ $params, $page ] );
 	}, [ 'foo', 'bar' ] );
 
-	$field = add_field_text( 'test' );
+	$field = add_field_repeat( 'test' );
+	$field->add_col_field( add_field_repeat('123')->admin_label('ter') );
 	$field->admin_label( 'Проверка ТЕСТ' )->admin_description( 'Комментарий к полю и  прочее' )->value_default('Проверка');
 	$field->location()->admin_menus( 'test' );
 	$field = add_field_text( 'test2' );
