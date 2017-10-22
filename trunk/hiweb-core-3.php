@@ -38,7 +38,8 @@
 		\hiweb\dump( [ $params, $page ] );
 	}, [ 'foo', 'bar' ] );
 
-	$field = add_field_script('32543re');
+	$field = add_field_textarea('32543re');
+
 	$field->location()->admin_menus('test');
 	$field->value_default('#ff4499');
 	$field->admin_label('Проверка чекбокса');

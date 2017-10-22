@@ -13,11 +13,13 @@
 		/** @var string */
 		private $label = '';
 		/** @var string */
+		private $label_description = '';
+		/** @var string */
 		private $description = '';
 		/** @var string */
 		private $template = 'default';
 		/** @var array */
-		private $admin_input_attributes = [];
+		protected $admin_input_attributes = [];
 
 
 		//////FORM INPUT
@@ -36,8 +38,8 @@
 		 * @param string $attr_name
 		 * @return null|mixed
 		 */
-		public function admin_input_get_attribute($attr_name = 'id'){
-			return array_key_exists($attr_name, $this->admin_input_attributes) ? $this->admin_input_attributes[$attr_name] : null;
+		public function admin_input_get_attribute( $attr_name = 'id' ){
+			return array_key_exists( $attr_name, $this->admin_input_attributes ) ? $this->admin_input_attributes[ $attr_name ] : null;
 		}
 
 
@@ -51,7 +53,7 @@
 			if( is_null( $attributes ) ) $attributes = $this->admin_input_attributes;
 			if( is_array( $attributes ) ){
 				foreach( $attributes as $key => $val ){
-					if(is_array($take_attributes) && count($take_attributes) > 0 && !array_key_exists($key, array_flip($take_attributes))) continue;
+					if( is_array( $take_attributes ) && count( $take_attributes ) > 0 && !array_key_exists( $key, array_flip( $take_attributes ) ) ) continue;
 					if( is_array( $val ) ) $val = json_encode( $val );
 					$R[] = $key . '="' . htmlentities( $val, ENT_QUOTES, 'UTF-8' ) . '"';
 				}
@@ -123,6 +125,20 @@
 				return $this;
 			} else {
 				return $this->label;
+			}
+		}
+
+
+		/**
+		 * @param null|string $label
+		 * @return $this|string
+		 */
+		public function admin_label_description( $label = null ){
+			if( !is_null( $label ) ){
+				$this->label_description = $label;
+				return $this;
+			} else {
+				return $this->label_description;
 			}
 		}
 
