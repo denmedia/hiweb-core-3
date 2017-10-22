@@ -4,15 +4,16 @@
 
 
 	/**
-	 * @var field $this
+	 * @var field $field
 	 * @var mixed $value
+	 * @var array $attributes
 	 */
 
 ?>
-<div class="form-field term-<?= $this->id() ?>-wrap">
-	<label for="<?= $this->admin_input_name() ?>"><?= $this->admin_label() ?></label>
-	<?= $this->admin_get_input() ?>
-	<?php if( trim( $this->admin_description() ) != '' ){
-		?><p><?= $this->admin_description() ?></p><?php
+<div class="form-field term-<?= $field->id() ?>-wrap">
+	<label for="<?= $field->admin_input_name() ?>"><?= $field->admin_label() ?></label>
+	<?= $field->admin_get_input() ?>
+	<?php if( trim( $field->admin_description() ) != '' ){
+		?><p><?= $field->admin_description() ?></p><?php
 	} ?>
 </div>

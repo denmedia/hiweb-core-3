@@ -3,9 +3,9 @@
 	namespace hiweb\fields\locations;
 
 
+	use hiweb\arrays;
 	use hiweb\console;
 	use hiweb\fields\field;
-	use hiweb\fields\functions;
 
 
 	class locations{
@@ -123,6 +123,31 @@
 		}
 
 
+		/**
+		 * @param $contextOptions
+		 * @return false|\WP_Post|\WP_Term|\WP_User
+		 */
+		static function get_contextObject_from_contextOptions( $contextOptions ){
+			if( !is_null( arrays::get_value_by_key( $contextOptions, [ 'post_types', 'ID' ] ) ) ){
+				$R = get_post( $contextOptions['post_types']['ID'] );
+				return $R instanceof \WP_Post ? $R : false;
+			} elseif( !is_null( arrays::get_value_by_key( $contextOptions, [ 'taxonomies', 'term_id' ] ) ) ) {
+				$R = get_term_by( 'id', $contextOptions['taxonomies']['term_id'] );
+				return $R instanceof \WP_Term ? $R : false;
+			} elseif( !is_null( arrays::get_value_by_key( $contextOptions, [ 'users', 'ID' ] ) ) ) {
+				$R = get_user_by( 'ID', $contextOptions['taxonomies']['term_id'] );
+				return $R instanceof \WP_User ? $R : false;
+			} elseif( is_string( arrays::get_value_by_key( $contextOptions, [ 'admin_menus', 'menu_slug' ] ) ) ) {
+				return $contextOptions['admin_menus']['menu_slug'];
+			}
+			return false;
+		}
+
+
+		/**
+		 * @param null $contextObject
+		 * @return array
+		 */
 		static function get_locationOptions_from_contextObject( $contextObject = null ){
 			$R = [];
 			if( is_null( $contextObject ) || empty( $contextObject ) || is_numeric( $contextObject ) ){

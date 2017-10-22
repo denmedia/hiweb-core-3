@@ -4,18 +4,19 @@
 
 
 	/**
-	 * @var field $this
+	 * @var field $field
 	 * @var mixed $value
+	 * @var array $attributes
 	 */
 
 ?>
-<div class="<?= $this->admin_fieldset_wrap_class() ?>" data-field-id="<?= $this->id() ?>" data-field-global-id="<?= $this->global_id() ?>">
-	<p class="name"><?= $this->admin_label() ?></p>
-	<?= $this->admin_get_input( $value ) ?>
+<div class="<?= $field->admin_fieldset_wrap_class() ?>" data-field-id="<?= $field->id() ?>" data-field-global-id="<?= $field->global_id() ?>">
+	<p class="name"><strong><?= $field->admin_label() ?></strong></p>
+	<?= $field->admin_get_input( $value ) ?>
 	<?php
-		if( trim( $this->admin_description() ) != '' ){
+		if( trim( $field->admin_description() ) != '' ){
 			?>
-			<p class="description"><?= $this->admin_description() ?></p>
+			<p class="description"><?= $field->admin_description() ?></p>
 			<?php
 		}
 	?>

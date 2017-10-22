@@ -77,6 +77,14 @@
 		}
 
 
+		/**
+		 * @return bool
+		 */
+		public function is_exists_and_readable(){
+			return path::is_readable( $this->path );
+		}
+
+
 		public function get_size(){
 			$R = false;
 			if( $this->is_file ){

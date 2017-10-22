@@ -27,8 +27,17 @@
 		 * @param string $attr_name
 		 * @param string $attr_value
 		 */
-		public function admin_input_attributes_set( $attr_name, $attr_value = '' ){
+		public function admin_input_set_attributes( $attr_name, $attr_value = '' ){
 			$this->admin_input_attributes[ $attr_name ] = $attr_value;
+		}
+
+
+		/**
+		 * @param string $attr_name
+		 * @return null|mixed
+		 */
+		public function admin_input_get_attribute($attr_name = 'id'){
+			return array_key_exists($attr_name, $this->admin_input_attributes) ? $this->admin_input_attributes[$attr_name] : null;
 		}
 
 
@@ -36,12 +45,13 @@
 		 * @param null|array|string $attributes
 		 * @return string
 		 */
-		public function admin_get_input_attributes_html( $attributes = null ){
+		public function admin_get_input_attributes_html( $attributes = null, $take_attributes = [] ){
 			$R = [];
 			if( is_string( $attributes ) ) return $attributes;
 			if( is_null( $attributes ) ) $attributes = $this->admin_input_attributes;
 			if( is_array( $attributes ) ){
 				foreach( $attributes as $key => $val ){
+					if(is_array($take_attributes) && count($take_attributes) > 0 && !array_key_exists($key, array_flip($take_attributes))) continue;
 					if( is_array( $val ) ) $val = json_encode( $val );
 					$R[] = $key . '="' . htmlentities( $val, ENT_QUOTES, 'UTF-8' ) . '"';
 				}

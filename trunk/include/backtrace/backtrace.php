@@ -87,7 +87,7 @@
 			if( arrays::count( $debugBacktrace ) < $depth ){
 				//hiweb()->console()->warn( 'Слишком глубоко [' . $depth . ']', 1 );
 			} else {
-				$R = realpath( arrays::get_byKey( $debugBacktrace, [ $depth, 'file' ], ':файл не найден:' ) ) . ' : ' . arrays::get_byKey( $debugBacktrace, [ $depth, 'line' ] );
+				$R = realpath( arrays::get_value_by_key( $debugBacktrace, [ $depth, 'file' ], ':файл не найден:' ) ) . ' : ' . arrays::get_value_by_key( $debugBacktrace, [ $depth, 'line' ] );
 			}
 
 			return $R;

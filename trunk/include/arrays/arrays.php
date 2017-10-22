@@ -78,15 +78,15 @@
 
 		/**
 		 * Возвращает значение ключа по его индексу
-		 * @param array     $array
+		 * @param array $array
 		 * @param int|array $index = номер (массив номеров) индекса значения. Напрмиер 0 - первый ключ. Чтобы получить последний ключ, укажите -1, так же - 2 вернет предпоследний ключ. Если индекс ключа превысит
-		 * @return null
+		 * @return mixed
 		 */
-		static function get_index( $array, $index = 0 ){
+		static function get_value_by_index( $array, $index = 0 ){
 			if( !is_array( $array ) ){
 				return null;
 			}
-			$index = self::get( $index );
+			$index = self::get_array( $index );
 			$indexThis = intval( array_shift( $index ) );
 			$count = count( $array );
 			if( $indexThis >= $count ){
@@ -97,9 +97,9 @@
 				$indexThis = 0;
 			}
 			if( count( $index ) == 0 ){
-				return self::get_byKey( array_values( $array ), $indexThis );
+				return self::get_value_by_key( array_values( $array ), $indexThis );
 			} else {
-				return self::get_byKey( array_values( self::get_index( $array, $indexThis ) ), $index );
+				return self::get_value_by_key( array_values( self::get_value_by_index( $array, $indexThis ) ), $index );
 			}
 		}
 
@@ -111,7 +111,7 @@
 		 * @param bool $use_regexp
 		 * @return int|null|string|array
 		 */
-		static function find_key( $array, $search_value, $use_regexp = false ){
+		static function find_key_by_value( $array, $search_value, $use_regexp = false ){
 			if( is_array( $array ) ){
 				foreach( $array as $key => $val ){
 					if( !is_array( $val ) && !is_object( $val ) ){
@@ -119,7 +119,7 @@
 							return $key;
 						}
 					} else {
-						$sub_find = self::find_key( $val, $search_value, $use_regexp );
+						$sub_find = self::find_key_by_value( $val, $search_value, $use_regexp );
 						if( !is_null( $sub_find ) ){
 							return array_merge( [ $key ], is_array( $sub_find ) ? $sub_find : [ $sub_find ] );
 						}
@@ -265,13 +265,13 @@
 		 * @return mixed
 		 * @version 1.2
 		 */
-		static function get_byKey( $haystack = [], $keyMix = '', $def = null ){
+		static function get_value_by_key( $haystack = [], $keyMix = '', $def = null ){
 			if( is_object( $haystack ) ){
 				$haystack = (array)$haystack;
 			}
 			if( is_array( $keyMix ) && count( $keyMix ) > 1 ){
 				$key = array_shift( $keyMix );
-				return self::get_byKey( self::get_byKey( $haystack, $key, $def ), $keyMix, $def );
+				return self::get_value_by_key( self::get_value_by_key( $haystack, $key, $def ), $keyMix, $def );
 			} elseif( is_array( $keyMix ) && count( $keyMix ) == 1 ) {
 				$keyMix = array_shift( $keyMix );
 			}
@@ -286,9 +286,9 @@
 		 * @param null $subKey - если $mix - массив, то из него можно извлеч значение ключа и сконвертировать его в массив
 		 * @return array
 		 */
-		static function get( $mix, $subKey = null ){
+		static function get_array( $mix, $subKey = null ){
 			if( !is_null( $subKey ) && !is_bool( $subKey ) ){
-				$mix = self::get_byKey( $mix, $subKey );
+				$mix = self::get_value_by_key( $mix, $subKey );
 			}
 
 			return ( is_array( $mix ) || is_null( $mix ) ) ? $mix : [ $mix ];
@@ -303,7 +303,7 @@
 		 * @return null
 		 * @version 1.0
 		 */
-		static function getValNext( $haystack = [], $keyMix = '', $def = null ){
+		static function get_next_value( $haystack = [], $keyMix = '', $def = null ){
 			if( is_object( $haystack ) ){
 				$haystack = (array)$haystack;
 			}
@@ -350,7 +350,7 @@
 		 */
 		static function count( $haystack, $keyMix = null ){
 			if( !is_null( $keyMix ) ){
-				$haystack = self::get_byKey( $haystack, $keyMix );
+				$haystack = self::get_value_by_key( $haystack, $keyMix );
 			}
 			if( !is_array( $haystack ) ){
 				return 0;
@@ -418,7 +418,7 @@
 		 * @return bool|string
 		 */
 		static function get_free_key( $haystack, $must_key = null ){
-			$haystack = self::get( $haystack );
+			$haystack = self::get_array( $haystack );
 			for( $count = 0; $count < 999; $count ++ ){
 				$count = sprintf( '%03u', $count );
 				$input_name_id = $must_key . '_' . $count;

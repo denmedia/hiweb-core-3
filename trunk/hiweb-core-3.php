@@ -38,10 +38,9 @@
 		\hiweb\dump( [ $params, $page ] );
 	}, [ 'foo', 'bar' ] );
 
-	$field = add_field_repeat( 'test' );
-	$field->add_col_field( add_field_repeat('123')->admin_label('ter') );
-	$field->admin_label( 'Проверка ТЕСТ' )->admin_description( 'Комментарий к полю и  прочее' )->value_default('Проверка');
-	$field->location()->admin_menus( 'test' );
-	$field = add_field_text( 'test2' );
-	$field->admin_label( 'Проверка ТЕСТ 2' )->admin_description( 'Комментарий к полю и прочее для второго поля' );
-	$field->location()->admin_menus( 'test' );
+	$field = add_field_script('32543re');
+	$field->location()->admin_menus('test');
+	$field->value_default('#ff4499');
+	$field->admin_label('Проверка чекбокса');
+	$field->admin_description('Более подробное описание поля. Более подробное описание поля. Более подробное описание поля. Более подробное описание поля. Более подробное описание поля. Более подробное описание поля. Более подробное описание поля. Более подробное описание поля.');
+	$field->admin_template('post-box');

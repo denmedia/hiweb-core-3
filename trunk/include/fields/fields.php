@@ -16,8 +16,6 @@
 
 		/** @var field[] */
 		static $fields = [];
-		//		/** @var hw_field_frontend[] */
-		//		static $fields_byContext = [];
 		/** @var array */
 		static $fieldId_globalId = [];
 		/** @var array */

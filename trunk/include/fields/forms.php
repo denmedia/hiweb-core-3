@@ -132,7 +132,8 @@
 					 * @var field $field
 					 */
 					foreach( $fields as $field_id => $field ){
-						$fields_html[] = $field->context( $contextObject )->get_fieldset( [ 'name' => is_string( $contextObject ) ? self::get_field_input_option_name( $field ) : self::get_field_input_name( $field ) ] );
+						$field->admin_input_set_attributes('name',is_string( $contextObject ) ? self::get_field_input_option_name( $field ) : self::get_field_input_name( $field ));
+						$fields_html[] = $field->context( $contextObject )->get_fieldset(  );
 					}
 					$R[] = str_replace( '<!--fields-->', implode( '', $fields_html ), $form_html );
 				}

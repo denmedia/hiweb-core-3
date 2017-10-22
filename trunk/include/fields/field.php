@@ -19,6 +19,7 @@
 	namespace hiweb\fields {
 
 
+		use hiweb\console;
 		use hiweb\fields\field\admin;
 		use hiweb\fields\field\properties;
 		use hiweb\fields\field\value;
@@ -40,7 +41,24 @@
 			public function __construct( $id = null ){
 				$this->id = trim( $id ) == '' ? string::rand() : $id;
 				$this->location = locations::register( $this );
-				$this->admin_input_attributes_set( 'name', $this->id );
+				$this->admin_input_set_attributes( 'name', $this->id );
+			}
+
+
+			/**
+			 * @param $key
+			 * @param null $value
+			 * @return $this|null
+			 */
+			protected function set_property( $key, $value = null ){
+				if( is_null( $value ) ){
+					return property_exists( $this, $key ) ? $this->{$key} : null;
+				} else {
+					if( property_exists( $this, $key ) ) $this->{$key} = $value; else {
+						console::debug_warn( 'Попытка установить несуществующее свойтсво [' . $key . ']', $value );
+					}
+					return $this;
+				}
 			}
 
 

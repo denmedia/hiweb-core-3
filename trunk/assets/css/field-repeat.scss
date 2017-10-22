@@ -1,0 +1,113 @@
+@import "mixins";
+
+.hiweb-field-repeat {
+
+	table {
+
+		.nowrap[data-ctrl] {
+			white-space: nowrap;
+		}
+
+		[data-ctrl] button {
+			background: transparent;
+			border: none;
+			padding: 0;
+			width: 25px;
+			height: 25px;
+			opacity: 0.5;
+			cursor: pointer;
+			-webkit-transition: all 0.2S; -moz-transition: all 0.2S; -ms-transition: all 0.2S; -o-transition: all 0.2S; transition: all 0.2S;
+			&:hover {
+				opacity: 1;
+				transform: scale(1.3);
+			}
+		}
+
+		thead, tfoot {
+			tr, th {
+				text-align: center;
+			}
+		}
+
+		tbody[data-rows-source] {
+			opacity: 0.3;
+			display: none;
+		}
+
+		tbody[data-rows-list] {
+			thead, tfoot {
+				th {
+					padding: 0;
+					font-size: 0.9em;
+				}
+			}
+
+			tr {
+				[data-ctrl] {
+					padding: auto 2px;
+					width: 38px;
+				}
+
+				[data-drag] {
+					background-image: url(../img/pattern-2.png);
+					cursor: move;
+					border-right: 1px dotted #eee;
+					border-bottom: 1px dotted #eee;
+					width: 16px;
+					padding: 8px 2px;
+					button, i {
+						cursor: move;
+					}
+					i {
+						opacity: 0.5;
+					}
+					&:hover i {
+						opacity: 1;
+					}
+				}
+
+				&:last-child [data-drag] {
+					border-bottom: none;
+				}
+			}
+
+		}
+
+		tbody[data-rows-message] {
+			[data-row-empty="1"] {
+				display: none;
+			}
+		}
+
+		tr[data-row] {
+			@include hw_transition((transform, opacity, box-shadow, filter), 500ms);
+
+			&.ui-sortable-helper {
+				background-color: white;
+				@include hw_transition((transform, opacity, box-shadow, filter), 200ms);
+				transform: scale(1.02);
+				z-index: 10000 !important;
+				@include hw_opacity(0.85);
+				@include hw_box_shadow(10px, 0.1, 10px, 20px);
+				@include hw_filter(blur(0.2px));
+			}
+		}
+
+		th {
+			.description {
+				font-size: 85%;
+				margin: 0;
+			}
+		}
+
+		td {
+			text-align: center;
+
+			&[data-ctrl] {
+			}
+
+		}
+
+	}
+
+}

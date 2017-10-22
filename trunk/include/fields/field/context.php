@@ -41,6 +41,7 @@
 			if( key_exists( 'post_types', $this->contextOptions ) && key_exists( 'ID', $this->contextOptions['post_types'] ) ){
 				$post_id = $this->contextOptions['post_types']['ID'];
 				$value = metadata_exists( 'post', $post_id, $this->field->id() ) ? get_post_meta( $post_id, $this->field->id(), true ) : $this->field->value_default();
+				$value = apply_filters( 'hiweb\\fields\\field\\context\\value', $value, $this->field, $this );
 			} elseif( key_exists( 'taxonomies', $this->contextOptions ) && key_exists( 'term_id', $this->contextOptions['taxonomies'] ) ) {
 				$term_id = $this->contextOptions['taxonomies']['term_id'];
 				$value = metadata_exists( 'term', $term_id, $this->field->id() ) ? get_term_meta( $term_id, $this->field->id(), true ) : $this->field->value_default();

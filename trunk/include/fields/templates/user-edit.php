@@ -4,12 +4,13 @@
 
 
 	/**
-	 * @var field $this
+	 * @var field $field
 	 * @var mixed $value
+	 * @var array $attributes
 	 */
 
 ?>
 <tr class="form-field">
-	<th scope="row"><label for="user_login"><?= $this->admin_label() ?></label></th>
-	<td><?= $this->admin_get_input( $value ) ?></td>
+	<th scope="row"><label for="user_login"><?= $field->admin_label() ?></label></th>
+	<td><?= $field->admin_get_input( $value ) ?></td>
 </tr>

@@ -4,17 +4,18 @@
 
 
 	/**
-	 * @var field $this
+	 * @var field $field
 	 * @var mixed $value
+	 * @var array $attributes
 	 */
 
 ?>
 <tr class="form-field form-required term-name-wrap">
-	<th scope="row"><label for="<?= $this->admin_input_name() ?>"><?= $this->admin_label() ?></label></th>
+	<th scope="row"><label for="<?= $field->admin_input_name() ?>"><?= $field->admin_label() ?></label></th>
 	<td>
-		<?= $this->admin_get_input( $this->context()->value() ) ?>
-		<?php if( trim( $this->admin_description() ) != '' ){
-			?><p class="description"><?= $this->admin_description() ?></p><?php
+		<?= $field->admin_get_input( $field->context()->value() ) ?>
+		<?php if( trim( $field->admin_description() ) != '' ){
+			?><p class="description"><?= $field->admin_description() ?></p><?php
 		} ?>
 	</td>
 </tr>

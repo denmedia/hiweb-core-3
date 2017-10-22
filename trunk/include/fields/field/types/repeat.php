@@ -21,7 +21,7 @@
 					$R['result'] = true;
 					/** @var fields\types\repeat $field */
 					$field = fields::$fields[ $field_global_id ];
-					$R['data'] = $field->ajax_html_row( path::request( 'params' ) );
+					$R['data'] = $field->ajax_html_row( path::request( 'input_name' ) );
 				}
 			}
 			//
@@ -152,7 +152,7 @@
 						}
 					} ?>
 					<td data-ctrl>
-						<!--<button title="Duplicate row" class="dashicons dashicons-admin-page" data-action-duplicate="<?= $row_index ?>"></button>-->
+						<button title="Duplicate row" class="dashicons dashicons-admin-page" data-action-duplicate="<?= $row_index ?>"></button>
 						<button title="Remove row..." class="dashicons dashicons-trash" data-action-remove="<?= $row_index ?>"></button>
 					</td>
 				</tr>
@@ -162,23 +162,24 @@
 
 			public function ajax_html_row( $input_name ){
 				ob_start();
+				$this->admin_input_set_attributes( 'name', $input_name );
 				$this->the_row_html( 0 );
 				return ob_get_clean();
 			}
 
 
 			/**
-			 * @param null  $value
+			 * @param null $value
 			 * @param array $attributes
 			 * @return string
 			 */
 			public function admin_get_input( $value = null, $attributes = [] ){
-				\hiweb\css( HIWEB_DIR_CSS . '/input-repeat.css' );
-				\hiweb\js( HIWEB_DIR_JS . '/input-repeat.js', [ 'jquery-ui-sortable' ] );
+				\hiweb\css( HIWEB_DIR_CSS . '/field-repeat.css' );
+				\hiweb\js( HIWEB_DIR_JS . '/field-repeat.js', [ 'jquery-ui-sortable' ] );
 				///
 				ob_start();
 				?>
-				<div class="hw-input-repeat" name="<?= $this->admin_input_name() ?>" data-input-name="<?= $this->admin_input_name() ?>" data-global-id="<?= $this->global_id() ?>">
+				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute('name') ?>" data-input-name="<?= $this->admin_input_get_attribute('name') ?>" data-global-id="<?= $this->global_id() ?>">
 					<?php if( !$this->have_cols() ){
 						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col(\'col-id\')</code>' ), $this->id() ) ?></p><?php
 					} else {
@@ -306,12 +307,12 @@
 				} elseif( array_key_exists( $this->id(), $row ) ) {
 					$cell_value = $row[ $this->id() ];
 				} elseif( array_key_exists( $this->id(), array_values( $row ) ) ) {
-					$cell_value = arrays::get_index( $row, $this->id() );
+					$cell_value = arrays::get_value_by_index( $row, $this->id() );
 				}
 				//
 				$attributes = [
 					'id' => $this->parent_field->admin_input_name( $this->id(), rand( 1000, 9999 ) ),
-					'name' => $this->parent_field->admin_input_name() . '[' . $row_index . '][' . $this->id() . ']'
+					'name' => $this->parent_field->admin_input_get_attribute( 'name' ) . '[' . $row_index . '][' . $this->id() . ']'
 				];
 				//
 				return $this->field->admin_get_input( $cell_value, $attributes );

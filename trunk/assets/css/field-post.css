@@ -1,0 +1,17 @@
+.hiweb-field-post .single .selectator_selected_items .selectator_selected_item .selectator_selected_item_left img {
+  width: 25px !important;
+  height: 25px !important; }
+.hiweb-field-post .selectator_element {
+  width: 100% !important; }
+  .hiweb-field-post .selectator_element .selectator_options {
+    z-index: 1100; }
+    .hiweb-field-post .selectator_element .selectator_options .selectator_option .selectator_option_left img {
+      width: 25px !important;
+      height: 25px !important; }
+    .hiweb-field-post .selectator_element .selectator_options .selectator_option .selectator_option_right {
+      background-color: #ccc;
+      border-radius: 2px; }
+  .hiweb-field-post .selectator_element.single .selectator_input {
+    z-index: 1100; }
+
+/*# sourceMappingURL=field-post.css.map */
