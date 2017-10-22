@@ -1,0 +1,1 @@
+<div class="error notice"><p><?php _e( '<h3>hiWeb Core 3 error!</h3> Request PHP version great that <b>5.4.0</b>!', 'hw-core-2' ); ?></p></div>
