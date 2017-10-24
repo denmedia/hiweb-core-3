@@ -103,7 +103,7 @@
 				ob_start();
 				?>
 				<div class="hiweb-field-image" id="<?= $this->id() ?>" data-has-image="<?= $this->have_image( $value ) ? '1' : '0' ?>" data-image-small="<?= $image_small ? '1' : '0' ?>">
-					<input type="hidden" <?= $this->admin_get_input_attributes_html(  ) ?> value="<?= ( $this->has_image ? $value : '' ) ?>"/>
+					<input type="hidden" <?= $this->admin_get_input_attributes_html( $attributes ) ?> value="<?= ( $this->has_image ? $value : '' ) ?>"/>
 					<a href="#" class="image-select" title="<?= __( 'Select/Deselect image...' ) ?>" data-click="<?= ( $this->have_image( $value ) ? 'deselect' : 'select' ) ?>" style="width: <?= $attr_width ?>px; height: <?= $attr_height ?>px;">
 						<div class="thumbnail" style="<?= $this->have_image( $value ) ? 'background-image:url(' . $preview[0] . ')' : '' ?>"></div>
 						<div class="overlay"></div>

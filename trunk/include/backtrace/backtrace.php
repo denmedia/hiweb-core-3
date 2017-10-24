@@ -2,8 +2,6 @@
 
 	namespace hiweb;
 	
-	use hiweb\arrays;
-
 
 	class backtrace{
 
@@ -153,7 +151,7 @@
 				if( $index >= $start && $index < ( $start + $offset ) ){
 					if( isset( $items['class'] ) ){
 						if( isset( $items['file'] ) ){
-							$R[] = $items['class'] . $items['type'] . $items['function'] . '() ➜ ' . hiweb()->path()->simplepath( $items['file'] ) . ' ⇶ ' . $items['line'];
+							$R[] = $items['class'] . $items['type'] . $items['function'] . '() ➜ ' . path::simplepath( $items['file'] ) . ' ⇶ ' . $items['line'];
 						} else {
 							$R[] = $items['class'] . $items['type'] . $items['function'] . '()';
 						}

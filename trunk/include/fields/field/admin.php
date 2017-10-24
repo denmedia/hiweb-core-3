@@ -3,7 +3,6 @@
 	namespace hiweb\fields\field;
 
 
-	use hiweb\console;
 	use hiweb\fields\field;
 	use hiweb\fields\forms;
 
@@ -17,7 +16,7 @@
 		/** @var string */
 		private $description = '';
 		/** @var string */
-		private $template = 'default';
+		private $template = '';
 		/** @var array */
 		protected $admin_input_attributes = [];
 
@@ -52,6 +51,7 @@
 			if( is_string( $attributes ) ) return $attributes;
 			if( is_null( $attributes ) ) $attributes = $this->admin_input_attributes;
 			if( is_array( $attributes ) ){
+				$attributes = array_merge($this->admin_input_attributes, $attributes);
 				foreach( $attributes as $key => $val ){
 					if( is_array( $take_attributes ) && count( $take_attributes ) > 0 && !array_key_exists( $key, array_flip( $take_attributes ) ) ) continue;
 					if( is_array( $val ) ) $val = json_encode( $val );

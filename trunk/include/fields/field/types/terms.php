@@ -19,7 +19,6 @@
 	namespace hiweb\fields\types {
 
 
-		use function hiweb\dump;
 		use hiweb\fields\field;
 
 

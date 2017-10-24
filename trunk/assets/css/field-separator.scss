@@ -1,0 +1,22 @@
+.hiweb-field-separator {
+	margin: 48px 0 8px 0;
+	border-bottom: 1px dashed #ccc;
+	.hw-field-separator-title {
+		font-size: 180%;
+		margin: 4px 0;
+		padding: 0;
+		&.has-description {
+			margin-bottom: 4px;
+			padding-bottom: 0;
+		}
+		&.no-description {
+			margin-bottom: 16px;
+			padding-bottom: 0;
+		}
+	}
+
+	.hw-field-separator-description {
+		margin-top: 0;
+		font-style: italic;
+	}
+}

@@ -3,9 +3,6 @@
 	namespace hiweb\admin\pages;
 
 
-	use hiweb\console;
-
-
 	class subpage extends page_abstract{
 
 		protected $parent_slug = '';

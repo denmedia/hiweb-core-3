@@ -38,9 +38,9 @@
 			add_action( 'current_screen', function(){
 				if( is_array( $this->post_types() ) ) foreach( $this->post_types() as $post_type ){
 					if( get_current_screen()->post_type == $post_type ){
-						css( hiweb()->url_css . '/tool-thumbnail-upload.css' );
-						$script_id = js( hiweb()->url_js . '/hw_Dropzone.js', [ 'jquery' ] );
-						js( hiweb()->url_js . '/tool-thumbnail-upload.js', [ 'jquery', $script_id ], true );
+						css( HIWEB_URL_CSS . '/tool-thumbnail-upload.css' );
+						$script_id = js( HIWEB_URL_JS . '/hw_Dropzone.js', [ 'jquery' ] );
+						js( HIWEB_URL_JS . '/tool-thumbnail-upload.js', [ 'jquery', $script_id ], true );
 					}
 				}
 			} );
@@ -64,7 +64,7 @@
 						<div class="img noimg"></div>
 						<div class="img" data-img <?php
 							if( has_post_thumbnail( $P ) ){
-						?>style="background-image: url(<?= get_the_post_thumbnail_url( $P, $this->default_preview_size ) ?>)"<?php
+						?>style="background-image: url(<?= get_the_post_thumbnail_url( $P, self::$default_preview_size ) ?>)"<?php
 							}
 						?>></div>
 						<div data-drop-logo>
@@ -172,7 +172,7 @@
 		/**
 		 * Передайте массив одного файла для загрузки
 		 * @param $_file
-		 * @return int|WP_Error
+		 * @return int|\WP_Error
 		 */
 		public function upload( $_file ){
 			if( !isset( $_file['tmp_name'] ) ){

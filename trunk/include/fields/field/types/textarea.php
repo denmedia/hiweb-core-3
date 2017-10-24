@@ -26,7 +26,7 @@
 
 			public function admin_get_input( $value = null, $attributes = [] ){
 				\hiweb\css( HIWEB_URL_CSS . '/field-textarea.css' );
-				return '<textarea class="hiweb-field-textarea" ' . $this->admin_get_input_attributes_html() . '>' . $value . '</textarea>';
+				return '<textarea class="hiweb-field-textarea" ' . $this->admin_get_input_attributes_html($attributes) . '>' . $value . '</textarea>';
 			}
 
 		}

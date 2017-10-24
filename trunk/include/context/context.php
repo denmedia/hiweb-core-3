@@ -3,6 +3,7 @@
 	namespace hiweb;
 
 
+
 	class context{
 
 		/**
@@ -10,7 +11,7 @@
 		 * @return bool
 		 */
 		static function is_frontend_page(){
-			return ( $_SERVER['SCRIPT_FILENAME'] == \hiweb\path\base_dir() . '/index.php' ) && self::is_rest_api();
+			return ( $_SERVER['SCRIPT_FILENAME'] == path::base_dir() . '/index.php' ) && !self::is_rest_api();
 		}
 
 
@@ -70,7 +71,7 @@
 		 * @return bool
 		 */
 		static function is_rest_api(){
-			$dirs = \hiweb\path\url_info()['dirs_arr'];
+			$dirs = path::url_info()['dirs_arr'];
 			return reset( $dirs ) == 'wp-json';
 		}
 

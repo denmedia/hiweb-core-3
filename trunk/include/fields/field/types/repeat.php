@@ -118,7 +118,7 @@
 							$width_full += $col->width();
 						}
 						foreach( $this->get_cols() as $col ){
-							$width = ( $col->width() / $width_full * 100 ) . '%';
+							$width = ceil( $col->width() / $width_full * 100 ) . '%';
 							?>
 							<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>">
 								<?= $col->label() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>

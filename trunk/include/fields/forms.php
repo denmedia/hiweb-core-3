@@ -53,7 +53,7 @@
 		 * @param string $templateName
 		 */
 		static function set_field_defaultTemplate( field $field, $templateName = 'default' ){
-			if( $field->admin_template() == 'default' ){
+			if( $field->admin_template() == '' ){
 				$field->admin_template( $templateName );
 			}
 		}

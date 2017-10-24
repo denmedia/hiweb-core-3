@@ -1,0 +1,18 @@
+.hiweb-field-separator {
+  margin: 48px 0 8px 0;
+  border-bottom: 1px dashed #ccc; }
+  .hiweb-field-separator .hw-field-separator-title {
+    font-size: 180%;
+    margin: 4px 0;
+    padding: 0; }
+    .hiweb-field-separator .hw-field-separator-title.has-description {
+      margin-bottom: 4px;
+      padding-bottom: 0; }
+    .hiweb-field-separator .hw-field-separator-title.no-description {
+      margin-bottom: 16px;
+      padding-bottom: 0; }
+  .hiweb-field-separator .hw-field-separator-description {
+    margin-top: 0;
+    font-style: italic; }
+
+/*# sourceMappingURL=field-separator.css.map */

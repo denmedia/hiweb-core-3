@@ -26,7 +26,6 @@
 						$R[ $slug ] = add_menu_page( $page->page_title(), $page->menu_title(), $page->capability(), $page->menu_slug(), [ $page, 'the_form' ], $page->icon_url(), $page->position() );
 					} elseif( $page instanceof subpage ) {
 						$R[ $slug ] = add_submenu_page( $page->parent_slug(), $page->page_title(), $page->menu_title(), $page->capability(), $page->menu_slug(), [ $page, 'the_form' ] );
-						console::debug_info( '!!' );
 					} else {
 						console::debug_error( 'В массиве pages::$pages попался не экземпляр page_abstract', [ $slug, get_class( $page ) ] );
 						$R[ $slug ] = false;

@@ -19,7 +19,7 @@
 			if( array_key_exists( $location, $locations ) ){
 				$this->slug = $location;
 				$this->name = $locations[ $location ];
-				$location_ids = hiweb()->theme()->locations();
+				//$location_ids = hiweb()->theme()->locations(); //TODO!
 				foreach( $menus as $menu ){
 					if( $menu->term_id == $location_ids[ $location ] ){
 						$this->menus[] = $menu;
