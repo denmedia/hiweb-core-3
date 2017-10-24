@@ -14,17 +14,18 @@
 		 */
 		static $files = [];
 
+
 		/**
 		 * Поставить в очередь файл CSS
-		 * @version  2.0
+		 * @version  2.1
 		 * @param string $filePathOrUrl
-		 * @param array  $deeps
+		 * @param array $deeps
 		 * @param string $media = all|screen|handheld|print
 		 * @return bool
 		 */
 		static function add( $filePathOrUrl, $deeps = [], $media = 'all' ){
 			$file = \hiweb\file( $filePathOrUrl );
-			if( !$file->is_readable ){
+			if( !$file->is_url && !$file->is_readable ){
 				console::debug_error( 'Файл [' . $filePathOrUrl . '] не найден!' );
 				return false;
 			} else {
