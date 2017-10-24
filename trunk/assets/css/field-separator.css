@@ -15,4 +15,7 @@
     margin-top: 0;
     font-style: italic; }
 
+form .hiweb-field-separator:first-child {
+  margin-top: 0; }
+
 /*# sourceMappingURL=field-separator.css.map */

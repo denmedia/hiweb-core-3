@@ -20,3 +20,9 @@
 		font-style: italic;
 	}
 }
+
+form {
+	.hiweb-field-separator:first-child {
+		margin-top: 0;
+	}
+}

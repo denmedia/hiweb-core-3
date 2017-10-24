@@ -97,6 +97,7 @@
   font-size: 85%;
   margin: 0; }
 .hiweb-field-repeat table td {
-  text-align: center; }
+  text-align: center;
+  vertical-align: top; }
 
 /*# sourceMappingURL=field-repeat.css.map */

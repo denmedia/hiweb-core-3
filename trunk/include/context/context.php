@@ -43,7 +43,7 @@
 		/**
 		 * @return bool
 		 */
-		static function is_backend_page(){
+		static function is_admin_page(){
 			return \is_admin();
 		}
 

@@ -11,7 +11,7 @@
 
 ?>
 <fieldset class="<?= $field->admin_fieldset_wrap_class() ?>">
-	<p><?= $field->admin_label() ?></p>
+	<p><strong><?= $field->admin_label() ?></strong></p>
 	<div class="<?= $field->admin_input_wrap_class() ?>"><?= $field->admin_get_input( $value, $attributes ) ?></div>
 	<p class="description"><?= $field->admin_description() ?></p>
 </fieldset>

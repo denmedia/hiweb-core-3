@@ -56,7 +56,7 @@
 
 			/**
 			 * @param field $field
-			 * @return mixed
+			 * @return col
 			 */
 			public function add_col_field( field $field ){
 				$this->cols[ $field->id() ] = new col( $this, $field );

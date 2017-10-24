@@ -10,7 +10,7 @@
 
 
 		function __construct( $showBacktrace = false ){
-			if( !context::is_frontend_page() && !context::is_backend_page() ) return;
+			if( !context::is_frontend_page() && !context::is_admin_page() ) return;
 			css( HIWEB_DIR_CSS . '/errors.css' );
 			self::$showBacktrace = $showBacktrace;
 			@ini_set( 'display_errors', 'off' );
