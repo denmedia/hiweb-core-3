@@ -176,8 +176,11 @@
 			public function admin_get_input( $value = null, $attributes = [] ){
 				\hiweb\css( HIWEB_DIR_CSS . '/field-repeat.css' );
 				\hiweb\js( HIWEB_DIR_JS . '/field-repeat.js', [ 'jquery-ui-sortable' ] );
-				///
+				///INCLUDE SCRIPTS
 				ob_start();
+				$this->the_row_html( -1, [] );
+				ob_clean();
+				///
 				?>
 				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute('name') ?>" data-input-name="<?= $this->admin_input_get_attribute('name') ?>" data-global-id="<?= $this->global_id() ?>">
 					<?php if( !$this->have_cols() ){

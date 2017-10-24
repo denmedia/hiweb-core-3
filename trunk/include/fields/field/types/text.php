@@ -24,7 +24,10 @@
 
 		class text extends field{
 
-
+			public function admin_get_input( $value = null, $attributes = [] ){
+				\hiweb\css( HIWEB_URL_ASSETS . '/css/field-text.css' );
+				return parent::admin_get_input( $value, $attributes );
+			}
 
 		}
 	}

@@ -25,6 +25,7 @@
 		public $is_uploaded_file = false;
 		public $is_writable = false;
 		public $is_exists = false;
+		public $is_url = false;
 		///
 		public $filetype;
 		///
@@ -48,6 +49,8 @@
 				$this->path = path::realpath( $path );
 				$this->url = path::path_to_url( $this->path );
 			}
+			////
+			$this->is_url = filter_var( $path, FILTER_VALIDATE_URL );;
 			////
 			$this->basename = basename( $this->path );
 			$this->extension = path::file_extension( $this->path );

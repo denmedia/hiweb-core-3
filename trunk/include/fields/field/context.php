@@ -33,6 +33,7 @@
 
 
 		/**
+		 * Return value
 		 * @return mixed
 		 */
 		public function value(){
@@ -50,7 +51,16 @@
 			} elseif( key_exists( 'admin_menus', $this->contextOptions ) && key_exists( 'menu_slug', $this->contextOptions['admin_menus'] ) ) {
 				$value = get_option( forms::get_field_input_option_name( $this->field ), $this->field->value_default() );
 			}
-			return $this->field->value_sanitize( $value );
+			return $this->field->get_value_sanitize( $value );
+		}
+
+
+		/**
+		 * Return content value
+		 * @return mixed
+		 */
+		public function content(){
+			return $this->field->get_value_content( $this->value() );
 		}
 
 

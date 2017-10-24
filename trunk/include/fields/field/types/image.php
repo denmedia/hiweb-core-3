@@ -49,6 +49,23 @@
 
 
 			/**
+			 * @param $value
+			 * @param string $size
+			 * @param bool $return_image_html
+			 * @return bool|mixed|string
+			 */
+			public function get_value_content( $value, $size = 'thumbnail', $return_image_html = false ){
+				if( !is_numeric( $value ) ) return false;
+				if( $return_image_html ){
+					return wp_get_attachment_image( $value, $size );
+				}
+				$R = wp_get_attachment_image_src( $value, $size );
+				if( !is_array( $R ) || !array_key_exists( 0, $R ) ) return false;
+				return $R[0];
+			}
+
+
+			/**
 			 * Возвращает URL до изображения
 			 * @param $value - attachment id
 			 * @param string $size

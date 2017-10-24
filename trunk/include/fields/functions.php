@@ -26,4 +26,26 @@
 				echo fields::get( $fieldId )->context( $contextObject )->value();
 			}
 		}
+
+		if( !function_exists( 'get_field_content' ) ){
+			/**
+			 * @param string $fieldId
+			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
+			 * @return mixed
+			 */
+			function get_field_content( $fieldId, $contextObject = null ){
+				return fields::get( $fieldId )->context( $contextObject )->content();
+			}
+		}
+
+		if( !function_exists( 'the_field_content' ) ){
+			/**
+			 * @param string $fieldId
+			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
+			 * @return mixed
+			 */
+			function the_field_content( $fieldId, $contextObject = null ){
+				return fields::get( $fieldId )->context( $contextObject )->content();
+			}
+		}
 	}

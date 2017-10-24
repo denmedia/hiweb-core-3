@@ -16,7 +16,7 @@
 	trait value{
 
 		/** @var mixed */
-		private $value;
+		protected $value_default;
 		/** @var array|context[] */
 		private $value_contexts = [];
 
@@ -27,9 +27,9 @@
 		 */
 		public function value_default( $value = null ){
 			if( is_null( $value ) ){
-				return $this->value;
+				return $this->value_default;
 			} else {
-				$this->value = $value;
+				$this->value_default = $value;
 				return $this;
 			}
 		}
@@ -39,8 +39,18 @@
 		 * @param $value
 		 * @return mixed
 		 */
-		public function value_sanitize( $value ){
+		public function get_value_sanitize( $value ){
 			return $value;
+		}
+
+
+		/**
+		 *
+		 * @param $value
+		 * @return mixed
+		 */
+		public function get_value_content( $value ){
+			return $this->get_value_sanitize( $value );
 		}
 
 

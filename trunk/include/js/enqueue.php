@@ -17,15 +17,15 @@
 
 		/**
 		 * Поставить в очередь файл JS
-		 * @version  2.0
+		 * @version  2.1
 		 * @param string $filePathOrUrl
-		 * @param array  $deeps
-		 * @param bool   $inFooter
+		 * @param array $deeps
+		 * @param bool $inFooter
 		 * @return bool
 		 */
 		static function add( $filePathOrUrl, $deeps = [], $inFooter = false ){
 			$file = \hiweb\file( $filePathOrUrl );
-			if( !$file->is_readable ){
+			if( !$file->is_url && !$file->is_readable ){
 				console::debug_error( 'Файл [' . $filePathOrUrl . '] не найден!' );
 				return false;
 			} else {

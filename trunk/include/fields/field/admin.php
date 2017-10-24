@@ -88,9 +88,10 @@
 		 */
 		public function admin_get_input( $value = null, $attributes = [] ){
 			$attributes_default = [
+				'class' => 'hiweb-field',
 				'type' => 'text',
 				'placeholder' => $this->value_default(),
-				'value' => $this->value_sanitize( $value )
+				'value' => $this->get_value_sanitize( $value )
 			];
 			$attributes = is_array( $attributes ) ? $attributes : [ $attributes ];
 			$attributes_final = array_merge( $attributes_default, $this->admin_input_attributes, $attributes );
