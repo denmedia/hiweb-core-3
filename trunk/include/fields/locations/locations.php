@@ -16,6 +16,8 @@
 		static $rules = [];
 		/** @var array */
 		static $rulesId = [];
+		/** @var location */
+		static $last_field_location = [];
 
 
 		/**

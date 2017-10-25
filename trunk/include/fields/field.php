@@ -63,9 +63,13 @@
 
 
 			/**
+			 * @param bool $use_last_location - set TRUE, if you wanna use previous location
 			 * @return location
 			 */
-			public function location(){
+			public function location( $use_last_location = false ){
+				if( $use_last_location ){
+					if( locations::$last_field_location instanceof location ) $this->location->set_options( locations::$last_field_location->get_options() ); else console::debug_error( 'Попытка использовать последнюю локацию для поля, но ее нет', [ $this->get_type(), $this->id() ] );
+				}
 				return $this->location;
 			}
 

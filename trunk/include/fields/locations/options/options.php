@@ -4,6 +4,7 @@
 
 
 	use hiweb\fields\locations\location;
+	use hiweb\fields\locations\locations;
 
 
 	abstract class options{
@@ -19,6 +20,7 @@
 		 */
 		public function __construct( location $location ){
 			$this->location = $location;
+			locations::$last_field_location = $this->get_location();
 		}
 
 
