@@ -45,11 +45,13 @@
 
 
 		/**
-		 *
 		 * @param $value
+		 * @param null $arg_1
+		 * @param null $arg_2
+		 * @param null $arg_3
 		 * @return mixed
 		 */
-		public function get_value_content( $value ){
+		public function get_value_content( $value, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
 			return $this->get_value_sanitize( $value );
 		}
 

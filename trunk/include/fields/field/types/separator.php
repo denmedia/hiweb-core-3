@@ -5,10 +5,14 @@
 
 		if( !function_exists( 'add_field_separator' ) ){
 			/**
+			 * @param string $label
+			 * @param string $description
 			 * @return \hiweb\fields\types\separator
 			 */
-			function add_field_separator(){
+			function add_field_separator( $label = '', $description = '' ){
 				$separator = new hiweb\fields\types\separator();
+				$separator->admin_label($label);
+				$separator->admin_description($description);
 				hiweb\fields::register_field( $separator );
 				return $separator;
 			}
@@ -26,9 +30,10 @@
 			private $tag_label = 'h2';
 			private $tag_description = 'p';
 
+
 			public function __construct( $id = null ){
 				parent::__construct( $id );
-				$this->admin_template('separator');
+				$this->admin_template( 'separator' );
 			}
 
 

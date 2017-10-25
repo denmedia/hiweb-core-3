@@ -57,10 +57,13 @@
 
 		/**
 		 * Return content value
+		 * @param null $arg_1
+		 * @param null $arg_2
+		 * @param null $arg_3
 		 * @return mixed
 		 */
-		public function content(){
-			return $this->field->get_value_content( $this->value() );
+		public function content($arg_1 = null, $arg_2 = null, $arg_3 = null){
+			return $this->field->get_value_content( $this->value(), $arg_1, $arg_2, $arg_3 );
 		}
 
 
@@ -136,7 +139,7 @@
 				console::debug_warn( 'Превышен лимит строк массива для функции have_rows в поле [' . $this->field->id() . ']' );
 				return false;
 			} else {
-				console::debug_info( 'Перебор строк массива для функции have_rows в поле [' . $this->field->id() . '] окончен' );
+				//console::debug_info( 'Перебор строк массива для функции have_rows в поле [' . $this->field->id() . '] окончен' );
 				$this->reset_rows();
 				return false;
 			}
@@ -175,6 +178,22 @@
 		 */
 		public function get_sub_field( $subFieldId ){
 			return array_key_exists( $subFieldId, $this->current_row ) ? $this->current_row[ $subFieldId ] : null;
+		}
+
+
+		/**
+		 * @param $subFieldId
+		 * @param null $arg_1
+		 * @param null $arg_2
+		 * @param null $arg_3
+		 * @return mixed|null
+		 * @internal param null $addition_args
+		 */
+		public function get_sub_field_content( $subFieldId, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
+			if( array_key_exists( $subFieldId, $this->current_row ) ){
+				return $this->field->get_value_content( $this->current_row[ $subFieldId ], $arg_1, $arg_2, $arg_3, [ $subFieldId, $this->current_row_index ] );
+			}
+			return null;
 		}
 
 

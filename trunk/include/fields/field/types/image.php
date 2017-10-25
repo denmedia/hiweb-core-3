@@ -25,8 +25,8 @@
 
 		class image extends field{
 
-			private $preview_width = 250;
-			private $preview_height = 120;
+			protected $preview_width = 250;
+			protected $preview_height = 120;
 			private $has_image = [];
 
 

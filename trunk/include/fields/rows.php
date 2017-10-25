@@ -3,40 +3,110 @@
 	namespace {
 
 
+		use hiweb\console;
 		use hiweb\fields\rows;
 
 
-		/**
-		 * @param      $fieldId
-		 * @param null $contextObject
-		 * @return bool
-		 */
-		function have_rows( $fieldId, $contextObject = null ){
-			return rows::have_rows( $fieldId, $contextObject );
+		if( !function_exists( 'have_rows' ) ){
+			/**
+			 * @param      $fieldId
+			 * @param null $contextObject
+			 * @return bool
+			 */
+			function have_rows( $fieldId, $contextObject = null ){
+				return rows::have_rows( $fieldId, $contextObject );
+			}
+		} else {
+			console::debug_warn( 'Function [have_rows] is exists...' );
 		}
 
-		/**
-		 * @return array|mixed|null
-		 */
-		function the_row(){
-			return rows::the_row();
+		if( !function_exists( 'the_row' ) ){
+			/**
+			 * @return array|mixed|null
+			 */
+			function the_row(){
+				return rows::the_row();
+			}
+		} else {
+			console::debug_warn( 'Function [the_row] is exists...' );
 		}
 
-		/**
-		 * @param      $fieldId
-		 * @param null $contextObject
-		 * @return bool|mixed
-		 */
-		function reset_rows( $fieldId, $contextObject = null ){
-			return rows::reset_rows( $fieldId, $contextObject );
+		if( !function_exists( 'reset_rows' ) ){
+			/**
+			 * @param      $fieldId
+			 * @param null $contextObject
+			 * @return bool|mixed
+			 */
+			function reset_rows( $fieldId, $contextObject = null ){
+				return rows::reset_rows( $fieldId, $contextObject );
+			}
+		} else {
+			console::debug_warn( 'Function [reset_rows] is exists...' );
 		}
 
-		/**
-		 * @param $subField
-		 * @return mixed|null
-		 */
-		function get_sub_field( $subField ){
-			return rows::get_sub_field( $subField );
+		if( !function_exists( 'get_sub_field' ) ){
+			/**
+			 * @param $subField
+			 * @return mixed|null
+			 */
+			function get_sub_field( $subField ){
+				return rows::get_sub_field( $subField );
+			}
+		} else {
+			console::debug_warn( 'Function [get_sub_field] is exists...' );
+		}
+
+		if( !function_exists( 'get_sub_field_content' ) ){
+			/**
+			 * @param $subField
+			 * @param null $arg_1
+			 * @param null $arg_2
+			 * @param null $arg_3
+			 * @return mixed|null
+			 */
+			function get_sub_field_content( $subField, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
+				return rows::get_sub_field_content( $subField, func_get_arg( 1 ), func_get_arg( 2 ), func_get_arg( 3 ) );
+			}
+		} else {
+			console::debug_warn( 'Function [get_sub_field_content] is exists...' );
+		}
+
+		if( !function_exists( 'each_rows' ) ){
+
+			function each_rows( $fieldId, $contextObject, $callable ){
+				$R = [];
+				if( rows::have_rows( $fieldId, $contextObject ) ){
+					while( rows::have_rows( $fieldId, $contextObject ) ){
+						$row = rows::the_row();
+						$R[] = call_user_func( $callable, $row );
+					}
+				}
+				return $R;
+			}
+		} else {
+			console::debug_warn( 'Function [each_rows] is exists...' );
+		}
+
+		if( !function_exists( 'the_row_is_first' ) ){
+			/**
+			 * @return bool
+			 */
+			function the_row_is_first(){
+				return rows::the_row_is_first();
+			}
+		} else {
+			console::debug_warn( 'Function [the_row_is_first] is exists...' );
+		}
+
+		if( !function_exists( 'the_row_is_last' ) ){
+			/**
+			 * @return bool
+			 */
+			function the_row_is_last(){
+				return rows::the_row_is_last();
+			}
+		} else {
+			console::debug_warn( 'Function [the_row_is_last] is exists...' );
 		}
 	}
 
@@ -57,7 +127,7 @@
 
 			/**
 			 * @param field $field
-			 * @param null  $contextObject
+			 * @param null $contextObject
 			 * @return string
 			 */
 			static private function get_field_context_id( field $field, $contextObject = null ){
@@ -126,10 +196,25 @@
 			static function the_row(){
 				$context = self::get_current_context();
 				if( $context !== false ){
-					console::info( '$context->the_row(' . $context->get_field_object()->id() . ');' );
 					return $context->the_row();
 				}
 				return null;
+			}
+
+
+			/**
+			 * @return bool
+			 */
+			static function the_row_is_first(){
+				return self::get_current_context()->get_row_index() == 0;
+			}
+
+
+			/**
+			 * @return bool
+			 */
+			static function the_row_is_last(){
+				return self::get_current_context()->get_row_index() == count( self::get_current_context()->value() );
 			}
 
 
@@ -151,12 +236,34 @@
 			static function get_sub_field( $subFieldId ){
 				$context_queue = array_reverse( self::$context_queue );
 				/**
-				 * @var string               $field_context_id
+				 * @var string $field_context_id
 				 * @var fields\field\context $context
 				 */
 				foreach( $context_queue as $field_id => $context ){
 					if( !$context instanceof fields\field\context ) continue;
 					if( !is_null( $context->get_sub_field( $subFieldId ) ) ) return $context->get_sub_field( $subFieldId );
+				}
+				return null;
+			}
+
+
+			/**
+			 * @param $subFieldId
+			 * @param null $arg_1
+			 * @param null $arg_2
+			 * @param null $arg_3
+			 * @return mixed|null
+			 */
+			static function get_sub_field_content( $subFieldId, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
+				$context_queue = array_reverse( self::$context_queue );
+				/**
+				 * @var string $field_context_id
+				 * @var fields\field\context $context
+				 */
+				foreach( $context_queue as $field_id => $context ){
+					if( !$context instanceof fields\field\context ) continue;
+					$sub_field_content = $context->get_sub_field_content( $subFieldId, $arg_1, $arg_2, $arg_3 );
+					if( !is_null( $sub_field_content ) ) return $sub_field_content;
 				}
 				return null;
 			}

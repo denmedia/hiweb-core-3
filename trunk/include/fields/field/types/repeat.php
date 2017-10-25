@@ -51,6 +51,7 @@
 
 		class repeat extends field{
 
+			/** @var col[] */
 			private $cols = [];
 
 
@@ -93,7 +94,7 @@
 			 * @param $value
 			 * @return array
 			 */
-			public function value_sanitize( $value ){
+			public function get_value_sanitize( $value ){
 				$R = [];
 				if( $this->have_cols() && $this->have_rows( $value ) ){
 					foreach( $value as $row_index => $row ){
@@ -103,6 +104,15 @@
 					}
 				}
 				return $R;
+			}
+
+
+			public function get_value_content( $value, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
+				list( $col_id, $row_index ) = func_get_arg( 4 );
+				if( array_key_exists( $col_id, $this->cols ) ){
+					return $this->cols[ $col_id ]->field()->get_value_content( $value, $arg_1, $arg_2, $arg_3, func_get_arg( 4 ) );
+				}
+				return $value;
 			}
 
 
@@ -178,11 +188,11 @@
 				\hiweb\js( HIWEB_DIR_JS . '/field-repeat.js', [ 'jquery-ui-sortable' ] );
 				///INCLUDE SCRIPTS
 				ob_start();
-				$this->the_row_html( -1, [] );
+				$this->the_row_html( - 1, [] );
 				ob_clean();
 				///
 				?>
-				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute('name') ?>" data-input-name="<?= $this->admin_input_get_attribute('name') ?>" data-global-id="<?= $this->global_id() ?>">
+				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-input-name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-global-id="<?= $this->global_id() ?>">
 					<?php if( !$this->have_cols() ){
 						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col(\'col-id\')</code>' ), $this->id() ) ?></p><?php
 					} else {
@@ -193,7 +203,7 @@
 						<tbody data-rows-list>
 						<?php
 							if( $this->have_rows( $value ) ){
-								foreach( $this->value_sanitize( $value ) as $row_index => $row ){
+								foreach( $this->get_value_sanitize( $value ) as $row_index => $row ){
 									$this->the_row_html( $row_index, $row );
 								}
 							}
