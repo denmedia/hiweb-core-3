@@ -50,6 +50,8 @@
 				$value = metadata_exists( 'user', $user_id, $this->field->id() ) ? get_user_meta( $user_id, $this->field->id(), true ) : $this->field->value_default();
 			} elseif( key_exists( 'admin_menus', $this->contextOptions ) && key_exists( 'menu_slug', $this->contextOptions['admin_menus'] ) ) {
 				$value = get_option( forms::get_field_input_option_name( $this->field ), $this->field->value_default() );
+			} else {
+				console::debug_error( 'Попытка получения значения из контекста, но опции не подходят ни под одину из опций', $this->get_contextOptions() );
 			}
 			return $this->field->get_value_sanitize( $value );
 		}

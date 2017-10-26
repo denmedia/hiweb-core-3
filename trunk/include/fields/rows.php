@@ -131,7 +131,7 @@
 			 * @return string
 			 */
 			static private function get_field_context_id( field $field, $contextObject = null ){
-				return $field->id() . '-' . $field->context( $contextObject )->id();
+				return $field->global_id() . '-' . $field->context( $contextObject )->id();
 			}
 
 
