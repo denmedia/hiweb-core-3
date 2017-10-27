@@ -50,6 +50,10 @@
 		private $supports;
 
 
+		/**
+		 * post_type constructor.
+		 * @param string $post_type
+		 */
 		public function __construct( $post_type ){
 			$this->_type = sanitize_file_name( strtolower( $post_type ) );
 			$this->labels = new labels( $this );
