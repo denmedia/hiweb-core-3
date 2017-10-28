@@ -3,6 +3,15 @@
 	spl_autoload_register( function( $class_name ){
 		if( $class_name == 'hiweb' ){
 			//include_once __DIR__ . '/hiweb.php';
+		} elseif( preg_match( '/^hiweb\\\\tools\\\\/i', $class_name ) > 0 ) {
+			$class_name = preg_replace( '/^hiweb\\\\tools\\\\/i', '', $class_name );
+			$paths = [ HIWEB_DIR_TOOLS . '/' . $class_name . '.php', HIWEB_DIR_TOOLS . '/' . $class_name . '/' . $class_name . '.php' ];
+			foreach( $paths as $path ){
+				if( file_exists( $path ) && is_file( $path ) && is_readable( $path ) ){
+					include_once $path;
+					break;
+				}
+			}
 		} elseif( preg_match( '/^hiweb\\\\/i', $class_name ) > 0 ) {
 			$class_name = preg_replace( '/^hiweb\\\\/i', '', $class_name );
 			$class_path = __DIR__ . '/' . str_replace( '\\', '/', $class_name );

@@ -61,6 +61,7 @@
 		 * @return supports
 		 */
 		public function thumbnail(){
+			add_theme_support( 'post-thumbnails' );
 			return $this->set( __FUNCTION__ );
 		}
 
