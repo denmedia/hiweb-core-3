@@ -34,7 +34,7 @@
 				///
 				ob_start();
 				?>
-				<input <?= $this->admin_get_input_attributes_html() ?>>
+				<input <?= $this->admin_get_input_attributes_html($attributes) ?>>
 				<?php
 				return ob_get_clean();
 			}

@@ -45,7 +45,7 @@
 					}
 					$R .= '<option ' . $selected . ' value="' . htmlentities( $key, ENT_QUOTES, 'UTF-8' ) . '">' . $val . '</option>';
 				}
-				return '<select class="hiweb-field-select" ' . $this->admin_get_input_attributes_html() . '>' . $R . '</select>';
+				return '<select class="hiweb-field-select" ' . $this->admin_get_input_attributes_html($attributes) . '>' . $R . '</select>';
 			}
 
 

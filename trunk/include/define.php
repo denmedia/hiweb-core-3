@@ -21,5 +21,5 @@
 	if( !defined( 'HIWEB_DIR_CSS' ) ) define( 'HIWEB_DIR_CSS', HIWEB_DIR_ASSETS . '/css' );
 	if( !defined( 'HIWEB_URL_CSS' ) ) define( 'HIWEB_URL_CSS', path::path_to_url( HIWEB_DIR_CSS ) );
 	//
-	if( !defined( 'HIWEB_DIR_FIELD_TYPES' ) ) define( 'HIWEB_DIR_FIELD_TYPES', HIWEB_DIR_INCLUDE . '/fields/field/types' );
+	if( !defined( 'HIWEB_DIR_FIELD_TYPES' ) ) define( 'HIWEB_DIR_FIELD_TYPES', HIWEB_DIR . '/types' );
 	if( !defined( 'HIWEB_URL_FIELD_TYPES' ) ) define( 'HIWEB_URL_FIELD_TYPES', path::path_to_url( HIWEB_DIR_FIELD_TYPES ) );

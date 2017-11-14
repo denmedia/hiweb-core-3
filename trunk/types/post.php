@@ -69,10 +69,11 @@
 				//$this->admin_input_set_attributes( 'data-selectator-keep-open', 'true' );
 				///
 				$wp_query = new \WP_Query( [ 'post_type' => $post_types, 'posts_per_page' => 9999 ] );
+
 				///
 				?>
 				<div class="hiweb-field-post">
-					<select <?= $this->admin_get_input_attributes_html() ?>>
+					<select <?= $this->admin_get_input_attributes_html($attributes) ?>>
 						<option value="">&nbsp;</option>
 						<?php if( $wp_query->have_posts() ){
 							foreach( $wp_query->get_posts() as $P ){

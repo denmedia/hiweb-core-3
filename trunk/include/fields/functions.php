@@ -48,7 +48,7 @@
 			 * @return mixed
 			 */
 			function the_field_content( $fieldId, $contextObject = null ){
-				return fields::get( $fieldId )->context( $contextObject )->content();
+				echo fields::get( $fieldId )->context( $contextObject )->content();
 			}
 		}
 	}

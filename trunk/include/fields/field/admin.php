@@ -35,9 +35,10 @@
 
 		/**
 		 * @param string $attr_name
-		 * @return null|mixed
+		 * @param array $attributes
+		 * @return mixed|null
 		 */
-		public function admin_input_get_attribute( $attr_name = 'id' ){
+		public function admin_input_get_attribute( $attr_name = 'id', $attributes = [] ){
 			return array_key_exists( $attr_name, $this->admin_input_attributes ) ? $this->admin_input_attributes[ $attr_name ] : null;
 		}
 

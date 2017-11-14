@@ -108,6 +108,16 @@
 
 
 		/**
+		 * @param $template - template php-file path
+		 * @return $this
+		 */
+		public function template( $template ){
+			$this->set_option( __FUNCTION__, $template );
+			return $this;
+		}
+
+
+		/**
 		 * @return columns_manager
 		 */
 		public function columns_manager(){

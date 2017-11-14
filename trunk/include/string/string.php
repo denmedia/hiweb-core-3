@@ -300,8 +300,8 @@
 		/**
 		 * Return TRUE, if haystack string is JSON
 		 * @param string $haystack
-		 * @param bool   $returnIfFalse
-		 * @param bool   $returnDecodeIfJson
+		 * @param bool $returnIfFalse
+		 * @param bool $returnDecodeIfJson
 		 * @return bool|mixed
 		 */
 		static function is_json( $haystack, $returnIfFalse = false, $returnDecodeIfJson = true ){
@@ -322,5 +322,38 @@
 		 */
 		static function is_empty( $haystack, $default = true ){
 			return ( !is_array( $haystack ) && ( is_null( $haystack ) || $haystack === false || trim( (string)$haystack ) == '' ) ) ? $default : false;
+		}
+
+
+		/**
+		 * @param $text
+		 * @param $limit
+		 * @param string $ellipsis
+		 * @return string
+		 */
+		static function truncate_by_chars( $text, $limit, $ellipsis = '...' ){
+			if( strlen( $text ) > $limit ){
+				$endpos = strpos( str_replace( [ "\r\n", "\r", "\n", "\t" ], ' ', $text ), ' ', $limit );
+				if( $endpos !== false ) $text = trim( substr( $text, 0, $endpos ) ) . $ellipsis;
+			}
+			return $text;
+		}
+
+
+		/**
+		 * @param $text
+		 * @param $limit
+		 * @param string $ellipsis
+		 * @return string
+		 */
+		static function truncate_by_words( $text, $limit, $ellipsis = '...' ){
+			$words = preg_split( "/[\n\r\t ]+/", $text, $limit + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE );
+			if( count( $words ) > $limit ){
+				end( $words ); //ignore last element since it contains the rest of the string
+				$last_word = prev( $words );
+
+				$text = substr( $text, 0, $last_word[1] + strlen( $last_word[0] ) ) . $ellipsis;
+			}
+			return $text;
 		}
 	}

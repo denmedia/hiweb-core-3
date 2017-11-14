@@ -64,7 +64,7 @@
 		 * @param null $arg_3
 		 * @return mixed
 		 */
-		public function content($arg_1 = null, $arg_2 = null, $arg_3 = null){
+		public function content( $arg_1 = null, $arg_2 = null, $arg_3 = null ){
 			return $this->field->get_value_content( $this->value(), $arg_1, $arg_2, $arg_3 );
 		}
 
@@ -144,6 +144,29 @@
 				//console::debug_info( 'Перебор строк массива для функции have_rows в поле [' . $this->field->id() . '] окончен' );
 				$this->reset_rows();
 				return false;
+			}
+		}
+
+
+		/**
+		 * Get all current rows
+		 * @return array
+		 */
+		public function get_rows(){
+			return $this->rows;
+		}
+
+
+		/**
+		 * @param $callable
+		 * @param null $params
+		 * @return array|null
+		 */
+		public function get_filter_rows_by_func( $callable, $params = null ){
+			if( is_callable( $callable ) ){
+				return call_user_func( $callable, @$this->rows, $params );
+			} else {
+				return null;
 			}
 		}
 

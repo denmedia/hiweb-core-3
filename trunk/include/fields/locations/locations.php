@@ -179,6 +179,7 @@
 				$R['post_types']['ID'] = $contextObject->ID;
 				$R['post_types']['post_parent'] = $contextObject->post_parent;
 				$R['post_types']['post_status'] = $contextObject->post_status;
+				$R['post_types']['template'] = get_page_template_slug( $contextObject->ID );
 			} elseif( $contextObject instanceof \WP_Term ) {
 				$R['taxonomies']['term_id'] = $contextObject->term_id;
 				$R['taxonomies']['term_taxonomy_id'] = $contextObject->term_taxonomy_id;

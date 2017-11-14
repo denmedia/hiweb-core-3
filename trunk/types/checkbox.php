@@ -48,7 +48,7 @@
 				ob_start();
 				?>
 				<div class="hw-input-checkbox">
-					<input type="<?= $this->get_sub_type() ?>" class="<?= $this->get_sub_type() ?>" id="<?= $this->id() ?>" name="<?= $this->admin_input_get_attribute( 'name' ) ?>" <?= $value ? 'checked="checked"' : '' ?>>
+					<input type="<?= $this->get_sub_type() ?>" class="<?= $this->get_sub_type() ?>" id="<?= $this->id() ?>" <?= $this->admin_get_input_attributes_html( $attributes, [ 'name' ] ) ?> <?= $value ? 'checked="checked"' : '' ?>>
 					<label for="<?= $this->id() ?>"><?= $this->admin_description() ?></label>
 				</div>
 				<?php
