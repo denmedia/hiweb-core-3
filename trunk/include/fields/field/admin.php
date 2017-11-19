@@ -17,6 +17,8 @@
 		private $description = '';
 		/** @var string */
 		private $template = '';
+		/** @var bool */
+		private $admin_compact_view = false;
 		/** @var array */
 		protected $admin_input_attributes = [];
 
@@ -52,7 +54,7 @@
 			if( is_string( $attributes ) ) return $attributes;
 			if( is_null( $attributes ) ) $attributes = $this->admin_input_attributes;
 			if( is_array( $attributes ) ){
-				$attributes = array_merge($this->admin_input_attributes, $attributes);
+				$attributes = array_merge( $this->admin_input_attributes, $attributes );
 				foreach( $attributes as $key => $val ){
 					if( is_array( $take_attributes ) && count( $take_attributes ) > 0 && !array_key_exists( $key, array_flip( $take_attributes ) ) ) continue;
 					if( is_array( $val ) ) $val = json_encode( $val );
@@ -63,8 +65,24 @@
 		}
 
 
+		/**
+		 * @return string
+		 */
 		public function admin_input_wrap_class(){
-			return 'hiweb-admin-input-wrap';
+			return 'hiweb-admin-input-wrap' . ( $this->admin_compact_view() ? '-compact' : '' );
+		}
+
+
+		/**
+		 * @param null $set
+		 * @return bool|$this|null
+		 */
+		public function admin_compact_view( $set = null ){
+			if( !is_null( $set ) ){
+				$this->admin_compact_view = $set;
+				return $this;
+			}
+			return $this->admin_compact_view;
 		}
 
 
@@ -112,8 +130,12 @@
 
 		//////FORM FILED
 
+
+		/**
+		 * @return string
+		 */
 		public function admin_fieldset_wrap_class(){
-			return 'hiweb-admin-field-wrap hiweb-admin-field-wrap-' . $this->get_type();
+			return 'hiweb-admin-field-wrap' . ( $this->admin_compact_view() ? '-compact' : '' ) . ' hiweb-admin-field-wrap-' . $this->get_type();
 		}
 
 
@@ -180,6 +202,7 @@
 		 */
 		public function admin_get_fieldset( $value = null, $attributes = [] ){
 			/** @var field $this */
+			\hiweb\css( HIWEB_URL_CSS . '/fields.css' );
 			return forms::get_fieldset( $this, $value, $attributes );
 		}
 

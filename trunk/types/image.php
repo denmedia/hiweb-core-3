@@ -52,9 +52,10 @@
 			 * @param $value
 			 * @param string $size
 			 * @param bool $return_image_html
+			 * @param null $null
 			 * @return bool|mixed|string
 			 */
-			public function get_value_content( $value, $size = 'thumbnail', $return_image_html = false ){
+			public function get_value_content( $value, $size = 'thumbnail', $return_image_html = false, $null = null ){
 				if( !is_numeric( $value ) ) return false;
 				if( $return_image_html ){
 					return wp_get_attachment_image( $value, $size );
@@ -113,8 +114,10 @@
 				$image_small = true;
 				///
 				if( $this->have_image( $value ) ){
-					$preview = wp_get_attachment_image_src( $value, [ $attr_width, $attr_height ] );
-					$image_small = !( $attr_width <= $preview[1] || $attr_height <= $preview[2] );
+					$image = \hiweb\images::get( $value );
+					$preview = $image->get_similar_src( $attr_width, $attr_height, 1 );
+					$preview_size = $image->get_size_by_limit( $attr_width, $attr_height );
+					$image_small = !( $attr_width <= $preview_size[0] && $attr_height <= $preview_size[1] );
 				}
 				///
 				ob_start();
@@ -122,7 +125,7 @@
 				<div class="hiweb-field-image" id="<?= $this->id() ?>" data-has-image="<?= $this->have_image( $value ) ? '1' : '0' ?>" data-image-small="<?= $image_small ? '1' : '0' ?>">
 					<input type="hidden" <?= $this->admin_get_input_attributes_html( $attributes ) ?> value="<?= ( $this->has_image ? $value : '' ) ?>"/>
 					<a href="#" class="image-select" title="<?= __( 'Select/Deselect image...' ) ?>" data-click="<?= ( $this->have_image( $value ) ? 'deselect' : 'select' ) ?>" style="width: <?= $attr_width ?>px; height: <?= $attr_height ?>px;">
-						<div class="thumbnail" style="<?= $this->have_image( $value ) ? 'background-image:url(' . $preview[0] . ')' : '' ?>"></div>
+						<div class="thumbnail" style="<?= $this->have_image( $value ) ? 'background-image:url(' . $preview . ')' : '' ?>"></div>
 						<div class="overlay"></div>
 						<i class="dashicons dashicons-format-image" data-icon="select"></i>
 						<i class="dashicons dashicons-dismiss" data-icon="deselect"></i>

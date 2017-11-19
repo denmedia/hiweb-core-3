@@ -39,14 +39,13 @@
 		 * Возвращает корневой URL
 		 * @param null|string $url
 		 * @return string
-		 * @version 1.3
+		 * @version 1.4
 		 */
-		static function base_url( $url = null ){
+		static function base_url( $url = null, $return_with_shema = true ){
 			if( is_string( $url ) ){
 				$url = self::prepare_url( $url, null, true );
 				return $url['base'];
 			} else {
-				//if(hiweb()->cacheExists()) return hiweb()->cache();
 				$root = ltrim( self::base_dir(), '/' );
 				$query = ltrim( str_replace( '\\', '/', dirname( $_SERVER['PHP_SELF'] ) ), '/' );
 				$rootArr = [];
@@ -59,17 +58,18 @@
 				}
 				$rootArr = array_reverse( $rootArr );
 				$queryArr = array_reverse( $queryArr );
-				$r = '';
+				$R = '';
 				foreach( $queryArr as $dir ){
 					foreach( $rootArr as $rootDir ){
 						if( $dir == $rootDir ){
-							$r = $dir;
+							$R = $dir;
 							break 2;
 						}
 					}
 				}
+				if( !$return_with_shema ) return $R;
 				$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
-				return rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $r, '/' );
+				return rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $R, '/' );
 			}
 		}
 
@@ -88,7 +88,7 @@
 
 		/**
 		 * Возвращает URL с измененным QUERY фрагмнтом
-		 * @param null  $url
+		 * @param null $url
 		 * @param array $addData
 		 * @param array $removeKeys
 		 * @return string
@@ -168,11 +168,21 @@
 		/**
 		 * Конвертирует URL в путь
 		 * @param $url
-		 * @return mixed
+		 * @return string
 		 */
 		static function url_to_path( $url ){
 			$url = str_replace( '\\', '/', $url );
 			return str_replace( self::base_url(), self::base_dir(), $url );
+		}
+
+
+		/**
+		 * @param null $url
+		 * @return bool
+		 */
+		static function is_local_url( $url = null ){
+			if( !is_string( $url ) ) $url = '://' . self::base_url( null, false );
+			return strpos( $url, self::base_url() ) !== false;
 		}
 
 
@@ -215,7 +225,7 @@
 		 * Возвращает папки или папку(если указать индекс) из URL
 		 * @version 2.1
 		 * @param null $url
-		 * @param int  $index
+		 * @param int $index
 		 * @return bool|array|string
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ){
@@ -502,10 +512,10 @@
 		/**
 		 * Выполняет архивацию папки в ZIP архив
 		 * @param             $pathInput
-		 * @param string      $pathOut
-		 * @param string      $arhiveName
+		 * @param string $pathOut
+		 * @param string $arhiveName
 		 * @param string|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
-		 * @param bool        $appendToArchive
+		 * @param bool $appendToArchive
 		 * @return bool|string
 		 */
 		static function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ){
@@ -684,6 +694,7 @@
 			$attachment_id = wp_insert_attachment( $attachment, $newPath );
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $newPath );
+			if( self::is_url( $_fileOrUrl ) ) $attachment_data['hiweb-path-upload-url'] = $_fileOrUrl;
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 			return $attachment_id;
 		}

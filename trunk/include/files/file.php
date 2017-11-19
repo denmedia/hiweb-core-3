@@ -3,6 +3,7 @@
 	namespace hiweb\files;
 
 
+	use hiweb\console;
 	use hiweb\files;
 	use hiweb\path;
 
@@ -96,6 +97,25 @@
 				//todo!
 			}
 			return $R;
+		}
+
+
+		/**
+		 * Unlink file or complete remove dir
+		 * @return bool
+		 */
+		public function remove(){
+			if( !$this->is_exists_and_readable() ){
+				console::debug_warn( 'Файл не удалось удалить (прочитать)', $this->path );
+				return false;
+			}
+			///
+			if( $this->is_file ){
+				return @unlink( $this->path );
+			} elseif( $this->is_dir ) {
+				//TODO
+				return false;
+			}
 		}
 
 

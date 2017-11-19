@@ -3,6 +3,9 @@
 	namespace hiweb\console;
 
 
+	use hiweb\context;
+
+
 	class messages{
 
 
@@ -13,7 +16,7 @@
 		/**
 		 * @param string $content
 		 * @param string $type
-		 * @param bool   $debugMod
+		 * @param bool $debugMod
 		 * @return message
 		 */
 		static function make( $content = '', $type = 'info', $debugMod = false ){
@@ -27,9 +30,10 @@
 
 		/**
 		 * Print messages script
+		 * @version 1.1
 		 */
 		static function the(){
-			if( is_array( self::$messages ) ){
+			if( is_array( self::$messages ) && !context::is_ajax() && !context::is_cron() ){
 				foreach( self::$messages as $message ){
 					if( $message instanceof message ) $message->the();
 				}
