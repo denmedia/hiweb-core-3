@@ -7,6 +7,7 @@
 	use hiweb\console;
 	use hiweb\files\file;
 	use hiweb\path;
+	use hiweb\string;
 
 
 	class image{
@@ -105,7 +106,7 @@
 		 * @return array
 		 */
 		public function get_sizes( $return_only_exists = true ){
-			if(!$this->is_attachment_exists()) return [];
+			if( !$this->is_attachment_exists() ) return [];
 			$sizes = $this->get_meta( 'sizes' );
 			if( !is_array( $sizes ) ) return [];
 			if( !$return_only_exists ) return $sizes;
@@ -122,7 +123,7 @@
 		 * @return string
 		 */
 		public function base_dir(){
-			if(!$this->is_attachment_exists()) return false;
+			if( !$this->is_attachment_exists() ) return false;
 			$path = explode( '/', $this->get_meta( 'file' ) );
 			array_pop( $path );
 			array_unshift( $path, wp_get_upload_dir()['basedir'] );
@@ -134,7 +135,7 @@
 		 * @return string
 		 */
 		public function base_url(){
-			if(!$this->is_attachment_exists()) return false;
+			if( !$this->is_attachment_exists() ) return false;
 			$path = explode( '/', $this->get_meta( 'file' ) );
 			array_pop( $path );
 			array_unshift( $path, wp_get_upload_dir()['baseurl'] );
@@ -147,7 +148,7 @@
 		 * @return string
 		 */
 		public function get_original_src( $return_path = false ){
-			if( $this->is_attachment_exists() ){
+			if( $this->is_attachment_exists() && !string::is_empty( $this->get_meta( 'file' ) ) ){
 				return ( $return_path ? wp_get_upload_dir()['basedir'] : wp_get_upload_dir()['baseurl'] ) . '/' . $this->get_meta( 'file' );
 			}
 			return false;
@@ -159,7 +160,7 @@
 		 * @param int $width
 		 * @param int $height
 		 * @param bool $return_path - return URL or PATH
-		 * @return string
+		 * @return string|false
 		 */
 		public function get_similar_src( $width = 100, $height = 100, $crop = false, $return_path = false ){
 			$sizes_meta = $this->get_sizes();
@@ -178,6 +179,7 @@
 					if( intval( $size_data['width'] ) >= intval( $width ) && intval( $size_data['height'] ) >= intval( $height ) ) break;
 				}
 			}
+			if( $R == false ) return $R;
 			return ( $return_path ? $this->base_dir() : $this->base_url() ) . '/' . $R;
 		}
 

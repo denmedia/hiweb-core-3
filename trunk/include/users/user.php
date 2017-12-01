@@ -90,7 +90,7 @@
 
 
 		/**
-		 * @return int
+		 * @return string
 		 */
 		public function login(){
 			return $this->login;

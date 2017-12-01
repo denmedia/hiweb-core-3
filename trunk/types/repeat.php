@@ -47,6 +47,7 @@
 
 		use hiweb\arrays;
 		use hiweb\fields\field;
+		use hiweb\fields\types\repeat\col;
 
 
 		class repeat extends field{
@@ -60,7 +61,7 @@
 			 * @return col
 			 */
 			public function add_col_field( field $field ){
-				$this->cols[ $field->id() ] = new col( $this, $field );
+				$this->cols[ $field->id() ] = new repeat\col( $this, $field );
 				return $this->cols[ $field->id() ];
 			}
 
@@ -146,7 +147,7 @@
 			}
 
 
-			private function the_row_html( $row_index = null, $row = [] ){
+			private function the_row_html( $row_index = null, $row = [], $attributes = [] ){
 				?>
 				<tr data-row="<?= $row_index ?>">
 					<td data-drag>
@@ -156,7 +157,7 @@
 						foreach( $this->get_cols() as $col ){
 							?>
 							<td data-col="<?= $col->id() ?>">
-								<?php echo $col->get_input_by_row( $row_index, $row ); ?>
+								<?php echo $col->get_input_by_row( $row_index, $row, $attributes ); ?>
 							</td>
 							<?php
 						}
@@ -192,7 +193,7 @@
 				ob_clean();
 				///
 				?>
-				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-input-name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-global-id="<?= $this->global_id() ?>">
+				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute( 'name', $attributes ) ?>" data-input-name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-global-id="<?= $this->global_id() ?>">
 					<?php if( !$this->have_cols() ){
 						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col(\'col-id\')</code>' ), $this->id() ) ?></p><?php
 					} else {
@@ -204,7 +205,7 @@
 						<?php
 							if( $this->have_rows( $value ) ){
 								foreach( $this->get_value_sanitize( $value ) as $row_index => $row ){
-									$this->the_row_html( $row_index, $row );
+									$this->the_row_html( $row_index, $row, $attributes );
 								}
 							}
 						?>
@@ -226,6 +227,13 @@
 
 
 		}
+	}
+
+	namespace hiweb\fields\types\repeat {
+
+
+		use hiweb\arrays;
+		use hiweb\fields\field;
 
 
 		class col{
@@ -313,7 +321,7 @@
 			}
 
 
-			public function get_input_by_row( $row_index, $row = [] ){
+			public function get_input_by_row( $row_index, $row = [], $attributes = [] ){
 				$cell_value = null;
 				if( !is_array( $row ) || ( !is_string( $row_index ) && !is_numeric( $row_index ) ) ){
 					///

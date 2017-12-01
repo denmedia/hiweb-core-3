@@ -257,7 +257,7 @@
 		 * @return bool|array|string
 		 */
 		static function prepare_url( $url, $startUrl = null, $returnParseArray = false ){
-			if( !is_string( $url ) ){
+			if( !is_string( $url ) || empty( $url ) ){
 				return false;
 			}
 			$urlParse = parse_url( trim( $url ) );
@@ -626,15 +626,17 @@
 		 * Подключить файла PHP, CSS и JS из папки
 		 * @param       $path
 		 * @param array $fileExtension - массив типов подключаемых файлов, доступны типы: php, js, css
+		 * @param int $depth
 		 * @return array
 		 */
-		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
+		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ], $depth = 0 ){
+			$depth --;
 			$dir = files::get( $path );
 			$R = [];
 			if( !$dir->is_readable || !$dir->is_dir ){
 				console::debug_error( 'Ошибка подключения целой папки', $dir );
 			} else {
-				$subFiles = files::get( $path )->get_sub_files( $fileExtension );
+				$subFiles = files::get( $path )->get_sub_files( $fileExtension, $depth );
 				foreach( $subFiles as $file ){
 					if( !$file->is_readable ) continue;
 					switch( $file->extension ){
@@ -650,6 +652,11 @@
 							\hiweb\js( $file->url );
 							$R[ $file->path ] = $file;
 							break;
+					}
+				}
+				if( $depth > -1 ){
+					foreach( files::get( $path )->get_sub_dirs() as $dirName => $fileDir ){
+						$R = array_merge( $R, self::include_dir( $fileDir->path, $fileExtension, $depth ) );
 					}
 				}
 			}

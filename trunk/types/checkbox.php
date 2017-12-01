@@ -20,6 +20,7 @@
 
 
 		use hiweb\fields\field;
+		use hiweb\string;
 
 
 		class checkbox extends field{
@@ -46,7 +47,7 @@
 				wp_enqueue_media();
 				\hiweb\css( HIWEB_DIR_CSS . '/field-checkbox.css' );
 				ob_start();
-				$rand_id = \hiweb\string::rand();
+				$rand_id = string::rand();
 				?>
 				<div class="hw-input-checkbox">
 					<input type="<?= $this->get_sub_type() ?>" class="<?= $this->get_sub_type() ?>" id="<?= $rand_id ?>" <?= $this->admin_get_input_attributes_html( $attributes, [ 'name' ] ) ?> <?= $value ? 'checked="checked"' : '' ?>>

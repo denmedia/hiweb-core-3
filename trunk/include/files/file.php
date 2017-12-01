@@ -32,6 +32,7 @@
 		///
 		private $size;
 		private $subFiles = [];
+		private $subDirs = false;
 		///
 		public $fileatime = 0;
 		public $filectime = 0;
@@ -124,7 +125,8 @@
 		 * @param array $mask - маска файлов
 		 * @return array|file[]
 		 */
-		public function get_sub_files( $mask = [] ){
+		public function get_sub_files( $mask = [], $depth = 99 ){
+			$depth --;
 			$maskKey = json_encode( $mask );
 			if( !array_key_exists( $maskKey, $this->subFiles ) ){
 				$this->subFiles[ $maskKey ] = [];
@@ -133,10 +135,29 @@
 					$subFilePath = $this->path . '/' . $subFileName;
 					$subFile = files::get( $subFilePath );
 					$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
-					$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
+					if( $depth > -1 ) $this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask, $depth ) );
 				}
 			}
 			return $this->subFiles[ $maskKey ];
+		}
+
+
+		/**
+		 * @return file[]
+		 */
+		public function get_sub_dirs(){
+			if( is_array( $this->subDirs ) ) return $this->subDirs;
+			///
+			$this->subDirs = [];
+			if( $this->is_dir ) foreach( scandir( $this->path ) as $subFileName ){
+				if( $subFileName == '.' || $subFileName == '..' ) continue;
+				$subFilePath = $this->path . '/' . $subFileName;
+				$subFile = files::get( $subFilePath );
+				if( $subFile->is_dir ){
+					$this->subDirs[ $subFileName ] = $subFile;
+				}
+			}
+			return $this->subDirs;
 		}
 
 

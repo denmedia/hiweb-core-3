@@ -28,7 +28,7 @@
 		 * @return rewrite
 		 */
 		private function set( $name, $value = '' ){
-			$this->post_type['rewrite'][ $name ] = $value;
+			$this->post_type->args_custom['rewrite'][ $name ] = $value;
 			return $this;
 		}
 
