@@ -9,6 +9,7 @@
 	use hiweb\fields\locations\options\admin_menus;
 	use hiweb\fields\locations\options\post_types;
 	use hiweb\fields\locations\options\taxonomies;
+	use hiweb\fields\locations\options\theme;
 	use hiweb\fields\locations\options\users;
 
 
@@ -17,16 +18,27 @@
 		/** @var options\options[] */
 		public $options = [];
 		/** @var field */
-		public $field;
+		private $parent_field;
 
 
 		public function __construct( $field = null ){
-			if( $field instanceof field ) $this->field = $field;
+			if( $field instanceof field ) $this->parent_field = $field;
 		}
 
 
+		/**
+		 * @return string
+		 */
 		public function rules_id(){
 			return locations::get_contextId_from_options( $this->options );
+		}
+
+
+		/**
+		 * @return field|null
+		 */
+		public function _get_parent_field(){
+			return $this->parent_field;
 		}
 
 
@@ -34,7 +46,7 @@
 		 * @param string $type
 		 * @return array|bool
 		 */
-		public function get_options_by_type( $type = 'post_types' ){
+		public function _get_options_by_type( $type = 'post_types' ){
 			if( !isset( $this->options[ $type ] ) || !$this->options[ $type ] instanceof fields\locations\options\options ) return [];
 			$location_options = [];
 			if( is_array( $this->options[ $type ]->options ) ){
@@ -53,10 +65,10 @@
 		/**
 		 * @return array
 		 */
-		public function get_options(){
+		public function _get_options(){
 			$R = [];
 			if( is_array( $this->options ) ) foreach( $this->options as $rule_type => $rules_of_type ){
-				$type_options = $this->get_options_by_type( $rule_type );
+				$type_options = $this->_get_options_by_type( $rule_type );
 				if( is_array( $type_options ) ) $R[ $rule_type ] = $type_options;
 			}
 			return $R;
@@ -67,7 +79,7 @@
 		 * @param array $optionsByType
 		 * @return options\options[]
 		 */
-		public function set_options( array $optionsByType ){
+		public function _set_options( array $optionsByType ){
 			foreach( $optionsByType as $option_type => $sub_options ){
 				if( !is_array( $sub_options ) ){
 					console::debug_warn( 'Попытка установки опций не массивом', $sub_options );
@@ -76,16 +88,16 @@
 				$options = false;
 				switch( $option_type ){
 					case 'post_types':
-						$options = $this->post_types();
+						$options = $this->POST_TYPES();
 						break;
 					case 'taxonomies':
-						$options = $this->taxonomies();
+						$options = $this->TAXONOMIES();
 						break;
 					case 'users':
-						$options = $this->users();
+						$options = $this->USERS();
 						break;
 					case 'admin_menus':
-						$options = $this->admin_menus();
+						$options = $this->ADMIN_MENUS();
 						break;
 					default:
 						console::debug_warn( 'Попытка установки неуществующего типа опций для локации', $option_type );
@@ -108,7 +120,7 @@
 		 * @param $post_type
 		 * @return post_types
 		 */
-		public function post_types( $post_type = null ){
+		public function POST_TYPES( $post_type = null ){
 			if( !isset( $this->options['post_types'] ) ) $this->options['post_types'] = new post_types( $this );
 			/** @var post_types $post_types */
 			$post_types = $this->options['post_types'];
@@ -121,7 +133,7 @@
 		 * @param null $taxonomy
 		 * @return taxonomies
 		 */
-		public function taxonomies( $taxonomy = null ){
+		public function TAXONOMIES( $taxonomy = null ){
 			if( !isset( $this->options['taxonomies'] ) ) $this->options['taxonomies'] = new taxonomies( $this );
 			/** @var taxonomies $taxonomies */
 			$taxonomies = $this->options['taxonomies'];
@@ -134,7 +146,7 @@
 		 * @param string|array $roles
 		 * @return options\options|users
 		 */
-		public function users( $roles = null ){
+		public function USERS( $roles = null ){
 			if( !isset( $this->options['users'] ) ) $this->options['users'] = new users( $this );
 			/** @var users $users */
 			$users = $this->options['users'];
@@ -147,90 +159,22 @@
 		 * @param null $menu_slug
 		 * @return admin_menus|options\options
 		 */
-		public function admin_menus( $menu_slug = null ){
+		public function ADMIN_MENUS( $menu_slug = null ){
 			if( !isset( $this->options['admin_menus'] ) ) $this->options['admin_menus'] = new admin_menus( $this );
 			/** @var admin_menus $admin_menu */
 			$admin_menu = $this->options['admin_menus'];
 			$admin_menu->menu_slug( $menu_slug );
+			//register_setting( fields\forms::get_option_group_id( $menu_slug ), fields\forms::get_field_input_option_name( $this->parent_field ) );
 			return $admin_menu;
 		}
 
 
 		/**
-		 * Update Rules Id, register them
+		 * @return theme|options\options
 		 */
-		/*public function update_rulesId(){
-			$sections = [];
-			foreach( $this->rules as $rule_group => $rules ){
-				$sections[ $rule_group ] = $rule_group . ':' . json_encode( $rules, JSON_UNESCAPED_UNICODE ) . '';
-			}
-			$this->rulesId = rtrim( implode( '|', $sections ), ':|' );
-			locations::$rules[ $this->globalId ] = $this->rules;
-			locations::$rulesId[ $this->globalId ] = $this->rulesId;
-		}*/
-
-		/**
-		 * @param null|string|array $post_type - массив и название типа поста, напрмиер 'page'
-		 * @return post_types
-		 */
-		//		public function post_type( $post_type = null ){
-		//			$this->rules['post_type'] = [];
-		//			$this->post_type = new post_type( $this );
-		//			if( is_array( $post_type ) || is_string( $post_type ) ){
-		//				$this->post_type->post_type( $post_type );
-		//			}
-		//			return $this->post_type;
-		//		}
-		//
-		//
-		//		/**
-		//		 * @param null $taxonomy
-		//		 * @return taxonomy
-		//		 */
-		//		public function taxonomy( $taxonomy = null ){
-		//			$this->rules['taxonomy'] = [];
-		//			$this->update_rulesId();
-		//			$this->taxonomy = new taxonomy( $this );
-		//			if( is_array( $taxonomy ) || is_string( $taxonomy ) ){
-		//				$this->taxonomy->name( $taxonomy );
-		//			}
-		//			return $this->taxonomy;
-		//		}
-		//
-		//
-		//		/**
-		//		 * @return user
-		//		 */
-		//		public function user(){
-		//			$this->rules['user'] = [];
-		//			$this->users = new user( $this );
-		//			return $this->users;
-		//		}
-		//
-		//
-		//		/**
-		//		 * @param string $slug - 'options-general.php' or 'general', 'options-writing.php', 'options-reading.php',
-		//		 * @return options_page
-		//		 */
-		//		public function options_page( $slug = 'options-general.php' ){
-		//			$this->rules['options_page'] = [];
-		//			$this->options_page = new options_page( $this );
-		//			$this->options_page->slug( $slug );
-		//			if( $this->get_field() instanceof field ){
-		//				register_setting( \hiweb\fields\get_options_group_id( $this->options_page->get_slug() ), \hiweb\fields\get_options_field_id( $this->options_page->get_slug(), $this->get_field()->id() ) );
-		//			}
-		//			return $this->options_page;
-		//		}
-		//
-		//
-		//		public function admin_menu( $slug = 'theme' ){
-		//			$this->rules['admin_menu'] = [];
-		//			$this->admin_menu = new admin_menu( $this );
-		//			$this->admin_menu->slug( $slug );
-		//			if( $this->get_field() instanceof field ){
-		//				register_setting( \hiweb\fields\get_options_group_id( $slug ), \hiweb\fields\get_options_field_id( $slug, $this->get_field()->id() ) );
-		//			}
-		//			return $this->admin_menu;
-		//		}
+		public function THEME(){
+			if( !isset( $this->options['theme'] ) ) $this->options['theme'] = new theme( $this );
+			return $this->options['theme'];
+		}
 
 	}

@@ -3,7 +3,6 @@
 	namespace hiweb\files;
 
 
-	use hiweb\console;
 	use hiweb\files;
 	use hiweb\path;
 
@@ -32,7 +31,6 @@
 		///
 		private $size;
 		private $subFiles = [];
-		private $subDirs = false;
 		///
 		public $fileatime = 0;
 		public $filectime = 0;
@@ -102,31 +100,11 @@
 
 
 		/**
-		 * Unlink file or complete remove dir
-		 * @return bool
-		 */
-		public function remove(){
-			if( !$this->is_exists_and_readable() ){
-				console::debug_warn( 'Файл не удалось удалить (прочитать)', $this->path );
-				return false;
-			}
-			///
-			if( $this->is_file ){
-				return @unlink( $this->path );
-			} elseif( $this->is_dir ) {
-				//TODO
-				return false;
-			}
-		}
-
-
-		/**
 		 * Возвращает массив вложенных файлов
 		 * @param array $mask - маска файлов
 		 * @return array|file[]
 		 */
-		public function get_sub_files( $mask = [], $depth = 99 ){
-			$depth --;
+		public function get_sub_files( $mask = [] ){
 			$maskKey = json_encode( $mask );
 			if( !array_key_exists( $maskKey, $this->subFiles ) ){
 				$this->subFiles[ $maskKey ] = [];
@@ -135,29 +113,10 @@
 					$subFilePath = $this->path . '/' . $subFileName;
 					$subFile = files::get( $subFilePath );
 					$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
-					if( $depth > -1 ) $this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask, $depth ) );
+					$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
 				}
 			}
 			return $this->subFiles[ $maskKey ];
-		}
-
-
-		/**
-		 * @return file[]
-		 */
-		public function get_sub_dirs(){
-			if( is_array( $this->subDirs ) ) return $this->subDirs;
-			///
-			$this->subDirs = [];
-			if( $this->is_dir ) foreach( scandir( $this->path ) as $subFileName ){
-				if( $subFileName == '.' || $subFileName == '..' ) continue;
-				$subFilePath = $this->path . '/' . $subFileName;
-				$subFile = files::get( $subFilePath );
-				if( $subFile->is_dir ){
-					$this->subDirs[ $subFileName ] = $subFile;
-				}
-			}
-			return $this->subDirs;
 		}
 
 

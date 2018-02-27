@@ -18,7 +18,7 @@
 		 * Hook action, add admin menu pages in WP
 		 * @return mixed
 		 */
-		static function hook_admin_menu(){
+		static function _hook_admin_menu(){
 			$R = [];
 			if( is_array( self::$pages ) ){
 				foreach( self::$pages as $slug => $page ){

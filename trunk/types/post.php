@@ -6,26 +6,23 @@
 		if( !function_exists( 'add_field_post' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\post
+			 * @return \hiweb\fields\types\post\field
 			 */
 			function add_field_post( $id ){
-				$new_field = new hiweb\fields\types\post( $id );
+				$new_field = new hiweb\fields\types\post\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\post {
 
 
-		use hiweb\fields\field;
+		class field extends \hiweb\fields\field{
 
 
-		class post extends field{
-
-
-			protected $post_type = ['post'];
+			protected $post_type = [ 'post' ];
 			protected $meta_key = '';
 
 
@@ -47,13 +44,23 @@
 			}
 
 
-			public function admin_get_input( $value = null, $attributes = [] ){
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
+
+
+		}
+
+
+		class input extends \hiweb\fields\input{
+
+			public function html(){
 				\hiweb\css( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.css' );
 				$js_id = \hiweb\js( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
 				\hiweb\js( HIWEB_DIR_JS . '/field-post.js', [ 'jquery', $js_id ], true );
 				\hiweb\css( HIWEB_DIR_CSS . '/field-post.css' );
 
-				$post_types = $this->post_type;
+				$post_types = $this->get_parent_field()->post_type();
 				if( is_string( $post_types ) ) $post_types = [ $post_types ];
 				$post_types_names = [];
 				if( is_array( $post_types ) ) foreach( $post_types as $post_type ){
@@ -73,16 +80,16 @@
 				///
 				?>
 				<div class="hiweb-field-post">
-					<select <?= $this->admin_get_input_attributes_html($attributes) ?>>
+					<select <?= $this->sanitize_attributes() ?>>
 						<option value="">&nbsp;</option>
 						<?php if( $wp_query->have_posts() ){
 							foreach( $wp_query->get_posts() as $P ){
-								$selected = $value == $P->ID;
+								$selected = $this->VALUE()->get() == $P->ID;
 								$img_src = get_the_post_thumbnail_url( $P, [ 80, 80 ] );
 								if( $img_src == false ) $img_src = HIWEB_URL_ASSETS . '/img/noimg.png';
 								$right = $P->ID;
-								if( trim( $this->meta_key ) != '' ){
-									$right = get_post_meta( $P->ID, $this->meta_key, true );
+								if( trim( $this->get_parent_field()->meta_key() ) != '' ){
+									$right = get_post_meta( $P->ID, $this->get_parent_field()->meta_key(), true );
 								}
 								?>
 								<option <?= $selected ? 'selected="selected"' : '' ?> value="<?= $P->ID ?>" data-subtitle="<?= \hiweb\arrays::get_value_by_key( $post_types_names, $P->post_type, 'неизвестный тип записи' ) ?>" data-left="<?= $img_src ?>" data-right="<?= $right ?>"><?= $P->post_title ?></option><?php

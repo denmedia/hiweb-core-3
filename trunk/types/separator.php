@@ -7,77 +7,71 @@
 			/**
 			 * @param string $label
 			 * @param string $description
-			 * @return \hiweb\fields\types\separator
+			 * @return \hiweb\fields\types\separator\field
 			 */
 			function add_field_separator( $label = '', $description = '' ){
-				$separator = new hiweb\fields\types\separator();
-				$separator->admin_label($label);
-				$separator->admin_description($description);
+				$separator = new hiweb\fields\types\separator\field();
+				$separator->label( $label );
+				$separator->description( $description );
 				hiweb\fields::register_field( $separator );
 				return $separator;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\separator {
 
 
-		use hiweb\fields\field;
-
-
-		class separator extends field{
-
-			private $tag_label = 'h2';
-			private $tag_description = 'p';
+		class field extends \hiweb\fields\field{
 
 
 			public function __construct( $id = null ){
 				parent::__construct( $id );
-				$this->admin_template( 'separator' );
+				$this->FORM()->show_labels(false);
 			}
 
 
 			/**
 			 * @param null $set
-			 * @return separator|string
+			 * @return field|string
 			 */
 			public function tag_label( $set = null ){
-				if( is_null( $set ) ){
-					return $this->tag_label;
-				}
-				$this->tag_label = $set;
-				return $this;
+				return $this->set_input_property( __FUNCTION__, $set );
 			}
 
 
 			/**
 			 * @param null $set
-			 * @return separator|string
+			 * @return field|string
 			 */
 			public function tag_description( $set = null ){
-				if( is_null( $set ) ){
-					return $this->tag_description;
-				}
-				$this->tag_description = $set;
-				return $this;
+				return $this->set_input_property( __FUNCTION__, $set );
 			}
 
 
-			/**
-			 * echo (print) separator html
-			 * @param null $value
-			 * @param array $attributes
-			 * @return string
-			 */
-			public function admin_get_input( $value = null, $attributes = [] ){
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
+
+
+		}
+
+
+		class input extends \hiweb\fields\input{
+
+			public $tag_label = 'h2';
+			public $tag_description = 'p';
+
+
+			public function html(){
 				\hiweb\css( HIWEB_URL_CSS . '/field-separator.css' );
 				ob_start();
 				?>
 				<div class="hiweb-field-separator">
-				<<?= $this->tag_label() ?> class="hw-field-separator-title<?= $this->admin_description() != '' ? ' has-description' : ' no-description' ?>"><?= $this->admin_label() ?></<?= $this->tag_label() ?>>
-				<?php if( $this->admin_description() != '' ){
+				<<?= $this->tag_label ?> class="hw-field-separator-title<?= $this->get_parent_field()->description() != '' ? ' has-description' : ' no-description' ?>"><?= $this->get_parent_field()->label() ?></<?= $this->tag_label ?>>
+				<?php if( $this->get_parent_field()->description() != '' ){
 					?>
-					<<?= $this->tag_description() ?>  class="hw-field-separator-description"><?= $this->admin_description() ?></<?= $this->tag_description() ?>>
+					<<?= $this->tag_description ?>  class="hw-field-separator-description"><?= $this->get_parent_field()->description() ?></<?= $this->tag_description ?>>
 					<?php
 				} ?>
 				</div>

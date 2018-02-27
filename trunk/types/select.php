@@ -6,46 +6,53 @@
 		if( !function_exists( 'add_field_select' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\select
+			 * @return \hiweb\fields\types\select\field
 			 */
 			function add_field_select( $id ){
-				$new_field = new hiweb\fields\types\select( $id );
+				$new_field = new hiweb\fields\types\select\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\select {
 
 
-		use hiweb\fields\field;
-
-
-		class select extends field{
-
-
-			protected $options = [];
+		class field extends \hiweb\fields\field{
 
 
 			public function options( $set = null ){
-				return $this->set_property( __FUNCTION__, $set );
+				return $this->set_input_property( __FUNCTION__, $set );
 			}
 
 
-			public function admin_get_input( $value = null, $attributes = [] ){
+			protected function get_input_class(){
+				return __NAMESPACE__.'\\input';
+			}
+
+
+		}
+
+
+		class input extends \hiweb\fields\input{
+
+			public $options = [];
+
+
+			public function html(){
 				\hiweb\css( HIWEB_DIR_CSS . '/field-select.css' );
 				$options = [];
 				if( is_array( $this->options ) ) $options = $this->options;
 				$R = '';
 				foreach( $options as $key => $val ){
 					$selected = '';
-					if( !is_null( $value ) && $key == $value ){
+					if( !is_null( $this->VALUE()->get() ) && $key == $this->VALUE()->get() ){
 						$selected = 'selected';
 					}
 					$R .= '<option ' . $selected . ' value="' . htmlentities( $key, ENT_QUOTES, 'UTF-8' ) . '">' . $val . '</option>';
 				}
-				return '<select class="hiweb-field-select" ' . $this->admin_get_input_attributes_html($attributes) . '>' . $R . '</select>';
+				return '<select class="hiweb-field-select" ' . $this->sanitize_attributes() . '>' . $R . '</select>';
 			}
 
 

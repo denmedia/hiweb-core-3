@@ -1,26 +1,34 @@
 <?php
 
-	namespace hiweb;
+	namespace hiweb\errors;
 
 
-	class errors{
-
-		static $showBacktrace = false;
-		static $footerErrorsHtml = [];
+	use hiweb\context;
 
 
-		function __construct( $showBacktrace = false ){
-			if( !context::is_frontend_page() && !context::is_admin_page() ) return;
-			css( HIWEB_DIR_CSS . '/errors.css' );
+	class display{
+
+		static protected $showBacktrace = false;
+		static protected $footerErrorsHtml = [];
+
+
+		/**
+		 * @param bool $showBacktrace
+		 * @return bool
+		 */
+		static function enable( $showBacktrace = false ){
+			if( !context::is_frontend_page() && !context::is_admin_page() ) return false;
+			\hiweb\css( HIWEB_URL_ASSETS . '/css/errors.css' );
 			self::$showBacktrace = $showBacktrace;
 			@ini_set( 'display_errors', 'off' );
 			error_reporting( E_ALL & ~E_NOTICE );
 			@ini_set( 'error_reporting', E_ALL );
 			if( !defined( 'WP_DEBUG' ) ) define( 'WP_DEBUG', true );
 			if( !defined( 'WP_DEBUG_DISPLAY' ) ) define( 'WP_DEBUG_DISPLAY', true );
-			set_error_handler( [ $this, 'errorHandler' ] );
-			//self::errorFatal(E_ALL^E_NOTICE); // will die on any error except E_NOTICE
-			register_shutdown_function( [ $this, 'errorFatal' ] );
+			set_error_handler( 'hiweb\\errors\\display::errorHandler' );
+			//self::errorFatal(); // will die on any error except E_NOTICE
+			register_shutdown_function( 'hiweb\\errors\\display::errorFatal' );
+			return true;
 		}
 
 
@@ -109,17 +117,10 @@
 		static function putToFooter( $errorHtml ){
 			self::$footerErrorsHtml[] = $errorHtml;
 			self::$footerErrorsHtml = array_unique( self::$footerErrorsHtml );
-//			add_action( 'wp_footer', [ self::class, 'echo_footerErrorsHtml' ] );
-//			add_action( 'admin_footer', [ self::class, 'getHtml_footerErrors' ] );
 		}
 
 
 		static function echo_footerErrorsHtml(){
-			echo implode( '', self::$footerErrorsHtml );
-		}
-
-
-		static function getHtml_footerErrors(){
 			echo implode( '', self::$footerErrorsHtml );
 		}
 	}

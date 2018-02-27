@@ -6,56 +6,79 @@
 		if( !function_exists( 'add_field_checkbox' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\checkbox
+			 * @return \hiweb\fields\types\checkbox\field
 			 */
 			function add_field_checkbox( $id ){
-				$new_field = new hiweb\fields\types\checkbox( $id );
+				$new_field = new hiweb\fields\types\checkbox\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\checkbox {
 
 
-		use hiweb\fields\field;
-		use hiweb\string;
+		use function hiweb\css;
 
 
-		class checkbox extends field{
+		/**
+		 * Class checkbox
+		 * @package hiweb\fields\types
+		 */
+		class field extends \hiweb\fields\field{
 
-			/**
-			 * @return string
-			 */
-			private function get_sub_type(){
-				$sub_type = [ 'bool' => 'checkbox', 'check' => 'chekbox', 'checkbox' => 'checkbox', 'radio' => 'radiobutton', 'radiobutton' => 'radiobutton' ];
-				return $sub_type[ $this->get_type() ];
+			protected $label_checkbox = '';
+
+
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
+
+
+			protected function get_value_class(){
+				return __NAMESPACE__ . '\\value';
 			}
 
 
 			/**
-			 * @param $value
-			 * @return bool
+			 * @param null $set
+			 * @return $this|null|string
 			 */
-			public function value_sanitize( $value ){
-				return $value != '';
+			public function label_checkbox( $set = null ){
+				return $this->set_property( __FUNCTION__, $set );
 			}
 
+		}
 
-			public function admin_get_input( $value = null, $attributes = [] ){
-				wp_enqueue_media();
-				\hiweb\css( HIWEB_DIR_CSS . '/field-checkbox.css' );
+
+		class input extends \hiweb\fields\input{
+
+			public function html(){
 				ob_start();
-				$rand_id = string::rand();
+				css( HIWEB_URL_CSS . '/field-checkbox.css' );
 				?>
 				<div class="hw-input-checkbox">
-					<input type="<?= $this->get_sub_type() ?>" class="<?= $this->get_sub_type() ?>" id="<?= $rand_id ?>" <?= $this->admin_get_input_attributes_html( $attributes, [ 'name' ] ) ?> <?= $value ? 'checked="checked"' : '' ?>>
-					<label for="<?= $rand_id ?>"><?= $this->admin_description() ?></label>
+					<input class="checkbox" type="checkbox" id="<?= $this->global_id() ?>" <?= $this->sanitize_attributes() ?> <?= $this->VALUE()->get_sanitized() ? 'checked="checked"' : '' ?>>
+					<label for="<?= $this->global_id() ?>"><?= $this->get_parent_field()->label_checkbox() ?></label>
 				</div>
 				<?php
 				return ob_get_clean();
 			}
+
+		}
+
+
+		class  value extends \hiweb\fields\value{
+
+			/**
+			 * @param $value
+			 * @return bool|mixed
+			 */
+			public function sanitize( $value ){
+				return (bool)$value;
+			}
+
 
 		}
 	}

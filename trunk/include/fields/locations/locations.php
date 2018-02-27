@@ -17,7 +17,8 @@
 		/** @var array */
 		static $rulesId = [];
 		/** @var location */
-		static $last_field_location = [];
+		static $last_field_location;
+		static $last_field_location_metabox;
 
 
 		/**
@@ -59,9 +60,9 @@
 		 */
 		static function get_locations_by_contextLocation( location $context_location ){
 			$R = [];
-			foreach( $context_location->get_options() as $context_options_type => $context_options ){
+			foreach( $context_location->_get_options() as $context_options_type => $context_options ){
 				foreach( self::$locations as $location_id => $register_location ){
-					foreach( $register_location->get_options() as $register_options_type => $register_options ){
+					foreach( $register_location->_get_options() as $register_options_type => $register_options ){
 						if( $context_options_type != $register_options_type ) continue;
 						if( self::get_options_compare( $context_options, $register_options ) ){
 							$R[ spl_object_hash( $register_location ) ] = $register_location;
@@ -83,7 +84,7 @@
 			$R = [];
 			$locations = locations::get_locations_by_contextLocation( $context_location );
 			foreach( $locations as $location_id => $location ){
-				if( $location->field instanceof field ) $R[ $location_id ] = $location->field;
+				if( $location->_get_parent_field() instanceof field ) $R[ $location_id ] = $location->_get_parent_field();
 			}
 			return $R;
 		}
@@ -107,7 +108,9 @@
 		static private function get_options_compare( $context_options = [], $register_options = [] ){
 			$intersect_keys = array_keys( array_intersect_key( $context_options, $register_options ) );
 			foreach( $intersect_keys as $key ){
-				$intersect_values = count( array_intersect( (array)$context_options[ $key ], (array)$register_options[ $key ] ) );
+				$haystack_a = (array)( $context_options[ $key ] );
+				$haystack_b = (array)( $register_options[ $key ] );
+				$intersect_values = count( @array_intersect_assoc( $haystack_a, $haystack_b ) );
 				if( $intersect_values == 0 ) return false;
 			}
 			return true;
@@ -120,7 +123,7 @@
 		 */
 		static function get_abstractLocation_from_contextObject( $contextObject = null ){
 			$location = new location();
-			$location->set_options( self::get_locationOptions_from_contextObject( $contextObject ) );
+			$location->_set_options( self::get_locationOptions_from_contextObject( $contextObject ) );
 			return $location;
 		}
 

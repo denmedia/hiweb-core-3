@@ -6,32 +6,73 @@
 	 * Time: 15:45
 	 */
 
-	namespace hiweb\fields\field;
+	namespace hiweb\fields;
 
 
-	use hiweb\fields\field;
-	use hiweb\fields\locations\locations;
+	use hiweb\console;
+	use hiweb\fields\field\value_rows;
 
 
-	trait value{
+	class value{
 
+		protected $parent_field;
 		/** @var mixed */
-		protected $value_default;
-		/** @var array|context[] */
-		private $value_contexts = [];
+		public $data;
+
+		private $rows;
 
 
 		/**
-		 * @param null|mixed $value
+		 * value constructor.
+		 * @param \hiweb\fields\field $field
+		 * @param null|mixed          $default
+		 */
+		public function __construct( field $field, $default = null ){
+			$this->parent_field = $field;
+			$this->data = $default;
+		}
+
+
+		/**
+		 * Clone process
+		 */
+		public function __clone(){
+			$this->rows = null;
+		}
+
+
+		/**
+		 * Set value
+		 * @param mixed $mixed
+		 */
+		final public function set( $mixed ){
+			$this->data = $mixed;
+		}
+
+
+		/**
+		 * @return field
+		 */
+		final public function get_parent_field(){
+			return $this->parent_field;
+		}
+
+
+		/**
+		 * Get value
 		 * @return string|$this
 		 */
-		public function value_default( $value = null ){
-			if( is_null( $value ) ){
-				return $this->value_default;
-			} else {
-				$this->value_default = $value;
-				return $this;
-			}
+		final public function get(){
+			return $this->data;
+		}
+
+
+		/**
+		 * Sanitize function
+		 * @return mixed
+		 */
+		final public function get_sanitized(){
+			return $this->sanitize( $this->get() );
 		}
 
 
@@ -39,35 +80,29 @@
 		 * @param $value
 		 * @return mixed
 		 */
-		public function get_value_sanitize( $value ){
+		public function sanitize( $value ){
 			return $value;
 		}
 
 
 		/**
-		 * @param $value
-		 * @param null $arg_1
-		 * @param null $arg_2
-		 * @param null $arg_3
+		 * Get value content
 		 * @return mixed
 		 */
-		public function get_value_content( $value, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
-			return $this->get_value_sanitize( $value );
+		public function get_content(){
+			return $this->get_sanitized();
 		}
 
 
 		/**
-		 * @param null $contextObject
-		 * @return context
+		 * @return value_rows
 		 */
-		public function context( $contextObject = null ){
-			$location_id = locations::get_contextId_from_contextObject( $contextObject );
-			///
-			if( !array_key_exists( $location_id, $this->value_contexts ) ){
-				/** @var field $this */
-				$this->value_contexts[ $location_id ] = new context( $this, $contextObject );
+		public function rows(){
+			if( !$this->rows instanceof value_rows ){
+				$this->rows = new value_rows( $this );
 			}
-			return $this->value_contexts[ $location_id ];
+			return $this->rows;
 		}
+
 
 	}

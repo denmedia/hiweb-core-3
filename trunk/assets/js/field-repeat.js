@@ -125,7 +125,7 @@ var hiweb_field_repeat = {
     },
 
     get_name_id: function (e) {
-        return jQuery(e).closest('[data-input-name]').attr('data-input-name');
+        return jQuery(e).closest('[data-input-name]').attr('name');
     },
 
     click_add: function (e) {

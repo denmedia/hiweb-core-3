@@ -53,12 +53,14 @@ var hiweb_field_image = {
         }
         var media_id = selection.id;
         input.val(media_id);
+        input.trigger('change');
         image_preview.css('background-image', 'url(' + url + ')');
         current.attr('data-has-image', '1');
     },
 
     deselect_image: function (current) {
         var input = current.find('input').val('');
+        input.trigger('change');
         var image_preview = current.find('.thumbnail');
         image_preview.css('background-image', 'none');
         current.attr('data-has-image', '0');

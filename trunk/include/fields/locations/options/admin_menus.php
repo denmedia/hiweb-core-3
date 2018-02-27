@@ -15,7 +15,7 @@
 		 */
 		public function menu_slug( $set = '' ){
 			$R = $this->set_option( 'menu_slug', $set );
-			$field = $this->get_location()->field;
+			$field = $this->_get_parent_location()->_get_parent_field();
 			if( $field instanceof field ){
 				register_setting( $set, forms::get_field_input_option_name( $field ) );
 			}

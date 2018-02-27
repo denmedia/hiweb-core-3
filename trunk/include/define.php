@@ -8,6 +8,8 @@
 	//
 	if( !defined( 'HIWEB_DIR_INCLUDE' ) ) define( 'HIWEB_DIR_INCLUDE', HIWEB_DIR . '/include' );
 	if( !defined( 'HIWEB_URL_INCLUDE' ) ) define( 'HIWEB_URL_INCLUDE', path::path_to_url( HIWEB_DIR_INCLUDE ) );
+	//if( !defined( 'HIWEB_DIR_TRAITS' ) ) define( 'HIWEB_DIR_TRAITS', HIWEB_DIR . '/traits' );
+	//if( !defined( 'HIWEB_URL_TRAITS' ) ) define( 'HIWEB_URL_TRAITS', path::path_to_url( HIWEB_DIR_TRAITS ) );
 	if( !defined( 'HIWEB_DIR_TOOLS' ) ) define( 'HIWEB_DIR_TOOLS', HIWEB_DIR . '/tools' );
 	if( !defined( 'HIWEB_URL_TOOLS' ) ) define( 'HIWEB_URL_TOOLS', path::path_to_url( HIWEB_DIR_TOOLS ) );
 	if( !defined( 'HIWEB_DIR_VENDORS' ) ) define( 'HIWEB_DIR_VENDORS', HIWEB_DIR . '/vendors' );

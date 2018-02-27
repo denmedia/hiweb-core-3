@@ -56,4 +56,26 @@
 				wp_enqueue_style( $slug );
 			}
 		}
+
+
+		static function the(){
+			foreach( self::$files as $slug => $fileData ){
+				unset( self::$files[ $slug ] );
+				if( !is_array( $fileData ) ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не ведомый тип данных!', [ $slug, $fileData ] );
+					continue;
+				}
+				if( count( $fileData ) != 3 ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не верный массив данных!', [ $slug, $fileData ] );
+					continue;
+				}
+				list( $file, $deeps, $media ) = [ $fileData[0], $fileData[1], $fileData[2] ];
+				if( !$file instanceof file ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не файл!', [ $slug, $fileData ] );
+					continue;
+				}
+				?>
+				<link rel="stylesheet" type="text/css" href="<?= $file->url ?>"/><?php
+			}
+		}
 	}

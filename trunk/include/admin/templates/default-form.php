@@ -6,6 +6,19 @@
 
 	use hiweb\fields\locations\locations;
 
+
+	if( isset( $_GET['settings-updated'] ) ){
+		if( $_GET['settings-updated'] ){
+			$notice = add_admin_notice( 'Для страницы "' . $this->page_title() . '" все данные успешно сохранены' );
+			$notice->CLASS_()->success();
+			$notice->the();
+		} else {
+			$notice = add_admin_notice( 'Ошибка в момент сохранения опций' );
+			$notice->CLASS_()->error();
+			$notice->the();
+		}
+	}
+
 ?>
 <div class="wrap">
 	<h1><?= $this->page_title() ?></h1>

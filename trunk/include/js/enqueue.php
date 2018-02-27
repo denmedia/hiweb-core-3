@@ -58,4 +58,27 @@
 		}
 
 
+		static function the(){
+			foreach( self::$files as $slug => $fileData ){
+				unset( self::$files[ $slug ] );
+				if( !is_array( $fileData ) ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не ведомый тип данных!', [ $slug, $fileData ] );
+					continue;
+				}
+				if( count( $fileData ) != 3 ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не верный массив данных!', [ $slug, $fileData ] );
+					continue;
+				}
+				list( $file, $deeps, $inFooter ) = [ $fileData[0], $fileData[1], $fileData[2] ];
+				if( !$file instanceof file ){
+					console::debug_warn( 'В массиве ' . __NAMESPACE__ . '\\enqueue::$files затисался не файл!', [ $slug, $fileData ] );
+					continue;
+				}
+				wp_register_script( $slug, $file->url, $deeps, $file->filemtime, $inFooter );
+				wp_enqueue_script( $slug );
+				?><script src="<?=$file->url?>" async></script><?php
+			}
+		}
+
+
 	}

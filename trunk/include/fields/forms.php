@@ -3,7 +3,10 @@
 	namespace hiweb\fields;
 
 
+	use hiweb\arrays;
 	use hiweb\console;
+	use function hiweb\css;
+	use function hiweb\dump;
 	use hiweb\fields\locations\location;
 	use hiweb\fields\locations\locations;
 
@@ -15,7 +18,7 @@
 		 * @return string
 		 */
 		static public function get_field_input_name( field $field ){
-			return $field->admin_input_name( 'hiweb' );
+			return 'hiweb-' . $field->id();
 		}
 
 
@@ -24,9 +27,9 @@
 		 * @return string
 		 */
 		static public function get_field_input_option_name( field $field ){
-			$options_admin_menus = $field->location()->get_options_by_type( 'admin_menus' );
-			if( isset( $options_admin_menus['menu_slug'] ) ) return $field->admin_input_name( 'hiweb-option-' . $options_admin_menus['menu_slug'] );
-			return $field->admin_input_name( 'hiweb-option' );
+			$options_admin_menus = $field->LOCATION()->_get_options_by_type( 'admin_menus' );
+			if( isset( $options_admin_menus['menu_slug'] ) ) return 'hiweb-option-' . $options_admin_menus['menu_slug'] . '-' . $field->id();
+			return 'hiweb-option-' . $field->id();
 		}
 
 
@@ -36,6 +39,11 @@
 		 */
 		static public function get_section_id( $page_slug ){
 			return 'hiweb-options-section-' . $page_slug;
+		}
+
+
+		static public function get_option_group_id( $menu_slug ){
+			return 'hiweb-option-group-' . $menu_slug;
 		}
 
 
@@ -50,47 +58,32 @@
 
 		/**
 		 * @param field $field
-		 * @param string $templateName
-		 */
-		static function set_field_defaultTemplate( field $field, $templateName = 'default' ){
-			if( $field->admin_template() == '' ){
-				$field->admin_template( $templateName );
-			}
-		}
-
-
-		/**
-		 * @param field[] $fields
-		 * @param string $templateName
-		 */
-		static function set_fields_defaultTemplate( $fields, $templateName = 'default' ){
-			if( is_array( $fields ) ) foreach( $fields as $field ){
-				self::set_field_defaultTemplate( $field, $templateName );
-			}
-		}
-
-
-		/**
-		 * @param field $field
-		 * @param mixed $value
-		 * @param array $attributes
 		 * @return string
 		 */
-		static public function get_fieldset( field $field, $value = null, $attributes = [] ){
-			$R = '';
-			$template_path = __DIR__ . '/templates/' . $field->admin_template() . '.php';
-			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
-				console::debug_warn( 'Не удалось найти шаблон для поля', $field->admin_template() );
-				$template_path = __DIR__ . '/templates/default.php';
+		static public function get_fieldset_classes( field $field ){
+			$classes = [ 'hiweb-fieldset' ];
+			$classes[] = 'hiweb-fieldset-width-' . $field->FORM()->WIDTH()->get();
+			$classes[] = 'hiweb-field-' . $field->id();
+			$classes[] = 'hiweb-field-' . $field->global_id();
+			return implode( ' ', $classes );
+		}
+
+
+		/**
+		 * Get template form php-file path
+		 * @param string $name
+		 * @param bool $get_field_template
+		 * @return bool|string
+		 */
+		static private function get_template( $name = 'default', $get_field_template = false ){
+			$formTemplate_path = __DIR__ . '/templates/' . $name . ( $get_field_template ? '-field' : '-form' ) . '.php';
+			if( !file_exists( $formTemplate_path ) || !is_readable( $formTemplate_path ) || !is_file( $formTemplate_path ) ){
+				if( $name == 'default' ){
+					console::debug_warn( 'Попытка получения шаблона формы, но файла по умолчанию не существует' );
+					return false;
+				} else return self::get_template( 'default', $get_field_template );
 			}
-			if( !is_file( $template_path ) || !\is_readable( $template_path ) ){
-				console::debug_error( 'Не удалось найти шаблон для поля DEFAULT', $field->admin_template() );
-			} else {
-				ob_start();
-				include $template_path;
-				$R = ob_get_clean();
-			}
-			return $R;
+			return $formTemplate_path;
 		}
 
 
@@ -101,45 +94,29 @@
 		 * @return string
 		 */
 		static public function get_form_by_fields( $fields = [], $contextObject = null, $formTemplate = 'default' ){
-			$fields_by_template = [];
-			$templates_by_index = [];
-			$last_template = '';
-			$template_index = - 1;
+			if( arrays::is_empty( $fields ) ) return '';
 			///
-			foreach( $fields as $field_id => $field ){
-				self::set_field_defaultTemplate( $field, $formTemplate );
-				if( !$field instanceof field ) continue;
-				if( $field->admin_template() != $last_template ){
-					$template_index ++;
-					$last_template = $field->admin_template();
+			css( HIWEB_URL_CSS . '/fields.css' );
+			$template_path = self::get_template( $formTemplate, false );
+			if( $template_path === false ) return '';
+			$template_field_path = self::get_template( $formTemplate, true );
+			if( $template_field_path === false ) return '';
+			ob_start();
+			@include $template_path;
+			$form_html = ob_get_clean();
+			///
+			$fields_html = [];
+			foreach( $fields as $field ){
+				//Set input name for OPTIONS PAGE
+				if( is_string( $contextObject ) ){
+					$field->INPUT()->name( self::get_field_input_option_name( $field ) );
 				}
-				$fields_by_template[ $template_index ][] = $field;
-				$templates_by_index[ $template_index ] = $last_template;
+				ob_start();
+				@include $template_field_path;
+				$fields_html[] = str_replace( '<!--input-->', $field->CONTEXT( $contextObject )->INPUT()->html(), ob_get_clean() );
 			}
 			///
-			$R = [];
-			if( count( $fields_by_template ) > 0 ){
-				foreach( $fields_by_template as $index => $fields ){
-					$template_name = $templates_by_index[ $index ];
-					ob_start();
-					$template_path = __DIR__ . '/templates/' . $template_name . '-form.php';
-					if( !\hiweb\file( $template_path )->is_readable ) $template_path = __DIR__ . '/templates/default-form.php';
-					include $template_path;
-					$form_html = ob_get_clean();
-					$fields_html = [];
-					/**
-					 * @var string $field_id
-					 * @var field $field
-					 */
-					foreach( $fields as $field_id => $field ){
-						$field->admin_input_set_attributes('name',is_string( $contextObject ) ? self::get_field_input_option_name( $field ) : self::get_field_input_name( $field ));
-						$fields_html[] = $field->context( $contextObject )->get_fieldset(  );
-					}
-					$R[] = str_replace( '<!--fields-->', implode( '', $fields_html ), $form_html );
-				}
-			}
-			return implode( '<!--form-->', $R );
-			///
+			return str_replace( '<!--fields-->', implode( chr( 13 ) . chr( 10 ), $fields_html ), $form_html );
 		}
 
 

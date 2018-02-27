@@ -10,7 +10,9 @@ jQuery(document).ready(function ($) {
         },
 
         make: function () {
-            $(this).iconpicker();
+            $(this).iconpicker({
+
+            });
         }
 
     };

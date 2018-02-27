@@ -1,14 +1,74 @@
 @import "mixins";
 
-.hiweb-admin-field-wrap, .hiweb-admin-field-wrap-compact {
-	margin-bottom: 15px;
+$breakpoint: 1180px;
+
+@mixin flexprop($percent) {
+	width: $percent;
+	flex: 1 1 $percent;
+	-ms-flex: 1 1 $percent;
+	-webkit-flex: 1 1 $percent;
 }
 
-.hiweb-admin-field-wrap-compact {
-	display: inline-block;
-	vertical-align: top;
-	width: auto;
-	max-width: 50%;
-	min-width: 250px;
-	margin-right: 15px;
+.hiweb-fields-form {
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	-webkit-justify-content: flex-start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	-webkit-align-content: flex-start;
+	-ms-flex-line-pack: start;
+	align-content: flex-start;
+	-webkit-align-items: flex-start;
+	-ms-flex-align: start;
+	align-items: flex-start;
+
+	@media (max-width: $breakpoint) {
+		display: block;
+	}
+
+	.hiweb-fieldset {
+
+		.post-attributes-label-wrapper {
+			margin: 0 0 .5em 0;
+		}
+
+		.description {
+			text-align: justify-all;
+		}
+
+	}
+
+	///RESPONSIVE
+	.hiweb-fieldset-width-full { @include flexprop(100%); }
+	.hiweb-fieldset-width-half { @include flexprop(50%); }
+	.hiweb-fieldset-width-third { @include flexprop(33%); }
+	.hiweb-fieldset-width-two_third { @include flexprop(66.6%); }
+	.hiweb-fieldset-width-quarter { @include flexprop(25%); }
+	.hiweb-fieldset-width-three_quarter { @include flexprop(75%); }
+	.hiweb-fieldset-width-fifth { @include flexprop(20%); }
+	.hiweb-fieldset-width-two_fifth { @include flexprop(40%); }
+	.hiweb-fieldset-width-three_fifth { @include flexprop(60%); }
+	.hiweb-fieldset-width-four_fifths { @include flexprop(80%); }
+	.hiweb-fieldset-width-half, .hiweb-fieldset-width-third, .hiweb-fieldset-width-two_third, .hiweb-fieldset-width-quarter, .hiweb-fieldset-width-three_quarter, .hiweb-fieldset-width-fifth, .hiweb-fieldset-width-two_fifth, .hiweb-fieldset-width-three_fifth, .hiweb-fieldset-width-four_fifths {
+		box-sizing: border-box;
+		padding-right: 16px;
+		@media (max-width: $breakpoint) {
+			width: 100%;
+			display: block;
+		}
+	}
+
+}
+
+.hiweb-fields-form-default {
+	.hiweb-fieldset {
+		margin-bottom: 20px;
+	}
 }

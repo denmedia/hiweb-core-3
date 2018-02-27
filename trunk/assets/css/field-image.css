@@ -21,8 +21,7 @@
     -o-transform: rotate(360deg);
     transform: rotate(360deg); } }
 .hiweb-field-image {
-  padding: 1px;
-  display: inline-block;
+  padding: 1px 3px 1px 1px;
   background: #fff;
   border: 1px solid #e5e5e5; }
   .hiweb-field-image .image-select {
@@ -66,7 +65,8 @@
       -moz-opacity: 0;
       -ms-opacity: 0;
       -o-opacity: 0;
-      opacity: 0; }
+      opacity: 0;
+      filter: alpha(opacity=0); }
     .hiweb-field-image .image-select .dashicons {
       font-size: 34px;
       line-height: 34px;
@@ -79,6 +79,7 @@
       -ms-opacity: 0.4;
       -o-opacity: 0.4;
       opacity: 0.4;
+      filter: alpha(opacity=40);
       -webkit-transition: all 0.2s ease-in-out 0ms;
       -moz-transition: all 0.2s ease-in-out 0ms;
       -o-transition: all 0.2s ease-in-out 0ms;
@@ -93,6 +94,7 @@
       -ms-opacity: 0;
       -o-opacity: 0;
       opacity: 0;
+      filter: alpha(opacity=0);
       -webkit-text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       -moz-text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
       -o-text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
@@ -105,6 +107,7 @@
         -ms-opacity: 1;
         -o-opacity: 1;
         opacity: 1;
+        filter: alpha(opacity=100);
         -webkit-transition: all 0.1s ease-in-out 0ms;
         -moz-transition: all 0.1s ease-in-out 0ms;
         -o-transition: all 0.1s ease-in-out 0ms;
@@ -127,6 +130,7 @@
         -ms-opacity: 0.4;
         -o-opacity: 0.4;
         opacity: 0.4;
+        filter: alpha(opacity=40);
         -webkit-filter: blur(6px) brightness(3) grayscale(50%);
         -moz-filter: blur(6px) brightness(3) grayscale(50%);
         -o-filter: blur(6px) brightness(3) grayscale(50%);
@@ -137,7 +141,8 @@
         -moz-opacity: 0.75;
         -ms-opacity: 0.75;
         -o-opacity: 0.75;
-        opacity: 0.75; }
+        opacity: 0.75;
+        filter: alpha(opacity=75); }
   .hiweb-field-image[data-has-image="1"] .image-select {
     background: url(../img/pattern-4.png) 50% 50%; }
   .hiweb-field-image[data-has-image="1"] .dashicons[data-icon="select"] {

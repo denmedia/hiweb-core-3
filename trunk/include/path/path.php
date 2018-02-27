@@ -39,13 +39,14 @@
 		 * Возвращает корневой URL
 		 * @param null|string $url
 		 * @return string
-		 * @version 1.4
+		 * @version 1.3
 		 */
-		static function base_url( $url = null, $return_with_shema = true ){
+		static function base_url( $url = null ){
 			if( is_string( $url ) ){
 				$url = self::prepare_url( $url, null, true );
 				return $url['base'];
 			} else {
+				//if(hiweb()->cacheExists()) return hiweb()->cache();
 				$root = ltrim( self::base_dir(), '/' );
 				$query = ltrim( str_replace( '\\', '/', dirname( $_SERVER['PHP_SELF'] ) ), '/' );
 				$rootArr = [];
@@ -58,18 +59,17 @@
 				}
 				$rootArr = array_reverse( $rootArr );
 				$queryArr = array_reverse( $queryArr );
-				$R = '';
+				$r = '';
 				foreach( $queryArr as $dir ){
 					foreach( $rootArr as $rootDir ){
 						if( $dir == $rootDir ){
-							$R = $dir;
+							$r = $dir;
 							break 2;
 						}
 					}
 				}
-				if( !$return_with_shema ) return $R;
 				$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
-				return rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $R, '/' );
+				return rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . '/' . $r, '/' );
 			}
 		}
 
@@ -88,7 +88,7 @@
 
 		/**
 		 * Возвращает URL с измененным QUERY фрагмнтом
-		 * @param null $url
+		 * @param null  $url
 		 * @param array $addData
 		 * @param array $removeKeys
 		 * @return string
@@ -168,21 +168,11 @@
 		/**
 		 * Конвертирует URL в путь
 		 * @param $url
-		 * @return string
+		 * @return mixed
 		 */
 		static function url_to_path( $url ){
 			$url = str_replace( '\\', '/', $url );
 			return str_replace( self::base_url(), self::base_dir(), $url );
-		}
-
-
-		/**
-		 * @param null $url
-		 * @return bool
-		 */
-		static function is_local_url( $url = null ){
-			if( !is_string( $url ) ) $url = '://' . self::base_url( null, false );
-			return strpos( $url, self::base_url() ) !== false;
 		}
 
 
@@ -225,7 +215,7 @@
 		 * Возвращает папки или папку(если указать индекс) из URL
 		 * @version 2.1
 		 * @param null $url
-		 * @param int $index
+		 * @param int  $index
 		 * @return bool|array|string
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ){
@@ -257,7 +247,7 @@
 		 * @return bool|array|string
 		 */
 		static function prepare_url( $url, $startUrl = null, $returnParseArray = false ){
-			if( !is_string( $url ) || empty( $url ) ){
+			if( !is_string( $url ) ){
 				return false;
 			}
 			$urlParse = parse_url( trim( $url ) );
@@ -512,10 +502,10 @@
 		/**
 		 * Выполняет архивацию папки в ZIP архив
 		 * @param             $pathInput
-		 * @param string $pathOut
-		 * @param string $arhiveName
+		 * @param string      $pathOut
+		 * @param string      $arhiveName
 		 * @param string|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
-		 * @param bool $appendToArchive
+		 * @param bool        $appendToArchive
 		 * @return bool|string
 		 */
 		static function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ){
@@ -626,17 +616,15 @@
 		 * Подключить файла PHP, CSS и JS из папки
 		 * @param       $path
 		 * @param array $fileExtension - массив типов подключаемых файлов, доступны типы: php, js, css
-		 * @param int $depth
 		 * @return array
 		 */
-		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ], $depth = 0 ){
-			$depth --;
+		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
 			$dir = files::get( $path );
 			$R = [];
 			if( !$dir->is_readable || !$dir->is_dir ){
 				console::debug_error( 'Ошибка подключения целой папки', $dir );
 			} else {
-				$subFiles = files::get( $path )->get_sub_files( $fileExtension, $depth );
+				$subFiles = files::get( $path )->get_sub_files( $fileExtension );
 				foreach( $subFiles as $file ){
 					if( !$file->is_readable ) continue;
 					switch( $file->extension ){
@@ -652,11 +640,6 @@
 							\hiweb\js( $file->url );
 							$R[ $file->path ] = $file;
 							break;
-					}
-				}
-				if( $depth > -1 ){
-					foreach( files::get( $path )->get_sub_dirs() as $dirName => $fileDir ){
-						$R = array_merge( $R, self::include_dir( $fileDir->path, $fileExtension, $depth ) );
 					}
 				}
 			}
@@ -701,7 +684,6 @@
 			$attachment_id = wp_insert_attachment( $attachment, $newPath );
 			require_once( ABSPATH . 'wp-admin/includes/image.php' );
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $newPath );
-			if( self::is_url( $_fileOrUrl ) ) $attachment_data['hiweb-path-upload-url'] = $_fileOrUrl;
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 			return $attachment_id;
 		}

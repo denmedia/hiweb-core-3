@@ -6,33 +6,41 @@
 		if( !function_exists( 'add_field_script' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\script
+			 * @return \hiweb\fields\types\script\field
 			 */
 			function add_field_script( $id ){
-				$new_field = new hiweb\fields\types\script( $id );
+				$new_field = new hiweb\fields\types\script\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\script {
 
 
-		use hiweb\fields\field;
-
-
-		class script extends field{
-
-			protected $script_theme = 'mdn-like';
+		class field extends \hiweb\fields\field{
 
 
 			public function script_theme( $set = null ){
-				return $this->set_property( __FUNCTION__, $set );
+				return $this->set_input_property( __FUNCTION__, $set );
 			}
 
 
-			public function admin_get_input( $value = null, $attributes = [] ){
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
+
+
+		}
+
+
+		class input extends \hiweb\fields\input{
+
+			public $script_theme = 'mdn-like';
+
+
+			public function html(){
 				\hiweb\css( HIWEB_DIR_VENDORS . '/codemirror/lib/codemirror.css' );
 				\hiweb\css( HIWEB_DIR_VENDORS . '/codemirror/addon/hint/show-hint.css' );
 				\hiweb\css( HIWEB_DIR_VENDORS . '/codemirror/theme/' . $this->script_theme . '.css' );
@@ -50,10 +58,10 @@
 				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/htmlmixed/htmlmixed.js' );
 				ob_start();
 				?>
-				<textarea name="<?= $this->admin_input_get_attribute( 'name' ) ?>" id="<?= $this->id() ?>"><?= $value ?></textarea>
+				<textarea name="<?= $this->name() ?>" id="<?= $this->global_id() ?>"><?= $this->VALUE()->get() ?></textarea>
 				<script type="text/javascript">
                     window.onload = function () {
-                        var editor = CodeMirror.fromTextArea(document.getElementById("<?= $this->id() ?>"), {
+                        var editor = CodeMirror.fromTextArea(document.getElementById("<?= $this->global_id() ?>"), {
                             mode: "text/html",
                             lineWrapping: true,
                             lineNumbers: true,
@@ -66,6 +74,7 @@
 				<?php
 				return ob_get_clean();
 			}
+
 
 		}
 	}

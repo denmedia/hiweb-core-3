@@ -92,7 +92,7 @@ var hiweb_field_images = {
         source.find('img').attr('src', url);
         source.removeAttr('data-source').attr('data-image-id', selection);
         var input = source.find('input');
-        input.val(selection.id).attr('name', input.attr('data-name'));
+        input.val(selection.id).attr('name', root.attr('name') + '[]');
         source.attr('id', root.attr('data-id'));
         if (add_right) {
             hiweb_field_images.get_list_root(root).append(source);

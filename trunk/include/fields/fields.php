@@ -10,6 +10,7 @@
 
 
 	use hiweb\fields\field;
+	use hiweb\fields\input;
 
 
 	class fields{
@@ -20,13 +21,15 @@
 		static $fieldId_globalId = [];
 		/** @var array */
 		static $globalId_fieldId = [];
+		/** @var input[] */
+		static $inputs = [];
 
 
-		static private function get_free_global_id( $fieldId ){
+		static private function get_free_global_id( $fieldId, array $haystack ){
 			for( $count = 0; $count < 999; $count ++ ){
 				$count = sprintf( '%03u', $count );
 				$input_name_id = $fieldId . '_' . $count;
-				if( !isset( self::$fields[ $input_name_id ] ) ) return $input_name_id;
+				if( !isset( $haystack[ $input_name_id ] ) ) return $input_name_id;
 			}
 			return false;
 		}
@@ -37,13 +40,25 @@
 		 * @return false|string
 		 */
 		static function register_field( field $field ){
-			$global_id = self::get_free_global_id( $field->id() );
+			$global_id = self::get_free_global_id( $field->id(), self::$fields );
 			if( $global_id === false ) return false;
 			//
 			$field->global_id( $global_id );
 			self::$fields[ $global_id ] = $field;
 			self::$fieldId_globalId[ $field->id() ][] = $field;
 			self::$globalId_fieldId[ $global_id ][] = $field;
+			return $global_id;
+		}
+
+
+		/**
+		 * @param input $input
+		 * @return bool|string
+		 */
+		static function register_input( input $input ){
+			$global_id = self::get_free_global_id( $input->get_parent_field()->id(), self::$inputs );
+			if( $global_id === false ) return false;
+			self::$inputs[ $global_id ] = $input;
 			return $global_id;
 		}
 

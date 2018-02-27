@@ -12,8 +12,8 @@
 			background: transparent;
 			border: none;
 			padding: 0;
-			width: 25px;
-			height: 25px;
+			width: 20px;
+			height: 20px;
 			opacity: 0.5;
 			cursor: pointer;
 			-webkit-transition: all 0.2S; -moz-transition: all 0.2S; -ms-transition: all 0.2S; -o-transition: all 0.2S; transition: all 0.2S;
@@ -80,20 +80,24 @@
 		}
 
 		tr[data-row] {
-			@include hw_transition((transform, opacity, box-shadow, filter), 500ms);
+			@include transition((transform, opacity, box-shadow, filter), 500ms);
 
 			&.ui-sortable-helper {
 				background-color: white;
-				@include hw_transition((transform, opacity, box-shadow, filter), 200ms);
+				@include transition((transform, opacity, box-shadow, filter), 200ms);
 				transform: scale(1.02);
 				z-index: 10000 !important;
-				@include hw_opacity(0.85);
-				@include hw_box_shadow(10px, 0.1, 10px, 20px);
-				@include hw_filter(blur(0.2px));
+				@include opacity(0.85);
+				@include box_shadow(10px, 0.1, 10px, 20px);
+				@include filter(blur(0.2px));
 			}
 		}
 
 		th {
+			&.compact {
+				display: none;
+			}
+
 			.description {
 				font-size: 85%;
 				margin: 0;
@@ -103,8 +107,13 @@
 		td {
 			text-align: center;
 			vertical-align: top;
+			padding: 4px 5px;
 
 			&[data-ctrl] {
+			}
+
+			&.compact {
+				display: block;
 			}
 
 		}

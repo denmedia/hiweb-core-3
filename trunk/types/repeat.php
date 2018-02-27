@@ -10,7 +10,7 @@
 		add_action( 'wp_ajax_hiweb-field-repeat-get-row', function(){
 			$field_global_id = path::request( 'id' );
 			///
-			$R = [ 'result' => false ];
+			$R = [ 'result' => false, 'filed-id' => $field_global_id ];
 			//
 			if( !is_string( $field_global_id ) || trim( $field_global_id ) == '' ){
 				$R['error'] = 'Не передан параметр id инпута. Необходимо указать $_POST[id] или $_GET[id].';
@@ -19,9 +19,11 @@
 					$R['error'] = 'Поле с id[' . $field_global_id . '] не найден!';
 				} else {
 					$R['result'] = true;
-					/** @var fields\types\repeat $field */
+					/** @var fields\types\repeat\field $field */
 					$field = fields::$fields[ $field_global_id ];
-					$R['data'] = $field->ajax_html_row( path::request( 'input_name' ) );
+					/** @var fields\types\repeat\input $input */
+					$input = $field->INPUT();
+					$R['data'] = $input->ajax_html_row( path::request( 'input_name' ) );
 				}
 			}
 			//
@@ -32,46 +34,67 @@
 		if( !function_exists( 'add_field_repeat' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\repeat
+			 * @return fields\types\repeat\field
 			 */
 			function add_field_repeat( $id ){
-				$new_field = new hiweb\fields\types\repeat( $id );
+				$new_field = new hiweb\fields\types\repeat\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\repeat {
 
 
-		use hiweb\arrays;
-		use hiweb\fields\field;
-		use hiweb\fields\types\repeat\col;
+		use function hiweb\css;
+		use function hiweb\dump;
+		use function hiweb\js;
 
 
-		class repeat extends field{
-
-			/** @var col[] */
-			private $cols = [];
+		class field extends \hiweb\fields\field{
 
 
 			/**
-			 * @param field $field
+			 * @param \hiweb\fields\field $field
 			 * @return col
 			 */
-			public function add_col_field( field $field ){
-				$this->cols[ $field->id() ] = new repeat\col( $this, $field );
-				return $this->cols[ $field->id() ];
+			public function add_col_field( \hiweb\fields\field $field ){
+				/** @var input $input */
+				$input = $this->INPUT();
+				return $input->add_col_field( $field );
 			}
 
 
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
+
+
+			protected function get_value_class(){
+				return __NAMESPACE__ . '\\value';
+			}
+
+
+		}
+
+
+		class input extends \hiweb\fields\input{
+
+			/** @var col[] */
+			public $cols = [];
+			/** @var row[] */
+			public $repeat_rows = [];
+
+
 			/**
-			 * @param null $value
-			 * @return bool
+			 * @param \hiweb\fields\field $field
+			 * @return col
 			 */
-			public function have_rows( $value = null ){
-				return is_array( $value ) && count( $value ) > 0 && is_array( reset( $value ) ) && count( reset( $value ) ) > 0;
+			public function add_col_field( \hiweb\fields\field $field ){
+				$new_col = new col( $this, $field );
+				$this->cols[ $field->id() ] = $new_col;
+				return $new_col;
 			}
 
 
@@ -91,50 +114,33 @@
 			}
 
 
-			/**
-			 * @param $value
-			 * @return array
-			 */
-			public function get_value_sanitize( $value ){
-				$R = [];
-				if( $this->have_cols() && $this->have_rows( $value ) ){
-					foreach( $value as $row_index => $row ){
-						foreach( $this->get_cols() as $col_id => $col ){
-							$R[ $row_index ][ $col_id ] = isset( $value[ $row_index ][ $col_id ] ) ? $value[ $row_index ][ $col_id ] : null;
-						}
-					}
-				}
-				return $R;
-			}
-
-
-			public function get_value_content( $value, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
-				list( $col_id, $row_index ) = func_get_arg( 4 );
-				if( array_key_exists( $col_id, $this->cols ) ){
-					return $this->cols[ $col_id ]->field()->get_value_content( $value, $arg_1, $arg_2, $arg_3, func_get_arg( 4 ) );
-				}
-				return $value;
-			}
-
-
 			private function the_head_html( $thead = true ){
-				force_ssl_admin()
 				?>
 				<?= $thead ? '<thead>' : '<tfoot>' ?>
 				<tr>
 					<th></th>
 					<?php if( $this->have_cols() ){
 						$width_full = 0;
+						$last_col = null;
+						$last_compact = false;
 						foreach( $this->get_cols() as $col ){
 							$width_full += $col->width();
+							if( !$last_compact ){
+								$last_col = $col;
+							} elseif( $last_col instanceof col ) {
+								$last_col->width += $col->width();
+							}
+							$last_compact = $col->compact();
 						}
+						$last_compact = false;
 						foreach( $this->get_cols() as $col ){
 							$width = ceil( $col->width() / $width_full * 100 ) . '%';
 							?>
-							<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>">
+							<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>" class="<?= $last_compact ? 'compact' : '' ?>">
 								<?= $col->label() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>
 							</th>
 							<?php
+							$last_compact = $col->compact();
 						}
 					} ?>
 					<th class="nowrap" data-ctrl>
@@ -147,55 +153,31 @@
 			}
 
 
-			private function the_row_html( $row_index = null, $row = [], $attributes = [] ){
-				?>
-				<tr data-row="<?= $row_index ?>">
-					<td data-drag>
-						<i class="dashicons dashicons-sort"></i>
-					</td>
-					<?php if( $this->have_cols() ){
-						foreach( $this->get_cols() as $col ){
-							?>
-							<td data-col="<?= $col->id() ?>">
-								<?php echo $col->get_input_by_row( $row_index, $row, $attributes ); ?>
-							</td>
-							<?php
-						}
-					} ?>
-					<td data-ctrl>
-						<button title="Duplicate row" class="dashicons dashicons-admin-page" data-action-duplicate="<?= $row_index ?>"></button>
-						<button title="Remove row..." class="dashicons dashicons-trash" data-action-remove="<?= $row_index ?>"></button>
-					</td>
-				</tr>
-				<?php
-			}
-
-
+			/**
+			 * @param $input_name
+			 * @return string
+			 */
 			public function ajax_html_row( $input_name ){
+				$this->name( $input_name );
+				$new_row = new row( $this );
+				$new_row->index = 99;
 				ob_start();
-				$this->admin_input_set_attributes( 'name', $input_name );
-				$this->the_row_html( 0 );
+				$new_row->the();
 				return ob_get_clean();
 			}
 
 
-			/**
-			 * @param null $value
-			 * @param array $attributes
-			 * @return string
-			 */
-			public function admin_get_input( $value = null, $attributes = [] ){
-				\hiweb\css( HIWEB_DIR_CSS . '/field-repeat.css' );
-				\hiweb\js( HIWEB_DIR_JS . '/field-repeat.js', [ 'jquery-ui-sortable' ] );
-				///INCLUDE SCRIPTS
+			public function html(){
+				if( $this->have_cols() ) foreach( $this->cols as $col ){
+					$col->input->html();
+				}
 				ob_start();
-				$this->the_row_html( - 1, [] );
-				ob_clean();
-				///
+				css( HIWEB_URL_CSS . '/field-repeat.css' );
+				js( HIWEB_URL_JS . '/field-repeat.js' );
 				?>
-				<div class="hiweb-field-repeat" name="<?= $this->admin_input_get_attribute( 'name', $attributes ) ?>" data-input-name="<?= $this->admin_input_get_attribute( 'name' ) ?>" data-global-id="<?= $this->global_id() ?>">
+				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>" data-global-id="<?= $this->get_parent_field()->global_id() ?>">
 					<?php if( !$this->have_cols() ){
-						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col(\'col-id\')</code>' ), $this->id() ) ?></p><?php
+						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col_field( add_field_text(...) )</code>' ), $this->get_parent_field()->id() ) ?></p><?php
 					} else {
 						?>
 						<table class="widefat striped"><?php
@@ -203,15 +185,15 @@
 						?>
 						<tbody data-rows-list>
 						<?php
-							if( $this->have_rows( $value ) ){
-								foreach( $this->get_value_sanitize( $value ) as $row_index => $row ){
-									$this->the_row_html( $row_index, $row, $attributes );
-								}
+							if( $this->VALUE()->rows()->have_rows() ) foreach( $this->VALUE()->get_sanitized() as $row_index => $row ){
+								$repeat_row = new row( $this, $row, $row_index );
+								$repeat_row->index = $row_index;
+								$repeat_row->the();
 							}
 						?>
 						</tbody>
 						<tbody data-rows-message>
-						<tr data-row-empty="<?= $this->have_rows( $value ) ? '1' : '0' ?>">
+						<tr data-row-empty="<?= $this->VALUE()->rows()->have_rows() ? '1' : '0' ?>">
 							<td colspan="<?= ( count( $this->get_cols() ) + 2 ) ?>"><p class="message"><?= 'Таблица пуста. Для добавления хотя бы одног поля, кликните по кнопке "+"' ?></p></td>
 						</tr>
 						</tbody>
@@ -225,15 +207,95 @@
 				return ob_get_clean();
 			}
 
+		}
 
+
+		class value extends \hiweb\fields\value{
+
+			/**
+			 * @param $value
+			 * @return array
+			 */
+			public function get_value_sanitize( $value ){
+				$R = [];
+				/** @var input $input */
+				$input = $this->get_parent_field()->INPUT();
+				if( $input->have_cols() && $this->rows()->have_rows() ){
+					foreach( $value as $row_index => $row ){
+						foreach( $input->get_cols() as $col_id => $col ){
+							$R[ $row_index ][ $col_id ] = isset( $value[ $row_index ][ $col_id ] ) ? $value[ $row_index ][ $col_id ] : null;
+						}
+					}
+				}
+				return $R;
+			}
+
+			//TODO!
+			//			public function get_content(){
+			//				list( $col_id, $row_index ) = func_get_arg( 4 );
+			//				if( array_key_exists( $col_id, $this->cols ) ){
+			//					return $this->cols[ $col_id ]->field()->value()->get_content();
+			//				}
+			//				return $this->get_sanitized();
+			//			}
 		}
 	}
 
 	namespace hiweb\fields\types\repeat {
 
 
-		use hiweb\arrays;
-		use hiweb\fields\field;
+		class row{
+
+			/** @var input */
+			public $parent_input;
+
+			public $index = 0;
+			/** @var col[] */
+			public $cols = [];
+
+			public $have_cols = false;
+
+			public $data = [];
+
+
+			public function __construct( input $input, $data = [], $row_index = 0 ){
+				$this->parent_input = $input;
+				foreach( $input->get_cols() as $id => $col ){
+					$this->have_cols = true;
+					$this->cols[ $id ] = clone $col;
+					$this->cols[ $id ]->set_row( $this );
+					$this->cols[ $id ]->input->name( $this->parent_input->name() . '[' . $row_index . '][' . $id . ']' );
+					if( isset( $data[ $id ] ) ) $this->cols[ $id ]->value->set( $data[ $id ] );
+				}
+			}
+
+
+			public function the(){
+				?>
+				<tr data-row="<?= $this->index ?>">
+					<td data-drag>
+						<i class="dashicons dashicons-sort"></i>
+					</td>
+					<?php if( $this->have_cols ){
+						$last_compact = false;
+						foreach( $this->cols as $col ){
+							?>
+							<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+							<?php
+							$last_compact = $col->compact();
+						}
+					} ?>
+					<td data-ctrl>
+						<button title="Duplicate row" class="dashicons dashicons-admin-page" data-action-duplicate="<?= $this->index ?>"></button>
+						<button title="Remove row..." class="dashicons dashicons-trash" data-action-remove="<?= $this->index ?>"></button>
+					</td>
+				</tr>
+				<?php
+
+			}
+
+
+		}
 
 
 		class col{
@@ -245,21 +307,49 @@
 			/** @var string */
 			public $description = '';
 			/** @var field */
-			public $parent_field;
+			public $embedded_field;
 			/** @var field */
-			public $field;
+			public $parent_input;
+			/** @var \hiweb\fields\input */
+			public $input;
+			/** @var \hiweb\fields\value */
+			public $value;
+			/** @var row|null */
+			private $parent_repeat_row = null;
+			/** @var bool */
+			private $is_compact = false;
 
 
-			public function __construct( field $parent_field, field $field ){
-				$this->field = $field;
-				$this->parent_field = $parent_field;
-				$this->label = $field->admin_label();
-				$this->description = $field->admin_description();
+			public function __construct( input $parent_input, \hiweb\fields\field $embedded_field, $parent_repeat_row = null ){
+				$this->parent_input = $parent_input;
+				$this->embedded_field = $embedded_field;
+				$this->label = $embedded_field->label();
+				$this->description = $embedded_field->description();
+				$this->parent_repeat_row = $parent_repeat_row;
+				$this->input = clone $this->embedded_field->INPUT();
+				$this->value = $this->input->VALUE();
 			}
 
 
+			public function __clone(){
+				$this->input = clone $this->input;
+				$this->value = $this->input->VALUE();
+			}
+
+
+			/**
+			 * @return string
+			 */
 			public function id(){
-				return $this->field->id();
+				return $this->embedded_field->id();
+			}
+
+
+			/**
+			 * @param row $parent_repeat_row
+			 */
+			public function set_row( row $parent_repeat_row ){
+				$this->parent_repeat_row = $parent_repeat_row;
 			}
 
 
@@ -272,7 +362,7 @@
 					return $this->label;
 				} else {
 					$this->label = $set;
-					$this->field->admin_label( $set );
+					//$this->parent_input->label( $set );
 					return $this;
 				}
 			}
@@ -287,7 +377,17 @@
 					return $this->description;
 				} else {
 					$this->description = $set;
-					$this->field->admin_description( $set );
+					//$this->parent_input->description( $set );
+					return $this;
+				}
+			}
+
+
+			public function compact( $set = null ){
+				if( is_null( $set ) ){
+					return $this->is_compact;
+				} else {
+					$this->is_compact = true;
 					return $this;
 				}
 			}
@@ -308,35 +408,18 @@
 
 
 			/**
-			 * @param null|field $set
 			 * @return col|field
 			 */
-			public function field( $set = null ){
-				if( is_null( $set ) ){
-					return $this->field;
-				} else {
-					$this->field = $set;
-					return $this;
-				}
+			public function get_embedded_field(){
+				return $this->embedded_field;
 			}
 
 
-			public function get_input_by_row( $row_index, $row = [], $attributes = [] ){
-				$cell_value = null;
-				if( !is_array( $row ) || ( !is_string( $row_index ) && !is_numeric( $row_index ) ) ){
-					///
-				} elseif( array_key_exists( $this->id(), $row ) ) {
-					$cell_value = $row[ $this->id() ];
-				} elseif( array_key_exists( $this->id(), array_values( $row ) ) ) {
-					$cell_value = arrays::get_value_by_index( $row, $this->id() );
-				}
-				//
-				$attributes = [
-					'id' => $this->parent_field->admin_input_name( $this->id(), rand( 1000, 9999 ) ),
-					'name' => $this->parent_field->admin_input_get_attribute( 'name' ) . '[' . $row_index . '][' . $this->id() . ']'
-				];
-				//
-				return $this->field->admin_get_input( $cell_value, $attributes );
+			/**
+			 * Echo the input
+			 */
+			public function the(){
+				echo $this->input->html();
 			}
 
 		}

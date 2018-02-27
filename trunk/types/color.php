@@ -6,38 +6,46 @@
 		if( !function_exists( 'add_field_color' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\color
+			 * @return \hiweb\fields\types\color\field
 			 */
 			function add_field_color( $id ){
-				$new_field = new hiweb\fields\types\color( $id );
+				$new_field = new hiweb\fields\types\color\field( $id );
 				hiweb\fields::register_field( $new_field );
 				return $new_field;
 			}
 		}
 	}
 
-	namespace hiweb\fields\types {
+	namespace hiweb\fields\types\color {
 
 
-		use hiweb\fields\field;
+		class field extends \hiweb\fields\field{
+
+			protected function get_input_class(){
+				return __NAMESPACE__ . '\\input';
+			}
 
 
-		class color extends field{
+		}
 
-			public function admin_get_input( $value = null, $attributes = [] ){
+
+		class input extends \hiweb\fields\input{
+
+			public function html(){
 				\hiweb\js( HIWEB_DIR_JS . '/field-color.js' );
 				\hiweb\js( HIWEB_DIR_VENDORS . '/tinyColorPicker/jqColorPicker.min.js' );
 				///
-				$this->admin_input_set_attributes( 'type', 'text' );
-				$this->admin_input_set_attributes( 'data-type-color', ' ' );
-				$this->admin_input_set_attributes( 'value', $value );
+				$this->attributes['type'] = 'text';
+				$this->attributes['data-type-color'] = ' ';
+				$this->attributes['value'] = $this->VALUE()->get_sanitized();
 				///
 				ob_start();
 				?>
-				<input <?= $this->admin_get_input_attributes_html($attributes) ?>>
+				<input <?= $this->sanitize_attributes() ?>>
 				<?php
 				return ob_get_clean();
 			}
+
 
 		}
 	}

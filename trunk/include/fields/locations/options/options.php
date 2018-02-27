@@ -20,7 +20,7 @@
 		 */
 		public function __construct( location $location ){
 			$this->location = $location;
-			locations::$last_field_location = $this->get_location();
+			locations::$last_field_location = $this->_get_parent_location();
 		}
 
 
@@ -40,7 +40,7 @@
 		/**
 		 * @return location
 		 */
-		final function get_location(){
+		final function _get_parent_location(){
 			return $this->location;
 		}
 

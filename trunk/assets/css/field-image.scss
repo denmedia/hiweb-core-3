@@ -1,10 +1,10 @@
 @import "mixins";
 
 .hiweb-field-image {
-	padding: 1px;
-	display: inline-block;
+	padding: 1px 3px 1px 1px;
 	background: #fff;
 	border: 1px solid #e5e5e5;
+
 
 	.image-select {
 		color: #444;
@@ -17,18 +17,18 @@
 		text-align: center;
 		text-decoration: none;
 		overflow: hidden;
-		@include hw_box_shadow(15px, .1, 0px, 0px, false);
+		@include box_shadow(15px, .1, 0px, 0px, false);
 
 		.thumbnail {
-			@include hw_background_image();
-			@include hw_position_stretch(1px);
-			@include hw_transition();
+			@include background_image();
+			@include position_stretch(1px);
+			@include transition();
 		}
 
 		.overlay {
-			@include hw_transition(all, 0.2s);
-			@include hw_position_stretch();
-			@include hw_opacity(0);
+			@include transition(all, 0.2s);
+			@include position_stretch();
+			@include opacity(0);
 		}
 
 		.dashicons {
@@ -38,32 +38,32 @@
 			height: 34px;
 			position: relative;
 			top: 50%;
-			@include hw_opacity(.4);
-			@include hw_transition(all, 0.2s);
-			@include hw_transform(translateY(-50%));
+			@include opacity(.4);
+			@include transition(all, 0.2s);
+			@include transform(translateY(-50%));
 		}
 		.dashicons[data-icon="deselect"] {
-			@include hw_opacity(.0);
-			@include hw_text_shadow(10px, 0, 0, rgba(255,255,255,.8));
+			@include opacity(.0);
+			@include text_shadow(10px, 0, 0, rgba(255,255,255,.8));
 		}
 
 		&:hover {
 			background: none !important;
 
 			.dashicons {
-				@include hw_opacity(1);
-				@include hw_transition(all, .1s);
-				@include hw_transform(translateY(-50%) scale(1.4));
+				@include opacity(1);
+				@include transition(all, .1s);
+				@include transform(translateY(-50%) scale(1.4));
 			}
 
 			.thumbnail {
-				@include hw_transition(all, 0.2s);
-				@include hw_transform(scale(1.2));
-				@include hw_opacity(.4);
-				@include hw_filter(blur(6px) brightness(3) grayscale(50%));
+				@include transition(all, 0.2s);
+				@include transform(scale(1.2));
+				@include opacity(.4);
+				@include filter(blur(6px) brightness(3) grayscale(50%));
 			}
 			.overlay {
-				@include hw_opacity(0.75);
+				@include opacity(0.75);
 			}
 		}
 	}

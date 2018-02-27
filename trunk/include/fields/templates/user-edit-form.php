@@ -1,5 +1,6 @@
+<!--FORM-->
 <table class="form-table">
 	<tbody>
-		<!--fields-->
+	<!--fields-->
 	</tbody>
 </table>

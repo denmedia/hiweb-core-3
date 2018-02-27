@@ -4,16 +4,39 @@
 
 
 	use hiweb\fields\locations\location;
+	use hiweb\fields\locations\locations;
 
 
 	class post_types extends options{
 
 		private $columns_manager;
+		private $position;
+		private $meta_box;
 
 
 		public function __construct( location $location ){
 			parent::__construct( $location );
-			$this->options['position'] = 3;
+			$this->POSITION();
+		}
+
+
+		/**
+		 * @param string $label
+		 * @return $this
+		 */
+		public function label( $label ){
+			$this->set_option( __FUNCTION__, $label );
+			return $this;
+		}
+
+
+		/**
+		 * @param $description
+		 * @return $this
+		 */
+		public function description( $description ){
+			$this->set_option( __FILE__, $description );
+			return $this;
 		}
 
 
@@ -98,12 +121,27 @@
 
 
 		/**
-		 * @param int $position - position in post edit page: 1 - after title, 2 - before editor, 3 - after editor, 4 - over sidebar, 5 - bottom on edit page, 6 - dbx_post_sidebar
-		 * @return $this
+		 * Set position without Meta Box
+		 * @return post_types_position_simple
 		 */
-		public function position( $position = 3 ){
-			$this->set_option( __FUNCTION__, $position );
-			return $this;
+		public function POSITION(){
+			if( !$this->position instanceof post_types_position_simple ){
+				$this->position = new post_types_position_simple( $this );
+			}
+			return $this->position;
+		}
+
+
+		/**
+		 * Set position by Meta Box
+		 * @return post_types_position_metabox
+		 */
+		public function META_BOX(){
+			if( !$this->meta_box instanceof post_types_position_metabox ){
+				$this->meta_box = new post_types_position_metabox( $this );
+				locations::$last_field_location_metabox = $this->meta_box;
+			}
+			return $this->meta_box;
 		}
 
 
@@ -120,7 +158,7 @@
 		/**
 		 * @return columns_manager
 		 */
-		public function columns_manager(){
+		public function COLUMNS_MANAGER(){
 			if( !$this->columns_manager instanceof columns_manager ) $this->columns_manager = new columns_manager( $this );
 			$this->set_option( __FUNCTION__, $this->columns_manager );
 			return $this->columns_manager;

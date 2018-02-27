@@ -1,3 +1,4 @@
-<div class="hiweb-fields-admin-form-default">
+<!--FORM-->
+<div class="hiweb-fields-form hiweb-fields-form-default">
 	<!--fields-->
 </div>
