@@ -24,10 +24,13 @@
 
 
 		public function __construct( $attach_id ){
+			if( is_numeric( $attach_id ) ){
 			$this->attached_id = $attach_id;
 			$this->wp_post = get_post( $attach_id );
+				if( $this->wp_post->post_type !== 'attachment' ) $this->wp_post = null;
 			$this->image_meta = $this->get_image_meta();
 			$this->sizes = $this->get_sizes();
+		}
 		}
 
 
@@ -36,7 +39,7 @@
 		 * @param null $meta_key
 		 * @return array|string|mixed
 		 */
-		public function get_meta( $meta_key = null ){
+		public function get_attachment_meta( $meta_key = null ){
 			$R = [
 				'width' => 0,
 				'height' => 0,
@@ -71,7 +74,7 @@
 		 * @return int
 		 */
 		public function width(){
-			return intval( $this->get_meta( 'width' ) );
+			return intval( $this->get_attachment_meta( 'width' ) );
 		}
 
 
@@ -80,7 +83,7 @@
 		 * @return int
 		 */
 		public function height(){
-			return intval( $this->get_meta( 'height' ) );
+			return intval( $this->get_attachment_meta( 'height' ) );
 		}
 
 
@@ -107,7 +110,7 @@
 		 */
 		public function get_sizes( $return_only_exists = true ){
 			if( !$this->is_attachment_exists() ) return [];
-			$sizes = $this->get_meta( 'sizes' );
+			$sizes = $this->get_attachment_meta( 'sizes' );
 			if( !is_array( $sizes ) ) return [];
 			if( !$return_only_exists ) return $sizes;
 			$R = [];
@@ -124,7 +127,7 @@
 		 */
 		public function base_dir(){
 			if( !$this->is_attachment_exists() ) return false;
-			$path = explode( '/', $this->get_meta( 'file' ) );
+			$path = explode( '/', $this->get_attachment_meta( 'file' ) );
 			array_pop( $path );
 			array_unshift( $path, wp_get_upload_dir()['basedir'] );
 			return implode( '/', $path );
@@ -136,7 +139,7 @@
 		 */
 		public function base_url(){
 			if( !$this->is_attachment_exists() ) return false;
-			$path = explode( '/', $this->get_meta( 'file' ) );
+			$path = explode( '/', $this->get_attachment_meta( 'file' ) );
 			array_pop( $path );
 			array_unshift( $path, wp_get_upload_dir()['baseurl'] );
 			return implode( '/', $path );
@@ -148,8 +151,8 @@
 		 * @return string
 		 */
 		public function get_original_src( $return_path = false ){
-			if( $this->is_attachment_exists() && !string::is_empty( $this->get_meta( 'file' ) ) ){
-				return ( $return_path ? wp_get_upload_dir()['basedir'] : wp_get_upload_dir()['baseurl'] ) . '/' . $this->get_meta( 'file' );
+			if( $this->is_attachment_exists() && !string::is_empty( $this->get_attachment_meta( 'file' ) ) ){
+				return ( $return_path ? wp_get_upload_dir()['basedir'] : wp_get_upload_dir()['baseurl'] ) . '/' . $this->get_attachment_meta( 'file' );
 			}
 			return false;
 		}
@@ -168,7 +171,7 @@
 				list( $width, $height ) = $this->get_size_by_limit( $width, $height );
 			}
 			$R = false;
-			if( is_array( $sizes_meta ) ){
+			if( is_array( $sizes_meta ) && count( $sizes_meta ) > 0 ){
 				$sizes = [];
 				foreach( $sizes_meta as $size_name => $size_data ){
 					$sizes[ intval( $size_data['width'] ) + intval( $size_data['height'] ) ] = $size_data;
@@ -178,6 +181,8 @@
 					$R = $size_data['file'];
 					if( intval( $size_data['width'] ) >= intval( $width ) && intval( $size_data['height'] ) >= intval( $height ) ) break;
 				}
+			} elseif( $this->is_attachment_exists() ) {
+				return $this->get_original_src( $return_path );
 			}
 			if( $R == false ) return $R;
 			return ( $return_path ? $this->base_dir() : $this->base_url() ) . '/' . $R;
@@ -256,7 +261,7 @@
 					$R = $editor->save();
 					if( is_array( $R ) ){
 						console::debug_info( 'Создан новый файл изображения', $R );
-						$meta = $this->get_meta();
+						$meta = $this->get_attachment_meta();
 						$path = $R['path'];
 						unset( $R['path'] );
 						$meta['sizes'][ $width . 'x' . $height . ( $crop ? 'c' : '' ) ] = $R;

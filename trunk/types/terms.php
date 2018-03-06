@@ -53,8 +53,8 @@
 
 		class input extends \hiweb\fields\input{
 
-			protected $taxonomy = [ 'category' ];
-			protected $hide_empty = false;
+			public $taxonomy = [ 'category' ];
+			public $hide_empty = false;
 
 
 			public function __construct( \hiweb\fields\field $field, value $value ){

@@ -77,6 +77,21 @@
 
 
 		/**
+		 * Move array item to desctination index
+		 * @param $array
+		 * @param $source_key
+		 * @param $destination_index
+		 * @return array
+		 */
+		static function move($array, $source_key, $destination_index){
+			if(!array_key_exists($source_key, $array)) return $array;
+			$item = $array[$source_key];
+			unset($array[$source_key]);
+			return self::push( $array, $item, $destination_index, $source_key );
+		}
+
+
+		/**
 		 * Возвращает значение ключа по его индексу
 		 * @param array $array
 		 * @param int|array $index = номер (массив номеров) индекса значения. Напрмиер 0 - первый ключ. Чтобы получить последний ключ, укажите -1, так же - 2 вернет предпоследний ключ. Если индекс ключа превысит

@@ -27,41 +27,41 @@
 
 		/**
 		 * Occupies 1/2 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function half(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 1/3 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function third(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 2/3 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function two_third(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 1/4 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function quarter(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
@@ -70,57 +70,58 @@
 		 * @return form|null
 		 */
 		public function three_quarter(){
-			return $this->width = __FUNCTION__;
+			$this->width = __FUNCTION__;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 1/5 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function fifth(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 2/5 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function two_fifth(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 3/5 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function three_fifth(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies 4/5 of the window (on medium and large screens)
-		 * @return $this
+		 * @return form
 		 */
 		public function four_fifths(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 
 		/**
 		 * Occupies the rest of the column width
-		 * @return $this
+		 * @return form
 		 */
 		public function full(){
 			$this->width = __FUNCTION__;
-			return $this;
+			return $this->parent_form;
 		}
 
 	}

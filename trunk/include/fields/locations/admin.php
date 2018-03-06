@@ -154,20 +154,21 @@
 		static function taxonomy_edit_form( $term, $taxonomy ){
 			$context_location = locations::get_abstractLocation_from_contextObject( $term );
 			$fields = locations::get_fields_by_contextLocation( $context_location );
-			foreach( $fields as $field ){
-				if( trim( $field->template() ) == 'default' ) $field->template( 'term-edit' );
-			}
-			forms::the_form_by_fields( $fields );
+			forms::the_form_by_fields( $fields, $term,'term-edit' );
 		}
 
 
 		static function taxonomy_edited_term( $term_id, $tt_id, $taxonomy ){
-			$term = get_term_by( 'id', $term_id );
+			$term = get_term_by( 'id', $term_id, $taxonomy );
 			if( $term instanceof \WP_Term ){
 				$location = locations::get_abstractLocation_from_contextObject( $term );
 				$fields = locations::get_fields_by_contextLocation( $location );
 				foreach( $fields as $field_id => $field ){
-					update_term_meta( $term_id, $field->id(), path::request( forms::get_field_input_name( $field ) ) );
+					if( isset( $_POST[ $field->INPUT()->name() ] ) ){
+						update_term_meta( $term_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
+					} else {
+						update_term_meta( $term_id, $field->id(), '' );
+					}
 				}
 			}
 		}

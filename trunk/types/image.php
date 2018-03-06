@@ -117,7 +117,7 @@
 				$image_small = true;
 				///
 				if( $this->have_image() ){
-					$image = images::get( $this->VALUE()->get_sanitized() );
+					$image = images::get( $this->VALUE()->get() );
 					$preview = $image->get_similar_src( $attr_width, $attr_height, 1 );
 					$preview_size = $image->get_size_by_limit( $attr_width, $attr_height );
 					$image_small = !( $attr_width <= $preview_size[0] && $attr_height <= $preview_size[1] );

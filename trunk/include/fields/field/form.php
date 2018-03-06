@@ -33,6 +33,14 @@
 
 
 		/**
+		 * @return field
+		 */
+		public function get_parent_field(){
+			return $this->field;
+		}
+
+
+		/**
 		 * @param $key
 		 * @param null $value
 		 * @return $this|null

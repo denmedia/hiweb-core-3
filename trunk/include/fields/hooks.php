@@ -18,7 +18,7 @@
 	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
 	//add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 1 );
 	//add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 2 );
-	//	///Post Save
+	///Post Save
 	add_action( 'save_post', 'hiweb\\fields\\locations\\admin::save_post', 10, 3 );
 	//	////////
 	///TAXONOMIES BACKEND
@@ -31,8 +31,8 @@
 		}
 	}, 100 );
 	///TAXONOMY SAVE
-	add_action( 'create_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
-	add_action( 'edited_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
+	add_action( 'created_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
+	add_action( 'edit_term', 'hiweb\\fields\\locations\\admin::taxonomy_edited_term', 10, 3 );
 
 	/// USERS SETTINGS
 	/// USER ADD
