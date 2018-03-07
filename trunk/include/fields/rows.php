@@ -145,7 +145,7 @@
 				if( !fields::is_register( $fieldId ) ) return false;
 				///Get field-context-id
 				$field = fields::get( $fieldId );
-				return $field->CONTEXT( $contextObject )->reset_rows();
+				return $field->CONTEXT( $contextObject )->VALUE()->rows()->reset_rows();
 			}
 
 
@@ -174,7 +174,7 @@
 					self::$context_queue[ $field->global_id() ] = $context;
 					self::$current_field_context_id = $field_context_id;
 				}
-				$have_rows = $context->have_rows();
+				$have_rows = $context->VALUE()->rows()->have_rows();
 				if( $have_rows ){
 					return true;
 				} else {
@@ -196,7 +196,7 @@
 			static function the_row(){
 				$context = self::get_current_context();
 				if( $context !== false ){
-					return $context->the_row();
+					return $context->VALUE()->rows()->the_row();
 				}
 				return null;
 			}
@@ -206,7 +206,7 @@
 			 * @return bool
 			 */
 			static function the_row_is_first(){
-				return self::get_current_context()->get_row_index() == 0;
+				return self::get_current_context()->VALUE()->rows()->get_row_index() == 0;
 			}
 
 
@@ -214,7 +214,7 @@
 			 * @return bool
 			 */
 			static function the_row_is_last(){
-				return self::get_current_context()->get_row_index() == count( self::get_current_context()->VALUE() );
+				return self::get_current_context()->VALUE()->rows()->get_row_index() == count( self::get_current_context()->VALUE()->get_sanitized() );
 			}
 
 
@@ -234,17 +234,16 @@
 			 * @return mixed|null
 			 */
 			static function get_sub_field( $subFieldId ){
-				//TODO!
-//				$context_queue = array_reverse( self::$context_queue );
-//				/**
-//				 * @var string $field_context_id
-//				 * @var fields\field\context $context
-//				 */
-//				foreach( $context_queue as $field_id => $context ){
-//					if( !$context instanceof fields\field\context ) continue;
-//					if( !is_null( $context->get_sub_field( $subFieldId ) ) ) return $context->get_sub_field( $subFieldId );
-//				}
-//				return null;
+				$context_queue = array_reverse( self::$context_queue );
+				/**
+				 * @var string $field_context_id
+				 * @var fields\field\context $context
+				 */
+				foreach( $context_queue as $field_id => $context ){
+					if( !$context instanceof fields\field\context ) continue;
+					if( !is_null( $context->VALUE()->rows()->get_sub_field( $subFieldId ) ) ) return $context->VALUE()->rows()->get_sub_field( $subFieldId );
+				}
+				return null;
 			}
 
 
@@ -256,18 +255,17 @@
 			 * @return mixed|null
 			 */
 			static function get_sub_field_content( $subFieldId, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
-				//TODO!
-//				$context_queue = array_reverse( self::$context_queue );
-//				/**
-//				 * @var string $field_context_id
-//				 * @var fields\field\context $context
-//				 */
-//				foreach( $context_queue as $field_id => $context ){
-//					if( !$context instanceof fields\field\context ) continue;
-//					$sub_field_content = $context->get_sub_field_content( $subFieldId, $arg_1, $arg_2, $arg_3 );
-//					if( !is_null( $sub_field_content ) ) return $sub_field_content;
-//				}
-//				return null;
+				$context_queue = array_reverse( self::$context_queue );
+				/**
+				 * @var string $field_context_id
+				 * @var fields\field\context $context
+				 */
+				foreach( $context_queue as $field_id => $context ){
+					if( !$context instanceof fields\field\context ) continue;
+					$sub_field_content = $context->VALUE()->rows()->get_sub_field_content( $subFieldId, $arg_1, $arg_2, $arg_3 );
+					if( !is_null( $sub_field_content ) ) return $sub_field_content;
+				}
+				return null;
 			}
 
 		}

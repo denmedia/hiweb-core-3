@@ -19,7 +19,7 @@
 		/** @var mixed */
 		public $data;
 
-		private $rows;
+		private $ROWS;
 
 
 		/**
@@ -37,7 +37,7 @@
 		 * Clone process
 		 */
 		public function __clone(){
-			$this->rows = null;
+			$this->ROWS = null;
 		}
 
 
@@ -98,10 +98,10 @@
 		 * @return value_rows
 		 */
 		public function rows(){
-			if( !$this->rows instanceof value_rows ){
-				$this->rows = new value_rows( $this );
+			if( !$this->ROWS instanceof value_rows ){
+				$this->ROWS = new value_rows( $this );
 			}
-			return $this->rows;
+			return $this->ROWS;
 		}
 
 
