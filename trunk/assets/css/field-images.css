@@ -22,10 +22,9 @@
     transform: rotate(360deg); } }
 .hiweb-field-images {
   position: relative;
-  padding-right: 30px;
   min-height: 95px; }
   .hiweb-field-images [data-ctrl] {
-    position: absolute;
+    position: absolute !important;
     top: 0;
     right: 0;
     bottom: 0;

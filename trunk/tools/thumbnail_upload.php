@@ -5,12 +5,13 @@
 
 	use hiweb\arrays;
 	use function hiweb\css;
+	use hiweb\hidden_methods;
 	use function hiweb\js;
 
 
 	class thumbnail_upload{
 
-		//use hw_hidden_methods_props;
+		use hidden_methods;
 
 		static private $post_types = [];
 		static private $taxonomies = [];
@@ -47,7 +48,7 @@
 		}
 
 
-		protected function manage_posts_custom_column( $column_name = '', $post_id = 0 ){
+		public function manage_posts_custom_column( $column_name = '', $post_id = 0 ){
 			if( intval( $post_id ) > 0 && trim( $column_name ) == 'hw_tool_thumbnail' ){
 				$P = get_post( $post_id );
 				if( $this->post_type_exists( $P->post_type ) ){
@@ -80,7 +81,7 @@
 		}
 
 
-		protected function manage_posts_columns( $posts_columns, $post_type ){
+		public function manage_posts_columns( $posts_columns, $post_type ){
 			wp_enqueue_media();
 			$posts_columns = arrays::push( $posts_columns, ' ', 0, 'hw_tool_thumbnail' );
 			return $posts_columns;

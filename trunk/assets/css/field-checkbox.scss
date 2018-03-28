@@ -12,12 +12,13 @@ $black_50: rgba(0, 0, 0, 0.5);
 	margin: 4px 0 8px 0;
 
 	.checkbox {
-		vertical-align: top;
+		vertical-align: middle;
 		width: 17px;
 		height: 17px;
 		margin: 0 3px 0 0;
 		+ label {
 			cursor: pointer;
+			display: inline-block;
 		}
 		&:not(checked) {
 			position: absolute;

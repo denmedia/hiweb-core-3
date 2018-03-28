@@ -88,7 +88,7 @@
 
 		/**
 		 * Возвращает URL с измененным QUERY фрагмнтом
-		 * @param null  $url
+		 * @param null $url
 		 * @param array $addData
 		 * @param array $removeKeys
 		 * @return string
@@ -180,7 +180,7 @@
 		 * @param null $url
 		 * @return array
 		 */
-		static function url_info( $url = null ){
+		static function get_url_info( $url = null ){
 			if( is_null( $url ) || trim( $url ) == '' ){
 				$url = self::url_full();
 			}
@@ -215,11 +215,11 @@
 		 * Возвращает папки или папку(если указать индекс) из URL
 		 * @version 2.1
 		 * @param null $url
-		 * @param int  $index
+		 * @param int $index
 		 * @return bool|array|string
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ){
-			$urlArr = self::url_info( self::prepare_url( $url, self::base_url() ) );
+			$urlArr = self::get_url_info( self::prepare_url( !is_string( $url ) ? self::base_url() : $url ) );
 			$R = is_int( $index ) ? ( isset( $urlArr['dirs_arr'][ $index ] ) ? $urlArr['dirs_arr'][ $index ] : false ) : $urlArr['dirs_arr'];
 			return $R;
 		}
@@ -227,12 +227,12 @@
 
 		/**
 		 * Возвращает массив параметров из URL или значение определенного параметра
-		 * @param null $url        - если не указывать, будет взят текущий URL
+		 * @param null $url - если не указывать, будет взят текущий URL
 		 * @param null $indexOrKey - если не указывать, будет вернут массив параметров, иначе значение параметра
 		 * @return string|array|null
 		 */
 		static function get_paramas_from_url( $url = null, $indexOrKey = null ){
-			$urlArr = self::url_info( self::prepare_url( $url, self::base_url() ) );
+			$urlArr = self::get_url_info( self::prepare_url( $url, self::base_url() ) );
 			$paramsArr = $urlArr['params_arr'];
 			return is_null( $indexOrKey ) ? $paramsArr : ( isset( $paramsArr[ $indexOrKey ] ) ? $paramsArr[ $indexOrKey ] : null );
 		}
@@ -322,7 +322,7 @@
 
 		/**
 		 * Возвращает путь с правильными разделителями
-		 * @param      $path                 - исходный путь
+		 * @param      $path - исходный путь
 		 * @param bool $removeLastSeparators - удалить самый хвостовой сепаратор
 		 * @return string | bool
 		 * @version 1.1
@@ -412,7 +412,7 @@
 
 		/**
 		 * Копирует папку целиком вместе с вложенными файлами и папками
-		 * @param $sourcePath     - исходная папка
+		 * @param $sourcePath - исходная папка
 		 * @param $destinationDir - папка назначения
 		 * @return bool
 		 */
@@ -502,10 +502,10 @@
 		/**
 		 * Выполняет архивацию папки в ZIP архив
 		 * @param             $pathInput
-		 * @param string      $pathOut
-		 * @param string      $arhiveName
+		 * @param string $pathOut
+		 * @param string $arhiveName
 		 * @param string|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
-		 * @param bool        $appendToArchive
+		 * @param bool $appendToArchive
 		 * @return bool|string
 		 */
 		static function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ){

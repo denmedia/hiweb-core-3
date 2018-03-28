@@ -6,13 +6,16 @@ jQuery(document).ready(function ($) {
 
 
         init: function () {
-            $('.hiweb-field-fontawesome input').each(hiweb_field_fontawesome.make);
+            var input = $('.hiweb-field-fontawesome input');
+            var offset = input.offset();
+            if(offset !== undefined && offset.hasOwnProperty('top')){
+                if(offset.top < 250) input.attr('data-placement','bottom');
+            }
+            input.each(hiweb_field_fontawesome.make);
         },
 
         make: function () {
-            $(this).iconpicker({
-
-            });
+            $(this).iconpicker({});
         }
 
     };

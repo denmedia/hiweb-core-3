@@ -17,7 +17,7 @@
 		text-align: center;
 		text-decoration: none;
 		overflow: hidden;
-		@include box_shadow(15px, .1, 0px, 0px, false);
+		@include box-shadow(15px, .1, 0px, 0px, false);
 
 		.thumbnail {
 			@include background_image();
@@ -44,7 +44,7 @@
 		}
 		.dashicons[data-icon="deselect"] {
 			@include opacity(.0);
-			@include text_shadow(10px, 0, 0, rgba(255,255,255,.8));
+			@include text-shadow(10px, 0, 0, rgba(255,255,255,.8));
 		}
 
 		&:hover {

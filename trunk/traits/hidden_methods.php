@@ -17,8 +17,13 @@
 
 
 		public function __call( $name, $arguments ){
-			console::debug_warn( 'Попытка вызова несуществующего метода', $name );
+			if( method_exists( $this, $name ) ){
+				return $this->{$name};
+			} else {
+				console::debug_warn( 'Попытка вызова несуществующего метода', $name );
+			}
 		}
+
 
 		public function __get( $name ){
 			console::debug_warn( 'Попытка получения несуществующего свойства', $name );

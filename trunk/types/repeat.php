@@ -47,6 +47,7 @@
 	namespace hiweb\fields\types\repeat {
 
 
+		use hiweb\arrays;
 		use function hiweb\css;
 		use function hiweb\dump;
 		use function hiweb\js;
@@ -66,6 +67,18 @@
 			}
 
 
+			/**
+			 * @param $group_name
+			 * @param \hiweb\fields\field $field
+			 * @return col
+			 */
+			public function add_col_flex_field( $group_name, \hiweb\fields\field $field ){
+				/** @var input $input */
+				$input = $this->INPUT();
+				return $input->add_col_flex_field( $group_name, $field );
+			}
+
+
 			protected function get_input_class(){
 				return __NAMESPACE__ . '\\input';
 			}
@@ -81,7 +94,7 @@
 
 		class input extends \hiweb\fields\input{
 
-			/** @var col[] */
+			/** @var col[][] */
 			public $cols = [];
 			/** @var row[] */
 			public $repeat_rows = [];
@@ -92,25 +105,61 @@
 			 * @return col
 			 */
 			public function add_col_field( \hiweb\fields\field $field ){
+				return $this->add_col_flex_field( '', $field );
+			}
+
+
+			/**
+			 * @param $group_name
+			 * @param \hiweb\fields\field $field
+			 * @return col
+			 */
+			public function add_col_flex_field( $group_name, \hiweb\fields\field $field ){
 				$new_col = new col( $this, $field );
-				$this->cols[ $field->id() ] = $new_col;
+				$this->cols[ $group_name ][ $field->id() ] = $new_col;
 				return $new_col;
+			}
+
+
+			/**
+			 * @param string $group - cols group
+			 * @return bool
+			 */
+			public function have_cols( $group = null ){
+				if( !is_string( $group ) ){
+					return !arrays::is_empty( $this->cols );
+				} else {
+					return ( isset( $this->cols[ $group ] ) && is_array( $this->cols[ $group ] ) && count( $this->cols[ $group ] ) > 0 );
+				}
 			}
 
 
 			/**
 			 * @return bool
 			 */
-			public function have_cols(){
-				return ( is_array( $this->cols ) && count( $this->cols ) > 0 );
+			public function have_flex_rows(){
+				return ( count( $this->cols ) > 1 || ( count( $this->cols ) == 1 && !isset( $this->cols[''] ) ) );
 			}
 
 
 			/**
+			 * @param string $group
 			 * @return col[]
 			 */
-			public function get_cols(){
-				return is_array( $this->cols ) ? $this->cols : [];
+			public function get_cols( $group = '' ){
+				return ( isset( $this->cols[ $group ] ) && is_array( $this->cols[ $group ] ) ) ? $this->cols[ $group ] : [];
+			}
+
+
+			/**
+			 * @return string[]
+			 */
+			public function get_flex_names(){
+				$R = [];
+				if( $this->have_flex_rows() ){
+					return array_keys( $this->cols );
+				}
+				return $R;
 			}
 
 
@@ -119,32 +168,65 @@
 				<?= $thead ? '<thead>' : '<tfoot>' ?>
 				<tr>
 					<th></th>
-					<?php if( $this->have_cols() ){
-						$width_full = 0;
-						$last_col = null;
-						$last_compact = false;
-						foreach( $this->get_cols() as $col ){
-							$width_full += $col->width();
-							if( !$last_compact ){
-								$last_col = $col;
-							} elseif( $last_col instanceof col ) {
-								$last_col->width += $col->width();
-							}
-							$last_compact = $col->compact();
-						}
-						$last_compact = false;
-						foreach( $this->get_cols() as $col ){
-							$width = ceil( $col->width() / $width_full * 100 ) . '%';
+					<?php
+						if( $this->have_flex_rows() ){
 							?>
-							<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>" class="<?= $last_compact ? 'compact' : '' ?>">
-								<?= $col->label() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>
-							</th>
+							<th class="flex-column">&nbsp;</th><?php
+						} else {
+							if( $this->have_cols() ){
+								$width_full = 0;
+								$last_col = null;
+								$last_compact = false;
+								foreach( $this->get_cols() as $col ){
+									$width_full += $col->width();
+									if( !$last_compact ){
+										$last_col = $col;
+									} elseif( $last_col instanceof col ) {
+										$last_col->width += $col->width();
+									}
+									$last_compact = $col->compact();
+								}
+								$last_compact = false;
+								foreach( $this->get_cols() as $col ){
+									$width = ceil( $col->width() / $width_full * 100 ) . '%';
+									?>
+									<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>" class="<?= $last_compact ? 'compact' : '' ?>">
+										<?= $col->label() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>
+									</th>
+									<?php
+									$last_compact = $col->compact();
+								}
+							}
+
+							?>
+
 							<?php
-							$last_compact = $col->compact();
-						}
-					} ?>
+
+						} ?>
 					<th class="nowrap" data-ctrl>
-						<button class="dashicons dashicons-plus-alt" data-action-add="<?= $thead ?>" title="<?= $thead ? 'Add row to top' : 'Add row to bottom' ?>"></button>
+						<?php
+							if( $this->have_flex_rows() ){
+
+								?>
+								<button class="dashicons dashicons-plus-alt" data-action-add="flex-dropdown" title="<?= $thead ? 'Add flex row to top' : 'Add flex row to bottom' ?>"></button>
+								<div data-sub-flex-dropdown>
+									<?php
+										foreach( $this->get_flex_names() as $name ){
+											?>
+											<div>
+												<a href="#" data-flex-id="<?= $name ?>" data-action-add="<?= $thead ?>" title="Добавить новый блок '<?= htmlentities( $name, ENT_QUOTES, 'UTF-8' ) ?>'"><?= $name ?></a>
+											</div>
+											<?php
+										}
+									?>
+								</div>
+								<?php
+							} else {
+								?>
+								<button class="dashicons dashicons-plus-alt" data-action-add="<?= $thead ?>" title="<?= $thead ? 'Add row to top' : 'Add row to bottom' ?>"></button>
+								<?php
+							}
+						?>
 						<button title="Clear all table rows..." class="dashicons dashicons-marker" data-action-clear=""></button>
 					</th>
 				</tr>
@@ -159,8 +241,8 @@
 			 */
 			public function ajax_html_row( $input_name ){
 				$this->name( $input_name );
-				$new_row = new row( $this );
-				$new_row->index = 99;
+				$new_row = new row( $this, [ '_flex_row_id' => isset( $_POST['flex_row_id'] ) ? $_POST['flex_row_id'] : '' ], intval( $_POST['index'] ) );
+				$new_row->index = 0;
 				ob_start();
 				$new_row->the();
 				return ob_get_clean();
@@ -168,14 +250,16 @@
 
 
 			public function html(){
-				if( $this->have_cols() ) foreach( $this->cols as $col ){
-					$col->input->html();
+				if( $this->have_cols() ) foreach( $this->cols as $flex_id => $flex_cols ){
+					if( is_array( $flex_cols ) ) foreach( $flex_cols as $col ){
+						$col->input->html();
+					}
 				}
 				ob_start();
 				css( HIWEB_URL_CSS . '/field-repeat.css' );
 				js( HIWEB_URL_JS . '/field-repeat.js' );
 				?>
-				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>" data-global-id="<?= $this->get_parent_field()->global_id() ?>">
+				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>" data-global-id="<?= $this->get_parent_field()->global_id() ?>" data-flex="<?= $this->have_flex_rows() ? '1' : '0' ?>">
 					<?php if( !$this->have_cols() ){
 						?><p class="empty-message"><?= sprintf( __( 'For repeat input [%s] not add col fields. For that do this: <code>$field->add_col_field( add_field_text(...) )</code>' ), $this->get_parent_field()->id() ) ?></p><?php
 					} else {
@@ -194,7 +278,7 @@
 						</tbody>
 						<tbody data-rows-message>
 						<tr data-row-empty="<?= $this->VALUE()->rows()->have_rows() ? '1' : '0' ?>">
-							<td colspan="<?= ( count( $this->get_cols() ) + 2 ) ?>"><p class="message"><?= 'Таблица пуста. Для добавления хотя бы одног поля, кликните по кнопке "+"' ?></p></td>
+							<td colspan="<?= $this->have_flex_rows() ? 3 : ( count( $this->get_cols() ) + 2 ) ?>"><p class="message"><?= 'Таблица пуста. Для добавления хотя бы одног поля, кликните по кнопке "+"' ?></p></td>
 						</tr>
 						</tbody>
 
@@ -252,15 +336,18 @@
 			public $index = 0;
 			/** @var col[] */
 			public $cols = [];
+			public $flex_row_id = '';
 
 			public $have_cols = false;
 
 			public $data = [];
 
 
-			public function __construct( input $input, $data = [], $row_index = 0 ){
-				$this->parent_input = $input;
-				foreach( $input->get_cols() as $id => $col ){
+			public function __construct( input $parent_input, $data = [], $row_index = 0 ){
+				$this->parent_input = $parent_input;
+				$this->flex_row_id = array_key_exists( '_flex_row_id', $data ) ? $data['_flex_row_id'] : '';
+				$this->data = $data;
+				foreach( $parent_input->get_cols( $this->flex_row_id ) as $id => $col ){
 					$this->have_cols = true;
 					$this->cols[ $id ] = clone $col;
 					$this->cols[ $id ]->set_row( $this );
@@ -271,20 +358,52 @@
 
 
 			public function the(){
+				if( !$this->have_cols ){
+					return;
+				}
 				?>
-				<tr data-row="<?= $this->index ?>">
-					<td data-drag>
+				<tr data-row="<?= $this->index ?>" data-flex-id="<?= $this->flex_row_id ?>">
+					<td data-drag data-col="_flex_row_id">
 						<i class="dashicons dashicons-sort"></i>
+						<input type="hidden" name="<?= $this->parent_input->name() ?>[<?= $this->index ?>][_flex_row_id]" value="<?= $this->flex_row_id ?>"/>
 					</td>
-					<?php if( $this->have_cols ){
-						$last_compact = false;
-						foreach( $this->cols as $col ){
+					<?php
+
+						if( $this->parent_input->have_flex_rows() ){
 							?>
-							<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+							<td class="flex-column">
+								<table class="hiweb-field-repeat-flex">
+									<thead>
+									<?php
+										foreach( $this->cols as $col_id => $col ){
+											?>
+											<th class="hiweb-field-repeat-flex-header"><?= $col->label ?></th>
+											<?php
+										} ?>
+									</thead>
+									<tbody>
+									<tr>
+										<?php
+											$last_compact = false;
+											foreach( $this->cols as $col_id => $col ){
+												?>
+												<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+												<?php
+											} ?>
+									</tr>
+									</tbody>
+								</table>
+							</td>
 							<?php
-							$last_compact = $col->compact();
-						}
-					} ?>
+						} else {
+							$last_compact = false;
+							foreach( $this->cols as $col ){
+								?>
+								<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+								<?php
+								$last_compact = $col->compact();
+							}
+						} ?>
 					<td data-ctrl>
 						<button title="Duplicate row" class="dashicons dashicons-admin-page" data-action-duplicate="<?= $this->index ?>"></button>
 						<button title="Remove row..." class="dashicons dashicons-trash" data-action-remove="<?= $this->index ?>"></button>

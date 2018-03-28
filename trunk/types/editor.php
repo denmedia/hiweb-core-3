@@ -19,6 +19,9 @@
 	namespace hiweb\fields\types\editor {
 
 
+		use hiweb\string;
+
+
 		class field extends \hiweb\fields\field{
 
 			protected $settings = [];
@@ -49,25 +52,15 @@
 		class input extends \hiweb\fields\input{
 
 			public function html(){
-				\hiweb\js( HIWEB_DIR_JS . '/field-editor.js' );
+				\hiweb\js( WPINC . '/js/tinymce/tinymce.min.js' );
+				\hiweb\js( HIWEB_URL_JS . '/field-editor.js' );
 				ob_start();
-				add_filter( 'the_editor', [ $this, 'editor_html_filter' ], 10, 2 );
-				wp_editor( $this->VALUE()->get(), array_key_exists( 'id', $this->attributes ) ? $this->attributes['id'] : $this->global_id(), $this->get_parent_field()->settings() );
-				remove_filter( 'the_editor', [ $this, 'editor_html_filter' ] );
-				return ob_get_clean();
-			}
-
-
-			public function editor_html_filter( $html, $attributes = null ){
-				$id = $this->global_id();
-				if( preg_match( '/<textarea .*id=[\"|\\\']([\w\d-]+)[\"|\\\']/i', $html, $maths ) > 0 ){
-					$id = $maths[1];
-				}
-				ob_start();
+				$this->attributes['id'] = $this->global_id().'-'.\hiweb\string::rand(5);
+				$this->attributes['name'] = $this->name();
+				$this->attributes['rows'] = 10;
 				?>
-				<div id="wp-<?= $id ?>-editor-container" class="wp-editor-container">
-					<div id="qt_<?= $id ?>_toolbar" class="quicktags-toolbar"></div>
-					<textarea class="wp-editor-area" rows="10" autocomplete="off" cols="40" name="<?= $this->name() ?>" id="<?= $id ?>">%s</textarea>
+				<div class="hiweb-field-editor">
+					<textarea <?= $this->sanitize_attributes() ?>><?= $this->VALUE()->get() ?></textarea>
 				</div>
 				<?php
 				return ob_get_clean();

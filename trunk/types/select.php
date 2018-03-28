@@ -23,12 +23,16 @@
 
 
 			public function options( $set = null ){
-				return $this->set_input_property( __FUNCTION__, $set );
+				$set_sanitize = [];
+				if( is_array( $set ) ) foreach( $set as $key => $val ){
+					$set_sanitize[ is_int( $key ) ? $val : $key ] = $val;
+				}
+				return $this->set_input_property( __FUNCTION__, $set_sanitize );
 			}
 
 
 			protected function get_input_class(){
-				return __NAMESPACE__.'\\input';
+				return __NAMESPACE__ . '\\input';
 			}
 
 

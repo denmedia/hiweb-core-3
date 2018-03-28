@@ -71,7 +71,7 @@
 		 * @return bool
 		 */
 		static function is_rest_api(){
-			$dirs = path::url_info()['dirs_arr'];
+			$dirs = path::get_url_info()['dirs_arr'];
 			return reset( $dirs ) == 'wp-json';
 		}
 

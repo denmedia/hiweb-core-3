@@ -44,6 +44,28 @@
 			console::debug_warn( 'Function [reset_rows] is exists...' );
 		}
 
+		if( !function_exists( 'get_row_layout' ) ){
+			/**
+			 * @return string
+			 */
+			function get_row_layout(){
+				return rows::get_row_layout();
+			}
+		} else {
+			console::debug_warn( 'Function [get_row_layout] is exists...' );
+		}
+
+		if( !function_exists( 'get_current_row' ) ){
+			/**
+			 * @return mixed|null
+			 */
+			function get_current_row(){
+				return rows::get_current_row();
+			}
+		} else {
+			console::debug_warn( 'Function [get_current_row] is exists...' );
+		}
+
 		if( !function_exists( 'get_sub_field' ) ){
 			/**
 			 * @param $subField
@@ -59,13 +81,10 @@
 		if( !function_exists( 'get_sub_field_content' ) ){
 			/**
 			 * @param $subField
-			 * @param null $arg_1
-			 * @param null $arg_2
-			 * @param null $arg_3
 			 * @return mixed|null
 			 */
-			function get_sub_field_content( $subField, $arg_1 = null, $arg_2 = null, $arg_3 = null ){
-				return rows::get_sub_field_content( $subField, func_get_arg( 1 ), func_get_arg( 2 ), func_get_arg( 3 ) );
+			function get_sub_field_content( $subField ){
+				return rows::get_sub_field_content( $subField );
 			}
 		} else {
 			console::debug_warn( 'Function [get_sub_field_content] is exists...' );
@@ -226,6 +245,27 @@
 				if( !$lastField instanceof fields\field\context ) return false;
 				///
 				return $lastField;
+			}
+
+
+			/**
+			 * Return current row value
+			 * @return mixed|null
+			 */
+			static function get_current_row(){
+				$context = self::get_current_context();
+				if( $context !== false ){
+					return $context->VALUE()->rows()->get_row();
+				}
+				return null;
+			}
+
+
+			/**
+			 * @return string
+			 */
+			static function get_row_layout(){
+				return self::get_sub_field( '_flex_row_id' );
 			}
 
 

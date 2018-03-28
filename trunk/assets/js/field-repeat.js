@@ -59,12 +59,13 @@ var hiweb_field_repeat = {
     },
 
     get_cols_by_row: function (row) {
-        return row.find('> [data-col]');
+        return row.find('> [data-col], > .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col]'); //TODO!
     },
 
     make_sortable: function () {
         var roots = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
-        if (roots['sortable']['destroy'] !== undefined) {
+        if(!roots.hasOwnProperty('sortable')) return;
+        if (roots['sortable'].hasOwnProperty('destroy')) {
             roots.sortable("destroy");
         }
         roots.sortable({
@@ -130,43 +131,59 @@ var hiweb_field_repeat = {
 
     click_add: function (e) {
         e.preventDefault();
-        var prepend = jQuery(this).is('[data-action-add="1"]');
-        var root = jQuery(this).closest(hiweb_field_repeat.selector);
-        var row_list = hiweb_field_repeat.get_rows_list(root);
-        jQuery.ajax({
-            url: ajaxurl + '?action=hiweb-field-repeat-get-row',
-            type: 'post',
-            data: {id: hiweb_field_repeat.get_global_id(this), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(this)},
-            dataType: 'json',
-            success: function (data) {
+        if (jQuery(this).is('[data-action-add="flex-dropdown"]')) {
+            var dropdown = jQuery(this).closest('[data-ctrl]').find('[data-sub-flex-dropdown]');
+            var timeout = null;
+            dropdown.fadeIn().off('mouseover mouseout').on('mouseout', function () {
+                timeout = setTimeout(function () {
+                    dropdown.fadeOut();
+                }, 1000);
+            }).on('mouseover', function () {
+                clearTimeout(timeout);
+            });
+        } else {
+            var prepend = jQuery(this).is('[data-action-add="1"]');
+            var root = jQuery(this).closest(hiweb_field_repeat.selector);
+            var row_list = hiweb_field_repeat.get_rows_list(root);
+            var flex_row_id = jQuery(this).is('[data-flex-id]') ? jQuery(this).attr('data-flex-id') : '';
+            if (flex_row_id !== '') {
+                jQuery(this).closest('[data-sub-flex-dropdown]').fadeOut();
+            }
+            var index = prepend ? 0 : hiweb_field_repeat.get_rows(root).length;
+            jQuery.ajax({
+                url: ajaxurl + '?action=hiweb-field-repeat-get-row',
+                type: 'post',
+                data: {id: hiweb_field_repeat.get_global_id(this), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(this), index: index, flex_row_id: flex_row_id},
+                dataType: 'json',
+                success: function (data) {
 
-                if (data.hasOwnProperty('result') && data.result === true) {
-                    var newLine = jQuery(data.data).hide().fadeIn();
-                    if (prepend) {
-                        row_list.prepend(newLine);
+                    if (data.hasOwnProperty('result') && data.result === true) {
+                        var newLine = jQuery(data.data).hide().fadeIn();
+                        if (prepend) {
+                            row_list.prepend(newLine);
+                        } else {
+                            row_list.append(newLine);
+                        }
+                        newLine.css('opacity', 0).animate({opacity: 1}).find('> td')
+                            .wrapInner('<div style="display: none;" />')
+                            .parent()
+                            .find('> td > div')
+                            .slideDown(400, function () {
+                                var $set = jQuery(this);
+                                $set.replaceWith($set.contents());
+                                newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init_3');
+                            });
+                        hiweb_field_repeat.make_table_names(root);
+                        newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init');
                     } else {
-                        row_list.append(newLine);
+                        console.warn(data);
                     }
-                    newLine.find('[data-col] > *').trigger('init');
-                    newLine.css('opacity', 0).animate({opacity: 1}).find('> td')
-                        .wrapInner('<div style="display: none;" />')
-                        .parent()
-                        .find('> td > div')
-                        .slideDown(700, function () {
-                            var $set = jQuery(this);
-                            $set.replaceWith($set.contents());
-                            newLine.find('[data-col] > *').trigger('init_3');
-                        });
-                    hiweb_field_repeat.make_table_names(root);
-                    newLine.find('[data-col] > *').trigger('init_2');
-                } else {
+                },
+                error: function (data) {
                     console.warn(data);
                 }
-            },
-            error: function (data) {
-                console.warn(data);
-            }
-        });
+            });
+        }
     },
 
     objectifyForm: function (formArray) {//serialize data function

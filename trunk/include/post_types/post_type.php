@@ -336,4 +336,24 @@
 		}
 
 
+		/**
+		 * @param $callback ($columns)
+		 * @return $this
+		 */
+		public function manage_posts_columns( $callback ){
+			add_filter( 'manage_' . $this->_type . '_posts_columns', $callback, 10, 1 );
+			return $this;
+		}
+
+
+		/**
+		 * @param $callback ($column, $post_id)
+		 * @return post_type
+		 */
+		public function manage_posts_custom_column($callback){
+			add_action( 'manage_'.$this->_type.'_posts_custom_column' , $callback, 10, 2 );
+			return $this;
+		}
+
+
 	}

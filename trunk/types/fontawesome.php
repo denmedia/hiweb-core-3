@@ -37,10 +37,9 @@
 		class input extends \hiweb\fields\input{
 
 			public function html(){
-				\hiweb\css( HIWEB_URL_VENDORS . '/bootstrap/css/bootstrap.min.css' );
-				\hiweb\js( HIWEB_DIR_VENDORS . '/bootstrap/js/bootstrap.min.js', [ 'jquery' ] );
 				\hiweb\css( 'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' );
 				\hiweb\css( HIWEB_URL_VENDORS . '/fontawesome-iconpicker/css/fontawesome-iconpicker.min.css' );
+				\hiweb\css( HIWEB_URL_CSS . '/field-fontawesome.css' );
 				$js = \hiweb\js( HIWEB_URL_VENDORS . '/fontawesome-iconpicker/js/fontawesome-iconpicker.min.js', [ 'jquery' ] );
 				\hiweb\js( HIWEB_URL_ASSETS . '/js/field-fontawesome.js', [ 'jquery', $js ] );
 				ob_start();

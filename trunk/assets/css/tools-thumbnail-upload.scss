@@ -76,7 +76,7 @@
 					top: 50%;
 					width: 100%;
 					line-height: 24px;
-					@include text_shadow(10px, 0, 0, rgba(255, 255, 255, 1));
+					@include text-shadow(10px, 0, 0, rgba(255, 255, 255, 1));
 					@include transform(translateY(-50%));
 				}
 				[data-ctrl-btn]:hover {
@@ -99,7 +99,7 @@
 					top: 50%;
 					width: 100%;
 					line-height: 24px;
-					@include text_shadow(10px, 0, 0, rgba(255, 255, 255, 1));
+					@include text-shadow(10px, 0, 0, rgba(255, 255, 255, 1));
 					@include transform(translateY(-50%));
 				}
 			}

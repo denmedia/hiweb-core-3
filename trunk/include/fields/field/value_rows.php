@@ -98,6 +98,7 @@
 
 
 		/**
+		 * Step next row value
 		 * @return mixed
 		 */
 		public function the_row(){
@@ -108,6 +109,7 @@
 
 
 		/**
+		 * Return current row value
 		 * @return mixed
 		 */
 		public function get_row(){

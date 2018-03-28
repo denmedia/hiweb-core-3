@@ -1,0 +1,31 @@
+@import "mixins";
+
+.hiweb-field-fontawesome {
+	position: relative;
+	text-align: left;
+	.form-control {
+		padding-left: 36pt;
+		padding-right: 0;
+		line-height: 25pt;
+	}
+	.input-group-addon {
+		display: inline-block;
+		font-size: 25pt;
+		position: absolute;
+		left: 3px;
+		top: 4px;
+		line-height: 25pt;
+		width: 34pt;
+		text-align: center;
+	}
+
+}
+
+.popover.iconpicker-popover {
+	border: 1px solid grey;
+	@include border_radius();
+	@include box-shadow();
+	.form-control.iconpicker-search {
+		width: 100%;
+	}
+}

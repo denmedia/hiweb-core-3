@@ -1,12 +1,13 @@
 .hw-input-checkbox {
   margin: 4px 0 8px 0; }
   .hw-input-checkbox .checkbox {
-    vertical-align: top;
+    vertical-align: middle;
     width: 17px;
     height: 17px;
     margin: 0 3px 0 0; }
     .hw-input-checkbox .checkbox + label {
-      cursor: pointer; }
+      cursor: pointer;
+      display: inline-block; }
     .hw-input-checkbox .checkbox:not(checked) {
       position: absolute;
       opacity: 0; }

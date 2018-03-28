@@ -12,9 +12,9 @@ var hw_input_post = {
 
     _event_init: function () {
         jQuery(this).find('> .selectator_element').remove();
-        if(typeof jQuery(this).selectator === 'function') {
+        if (typeof jQuery(this).selectator === 'function') {
             jQuery(this).find('> select').fadeOut().selectator({
-                labels: { search: 'Поиск...' }
+                labels: {search: 'Поиск...'}
             });
         }
     },

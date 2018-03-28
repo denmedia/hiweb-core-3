@@ -1,0 +1,61 @@
+@-webkit-keyframes rotating /* Safari and Chrome */ {
+  from {
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+@keyframes rotating {
+  from {
+    -ms-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg); }
+  to {
+    -ms-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -webkit-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+.hiweb-field-fontawesome {
+  position: relative;
+  text-align: left; }
+  .hiweb-field-fontawesome .form-control {
+    padding-left: 36pt;
+    padding-right: 0;
+    line-height: 25pt; }
+  .hiweb-field-fontawesome .input-group-addon {
+    display: inline-block;
+    font-size: 25pt;
+    position: absolute;
+    left: 3px;
+    top: 4px;
+    line-height: 25pt;
+    width: 34pt;
+    text-align: center; }
+
+.popover.iconpicker-popover {
+  border: 1px solid grey;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 5px 0 rgba(0, 0, 0, 0.1); }
+  .popover.iconpicker-popover .form-control.iconpicker-search {
+    width: 100%; }
+
+/*# sourceMappingURL=field-fontawesome.css.map */
