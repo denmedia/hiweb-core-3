@@ -19,7 +19,7 @@
 	namespace hiweb\fields\types\editor {
 
 
-		use hiweb\string;
+		use hiweb\strings;
 
 
 		class field extends \hiweb\fields\field{
@@ -55,7 +55,7 @@
 				\hiweb\js( WPINC . '/js/tinymce/tinymce.min.js' );
 				\hiweb\js( HIWEB_URL_JS . '/field-editor.js' );
 				ob_start();
-				$this->attributes['id'] = $this->global_id().'-'.\hiweb\string::rand(5);
+				$this->attributes['id'] = $this->global_id().'-'.\hiweb\strings::rand(5);
 				$this->attributes['name'] = $this->name();
 				$this->attributes['rows'] = 10;
 				?>

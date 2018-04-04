@@ -6,8 +6,9 @@
 	use hiweb\arrays;
 	use hiweb\console;
 	use hiweb\files\file;
+	use hiweb\images;
 	use hiweb\path;
-	use hiweb\string;
+	use hiweb\strings;
 
 
 	class image{
@@ -36,8 +37,10 @@
 
 		/**
 		 * Get WP attachment meta data
+		 *
 		 * @param null $meta_key
-		 * @return array|string|mixed
+		 *
+		 * @return array|strings|mixed
 		 */
 		public function get_attachment_meta( $meta_key = null ){
 			$R = [
@@ -123,7 +126,7 @@
 
 
 		/**
-		 * @return string
+		 * @return \string
 		 */
 		public function base_dir(){
 			if( !$this->is_attachment_exists() ) return false;
@@ -135,7 +138,7 @@
 
 
 		/**
-		 * @return string
+		 * @return strings
 		 */
 		public function base_url(){
 			if( !$this->is_attachment_exists() ) return false;
@@ -148,13 +151,13 @@
 
 		/**
 		 * @param bool $return_path
-		 * @return string
+		 * @return \string
 		 */
 		public function get_original_src( $return_path = false ){
-			if( $this->is_attachment_exists() && !string::is_empty( $this->get_attachment_meta( 'file' ) ) ){
+			if( $this->is_attachment_exists() && !strings::is_empty( $this->get_attachment_meta( 'file' ) ) ){
 				return ( $return_path ? wp_get_upload_dir()['basedir'] : wp_get_upload_dir()['baseurl'] ) . '/' . $this->get_attachment_meta( 'file' );
 			}
-			return false;
+			return images::get_default_src(true);
 		}
 
 
@@ -163,7 +166,7 @@
 		 * @param int $width
 		 * @param int $height
 		 * @param bool $return_path - return URL or PATH
-		 * @return string|false
+		 * @return \string
 		 */
 		public function get_similar_src( $width = 100, $height = 100, $crop = false, $return_path = false ){
 			$sizes_meta = $this->get_sizes();
@@ -184,7 +187,7 @@
 			} elseif( $this->is_attachment_exists() ) {
 				return $this->get_original_src( $return_path );
 			}
-			if( $R == false ) return $R;
+			if( $R == false ) return images::get_default_src(true);
 			return ( $return_path ? $this->base_dir() : $this->base_url() ) . '/' . $R;
 		}
 
@@ -235,7 +238,7 @@
 		 * @param $height
 		 * @param bool $crop
 		 * @param bool $return_path - return URL or PATH
-		 * @return string|null
+		 * @return \string
 		 */
 		public function get_src( $width, $height, $crop = false, $return_path = false ){
 			///FILTER GREAT WIDTH or HEIGHT
@@ -272,7 +275,7 @@
 					}
 				}
 			}
-			return null;
+			return images::get_default_src(true);
 		}
 
 	}

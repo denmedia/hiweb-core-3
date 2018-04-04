@@ -14,7 +14,8 @@
 
 		/**
 		 * @param              $taxonomy_name
-		 * @param string|array $object_type - post type / post types
+		 * @param strings|array $object_type - post type / post types
+		 *
 		 * @return taxonomy
 		 */
 		static function register( $taxonomy_name, $object_type ){
@@ -28,7 +29,7 @@
 
 		static function do_register_taxonomies(){
 			/**
-			 * @var string   $taxonomy_name
+			 * @var strings   $taxonomy_name
 			 * @var taxonomy $taxonomy
 			 */
 			foreach( self::$taxonomies as $taxonomy_name => $taxonomy ){

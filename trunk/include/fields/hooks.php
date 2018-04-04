@@ -12,7 +12,7 @@
 	add_action( 'edit_page_form', 'hiweb\\fields\\locations\\admin::edit_form_advanced' );
 	add_action( 'dbx_post_sidebar', 'hiweb\\fields\\locations\\admin::dbx_post_sidebar' );
 	//Post type Meta Box
-	add_action( 'add_meta_boxes', 'hiweb\\fields\\locations\\admin::add_meta_boxes', 10, 2 );
+	add_action( 'add_meta_boxes', 'hiweb\\fields\\locations\\admin::add_meta_boxes', 8, 2 );
 	///Posts List Columns
 	//add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
 	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );

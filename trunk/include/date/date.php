@@ -7,9 +7,11 @@
 
 		/**
 		 * Возвращает форматированное дату и время
+		 *
 		 * @param int    $time   - необходимое время в секундах, если не указывать, будет взято текущее время
-		 * @param string $format - форматирование времени
-		 * @return bool|string
+		 * @param strings $format - форматирование времени
+		 *
+		 * @return bool|strings
 		 */
 		static function format( $time = null, $format = 'Y-m-d H:i:s' ){
 			if( intval( $time ) < 100 ){

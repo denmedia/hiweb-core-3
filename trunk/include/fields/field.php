@@ -25,20 +25,20 @@
 		use hiweb\fields\locations\location;
 		use hiweb\fields\locations\locations;
 		use hiweb\hidden_methods;
-		use hiweb\string;
+		use hiweb\strings;
 
 
 		class field{
 
 			use hidden_methods;
 
-			/** @var string */
+			/** @var strings */
 			protected $id = '';
-			/** @var string */
+			/** @var strings */
 			protected $global_id = '';
-			/** @var string */
+			/** @var strings */
 			protected $label = '';
-			/** @var string */
+			/** @var strings */
 			protected $description = '';
 
 			/** @var location */
@@ -56,7 +56,7 @@
 
 
 			public function __construct( $id = null ){
-				$this->id = trim( $id ) == '' ? string::rand() : $id;
+				$this->id = trim( $id ) == '' ? strings::rand() : $id;
 				$this->location = locations::register( $this );
 				$this->INPUT()->name( $this->id() );
 			}
@@ -72,7 +72,7 @@
 
 
 			/**
-			 * @return string
+			 * @return strings
 			 */
 			public function id(){
 				return $this->id;
@@ -80,8 +80,9 @@
 
 
 			/**
-			 * @param null|string $set
-			 * @return field|string
+			 * @param null|strings $set
+			 *
+			 * @return field|strings
 			 */
 			public function global_id( $set = null ){
 				if( is_null( $set ) ){
@@ -124,8 +125,10 @@
 
 			/**
 			 * Set|get field label
-			 * @param null|string $label
-			 * @return field|null|string
+			 *
+			 * @param null|strings $label
+			 *
+			 * @return field|null|strings
 			 */
 			public function label( $label = null ){
 				return $this->set_property( __FUNCTION__, $label );
@@ -134,8 +137,10 @@
 
 			/**
 			 * Set|get field description
-			 * @param null|string $description
-			 * @return field|null|string
+			 *
+			 * @param null|strings $description
+			 *
+			 * @return field|null|strings
 			 */
 			public function description( $description = null ){
 				return $this->set_property( __FUNCTION__, $description );
@@ -160,7 +165,7 @@
 
 
 			/**
-			 * @return string
+			 * @return strings
 			 */
 			public function get_type(){
 				return get_class( $this );
@@ -169,7 +174,7 @@
 
 			/**
 			 * Get input class
-			 * @return string
+			 * @return strings
 			 */
 			protected function get_input_class(){
 				return __NAMESPACE__ . '\\input';
@@ -200,7 +205,7 @@
 
 			/**
 			 * Get value class
-			 * @return string
+			 * @return strings
 			 */
 			protected function get_value_class(){
 				return __NAMESPACE__ . '\\value';

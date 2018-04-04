@@ -12,8 +12,10 @@
 		/**
 		 * Возвращает текущий адрес URL
 		 * @version 1.0.2
+		 *
 		 * @param bool $trimSlashes
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function url_full( $trimSlashes = true ){
 			$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
@@ -37,8 +39,10 @@
 
 		/**
 		 * Возвращает корневой URL
-		 * @param null|string $url
-		 * @return string
+		 *
+		 * @param null|strings $url
+		 *
+		 * @return strings
 		 * @version 1.3
 		 */
 		static function base_url( $url = null ){
@@ -76,7 +80,7 @@
 
 		/**
 		 * Возвращает корневую папку сайта. Данная функция автоматически определяет корневую папку сайта, отталкиваясь на поиске папок с файлом index.php
-		 * @return string
+		 * @return strings
 		 * @version 1.4
 		 */
 		static function base_dir(){
@@ -88,10 +92,12 @@
 
 		/**
 		 * Возвращает URL с измененным QUERY фрагмнтом
+		 *
 		 * @param null $url
 		 * @param array $addData
 		 * @param array $removeKeys
-		 * @return string
+		 *
+		 * @return strings
 		 * @version 1.4
 		 */
 		static function query( $url = null, $addData = [], $removeKeys = [] ){
@@ -143,8 +149,10 @@
 
 		/**
 		 * Возвращает расширение файла, уть которого указан в аргументе $path
+		 *
 		 * @param $path
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function extension( $path ){
 			$pathInfo = pathinfo( $path );
@@ -214,9 +222,11 @@
 		/**
 		 * Возвращает папки или папку(если указать индекс) из URL
 		 * @version 2.1
+		 *
 		 * @param null $url
 		 * @param int $index
-		 * @return bool|array|string
+		 *
+		 * @return bool|array|strings
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ){
 			$urlArr = self::get_url_info( self::prepare_url( !is_string( $url ) ? self::base_url() : $url ) );
@@ -227,9 +237,11 @@
 
 		/**
 		 * Возвращает массив параметров из URL или значение определенного параметра
+		 *
 		 * @param null $url - если не указывать, будет взят текущий URL
 		 * @param null $indexOrKey - если не указывать, будет вернут массив параметров, иначе значение параметра
-		 * @return string|array|null
+		 *
+		 * @return strings|array|null
 		 */
 		static function get_paramas_from_url( $url = null, $indexOrKey = null ){
 			$urlArr = self::get_url_info( self::prepare_url( $url, self::base_url() ) );
@@ -241,10 +253,12 @@
 		/**
 		 * Нормализация URL, так же возвращает парсированный URL
 		 * @version 1.2
+		 *
 		 * @param      $url
 		 * @param null $startUrl
 		 * @param bool $returnParseArray
-		 * @return bool|array|string
+		 *
+		 * @return bool|array|strings
 		 */
 		static function prepare_url( $url, $startUrl = null, $returnParseArray = false ){
 			if( !is_string( $url ) ){
@@ -288,7 +302,9 @@
 
 		/**
 		 * Возвращает TRUE, если текущая страница соответствует указанному SLUG
-		 * @param string $pageSlug
+		 *
+		 * @param strings $pageSlug
+		 *
 		 * @return bool
 		 */
 		static function is_page( $pageSlug = '' ){
@@ -322,9 +338,11 @@
 
 		/**
 		 * Возвращает путь с правильными разделителями
+		 *
 		 * @param      $path - исходный путь
 		 * @param bool $removeLastSeparators - удалить самый хвостовой сепаратор
-		 * @return string | bool
+		 *
+		 * @return strings | bool
 		 * @version 1.1
 		 */
 		static function prepare_separator( $path, $removeLastSeparators = false ){
@@ -340,8 +358,10 @@
 		/**
 		 * Конвертация относитльного пути к коневой папке в реальный
 		 * @version 1.0.0.0
+		 *
 		 * @param $fileOrDirPath - путь до файла или папки
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function realpath( $fileOrDirPath ){
 			$fileOrDirPath = self::prepare_separator( $fileOrDirPath );
@@ -351,7 +371,7 @@
 
 		/**
 		 * @param $fileOrDirPath
-		 * @return bool|string
+		 * @return bool|strings
 		 */
 		static function simplepath( $fileOrDirPath ){
 			return strpos( $fileOrDirPath, self::base_dir() ) === 0 ? substr( $fileOrDirPath, strlen( self::base_dir() ) ) : $fileOrDirPath;
@@ -360,8 +380,10 @@
 
 		/**
 		 * Функция атоматически создает папки
+		 *
 		 * @param $dirPath - путь до папи, которую необходимо создать
-		 * @return array|string
+		 *
+		 * @return array|strings
 		 */
 		static function mkdir( $dirPath ){
 			$dirPath = realpath( $dirPath );
@@ -436,8 +458,10 @@
 
 		/**
 		 * Возвращает форматированный вид размера файла из байтов
+		 *
 		 * @param $size - INT килобайты
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function size_format( $size ){
 			$size = intval( $size );
@@ -495,18 +519,21 @@
 				}
 			}
 			closedir( $handle );
+
 			return $R;
 		}
 
 
 		/**
 		 * Выполняет архивацию папки в ZIP архив
+		 *
 		 * @param             $pathInput
-		 * @param string $pathOut
-		 * @param string $arhiveName
-		 * @param string|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
+		 * @param strings $pathOut
+		 * @param strings $arhiveName
+		 * @param strings|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
 		 * @param bool $appendToArchive
-		 * @return bool|string
+		 *
+		 * @return bool|strings
 		 */
 		static function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ){
 			$pathInput = realpath( $pathInput );
@@ -540,7 +567,7 @@
 		/**
 		 * Распаковывает ZIP архив
 		 * @param        $archivePath
-		 * @param string $destinationDir
+		 * @param strings $destinationDir
 		 * @return bool
 		 */
 		static function unpack( $archivePath, $destinationDir = '' ){
@@ -567,7 +594,7 @@
 		/**
 		 * Возвращает расширение файла, уть которого указан в аргументе $path
 		 * @param $path
-		 * @return string
+		 * @return strings
 		 */
 		static function file_extension( $path ){
 			$pathInfo = pathinfo( $path );
@@ -577,9 +604,11 @@
 
 		/**
 		 * Возвращает содержимое файла PHP, подключая его через INCLUDE
+		 *
 		 * @param       $path
 		 * @param array $vars
-		 * @return bool|string
+		 *
+		 * @return bool|strings
 		 * @version 1.1
 		 */
 		static function get_content( $path, $vars = [] ){
@@ -603,7 +632,7 @@
 
 		/**
 		 * Возвращает TRUE, если передан URL
-		 * @param string $url - тестовый URL
+		 * @param strings $url - тестовый URL
 		 * @return mixed
 		 */
 		static function is_url( $url ){
@@ -691,7 +720,7 @@
 
 		/**
 		 * Get an attachment ID given a URL.
-		 * @param string $url
+		 * @param strings $url
 		 * @return int Attachment ID on success, 0 on failure
 		 */
 		static function get_attachment_id( $url ){

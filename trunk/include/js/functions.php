@@ -4,7 +4,7 @@
 
 
 	/**
-	 * @param string $jsPathOrURL
+	 * @param strings $jsPathOrURL
 	 * @param array  $deeps
 	 * @param bool   $inFooter
 	 * @return bool

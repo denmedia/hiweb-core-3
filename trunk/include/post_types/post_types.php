@@ -28,7 +28,7 @@
 
 		static function do_register_post_types(){
 			/**
-			 * @var string    $post_type_name
+			 * @var strings    $post_type_name
 			 * @var post_type $post_type
 			 */
 			foreach( self::$post_types as $post_type_name => $post_type ){

@@ -9,6 +9,12 @@ $breakpoint: 1180px;
 	-webkit-flex: 1 1 $percent;
 }
 
+.postbox {
+	.hiweb-fieldset {
+		margin: 4pt 0;
+	}
+}
+
 .hiweb-fields-form {
 	display: -ms-flexbox;
 	display: -webkit-flex;

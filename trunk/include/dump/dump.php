@@ -11,10 +11,12 @@
 
 		/**
 		 * Выводить структуру заданной переменной
+		 *
 		 * @param      $mixed
 		 * @param int  $depth       - установить глубину массивов и объектов
 		 * @param bool $showObjects - раскрывать объекты
-		 * @return string
+		 *
+		 * @return strings
 		 * @version 1.4
 		 */
 		static function getHtml_arrayPrint( $mixed, $depth = 6, $showObjects = true ){
@@ -87,7 +89,8 @@
 		/**
 		 * @param      $mixed
 		 * @param bool $echo
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function print_r( $mixed, $echo = true ){
 			$R = '<pre>' . print_r( $mixed, true ) . '</pre>';
@@ -103,10 +106,12 @@
 
 		/**
 		 * Записывает данные `$dataMix` в формате HTML в файл. Это удобно для похоже на собственный лог-файл. Этой функцией можно в течении некоторого времени (установленного параметром `$autoDeleteOldFile`) многократно дозаписать информацию в один и тот же файл для дальнейшего анализа. По умолчанию все записывается в файл `log.html` в корне сайта.
+		 *
 		 * @param        $dataMix           - значения
-		 * @param string $filePath          - имя файла дампа
+		 * @param strings $filePath          - имя файла дампа
 		 * @param bool   $append            - не удалять предыдущие записи
 		 * @param int    $autoDeleteOldFile - указать время в секундах, в течении которого старые записи не будут удаляться из файла
+		 *
 		 * @return int
 		 */
 		static function to_file( $dataMix, $filePath = 'log.html', $append = true, $autoDeleteOldFile = 5 ){

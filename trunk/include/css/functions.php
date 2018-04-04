@@ -6,9 +6,11 @@
 	/**
 	 * Поставить в очередь файл CSS
 	 * @version  2.0
-	 * @param string $filePathOrUrl
+	 *
+	 * @param strings $filePathOrUrl
 	 * @param array  $deeps
-	 * @param string $media = all|screen|handheld|print
+	 * @param strings $media = all|screen|handheld|print
+	 *
 	 * @return bool
 	 */
 	function css( $filePathOrUrl, $deeps = [], $media = 'all' ){

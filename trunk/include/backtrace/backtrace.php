@@ -7,6 +7,7 @@
 
 		/**
 		 * Возвращает массив
+		 *
 		 * @param bool   $class            - возвращать классы className
 		 * @param bool   $functions        - возвращать имена функций functionName
 		 * @param bool   $files            - возвращать имена файлов fileName
@@ -15,9 +16,10 @@
 		 * @param bool   $returnChunkArray - возвращать разбитый массив на ключевые значения array('class' => ..., 'functions' => ..., 'file' => ...)
 		 * @param int    $minDepth         - минимальная глубина
 		 * @param int    $maxDepth         - максимальная глубина
-		 * @param string $prepend          - добавлять до значения
-		 * @param string $append           - добавлять после каждого значения
+		 * @param strings $prepend          - добавлять до значения
+		 * @param strings $append           - добавлять после каждого значения
 		 * @param bool   $args             - возвращать аргументы
+		 *
 		 * @return array
 		 * @version 1.2
 		 */
@@ -75,8 +77,10 @@
 
 		/**
 		 * Возвращает путь и строку файла, откуда была запущена функция
+		 *
 		 * @param int $depth - глубина родительских функций
-		 * @return string
+		 *
+		 * @return strings
 		 * @version 2.0
 		 */
 		static function file_locate( $depth = 0 ){
@@ -94,8 +98,10 @@
 
 		/**
 		 * Возвращает функцию, откуда была запущена текущая функция
+		 *
 		 * @param int $depth
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function function_trace( $depth = 0 ){
 			return ''; //TODO!

@@ -16,7 +16,7 @@
 
 
 		/**
-		 * @param null|string|int|\WP_Post $postOrId
+		 * @param null|strings|int|\WP_Post $postOrId
 		 * @return bool
 		 */
 		static function is_front_page( $postOrId = null ){

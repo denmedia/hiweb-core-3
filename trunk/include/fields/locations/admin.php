@@ -9,7 +9,7 @@
 	use hiweb\fields\field;
 	use hiweb\fields\forms;
 	use hiweb\path;
-	use hiweb\string;
+	use hiweb\strings;
 
 
 	class admin{
@@ -96,7 +96,7 @@
 			foreach( $fields_by_box as $meta_context => $fields_by_priority ){
 				foreach( $fields_by_priority as $meta_priority => $fields_by_title ){
 					foreach( $fields_by_title as $meta_title => $fields_by_box ){
-						$meta_box_id = 'hiweb-metabox-' . $meta_context . '-' . $meta_priority . '-' . string::sanitize_id( $meta_title );
+						$meta_box_id = 'hiweb-metabox-' . $meta_context . '-' . $meta_priority . '-' . strings::sanitize_id( $meta_title );
 						if( array_key_exists( $meta_box_id, array_flip( $meta_box_ids ) ) ){
 							for( $n = 0; $n < 999; $n ++ ){
 								if( !array_key_exists( $meta_box_id . '-' . $n, array_flip( $meta_box_ids ) ) ){
@@ -276,7 +276,7 @@
 			$sections = [];
 			foreach( $theme_locations as $location_id => $location ){
 				$options = $location->options['theme']->options;
-				$section_id = \hiweb\string::sanitize_id( $options['section_title'] );
+				$section_id = \hiweb\strings::sanitize_id( $options['section_title'] );
 				if( !isset( $sections[ $section_id ] ) ) $sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
 				if( !isset( $sections[ $section_id ]['args']['title'] ) ) $sections[ $section_id ]['args']['title'] = $options['section_title'];
 				if( !isset( $sections[ $section_id ]['args']['description'] ) ) $sections[ $section_id ]['args']['description'] = $options['section_description'];

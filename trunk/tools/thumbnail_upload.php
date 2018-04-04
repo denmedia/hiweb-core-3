@@ -16,34 +16,91 @@
 		static private $post_types = [];
 		static private $taxonomies = [];
 
-		static $default_preview_size = [ 200, 300 ];
+		static $default_preview_size = [ 150, 150 ];
 
 
 		public function __construct(){
 			///Print Thumbnails to Columns
 			add_action( 'admin_init', function(){
 				if( is_array( $this->post_types() ) ) foreach( $this->post_types() as $post_type ){
-					if( $post_type == 'post' ){
-						add_action( 'manage_posts_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
-						add_filter( 'manage_posts_columns', [ $this, 'manage_posts_columns' ] );
-					} elseif( $post_type == 'page' ) {
-						add_action( 'manage_pages_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
-						add_filter( 'manage_pages_columns', [ $this, 'manage_posts_columns' ] );
-					} else {
-						add_action( 'manage_' . $post_type . '_posts_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
-						add_filter( 'manage_' . $post_type . '_posts_columns', [ $this, 'manage_posts_columns' ] );
-					}
+
 				}
 			} );
-			///Thumbnail Upload
 			add_action( 'current_screen', function(){
 				if( is_array( $this->post_types() ) ) foreach( $this->post_types() as $post_type ){
 					if( get_current_screen()->post_type == $post_type ){
-						css( HIWEB_URL_CSS . '/tool-thumbnail-upload.css' );
+
+						///Thumbnail Upload
+						css( HIWEB_URL_CSS . '/tools-thumbnail-upload.css' );
 						$script_id = js( HIWEB_URL_JS . '/hw_Dropzone.js', [ 'jquery' ] );
-						js( HIWEB_URL_JS . '/tool-thumbnail-upload.js', [ 'jquery', $script_id ], true );
+						js( HIWEB_URL_JS . '/tools-thumbnail-upload.js', [ 'jquery', $script_id ], true );
+
+						if( $post_type == 'post' ){
+							add_action( 'manage_posts_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
+							add_filter( 'manage_posts_columns', [ $this, 'manage_posts_columns' ] );
+						} elseif( $post_type == 'page' ) {
+							add_action( 'manage_pages_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
+							add_filter( 'manage_pages_columns', [ $this, 'manage_posts_columns' ] );
+						} else {
+							add_action( 'manage_' . $post_type . '_posts_custom_column', [ $this, 'manage_posts_custom_column' ], 10, 2 );
+							add_filter( 'manage_' . $post_type . '_posts_columns', [ $this, 'manage_posts_columns' ] );
+						}
 					}
 				}
+			} );
+			///TOOLS THUMBNAIL UPLOAD
+			add_action( 'wp_ajax_hiweb-tools-thumbnail-upload-post-type-uploading', function(){
+				$post_id = intval( $_SERVER['HTTP_POSTID'] );
+				$file = $_FILES['file'];
+				if( $post_id > 0 ){
+					///Upload File
+					$attachment_id = $this->upload( $file );
+					if( $attachment_id <= 0 ){
+						wp_send_json_error( 'не удалось загрузит  файл' );
+					} else {
+						if( $_SERVER['HTTP_POSTTYPE'] == 'taxonomy' ){
+							$R = update_term_meta( $post_id, 'thumbnail_id', $attachment_id );
+						} else {
+							$R = set_post_thumbnail( $post_id, $attachment_id );
+						}
+						if( $R == false ){
+							wp_send_json_error( 'не удалось установить миниатюру для записи' );
+						} else {
+							$img_src = wp_get_attachment_image_url( $attachment_id, self::$default_preview_size );
+							wp_send_json_success( $img_src );
+						}
+					}
+				}
+				wp_send_json_error( 'Не верный ID записи' );
+			} );
+			add_action( 'wp_ajax_hiweb-tools-thumbnail-upload-post-type-remove', function(){
+				$post_id = intval( $_POST['post_id'] );
+				if( $post_id > 0 ){
+					$R = delete_post_thumbnail( $post_id );
+					if( $R ) wp_send_json_success( 'Миниатюра удалена' ); else wp_send_json_error( 'Не удалось удалить миниатюру' );
+				} else {
+					wp_send_json_error( 'Не верный ID записи' );
+				}
+			} );
+			add_action( 'wp_ajax_hiweb-tools-thumbnail-upload-post-type-set', function(){
+				$post_id = intval( $_POST['post_id'] );
+				$attachment_id = intval( $_POST['thumbnail_id'] );
+				if( $attachment_id == 0 ){
+					wp_send_json_error( 'Не указан индификатор миниатюры post:[thumbnail_id]' );
+				} elseif( $post_id > 0 ) {
+					if( $_POST['type'] == 'taxonomy' ){
+						$R = update_term_meta( $post_id, 'thumbnail_id', $attachment_id );
+					} else {
+						$R = set_post_thumbnail( $post_id, $attachment_id );
+					}
+					if( $R == false ){
+						wp_send_json_error( 'не удалось установить миниатюру для товара' );
+					} else {
+						$img_src = wp_get_attachment_image_url( $attachment_id, self::$default_preview_size );
+						wp_send_json_success( $img_src );
+					}
+				}
+				wp_send_json_error( 'Не верный ID товара' );
 			} );
 		}
 
@@ -65,7 +122,7 @@
 						<div class="img noimg"></div>
 						<div class="img" data-img <?php
 							if( has_post_thumbnail( $P ) ){
-						?>style="background-image: url(<?= get_the_post_thumbnail_url( $P, self::$default_preview_size ) ?>)"<?php
+						?>style="background-image: url(<?= get_image( get_post_thumbnail_id( $P ) )->get_similar_src() ?>)"<?php
 							}
 						?>></div>
 						<div data-drop-logo>
@@ -81,7 +138,7 @@
 		}
 
 
-		public function manage_posts_columns( $posts_columns, $post_type ){
+		public function manage_posts_columns( $posts_columns ){
 			wp_enqueue_media();
 			$posts_columns = arrays::push( $posts_columns, ' ', 0, 'hw_tool_thumbnail' );
 			return $posts_columns;
@@ -93,7 +150,10 @@
 		 * @return array
 		 */
 		public function post_type( $post_type = 'post' ){
-			self::$post_types[] = $post_type;
+			if( is_string( $post_type ) ) $post_type = [ $post_type ];
+			foreach( $post_type as $pt_name ){
+				self::$post_types[] = $pt_name;
+			}
 			self::$post_types = array_unique( self::$post_types );
 			return self::$post_types;
 		}

@@ -3,7 +3,7 @@
 	namespace hiweb;
 
 
-	class string{
+	class strings{
 
 
 		static function explode_by_symbol( $string ){ return preg_split( '//u', $string, - 1, PREG_SPLIT_NO_EMPTY ); }
@@ -43,8 +43,10 @@
 
 		/**
 		 * Convert string utf8 to ansii
-		 * @param string $utf8
-		 * @return string
+		 *
+		 * @param strings $utf8
+		 *
+		 * @return strings
 		 */
 		static function utf8_to_ansii( $utf8 ){
 			if( function_exists( 'iconv' ) ){
@@ -133,8 +135,10 @@
 
 		/**
 		 * Convert ansii to utf-8
-		 * @param string $ansii
-		 * @return string
+		 *
+		 * @param strings $ansii
+		 *
+		 * @return strings
 		 */
 		static function ansii_to_utf8( $ansii ){
 			if( function_exists( 'iconv' ) ){
@@ -220,7 +224,7 @@
 
 
 		/**
-		 * @param string $parseStr
+		 * @param strings $parseStr
 		 * @return array
 		 */
 		static function explode_to_string_numeric( $parseStr ){
@@ -247,8 +251,10 @@
 
 		/**
 		 * Formatting JSON string
-		 * @param string $json
-		 * @return string
+		 *
+		 * @param strings $json
+		 *
+		 * @return strings
 		 */
 		static function json_format( $json ){
 			if( !is_string( $json ) ){
@@ -291,7 +297,9 @@
 
 		/**
 		 * Return TRUE, if haystack string is REGEX
-		 * @param string $haystackString
+		 *
+		 * @param strings $haystackString
+		 *
 		 * @return bool
 		 */
 		static function is_regex( $haystackString ){ return preg_match( "/^\/[\s\S]+\/$/", $haystackString ) > 0; }
@@ -299,9 +307,11 @@
 
 		/**
 		 * Return TRUE, if haystack string is JSON
-		 * @param string $haystack
+		 *
+		 * @param strings $haystack
 		 * @param bool $returnIfFalse
 		 * @param bool $returnDecodeIfJson
+		 *
 		 * @return bool|mixed
 		 */
 		static function is_json( $haystack, $returnIfFalse = false, $returnDecodeIfJson = true ){
@@ -328,8 +338,9 @@
 		/**
 		 * @param $text
 		 * @param $limit
-		 * @param string $ellipsis
-		 * @return string
+		 * @param strings $ellipsis
+		 *
+		 * @return strings
 		 */
 		static function truncate_by_chars( $text, $limit, $ellipsis = '...' ){
 			if( strlen( $text ) > $limit ){
@@ -343,8 +354,9 @@
 		/**
 		 * @param $text
 		 * @param $limit
-		 * @param string $ellipsis
-		 * @return string
+		 * @param strings $ellipsis
+		 *
+		 * @return strings
 		 */
 		static function truncate_by_words( $text, $limit, $ellipsis = '...' ){
 			$words = preg_split( "/[\n\r\t ]+/", $text, $limit + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE );
@@ -360,12 +372,14 @@
 
 		/**
 		 * base::convert_str_toId()
+		 *
 		 * @param mixed $string
 		 * @param integer $limit
 		 * @param bool $useRegistr
 		 * @param bool $ifEmpty_generateRandomKey
 		 * @param array $additionSymbolsArr
-		 * @return bool|int|string
+		 *
+		 * @return bool|int|strings
 		 */
 		static function sanitize_id( $string, $limit = 99, $useRegistr = false, $ifEmpty_generateRandomKey = true, $additionSymbolsArr = [] ){
 			$symbolsAllowArr = [

@@ -11,6 +11,7 @@
 
 	use hiweb\fields\field;
 	use hiweb\fields\input;
+	use hiweb\fields\locations\locations;
 
 
 	class fields{
@@ -37,7 +38,8 @@
 
 		/**
 		 * @param field $field
-		 * @return false|string
+		 *
+		 * @return false|strings
 		 */
 		static function register_field( field $field ){
 			$global_id = self::get_free_global_id( $field->id(), self::$fields );
@@ -53,7 +55,8 @@
 
 		/**
 		 * @param input $input
-		 * @return bool|string
+		 *
+		 * @return bool|strings
 		 */
 		static function register_input( input $input ){
 			$global_id = self::get_free_global_id( $input->get_parent_field()->id(), self::$inputs );
@@ -83,6 +86,21 @@
 				return new field( $field_id );
 			}
 			return end( self::$fieldId_globalId[ $field_id ] );
+		}
+
+
+		/**
+		 * @param $field_id
+		 * @param strings $contextObject
+		 *
+		 * @return field
+		 */
+		static function get_by_context($field_id, $contextObject = 'options'){
+			$fields = locations::get_fields_by_contextObject($contextObject);
+			foreach($fields as $global_id => $field){
+				if($field->id() == $field_id) return $field;
+			}
+			return self::get($field_id);
 		}
 
 

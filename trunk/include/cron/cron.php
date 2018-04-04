@@ -6,7 +6,8 @@
 	class cron{
 
 		/**
-		 * @param string $jobs
+		 * @param strings $jobs
+		 *
 		 * @return array
 		 */
 		static private function string2array( $jobs = '' ){
@@ -22,7 +23,8 @@
 
 		/**
 		 * @param array $jobs
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static private function array2string( $jobs = [] ){
 			$string = implode( "\r\n", $jobs );
@@ -41,7 +43,8 @@
 
 		/**
 		 * @param array $jobs
-		 * @return string
+		 *
+		 * @return strings
 		 */
 		static function save_jobs( $jobs = [] ){
 			$output = shell_exec( 'echo "' . self::array2string( $jobs ) . '" | crontab -' );
@@ -50,7 +53,8 @@
 
 
 		/**
-		 * @param string $job
+		 * @param strings $job
+		 *
 		 * @return bool
 		 */
 		static function job_exists( $job = '' ){
@@ -64,8 +68,9 @@
 
 
 		/**
-		 * @param string $job
-		 * @return bool|string
+		 * @param strings $job
+		 *
+		 * @return bool|strings
 		 */
 		static function add_job( $job = '' ){
 			if( self::job_exists( $job ) ){
@@ -79,11 +84,12 @@
 
 
 		/**
-		 * @param string $job
-		 * @return bool|string
+		 * @param strings $job
+		 *
+		 * @return bool|strings
 		 */
 		static function remove_job( $job = '' ){
-			if( string::is_regex( $job ) ){
+			if( strings::is_regex( $job ) ){
 				$jobs = self::get_jobs();
 				foreach( $jobs as $j ){
 					if( preg_match( $job, $j ) > 0 ) unset( $jobs[ array_search( $job, $jobs ) ] );
@@ -102,7 +108,7 @@
 
 
 		/**
-		 * @return string
+		 * @return strings
 		 */
 		static function clear_jobs(){
 			return exec( 'crontab -r', $crontab );

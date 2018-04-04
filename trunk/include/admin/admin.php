@@ -13,9 +13,10 @@
 	class admin{
 
 		/**
-		 * @param string $slug
-		 * @param string $title
+		 * @param strings $slug
+		 * @param strings $title
 		 * @param null $parent_slug
+		 *
 		 * @return page
 		 */
 		static function ADD_PAGE( $slug, $title, $parent_slug = null ){
@@ -32,7 +33,8 @@
 
 
 		/**
-		 * @param string $content
+		 * @param strings $content
+		 *
 		 * @return notice
 		 */
 		static function NOTICE( $content = '&nosp;' ){
