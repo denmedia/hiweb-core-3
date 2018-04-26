@@ -63,12 +63,11 @@ var hiweb_field_repeat = {
     },
 
     make_sortable: function () {
-        var roots = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
-        if(!roots.hasOwnProperty('sortable')) return;
-        if (roots['sortable'].hasOwnProperty('destroy')) {
-            roots.sortable("destroy");
+        var rows = hiweb_field_repeat.get_rows_list( hiweb_field_repeat.selector );
+        if (rows['sortable'].hasOwnProperty('destroy')) {
+            rows.sortable("destroy");
         }
-        roots.sortable({
+        rows.sortable({
             update: function (e, ui) {
                 hiweb_field_repeat.make_table_names(jQuery(this).closest(hiweb_field_repeat.selector));
                 ui.placeholder.find('> [data-col] > *').trigger('drag_update');

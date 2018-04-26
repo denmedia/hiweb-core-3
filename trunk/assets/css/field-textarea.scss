@@ -1,4 +1,30 @@
+$color_grey: #ccc;
+@mixin placeholder {
+	color: $color_grey;
+	font-weight: 100;
+}
+
 .hiweb-field-textarea {
 	width: 100%;
 	height: 100px;
+
+	&::-webkit-input-placeholder { @include placeholder() }
+	&::-moz-placeholder { @include placeholder() }
+	&:-moz-placeholder { @include placeholder() }
+	&:-ms-input-placeholder { @include placeholder() }
+
+	&[placeholder] {text-overflow: ellipsis;}
+	&::-moz-placeholder {text-overflow: ellipsis;}
+	&:-moz-placeholder {text-overflow: ellipsis;}
+	&:-ms-input-placeholder {text-overflow: ellipsis;}
+
+	&::-webkit-input-placeholder       {opacity: 1; transition: opacity 0.3s ease;}
+	&::-moz-placeholder                {opacity: 1; transition: opacity 0.3s ease;}
+	&:-moz-placeholder                 {opacity: 1; transition: opacity 0.3s ease;}
+	&:-ms-input-placeholder            {opacity: 1; transition: opacity 0.3s ease;}
+	&:focus::-webkit-input-placeholder {opacity: 0; transition: opacity 0.3s ease;}
+	&:focus::-moz-placeholder          {opacity: 0; transition: opacity 0.3s ease;}
+	&:focus:-moz-placeholder           {opacity: 0; transition: opacity 0.3s ease;}
+	&:focus:-ms-input-placeholder      {opacity: 0; transition: opacity 0.3s ease;}
+
 }

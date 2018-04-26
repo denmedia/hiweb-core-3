@@ -14,8 +14,7 @@
 		 * @version 1.0.2
 		 *
 		 * @param bool $trimSlashes
-		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function url_full( $trimSlashes = true ){
 			$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
@@ -39,10 +38,8 @@
 
 		/**
 		 * Возвращает корневой URL
-		 *
-		 * @param null|strings $url
-		 *
-		 * @return strings
+		 * @param null|string $url
+		 * @return string
 		 * @version 1.3
 		 */
 		static function base_url( $url = null ){
@@ -80,7 +77,7 @@
 
 		/**
 		 * Возвращает корневую папку сайта. Данная функция автоматически определяет корневую папку сайта, отталкиваясь на поиске папок с файлом index.php
-		 * @return strings
+		 * @return string
 		 * @version 1.4
 		 */
 		static function base_dir(){
@@ -96,8 +93,7 @@
 		 * @param null $url
 		 * @param array $addData
 		 * @param array $removeKeys
-		 *
-		 * @return strings
+		 * @return string
 		 * @version 1.4
 		 */
 		static function query( $url = null, $addData = [], $removeKeys = [] ){
@@ -151,8 +147,7 @@
 		 * Возвращает расширение файла, уть которого указан в аргументе $path
 		 *
 		 * @param $path
-		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function extension( $path ){
 			$pathInfo = pathinfo( $path );

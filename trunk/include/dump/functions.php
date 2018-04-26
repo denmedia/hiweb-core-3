@@ -5,7 +5,7 @@
 
 	/**
 	 * @param $variable
-	 * @return strings
+	 * @return string
 	 */
 	function dump( $variable ){
 		dump::the( $variable );

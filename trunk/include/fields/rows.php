@@ -127,6 +127,18 @@
 		} else {
 			console::debug_warn( 'Function [the_row_is_last] is exists...' );
 		}
+
+		if(!function_exists('get_rows_count')) {
+			/**
+			 * Возвращает количество строк в текущем лупе полей
+			 * @return int
+			 */
+			function get_rows_count(){
+				return rows::get_rows_count();
+			}
+		} else {
+			console::debug_warn( 'Function [get_rows_count] is exists...' );
+		}
 	}
 
 	namespace hiweb\fields {
@@ -234,6 +246,13 @@
 			 */
 			static function the_row_is_last(){
 				return self::get_current_context()->VALUE()->rows()->get_row_index() == count( self::get_current_context()->VALUE()->get_sanitized() );
+			}
+
+			/**
+			 * @return int
+			 */
+			static function get_rows_count(){
+				return count( self::get_current_context()->VALUE()->get_sanitized() );
 			}
 
 

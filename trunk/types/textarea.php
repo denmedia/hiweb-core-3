@@ -31,6 +31,16 @@
 			}
 
 
+			/**
+			 * @param string $placeholder
+			 * @return $this
+			 */
+			public function placeholder( $placeholder ){
+				$this->INPUT()->attributes['placeholder'] = $placeholder;
+				return $this;
+			}
+
+
 		}
 
 
