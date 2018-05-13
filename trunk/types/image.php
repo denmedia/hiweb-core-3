@@ -3,14 +3,16 @@
 	namespace {
 
 
-		if( !function_exists( 'add_field_image' ) ){
+		if ( ! function_exists( 'add_field_image' ) ) {
 			/**
 			 * @param $id
+			 *
 			 * @return \hiweb\fields\types\image\field
 			 */
-			function add_field_image( $id ){
+			function add_field_image( $id ) {
 				$new_field = new hiweb\fields\types\image\field( $id );
 				hiweb\fields::register_field( $new_field );
+
 				return $new_field;
 			}
 		}
@@ -34,28 +36,30 @@
 
 			/**
 			 * @param null $set
+			 *
 			 * @return $this|null
 			 */
-			public function preview_width( $set = null ){
+			public function preview_width( $set = null ) {
 				return $this->set_property( __FUNCTION__, $set );
 			}
 
 
 			/**
 			 * @param null $set
+			 *
 			 * @return $this|null
 			 */
-			public function preview_height( $set = null ){
+			public function preview_height( $set = null ) {
 				return $this->set_property( __FUNCTION__, $set );
 			}
 
 
-			protected function get_input_class(){
+			protected function get_input_class() {
 				return __NAMESPACE__ . '\\input';
 			}
 
 
-			protected function get_value_class(){
+			protected function get_value_class() {
 				return __NAMESPACE__ . '\\value';
 			}
 
@@ -70,57 +74,65 @@
 
 			/**
 			 * Возвращает URL до изображения
+			 *
 			 * @param $value - attachment id
 			 * @param string $size
+			 *
 			 * @return bool|string
 			 */
-			private function get_src( $value, $size = 'thumbnail' ){
+			private function get_src( $value, $size = 'thumbnail' ) {
 				$img = false;
-				if( is_numeric( $value ) ){
+				if ( is_numeric( $value ) ) {
 					$thumb = wp_get_attachment_image_src( $value, $size );
-					if( is_array( $thumb ) ){
+					if ( is_array( $thumb ) ) {
 						$img = $thumb[0];
 					}
 				}
+
 				return strpos( $img, 'http' ) === 0 ? $img : false;
 			}
 
 
 			/**
 			 * Возвращает TRUE, если файл существует
+			 *
 			 * @param string $size
+			 *
 			 * @return bool
 			 */
-			public function have_image( $size = 'thumbnail' ){
+			public function have_image( $size = 'thumbnail' ) {
 				$key = json_encode( $size );
-				if( array_key_exists( $key, $this->has_image ) ){
+				if ( array_key_exists( $key, $this->has_image ) ) {
 					return $this->has_image[ $key ];
 				}
 				$img_url = $this->get_src( $this->VALUE()->get_sanitized(), $size );
-				if( $img_url === false ) return false;
-				$img_path = path::url_to_path( $img_url );
+				if ( $img_url === false ) {
+					return false;
+				}
+				$img_path                = path::url_to_path( $img_url );
 				$this->has_image[ $key ] = file_exists( $img_path );
+
 				return $this->has_image[ $key ];
 			}
 
 
-			public function html(){
+			public function html() {
 				wp_enqueue_media();
 				css( HIWEB_URL_CSS . '/field-image.css' );
 				js( HIWEB_URL_JS . '/field-image.js' );
 				///
 				/** @var field $parent_field */
 				$parent_field = $this->get_parent_field();
-				$attr_width = $parent_field->preview_width();
-				$attr_height = $parent_field->preview_height();
-				$preview = false;
-				$image_small = true;
+				$attr_width   = $parent_field->preview_width();
+				$attr_height  = $parent_field->preview_height();
+				$preview      = false;
+				$image_small  = true;
 				///
-				if( $this->have_image() ){
-					$image = images::get( $this->VALUE()->get() );
-					$preview = $image->get_similar_src( $attr_width, $attr_height, 1 );
-					$preview_size = $image->get_size_by_limit( $attr_width, $attr_height );
-					$image_small = !( $attr_width <= $preview_size[0] && $attr_height <= $preview_size[1] );
+				if ( $this->have_image() ) {
+					$image        = images::get( $this->VALUE()->get() );
+					$preview      = $image->get_src( [ $attr_width, $attr_height ], true );
+					$preview_size = $image->desire_to_size( $attr_width, $attr_height, - 1 );
+					$image_small  = ! ( $attr_width <= $preview_size[0] && $attr_height <= $preview_size[1] );
 				}
 				///
 				ob_start();
@@ -148,15 +160,21 @@
 			 * @param string $size
 			 * @param bool $return_image_html
 			 * @param null $null
+			 *
 			 * @return bool|mixed|string
 			 */
-			public function get_content( $size = 'thumbnail', $return_image_html = false, $null = null ){
-				if( !is_numeric( $this->data ) ) return false;
-				if( $return_image_html ){
+			public function get_content( $size = 'thumbnail', $return_image_html = false, $null = null ) {
+				if ( ! is_numeric( $this->data ) ) {
+					return false;
+				}
+				if ( $return_image_html ) {
 					return wp_get_attachment_image( $this->data, $size );
 				}
 				$R = wp_get_attachment_image_src( $this->data, $size );
-				if( !is_array( $R ) || !array_key_exists( 0, $R ) ) return false;
+				if ( ! is_array( $R ) || ! array_key_exists( 0, $R ) ) {
+					return false;
+				}
+
 				return $R[0];
 			}
 

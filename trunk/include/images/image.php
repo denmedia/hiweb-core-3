@@ -5,38 +5,50 @@
 
 	use hiweb\arrays;
 	use hiweb\console;
-	use hiweb\context;
-	use hiweb\files\file;
 	use hiweb\images;
-	use hiweb\path;
-	use hiweb\string;
+	use hiweb\images\image\size;
+	use hiweb\strings;
 
 
 	class image{
 
-		public $attached_id = 0;
+
+		protected $attach_id = 0;
 		/** @var null|\WP_Post */
-		public $wp_post;
+		protected $wp_post;
 		/** @var array */
-		public $image_meta = [];
+		protected $image_meta = [];
 		/** @var array */
-		public $sizes = [];
-		/** @var \WP_Image_Editor */
-		private $wp_image_editor;
+		protected $sizes = [];
+
+		/** @var size[] */
+		protected $sizes_by_name;
+		/** @var size[] */
+		protected $sizes_by_pixels = [];
+		/** @var size[] */
+		protected $sizes_by_size = [];
+		/** @var size[] */
+		protected $sizes_by_crop = [];
 
 
 		public function __construct( $attach_id ) {
 			if ( is_numeric( $attach_id ) ) {
-				$this->attached_id = $attach_id;
-				$this->wp_post     = get_post( $attach_id );
+				$this->attach_id = $attach_id;
+				$this->wp_post   = get_post( $attach_id );
 				if ( $this->wp_post->post_type !== 'attachment' ) {
 					$this->wp_post = null;
 				}
 				$this->image_meta = $this->get_image_meta();
-				$this->sizes      = $this->get_sizes();
+				$this->sizes      = $this->get_sizes_meta();
 			}
 		}
 
+		/**
+		 * @return int|string
+		 */
+		public function attach_id() {
+			return intval( $this->attach_id );
+		}
 
 		/**
 		 * Get WP attachment meta data
@@ -54,7 +66,7 @@
 				'image_meta'
 			];
 			if ( $this->is_attachment_exists() ) {
-				$meta = wp_get_attachment_metadata( $this->attached_id );
+				$meta = wp_get_attachment_metadata( $this->attach_id );
 
 				return ! is_string( $meta_key ) ? $meta : arrays::get_value_by_key( $meta, $meta_key );
 			}
@@ -67,16 +79,23 @@
 		 * Get image meta data, like aperture, camera, created_timestamp, etc...
 		 * @return array
 		 */
-		public function get_image_meta() {
+		protected function get_image_meta() {
 			$R = [];
 			if ( $this->is_attachment_exists() ) {
-				$R = wp_get_attachment_metadata( $this->attached_id );
+				$R = wp_get_attachment_metadata( $this->attach_id );
 				$R = $R['image_meta'];
 			}
 
 			return $R;
 		}
 
+
+		/**
+		 * @return bool
+		 */
+		public function is_attachment_exists() {
+			return $this->wp_post instanceof \WP_Post;
+		}
 
 		/**
 		 * Get original width
@@ -101,44 +120,6 @@
 		 */
 		public function aspect() {
 			return $this->width() / $this->height();
-		}
-
-
-		/**
-		 * @return bool
-		 */
-		public function is_attachment_exists() {
-			return $this->wp_post instanceof \WP_Post;
-		}
-
-
-		/**
-		 * Get register
-		 *
-		 * @param bool $return_only_exists
-		 *
-		 * @return array
-		 */
-		public function get_sizes( $return_only_exists = true ) {
-			if ( ! $this->is_attachment_exists() ) {
-				return [];
-			}
-			$sizes = $this->get_attachment_meta( 'sizes' );
-			if ( ! is_array( $sizes ) ) {
-				return [];
-			}
-			if ( ! $return_only_exists ) {
-				return $sizes;
-			}
-			$R = [];
-			foreach ( $sizes as $size_name => $size_data ) {
-				$file_path = $this->base_dir() . '/' . $size_data['file'];
-				if ( file_exists( $file_path ) && is_readable( $file_path ) ) {
-					$R[ $size_name ] = $size_data;
-				}
-			}
-
-			return $R;
 		}
 
 
@@ -171,6 +152,35 @@
 			return implode( '/', $path );
 		}
 
+		/**
+		 * Get register
+		 *
+		 * @param bool $return_only_exists
+		 *
+		 * @return array
+		 */
+		public function get_sizes_meta( $return_only_exists = true ) {
+			if ( ! $this->is_attachment_exists() ) {
+				return [];
+			}
+			$sizes = $this->get_attachment_meta( 'sizes' );
+			if ( ! is_array( $sizes ) ) {
+				return [];
+			}
+			if ( ! $return_only_exists ) {
+				return $sizes;
+			}
+			$R = [];
+			foreach ( $sizes as $size_name => $size_data ) {
+				$file_path = $this->base_dir() . '/' . $size_data['file'];
+				if ( file_exists( $file_path ) && is_readable( $file_path ) ) {
+					$R[ $size_name ] = $size_data;
+				}
+			}
+
+			return $R;
+		}
+
 
 		/**
 		 * @param bool $return_path
@@ -188,6 +198,7 @@
 
 		/**
 		 * Return similar image url
+		 * @deprecated
 		 *
 		 * @param int $width
 		 * @param int $height
@@ -197,137 +208,250 @@
 		 * @return \string
 		 */
 		public function get_similar_src( $width = 100, $height = 100, $crop = false, $return_path = false ) {
-			$sizes_meta = $this->get_sizes();
-			$R          = false;
-			if ( is_array( $sizes_meta ) && count( $sizes_meta ) > 0 ) {
-				$sizes = [];
-				foreach ( $sizes_meta as $size_name => $size_data ) {
-					if ( ! $crop && abs( ( intval( $size_data['width'] ) / intval( $size_data['height'] ) ) - $this->aspect() ) > 0.001 ) {
-						continue;
-					}
-					$sizes[ intval( $size_data['width'] ) + intval( $size_data['height'] ) ] = $size_data;
-				}
-				//
-				if(count($sizes) == 0) return $this->get_original_src($return_path);
-				//
-				ksort( $sizes );
-				foreach ( $sizes as $size_name => $size_data ) {
-					$R = $size_data['file'];
-					if ( intval( $size_data['width'] ) >= intval( $width ) && intval( $size_data['height'] ) >= intval( $height ) ) {
-						break;
-					}
-				}
-			} elseif ( $this->is_attachment_exists() ) {
-				return $this->get_original_src( $return_path );
-			}
-			if ( $R == false ) {
-				return $R;
-			}
-
-			return ( $return_path ? $this->base_dir() : $this->base_url() ) . '/' . $R;
+			return $this->get_src_larger( [ $width, $height ], $crop, $return_path );
 		}
 
+		/**
+		 * @return array|size[]
+		 */
+		public function get_sizes() {
+			if ( ! is_array( $this->sizes_by_name ) ) {
+				if ( $this->is_attachment_exists() ) {
+					$this->sizes_by_name = [];
+					$meta                = wp_get_attachment_metadata( $this->attach_id );
+					if ( array_key_exists( 'file', $meta ) && array_key_exists( 'width', $meta ) && array_key_exists( 'height', $meta ) ) {
+						$SIZE = new size( $this );
+						$SIZE->init( $meta['width'], $meta['height'], 0, basename( $meta['file'] ) );
+						$this->sizes_by_name['full']       = $SIZE;
+						$this->sizes_by_name['full']->name = 'full';
+						if ( array_key_exists( 'sizes', $meta ) && is_array( $meta['sizes'] ) ) {
+
+							foreach ( $meta['sizes'] as $name => $size_meta ) {
+								$SIZE            = new size( $this );
+								$SIZE->name      = $name;
+								$SIZE->mime_type = $size_meta['mime-type'];
+								$SIZE->init( $size_meta['width'], $size_meta['height'], 0, $size_meta['file'] );
+								$this->sizes_by_name[ $name ] = $SIZE;
+							}
+						}
+					}
+					//Fill
+					foreach ( $this->sizes_by_name as $name => $size ) {
+						$this->sizes_by_pixels[ $size->pixels ]                                      = $size;
+						$this->sizes_by_size[ $this->size_to_string( $size->width, $size->height ) ] = $size;
+						$this->sizes_by_crop[ $size->is_cropped ? 1 : 0 ][ $name ]                   = $size;
+					}
+					ksort( $this->sizes_by_pixels );
+					ksort( $this->sizes_by_size );
+					ksort( $this->sizes_by_crop );
+				}
+			}
+
+			return $this->sizes_by_name;
+		}
+
+		public function get_sizes_by_pixels() {
+			$this->get_sizes();
+
+			return $this->sizes_by_pixels;
+		}
+
+		public function get_sizes_by_size() {
+			$this->get_sizes();
+
+			return $this->sizes_by_size;
+		}
+
+		public function get_sizes_by_crop() {
+			$this->get_sizes();
+
+			return $this->sizes_by_crop;
+		}
 
 		/**
-		 * @param int $width
-		 * @param int $height
+		 * @param $sizeOrName
+		 * @param int $crop
+		 *
+		 * @return string
+		 */
+		public function size_to_string( $width, $height ) {
+			$width  = intval( $width );
+			$height = intval( $height );
+
+			return $width . 'x' . $height . ( $this->is_cropped( $width, $height ) ? 'c' : '' );
+		}
+
+		/**
+		 * @param string $sizeName - thumbnail, medium ...etc
 		 *
 		 * @return array
 		 */
-		public function get_size_by_limit( $width = 100, $height = 100 ) {
-			$width  = intval( $width );
-			$height = intval( $height );
-			$aspect = $width / $height;
-			if ( $this->aspect() > $aspect ) {
-				$height = $width / $this->aspect();
+		public function name_to_size( $sizeName ) {
+			$R = [ 150, 150 ];
+			if ( array_key_exists( $sizeName, array_flip( get_intermediate_image_sizes() ) ) ) {
+				switch ( $sizeName ) {
+					case 'thumbnail':
+						$R = [ intval( get_option( 'thumbnail_size_w', 150 ) ), intval( get_option( 'thumbnail_size_h', 150 ) ) ];
+						break;
+					case 'medium':
+						$R = [ intval( get_option( 'medium_size_w', 150 ) ), intval( get_option( 'medium_size_h', 150 ) ) ];
+						break;
+					case 'medium_large':
+						$R = [ intval( get_option( 'medium_large_size_w', 150 ) ), intval( get_option( 'medium_large_size_h', 150 ) ) ];
+						break;
+					case 'large':
+						$R = [ intval( get_option( 'large_size_w', 150 ) ), intval( get_option( 'large_size_h', 150 ) ) ];
+						break;
+					default:
+						$size_data = wp_get_additional_image_sizes();
+						$size_data = $size_data[ $sizeName ];
+						$R         = $this->desire_to_size( $size_data['width'], $size_data['height'], $size_data['crop'] );
+						break;
+				}
+			} elseif ( $sizeName == 'full' ) {
+				$R = [ $this->width(), $this->height() ];
 			} else {
-				$width = $height * $this->aspect();
+				console::debug_warn( 'Intermediate image size not found. The maximum size of the image is established.', $sizeName );
+				$R = [ $this->width(), $this->height() ];
 			}
 
-			return [ round( $width ), round( $height ) ];
+			return $R;
 		}
 
-
 		/**
-		 * @param int $width
-		 * @param int $height
-		 * @param bool $crop
-		 *
-		 * @return bool
-		 */
-		public function get_size_exists( $width = 150, $height = 150, $crop = false ) {
-			$sizes_meta = $this->get_sizes();
-			if ( $crop ) {
-				if ( is_array( $sizes_meta ) ) {
-					foreach ( $sizes_meta as $size_name => $size_data ) {
-						if ( intval( $size_data['width'] ) == intval( $width ) && intval( $size_data['height'] ) == intval( $height ) ) {
-							return true;
-						}
-					}
-				}
-			} else {
-				$limit_sizes = $this->get_size_by_limit( $width, $height );
-				if ( is_array( $sizes_meta ) ) {
-					foreach ( $sizes_meta as $size_name => $size_data ) {
-						if ( intval( $size_data['width'] ) == $limit_sizes[0] && intval( $size_data['height'] ) == $limit_sizes[1] ) {
-							return true;
-						}
-					}
-				}
-			}
-
-			return false;
-		}
-
-
-		/**
-		 * Return strong image size url
+		 * Return size array from desire sizes and crop
 		 *
 		 * @param $width
 		 * @param $height
-		 * @param bool $crop
-		 * @param bool $return_path - return URL or PATH
+		 * @param int $crop
 		 *
-		 * @return \string
+		 * @return array[int,int]
 		 */
-		public function get_src( $width, $height, $crop = false, $return_path = false ) {
-			///FILTER GREAT WIDTH or HEIGHT
-			if ( $width > $this->width() || $height > $this->height() ) {
+		public function desire_to_size( $width, $height, $crop = - 1 ) {
+			$width  = intval( $width );
+			$height = intval( $height );
+			if ( $width > $this->width() ) {
+				$width = $this->width();
+			}
+			if ( $height > $this->height() ) {
+				$height = $this->height();
+			}
+			if ( $this->is_cropped( $width, $height ) ) {
 				$aspect = $width / $height;
-				if ( $this->aspect() < $aspect ) {
-					$width  = $this->width();
-					$height = round( $width / ( $crop ? $aspect : $this->aspect() ) );
+				if ( $aspect > $this->aspect() || $crop === - 1 || $crop === false ) {
+					$height = round( $width / $this->aspect() );
 				} else {
-					$height = $this->height();
-					$width  = round( $height * ( $crop ? $aspect : $this->aspect() ) );
-				}
-			}
-			///FILTER SIZE EXISTS
-			if ( $this->get_size_exists( $width, $height, $crop ) ) {
-				return $this->get_similar_src( $width, $height, $crop, $return_path );
-			}
-			///MAKE NEW SIZE IMAGE
-			if ( $this->is_attachment_exists() ) {
-				$editor = wp_get_image_editor( $this->get_original_src( true ) );
-				if ( $editor instanceof \WP_Image_Editor ) {
-					$editor->resize( $width, $height, $crop );
-					$R = $editor->save();
-					if ( is_array( $R ) ) {
-						console::debug_info( 'Создан новый файл изображения', $R );
-						$meta = $this->get_attachment_meta();
-						$path = $R['path'];
-						unset( $R['path'] );
-						$meta['sizes'][ $width . 'x' . $height . ( $crop ? 'c' : '' ) ] = $R;
-						wp_update_attachment_metadata( $this->attached_id, $meta );
-
-						return ( $return_path ? $path : path::path_to_url( $path ) );
-					} else {
-						console::debug_error( 'Не удалось создать новый файл изображения', $R );
-					}
+					$width = round( $height * $this->aspect() );
 				}
 			}
 
-			return images::get_default_src( true );
+			return [ $width, $height ];
 		}
+
+		/**
+		 * Get \hiweb\images\image\size by sizeName or sizeArray
+		 *
+		 * @param string $sizeOrName
+		 * @param int $crop
+		 *
+		 * @return size|null
+		 */
+		public function get_size_by( $sizeOrName = 'thumbnail', $crop = 0 ) {
+			$this->get_sizes();
+			$SIZE = null;
+			if ( is_int( $sizeOrName ) && is_int( $crop ) && $crop > 1 ) {
+				$sizeOrName = [ $sizeOrName, $crop ];
+				$crop       = false;
+			}
+			if ( is_string( $sizeOrName ) && array_key_exists( $sizeOrName, $this->sizes_by_name ) ) {
+				$this->name_to_size( $sizeOrName );
+				$SIZE = $this->sizes_by_name[ $sizeOrName ];
+			} else {
+				$desireSize = $this->desire_to_size( $sizeOrName[0], $sizeOrName[1], $crop );
+				$sizeString = $this->size_to_string( $desireSize[0], $desireSize[1] );
+				if ( is_array( $sizeOrName ) && array_key_exists( $sizeString, $this->sizes_by_size ) ) {
+					$SIZE = $this->sizes_by_size[ $sizeString ];
+				} elseif ( is_array( $desireSize ) ) {
+					$new_file_name = $this->sizes_by_name['full']->file()->filename . '-' . $desireSize[0] . 'x' . $desireSize[1] . $this->sizes_by_name['full']->file()->extension;
+					$SIZE          = new size( $this );
+					$SIZE->name    = $this->size_to_string( $desireSize[0], $desireSize[1] );
+					$SIZE->init( $desireSize[0], $desireSize[1], $crop, $new_file_name );
+				} else {
+					$SIZE = new size( $this );
+					$SIZE->init( 0, 0, - 1, $this->sizes_by_name['full']->file()->filename . '-0x0' );
+				}
+			}
+
+			return $SIZE;
+		}
+
+		/**
+		 * Returns true if the transmitted dimensions of the image are cropped
+		 *
+		 * @param $width
+		 * @param $height
+		 *
+		 * @return bool
+		 */
+		public function is_cropped( $width, $height ) {
+			$width  = intval( $width );
+			$height = intval( $height );
+			if ( $width === 0 || $height === 0 ) {
+				return true;
+			}
+
+			return abs( ( $width / $height ) - $this->aspect() ) > 0.1;
+		}
+
+
+		/**
+		 * @param string $sizeOrName
+		 * @param int $crop
+		 * @param bool $make_file
+		 *
+		 * @return string
+		 */
+		public function get_src( $sizeOrName = 'thumbnail', $crop = 0, $make_file = true ) {
+			$SIZE = $this->get_size_by( $sizeOrName, $crop );
+			if ( ! $SIZE->exists && $make_file ) {
+				$SIZE->make();
+			}
+
+			return $SIZE->src;
+		}
+
+		/**
+		 * @param string $sizeOrName
+		 * @param bool $return_crop
+		 * @param bool $return_path
+		 *
+		 * @return string
+		 */
+		public function get_src_limit( $sizeOrName = 'thumbnail', $return_crop = false, $return_path = false ) {
+			$sizeArray = is_array( $sizeOrName ) ? $sizeOrName : $this->name_to_size( $sizeOrName );
+			/** @var size[] $sizes_by_pixels */
+			$sizes_by_pixels = array_reverse( $this->get_sizes_by_pixels() );
+			foreach ( $sizes_by_pixels as $pixels => $size ) {
+				if ( ( $size->width <= $sizeArray[0] && $size->height <= $sizeArray[1] ) && ( $return_crop || ! $size->is_cropped ) ) {
+					return $return_path ? $size->path : $size->src;
+				}
+			}
+
+			return $this->get_original_src( $return_path );
+		}
+
+		public function get_src_larger( $sizeOrName = 'thumbnail', $return_crop = false, $return_path = false ) {
+			$sizeArray = is_array( $sizeOrName ) ? $sizeOrName : $this->name_to_size( $sizeOrName );
+			/** @var size[] $sizes_by_pixels */
+			$sizes_by_pixels = $this->get_sizes_by_pixels();
+			foreach ( $sizes_by_pixels as $pixels => $size ) {
+				if ( ( $size->width >= $sizeArray[0] && $size->height >= $sizeArray[1] ) && ( $return_crop || ! $size->is_cropped ) ) {
+					return $return_path ? $size->path : $size->src;
+				}
+			}
+
+			return $this->get_original_src( $return_path );
+		}
+
 
 	}

@@ -10,16 +10,15 @@ jQuery(document).ready(function ($) {
         hiweb_types_editor_instance[id] = tinymce.init({
             selector: '#' + id,
             menubar: false,
-            toolbar1: "newdocument fullpage | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | styleselect formatselect fontselect fontsizeselect",
-            toolbar2: "cut copy paste | searchreplace | bullist numlist | outdent indent blockquote | undo redo | link unlink anchor image media code | insertdatetime preview | forecolor backcolor",
-            toolbar3: "table | hr removeformat | subscript superscript | charmap emoticons | print fullscreen | ltr rtl | visualchars visualblocks nonbreaking template pagebreak restoredraft",
-            toolbar_items_size: 'small',
+            plugins: 'directionality fullscreen image link media charmap hr lists textcolor colorpicker wordpress wpautoresize wpdialogs wpeditimage wpgallery wplink wptextpattern wpview',
+            //toolbar3: "hr removeformat | subscript superscript | charmap emoticons | fullscreen | ltr rtl | restoredraft",
+            //toolbar_items_size: 'small',
+            toolbar1: "newdocument | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | link unlink image media | forecolor backcolor | removeformat | styleselect fontselect fontsizeselect | cut copy paste | undo redo fullscreen",
             init_instance_callback: function (editor) {
                 editor.on('KeyUp NodeChange Change', function (e) {
                     clearTimeout(hiweb_types_editor_timeout_change[id]);
                     var editor = this;
                     hiweb_types_editor_timeout_change[id] = setTimeout(function () {
-                        console.info('change...['+id+']'); //todo-
                         $('#' + id).trigger('change').trigger('input').val(editor.getContent());
                     }, 2000);
                 });

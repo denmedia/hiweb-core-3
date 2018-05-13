@@ -17,6 +17,7 @@
 
 		/**
 		 * @param int $attach_id
+		 *
 		 * @return image
 		 */
 		static public function get( $attach_id ){

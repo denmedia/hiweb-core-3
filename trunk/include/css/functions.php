@@ -7,9 +7,9 @@
 	 * Поставить в очередь файл CSS
 	 * @version  2.0
 	 *
-	 * @param strings $filePathOrUrl
+	 * @param string $filePathOrUrl
 	 * @param array  $deeps
-	 * @param strings $media = all|screen|handheld|print
+	 * @param string $media = all|screen|handheld|print
 	 *
 	 * @return bool
 	 */

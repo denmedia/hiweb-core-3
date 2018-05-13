@@ -50,6 +50,7 @@
     background: #fff;
     padding: 12px 24px;
     display: none;
+    right: 0;
     -webkit-box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.1);
     -o-box-shadow: 0px 0px 8px 0 rgba(0, 0, 0, 0.1);

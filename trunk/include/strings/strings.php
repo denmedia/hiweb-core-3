@@ -354,9 +354,9 @@
 		/**
 		 * @param $text
 		 * @param $limit
-		 * @param strings $ellipsis
+		 * @param string $ellipsis
 		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function truncate_by_words( $text, $limit, $ellipsis = '...' ){
 			$words = preg_split( "/[\n\r\t ]+/", $text, $limit + 1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE );
