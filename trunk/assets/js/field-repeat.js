@@ -63,7 +63,7 @@ var hiweb_field_repeat = {
     },
 
     make_sortable: function () {
-        var rows = hiweb_field_repeat.get_rows_list( hiweb_field_repeat.selector );
+        var rows = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
         if (rows['sortable'].hasOwnProperty('destroy')) {
             rows.sortable("destroy");
         }
@@ -121,11 +121,11 @@ var hiweb_field_repeat = {
 
 
     get_global_id: function (e) {
-        return jQuery(e).closest('[data-global-id]').attr('data-global-id');
+        return jQuery(e).is('[data-global-id]') ? jQuery(e).attr('data-global-id') : jQuery(e).closest('[data-global-id]').attr('data-global-id');
     },
 
     get_name_id: function (e) {
-        return jQuery(e).closest('[data-input-name]').attr('name');
+        return jQuery(e).is('[data-input-name]') ? jQuery(e).attr('name') : jQuery(e).closest('[data-input-name]').attr('name');
     },
 
     click_add: function (e) {
@@ -143,21 +143,31 @@ var hiweb_field_repeat = {
         } else {
             var prepend = jQuery(this).is('[data-action-add="1"]');
             var root = jQuery(this).closest(hiweb_field_repeat.selector);
-            var row_list = hiweb_field_repeat.get_rows_list(root);
             var flex_row_id = jQuery(this).is('[data-flex-id]') ? jQuery(this).attr('data-flex-id') : '';
             if (flex_row_id !== '') {
                 jQuery(this).closest('[data-sub-flex-dropdown]').fadeOut();
             }
-            var index = prepend ? 0 : hiweb_field_repeat.get_rows(root).length;
-            jQuery.ajax({
-                url: ajaxurl + '?action=hiweb-field-repeat-get-row',
-                type: 'post',
-                data: {id: hiweb_field_repeat.get_global_id(this), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(this), index: index, flex_row_id: flex_row_id},
-                dataType: 'json',
-                success: function (data) {
+            hiweb_field_repeat.add_rows(root, prepend, 1, '', flex_row_id);
+        }
+    },
 
-                    if (data.hasOwnProperty('result') && data.result === true) {
-                        var newLine = jQuery(data.data).hide().fadeIn();
+    add_rows: function (root, prepend, rows_count, callback, flex_row_id) {
+        if (typeof rows_count === 'undefined') rows_count = 1;
+        if (typeof prepend === 'undefined') prepend = false;
+        if (typeof flex_row_id === 'undefined') flex_row_id = '';
+        ///
+        var row_list = hiweb_field_repeat.get_rows_list(root);
+        var index = prepend ? 0 : hiweb_field_repeat.get_rows(root).length;
+        jQuery.ajax({
+            url: ajaxurl + '?action=hiweb-field-repeat-get-row',
+            type: 'post',
+            data: {id: hiweb_field_repeat.get_global_id(root), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(root), index: index, flex_row_id: flex_row_id},
+            dataType: 'json',
+            success: function (data) {
+
+                if (data.hasOwnProperty('result') && data.result === true) {
+                    var newLine = jQuery(data.data).hide().fadeIn();
+                    for (n = 0; n < rows_count; n++) {
                         if (prepend) {
                             row_list.prepend(newLine);
                         } else {
@@ -174,15 +184,18 @@ var hiweb_field_repeat = {
                             });
                         hiweb_field_repeat.make_table_names(root);
                         newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init');
-                    } else {
-                        console.warn(data);
+                        if (typeof callback === 'function') {
+                            callback(root, newLine);
+                        }
                     }
-                },
-                error: function (data) {
+                } else {
                     console.warn(data);
                 }
-            });
-        }
+            },
+            error: function (data) {
+                console.warn(data);
+            }
+        });
     },
 
     objectifyForm: function (formArray) {//serialize data function

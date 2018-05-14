@@ -152,7 +152,6 @@
 										\hiweb\arrays::unset_by_value($prepen_post_ids, $WP_POST->ID);
 									}
 								}
-								console_info($prepen_post_ids);
 								foreach($prepen_post_ids as $id){
 									$WP_POST = get_post($id);
 									if($WP_POST instanceof \WP_Post && \hiweb\arrays::in_array($WP_POST->post_type, $post_types)) {

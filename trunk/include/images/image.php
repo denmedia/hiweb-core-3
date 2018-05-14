@@ -51,6 +51,46 @@
 		}
 
 		/**
+		 * @return mixed
+		 */
+		public function alt() {
+			return get_post_meta( $this->attach_id, '_wp_attachment_image_alt', true );
+		}
+
+		/**
+		 * @return mixed
+		 */
+		public function title() {
+			if ( ! $this->is_attachment_exists() ) {
+				return '';
+			}
+
+			return $this->wp_post->post_title;
+		}
+
+		/**
+		 * @return string
+		 */
+		public function description() {
+			if ( ! $this->is_attachment_exists() ) {
+				return '';
+			}
+
+			return $this->wp_post->post_content;
+		}
+
+		/**
+		 * @return string
+		 */
+		public function caption() {
+			if ( ! $this->is_attachment_exists() ) {
+				return '';
+			}
+
+			return $this->wp_post->post_excerpt;
+		}
+
+		/**
 		 * Get WP attachment meta data
 		 *
 		 * @param null $meta_key
@@ -291,16 +331,32 @@
 			if ( array_key_exists( $sizeName, array_flip( get_intermediate_image_sizes() ) ) ) {
 				switch ( $sizeName ) {
 					case 'thumbnail':
-						$R = [ intval( get_option( 'thumbnail_size_w', 150 ) ), intval( get_option( 'thumbnail_size_h', 150 ) ) ];
+						$w = intval( get_option( 'thumbnail_size_w', 150 ) );
+						$h = intval( get_option( 'thumbnail_size_h', 150 ) );
+						$w = $w < 8 ? 8 : $w;
+						$h = $h < 8 ? $w : $h;
+						$R = [ $w, $h ];
 						break;
 					case 'medium':
-						$R = [ intval( get_option( 'medium_size_w', 150 ) ), intval( get_option( 'medium_size_h', 150 ) ) ];
+						$w = intval( get_option( 'medium_size_w', 150 ) );
+						$h = intval( get_option( 'medium_size_h', 150 ) );
+						$w = $w < 8 ? 8 : $w;
+						$h = $h < 8 ? $w : $h;
+						$R = [ $w, $h ];
 						break;
 					case 'medium_large':
-						$R = [ intval( get_option( 'medium_large_size_w', 150 ) ), intval( get_option( 'medium_large_size_h', 150 ) ) ];
+						$w = intval( get_option( 'medium_large_size_w', 150 ) );
+						$h = intval( get_option( 'medium_large_size_h', 150 ) );
+						$w = $w < 8 ? 8 : $w;
+						$h = $h < 8 ? $w : $h;
+						$R = [ $w, $h ];
 						break;
 					case 'large':
-						$R = [ intval( get_option( 'large_size_w', 150 ) ), intval( get_option( 'large_size_h', 150 ) ) ];
+						$w = intval( get_option( 'large_size_w', 150 ) );
+						$h = intval( get_option( 'large_size_h', 150 ) );
+						$w = $w < 8 ? 8 : $w;
+						$h = $h < 8 ? $w : $h;
+						$R = [ $w, $h ];
 						break;
 					default:
 						$size_data = wp_get_additional_image_sizes();
@@ -364,22 +420,23 @@
 				$crop       = false;
 			}
 			if ( is_string( $sizeOrName ) && array_key_exists( $sizeOrName, $this->sizes_by_name ) ) {
-				$this->name_to_size( $sizeOrName );
-				$SIZE = $this->sizes_by_name[ $sizeOrName ];
+				$sizeOrName = $this->name_to_size( $sizeOrName );
+				//$SIZE = $this->sizes_by_name[ $sizeOrName ];
 			} else {
-				$desireSize = $this->desire_to_size( $sizeOrName[0], $sizeOrName[1], $crop );
-				$sizeString = $this->size_to_string( $desireSize[0], $desireSize[1] );
-				if ( is_array( $sizeOrName ) && array_key_exists( $sizeString, $this->sizes_by_size ) ) {
-					$SIZE = $this->sizes_by_size[ $sizeString ];
-				} elseif ( is_array( $desireSize ) ) {
-					$new_file_name = $this->sizes_by_name['full']->file()->filename . '-' . $desireSize[0] . 'x' . $desireSize[1] . $this->sizes_by_name['full']->file()->extension;
-					$SIZE          = new size( $this );
-					$SIZE->name    = $this->size_to_string( $desireSize[0], $desireSize[1] );
-					$SIZE->init( $desireSize[0], $desireSize[1], $crop, $new_file_name );
-				} else {
-					$SIZE = new size( $this );
-					$SIZE->init( 0, 0, - 1, $this->sizes_by_name['full']->file()->filename . '-0x0' );
-				}
+				//deprecated
+			}
+			$desireSize = $this->desire_to_size( $sizeOrName[0], $sizeOrName[1], $crop );
+			$sizeString = $this->size_to_string( $desireSize[0], $desireSize[1] );
+			if ( is_array( $sizeOrName ) && array_key_exists( $sizeString, $this->sizes_by_size ) ) {
+				$SIZE = $this->sizes_by_size[ $sizeString ];
+			} elseif ( is_array( $desireSize ) ) {
+				$new_file_name = $this->sizes_by_name['full']->file()->filename . '-' . $desireSize[0] . 'x' . $desireSize[1] . $this->sizes_by_name['full']->file()->extension;
+				$SIZE          = new size( $this );
+				$SIZE->name    = $this->size_to_string( $desireSize[0], $desireSize[1] );
+				$SIZE->init( $desireSize[0], $desireSize[1], $crop, $new_file_name );
+			} else {
+				$SIZE = new size( $this );
+				$SIZE->init( 0, 0, - 1, $this->sizes_by_name['full']->file()->filename . '-0x0' );
 			}
 
 			return $SIZE;

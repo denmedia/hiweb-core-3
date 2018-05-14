@@ -15,19 +15,37 @@ var hiweb_field_image = {
             hiweb_field_image.deselect_image(current);
         });
         jQuery('body').on('change', '.hiweb-field-image input[name]', function () {
-            console.info('!!!'); //todo детек изменения поля для сброса
+            //console.info('детек изменения поля для сброса'); //todo детек изменения поля для сброса
         });
+    },
+
+    is_parent_repeat: function (current) {
+        return jQuery(current).parent().is('[data-col]');
     },
 
     event_click_select: function (current) {
         var gallery_window = wp.media({
             title: 'Выбор изображения',
             library: {type: 'image'},
-            multiple: false,
-            button: {text: 'Select Image'}
+            multiple: hiweb_field_image.is_parent_repeat(current),
+            button: {text: hiweb_field_image.is_parent_repeat(current) ? 'Выбрать Изображения' : 'Выбрать Изображение'}
         });
         gallery_window.on('select', function () {
-            hiweb_field_image.select_image(current, gallery_window.state().get('selection').first().toJSON());
+            //hiweb_field_image.select_image(current, gallery_window.state().get('selection').first().toJSON());
+            var index = 0;
+            gallery_window.state().get('selection').map(function (attachment) {
+                if(hiweb_field_image.is_parent_repeat(current)){
+                    if(index === 0) {
+                        hiweb_field_image.select_image(current, attachment.toJSON());
+                    } else {
+                        var repeat_root = current.closest('.hiweb-field-repeat');
+                        hiweb_field_repeat.add_rows(repeat_root, false, 2, function(repeat_root, newLine){ hiweb_field_image.select_image(newLine.find('.hiweb-field-image'), attachment.toJSON()); });
+                    }
+                    index ++;
+                } else {
+                    hiweb_field_image.select_image(current, attachment.toJSON());
+                }
+            });
         });
         gallery_window.open();
     },
