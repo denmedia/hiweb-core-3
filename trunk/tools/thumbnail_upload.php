@@ -32,7 +32,7 @@
 
 						///Thumbnail Upload
 						css( HIWEB_URL_CSS . '/tools-thumbnail-upload.css' );
-						$script_id = js( HIWEB_URL_JS . '/hw_Dropzone.js', [ 'jquery' ] );
+						$script_id = js( HIWEB_URL_VENDORS . '/dropzone.js', [ 'jquery' ] );
 						js( HIWEB_URL_JS . '/tools-thumbnail-upload.js', [ 'jquery', $script_id ], true );
 
 						if( $post_type == 'post' ){

@@ -174,7 +174,8 @@
 		 * @return taxonomy|mixed|null
 		 */
 		public function capabilities( $set = null ){
-			//TODO
+		//TODO!
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
@@ -183,7 +184,8 @@
 		 * @return taxonomy|mixed|null
 		 */
 		public function rewrite( $set = null ){
-			//TODO
+		//TODO!
+			return $this->set_arg( __FUNCTION__, $set );
 		}
 
 
