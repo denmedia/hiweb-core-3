@@ -24,9 +24,18 @@
 	$params: null;
 	@each $val in $key {
 		@if ($params == '') {
-			$params: $val $duration $easing $delay;
+			@if($delay != 0){
+				$params: $val $duration $easing $delay;
+			} @else {
+				$params: $val $duration $easing;
+			}
 		} @else {
-			$params: $params, $val $duration $easing $delay;
+			@if($delay != 0){
+				$params: $params, $val $duration $easing $delay;
+			} @else {
+				$params: $params, $val $duration $easing;
+			}
+
 		}
 
 	}

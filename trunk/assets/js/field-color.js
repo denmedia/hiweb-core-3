@@ -1,7 +1,7 @@
 var hw_input_color = {
 
     init: function(){
-        jQuery('body').on('init', '[data-type-color]', function () {
+        jQuery('body').on('init_3', '[data-type-color]', function () {
             hw_input_color._make();
         });
         hw_input_color._make();

@@ -13,7 +13,7 @@ jQuery(document).ready(function ($) {
             plugins: 'directionality fullscreen image link media charmap hr lists textcolor colorpicker wordpress wpautoresize wpdialogs wpeditimage wpgallery wplink wptextpattern wpview',
             //toolbar3: "hr removeformat | subscript superscript | charmap emoticons | fullscreen | ltr rtl | restoredraft",
             //toolbar_items_size: 'small',
-            toolbar1: "newdocument | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | link unlink image media | forecolor backcolor | removeformat | styleselect fontselect fontsizeselect | cut copy paste | undo redo fullscreen",
+            toolbar1: "newdocument | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | link unlink image media | forecolor backcolor | removeformat | styleselect fontselect fontsizeselect | cut copy paste | undo redo",
             init_instance_callback: function (editor) {
                 editor.on('KeyUp NodeChange Change', function (e) {
                     clearTimeout(hiweb_types_editor_timeout_change[id]);

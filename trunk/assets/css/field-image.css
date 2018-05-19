@@ -48,15 +48,15 @@
       right: 0;
       bottom: 0;
       left: 0;
-      -webkit-transition: all 0.2s ease-in-out 0ms;
-      -moz-transition: all 0.2s ease-in-out 0ms;
-      -o-transition: all 0.2s ease-in-out 0ms;
-      transition: all 0.2s ease-in-out 0ms; }
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out; }
     .hiweb-field-image .image-select .overlay {
-      -webkit-transition: all 0.2s ease-in-out 0ms;
-      -moz-transition: all 0.2s ease-in-out 0ms;
-      -o-transition: all 0.2s ease-in-out 0ms;
-      transition: all 0.2s ease-in-out 0ms;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
       position: absolute;
       top: 0;
       right: 0;
@@ -81,10 +81,10 @@
       -o-opacity: 0.4;
       opacity: 0.4;
       filter: alpha(opacity=40);
-      -webkit-transition: all 0.2s ease-in-out 0ms;
-      -moz-transition: all 0.2s ease-in-out 0ms;
-      -o-transition: all 0.2s ease-in-out 0ms;
-      transition: all 0.2s ease-in-out 0ms;
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
       -webkit-transform: translateY(-50%);
       -moz-transform: translateY(-50%);
       -o-transform: translateY(-50%);
@@ -109,19 +109,19 @@
         -o-opacity: 1;
         opacity: 1;
         filter: alpha(opacity=100);
-        -webkit-transition: all 0.1s ease-in-out 0ms;
-        -moz-transition: all 0.1s ease-in-out 0ms;
-        -o-transition: all 0.1s ease-in-out 0ms;
-        transition: all 0.1s ease-in-out 0ms;
+        -webkit-transition: all 0.1s ease-in-out;
+        -moz-transition: all 0.1s ease-in-out;
+        -o-transition: all 0.1s ease-in-out;
+        transition: all 0.1s ease-in-out;
         -webkit-transform: translateY(-50%) scale(1.4);
         -moz-transform: translateY(-50%) scale(1.4);
         -o-transform: translateY(-50%) scale(1.4);
         transform: translateY(-50%) scale(1.4); }
       .hiweb-field-image .image-select:hover .thumbnail {
-        -webkit-transition: all 0.2s ease-in-out 0ms;
-        -moz-transition: all 0.2s ease-in-out 0ms;
-        -o-transition: all 0.2s ease-in-out 0ms;
-        transition: all 0.2s ease-in-out 0ms;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
         -webkit-transform: scale(1.2);
         -moz-transform: scale(1.2);
         -o-transform: scale(1.2);

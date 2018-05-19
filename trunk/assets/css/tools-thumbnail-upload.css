@@ -34,10 +34,10 @@
     text-align: center;
     min-height: 55px;
     z-index: 40;
-    -webkit-transition: transform opacity ease-in-out 0ms;
-    -moz-transition: transform opacity ease-in-out 0ms;
-    -o-transition: transform opacity ease-in-out 0ms;
-    transition: transform opacity ease-in-out 0ms; }
+    -webkit-transition: transform opacity ease-in-out;
+    -moz-transition: transform opacity ease-in-out;
+    -o-transition: transform opacity ease-in-out;
+    transition: transform opacity ease-in-out; }
     .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone .img {
       position: absolute;
       top: 5px;
@@ -46,10 +46,10 @@
       left: 5px;
       background-size: cover;
       overflow: hidden;
-      -webkit-transition: transform 0.5s ease-in-out 0ms;
-      -moz-transition: transform 0.5s ease-in-out 0ms;
-      -o-transition: transform 0.5s ease-in-out 0ms;
-      transition: transform 0.5s ease-in-out 0ms; }
+      -webkit-transition: transform 0.5s ease-in-out;
+      -moz-transition: transform 0.5s ease-in-out;
+      -o-transition: transform 0.5s ease-in-out;
+      transition: transform 0.5s ease-in-out; }
     .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone .noimg {
       background: url(../img/noimg.png) 50% 50%;
       -webkit-opacity: 0.5;
@@ -58,10 +58,10 @@
       -o-opacity: 0.5;
       opacity: 0.5;
       filter: alpha(opacity=50);
-      -webkit-transition: transform 0.2s ease-in-out 0ms;
-      -moz-transition: transform 0.2s ease-in-out 0ms;
-      -o-transition: transform 0.2s ease-in-out 0ms;
-      transition: transform 0.2s ease-in-out 0ms; }
+      -webkit-transition: transform 0.2s ease-in-out;
+      -moz-transition: transform 0.2s ease-in-out;
+      -o-transition: transform 0.2s ease-in-out;
+      transition: transform 0.2s ease-in-out; }
     .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone:hover {
       -webkit-opacity: 1;
       -moz-opacity: 1;
@@ -69,15 +69,15 @@
       -o-opacity: 1;
       opacity: 1;
       filter: alpha(opacity=100);
-      -webkit-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      -moz-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      -o-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms; }
+      -webkit-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      -moz-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      -o-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out; }
       .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone:hover .img {
-        -webkit-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms, filter 0.2s ease-in-out 0ms;
-        -moz-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms, filter 0.2s ease-in-out 0ms;
-        -o-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms, filter 0.2s ease-in-out 0ms;
-        transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms, filter 0.2s ease-in-out 0ms;
+        -webkit-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
+        -moz-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
+        -o-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
+        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out, filter 0.2s ease-in-out;
         -webkit-transform: scale(0.9);
         -moz-transform: scale(0.9);
         -o-transform: scale(0.9);
@@ -110,10 +110,10 @@
       left: 0; }
       .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone [data-ctrl] [data-ctrl-btn] {
         font-size: 34px;
-        -webkit-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-        -moz-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-        -o-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-        transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
+        -webkit-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        -moz-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        -o-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+        transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
         -webkit-transform: scale(0.9);
         -moz-transform: scale(0.9);
         -o-transform: scale(0.9);
@@ -153,10 +153,10 @@
         -o-transform: translateY(-50%);
         transform: translateY(-50%); }
       .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone [data-ctrl] [data-ctrl-btn]:hover {
-        -webkit-transition: transform 0.1s ease-in-out 0ms, opacity 0.1s ease-in-out 0ms;
-        -moz-transition: transform 0.1s ease-in-out 0ms, opacity 0.1s ease-in-out 0ms;
-        -o-transition: transform 0.1s ease-in-out 0ms, opacity 0.1s ease-in-out 0ms;
-        transition: transform 0.1s ease-in-out 0ms, opacity 0.1s ease-in-out 0ms;
+        -webkit-transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+        -moz-transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+        -o-transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
+        transition: transform 0.1s ease-in-out, opacity 0.1s ease-in-out;
         -webkit-opacity: 1;
         -moz-opacity: 1;
         -ms-opacity: 1;
@@ -168,10 +168,10 @@
         -o-transform: scale(1.2);
         transform: scale(1.2); }
     .wp-list-table td.hw_tool_thumbnail .thumb_hw_upload_zone [data-drop-logo] {
-      -webkit-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      -moz-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      -o-transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
-      transition: transform 0.2s ease-in-out 0ms, opacity 0.2s ease-in-out 0ms;
+      -webkit-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      -moz-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      -o-transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+      transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
       position: absolute;
       top: 0;
       right: 0;

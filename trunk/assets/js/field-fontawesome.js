@@ -21,13 +21,13 @@ jQuery(document).ready(function ($) {
         input_change: function () {
             var input = $(this);
             var icon_wrap = input.closest('.hiweb-field-fontawesome').find('.input-group-addon');
-            icon_wrap.html('<i class="' + input.val() + '"></i>');
+            icon_wrap.remove('svg, i').append('<i class="' + input.val() + '"></i>');
         }
 
     };
 
     hiweb_field_fontawesome.init();
     jQuery('body').on('init_3', '.hiweb-field-fontawesome', hiweb_field_fontawesome.init);
-    jQuery('body').on('keyup', '.hiweb-field-fontawesome input', hiweb_field_fontawesome.input_change);
+    jQuery('body').on('change keyup', '.hiweb-field-fontawesome input', hiweb_field_fontawesome.input_change);
 
 });

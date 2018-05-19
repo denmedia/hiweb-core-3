@@ -25,9 +25,9 @@
   text-align: left;
   display: inline-block; }
   .hiweb-field-fontawesome .form-control {
-    padding-left: 36pt;
+    padding-left: 40pt;
     padding-right: 0;
-    line-height: 25pt; }
+    line-height: 23pt; }
   .hiweb-field-fontawesome .input-group-addon {
     display: inline-block;
     font-size: 25pt;
@@ -36,7 +36,8 @@
     top: 4px;
     line-height: 25pt;
     width: 34pt;
-    text-align: center; }
+    text-align: center;
+    border-right: 1px solid #ccc; }
 
 .popover.iconpicker-popover {
   border: 1px solid grey;

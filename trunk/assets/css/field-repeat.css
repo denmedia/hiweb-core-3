@@ -36,10 +36,10 @@
     height: 20px;
     opacity: 0.5;
     cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out 0ms;
-    -moz-transition: all 0.2s ease-in-out 0ms;
-    -o-transition: all 0.2s ease-in-out 0ms;
-    transition: all 0.2s ease-in-out 0ms; }
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out; }
     .hiweb-field-repeat table [data-ctrl] button:hover {
       opacity: 1;
       transform: scale(1.3); }
@@ -62,10 +62,10 @@
         padding-bottom: 0;
         margin: 3px 12px 8px 12px;
         border-bottom: 1px solid #fff;
-        -webkit-transition: all 0.2s ease-in-out 0ms;
-        -moz-transition: all 0.2s ease-in-out 0ms;
-        -o-transition: all 0.2s ease-in-out 0ms;
-        transition: all 0.2s ease-in-out 0ms; }
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out; }
         .hiweb-field-repeat table [data-ctrl] [data-sub-flex-dropdown] div a:hover {
           padding-bottom: 5px;
           margin: 3px 12px 3px 12px;
@@ -99,16 +99,16 @@
 .hiweb-field-repeat table tbody[data-rows-message] [data-row-empty="1"] {
   display: none; }
 .hiweb-field-repeat table tr[data-row] {
-  -webkit-transition: transform 500ms ease-in-out 0ms, opacity 500ms ease-in-out 0ms, box-shadow 500ms ease-in-out 0ms, filter 500ms ease-in-out 0ms;
-  -moz-transition: transform 500ms ease-in-out 0ms, opacity 500ms ease-in-out 0ms, box-shadow 500ms ease-in-out 0ms, filter 500ms ease-in-out 0ms;
-  -o-transition: transform 500ms ease-in-out 0ms, opacity 500ms ease-in-out 0ms, box-shadow 500ms ease-in-out 0ms, filter 500ms ease-in-out 0ms;
-  transition: transform 500ms ease-in-out 0ms, opacity 500ms ease-in-out 0ms, box-shadow 500ms ease-in-out 0ms, filter 500ms ease-in-out 0ms; }
+  -webkit-transition: transform 500ms ease-in-out, opacity 500ms ease-in-out, box-shadow 500ms ease-in-out, filter 500ms ease-in-out;
+  -moz-transition: transform 500ms ease-in-out, opacity 500ms ease-in-out, box-shadow 500ms ease-in-out, filter 500ms ease-in-out;
+  -o-transition: transform 500ms ease-in-out, opacity 500ms ease-in-out, box-shadow 500ms ease-in-out, filter 500ms ease-in-out;
+  transition: transform 500ms ease-in-out, opacity 500ms ease-in-out, box-shadow 500ms ease-in-out, filter 500ms ease-in-out; }
   .hiweb-field-repeat table tr[data-row].ui-sortable-helper {
     background-color: white;
-    -webkit-transition: transform 200ms ease-in-out 0ms, opacity 200ms ease-in-out 0ms, box-shadow 200ms ease-in-out 0ms, filter 200ms ease-in-out 0ms;
-    -moz-transition: transform 200ms ease-in-out 0ms, opacity 200ms ease-in-out 0ms, box-shadow 200ms ease-in-out 0ms, filter 200ms ease-in-out 0ms;
-    -o-transition: transform 200ms ease-in-out 0ms, opacity 200ms ease-in-out 0ms, box-shadow 200ms ease-in-out 0ms, filter 200ms ease-in-out 0ms;
-    transition: transform 200ms ease-in-out 0ms, opacity 200ms ease-in-out 0ms, box-shadow 200ms ease-in-out 0ms, filter 200ms ease-in-out 0ms;
+    -webkit-transition: transform 200ms ease-in-out, opacity 200ms ease-in-out, box-shadow 200ms ease-in-out, filter 200ms ease-in-out;
+    -moz-transition: transform 200ms ease-in-out, opacity 200ms ease-in-out, box-shadow 200ms ease-in-out, filter 200ms ease-in-out;
+    -o-transition: transform 200ms ease-in-out, opacity 200ms ease-in-out, box-shadow 200ms ease-in-out, filter 200ms ease-in-out;
+    transition: transform 200ms ease-in-out, opacity 200ms ease-in-out, box-shadow 200ms ease-in-out, filter 200ms ease-in-out;
     transform: scale(1.02);
     z-index: 10000 !important;
     -webkit-opacity: 0.85;

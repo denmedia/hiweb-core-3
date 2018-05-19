@@ -165,7 +165,7 @@
 
 
 			/**
-			 * @return strings
+			 * @return string
 			 */
 			public function get_type(){
 				return get_class( $this );
@@ -174,7 +174,7 @@
 
 			/**
 			 * Get input class
-			 * @return strings
+			 * @return string
 			 */
 			protected function get_input_class(){
 				return __NAMESPACE__ . '\\input';
@@ -205,7 +205,7 @@
 
 			/**
 			 * Get value class
-			 * @return strings
+			 * @return string
 			 */
 			protected function get_value_class(){
 				return __NAMESPACE__ . '\\value';

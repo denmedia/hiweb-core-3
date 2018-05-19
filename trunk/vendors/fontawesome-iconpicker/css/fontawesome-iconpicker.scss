@@ -1,3 +1,5 @@
+@import "../../../assets/css/mixins";
+
 $color_1: inherit;
 $color_2: #fff;
 $background_color_1: #f7f7f7;
@@ -432,20 +434,24 @@ $border_left_color_3: #fff;
 	}
 	.iconpicker-item {
 		float: left;
-		width: 14px;
-		height: 14px;
-		padding: 12px;
-		margin: 0 12px 12px 0;
+		width: 16px;
+		height: 16px;
+		padding: 10px;
+		margin: 0 8px 8px 0;
 		text-align: center;
 		cursor: pointer;
 		border-radius: 3px;
-		font-size: 14px;
-		box-shadow: 0 0 0 1px #ddd;
+		font-size: 16px;
+		box-shadow: 0 0 2px 1px #ddd;
 		color: $color_1;
+		background-color: #fff;
 		overflow: hidden;
+		@include transition(all, .2s, ease-out);
 		&:hover {
+			@include transform(scale(2));
+			z-index: 100;
 			&:not(.iconpicker-selected) {
-				background-color: $background_color_2;
+				background-color: $background_color_1;
 			}
 		}
 	}
