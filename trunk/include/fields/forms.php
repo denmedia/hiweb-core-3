@@ -6,7 +6,6 @@
 	use hiweb\arrays;
 	use hiweb\console;
 	use function hiweb\css;
-	use function hiweb\dump;
 	use hiweb\fields\locations\location;
 	use hiweb\fields\locations\locations;
 

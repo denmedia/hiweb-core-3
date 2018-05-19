@@ -4,7 +4,6 @@
 
 
 	use hiweb\console;
-	use function hiweb\dump;
 	use hiweb\fields\field;
 	use hiweb\fields\input;
 	use hiweb\fields\locations\locations;

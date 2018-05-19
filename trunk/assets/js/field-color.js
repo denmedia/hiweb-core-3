@@ -17,5 +17,3 @@ var hw_input_color = {
 
 
 jQuery(document).ready(hw_input_color.init);
-
-

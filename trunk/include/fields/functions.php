@@ -23,7 +23,7 @@
 			 *
 			 * @return mixed
 			 */
-			function hiweb_get_field( $fieldId, $contextObject = null ) {
+			function _get_field( $fieldId, $contextObject = null ) {
 				return fields::get_by_context( $fieldId, $contextObject )->CONTEXT( $contextObject )->VALUE()->get_sanitized();
 			}
 		}
@@ -45,7 +45,7 @@
 			 *
 			 * @return mixed
 			 */
-			function hiweb_get_field_default( $fieldId, $contextObject = null ) {
+			function _get_field_default( $fieldId, $contextObject = null ) {
 				return fields::get_by_context( $fieldId, $contextObject )->VALUE()->get_sanitized();
 			}
 		}
@@ -63,7 +63,7 @@
 			 * @param string $fieldId
 			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
 			 */
-			function hiweb_the_field( $fieldId, $contextObject = null ) {
+			function _the_field( $fieldId, $contextObject = null ) {
 				echo fields::get_by_context( $fieldId, $contextObject )->CONTEXT( $contextObject )->VALUE()->get_sanitized();
 			}
 		}
@@ -81,7 +81,7 @@
 			 * @param string $fieldId
 			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
 			 */
-			function hiweb_the_field_default( $fieldId, $contextObject = null ) {
+			function _the_field_default( $fieldId, $contextObject = null ) {
 				echo fields::get_by_context( $fieldId, $contextObject )->VALUE()->get_sanitized();
 			}
 		}
@@ -103,7 +103,7 @@
 			 *
 			 * @return mixed
 			 */
-			function hiweb_get_field_content( $fieldId, $contextObject = null ) {
+			function _get_field_content( $fieldId, $contextObject = null ) {
 				return fields::get_by_context( $fieldId, $contextObject )->CONTEXT( $contextObject )->VALUE()->get_content();
 			}
 		}
@@ -121,7 +121,7 @@
 			 * @param string $fieldId
 			 * @param null|WP_Post|WP_Term|WP_User|string|integer $contextObject
 			 */
-			function hiweb_the_field_content( $fieldId, $contextObject = null ) {
+			function _the_field_content( $fieldId, $contextObject = null ) {
 				echo fields::get_by_context( $fieldId, $contextObject )->CONTEXT( $contextObject )->VALUE()->get_content();
 			}
 		}
@@ -148,7 +148,7 @@
 			 *
 			 * @return bool
 			 */
-			function hiweb_have_rows( $fieldId, $contextObject = null ) {
+			function _have_rows( $fieldId, $contextObject = null ) {
 				return rows::have_rows( $fieldId, $contextObject );
 			}
 		}
@@ -165,7 +165,7 @@
 			/**
 			 * @return array|mixed|null
 			 */
-			function hiweb_the_row() {
+			function _the_row() {
 				return rows::the_row();
 			}
 		}
@@ -188,7 +188,7 @@
 			 *
 			 * @return bool|mixed
 			 */
-			function hiweb_reset_rows( $fieldId, $contextObject = null ) {
+			function _reset_rows( $fieldId, $contextObject = null ) {
 				return rows::reset_rows( $fieldId, $contextObject );
 			}
 		}
@@ -205,7 +205,7 @@
 			/**
 			 * @return string
 			 */
-			function hiweb_get_row_layout() {
+			function _get_row_layout() {
 				return rows::get_row_layout();
 			}
 		}
@@ -222,7 +222,7 @@
 			/**
 			 * @return mixed|null
 			 */
-			function hiweb_get_current_row() {
+			function _get_current_row() {
 				return rows::get_current_row();
 			}
 		}
@@ -243,7 +243,7 @@
 			 *
 			 * @return mixed|null
 			 */
-			function hiweb_get_sub_field( $subField ) {
+			function _get_sub_field( $subField ) {
 				return rows::get_sub_field( $subField );
 			}
 		}
@@ -264,7 +264,7 @@
 			 *
 			 * @return mixed|null
 			 */
-			function hiweb_get_sub_field_content( $subField ) {
+			function _get_sub_field_content( $subField ) {
 				return rows::get_sub_field_content( $subField );
 			}
 		}

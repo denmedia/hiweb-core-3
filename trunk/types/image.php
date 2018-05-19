@@ -22,7 +22,6 @@
 
 
 		use function hiweb\css;
-		use function hiweb\dump;
 		use hiweb\images;
 		use function hiweb\js;
 		use hiweb\path;

@@ -22,7 +22,8 @@
     transform: rotate(360deg); } }
 .hiweb-field-fontawesome {
   position: relative;
-  text-align: left; }
+  text-align: left;
+  display: inline-block; }
   .hiweb-field-fontawesome .form-control {
     padding-left: 36pt;
     padding-right: 0;
