@@ -18,6 +18,8 @@
 
 		static $default_preview_size = [ 150, 150 ];
 
+		static private $instance;
+
 
 		public function __construct(){
 			///Print Thumbnails to Columns
@@ -149,7 +151,7 @@
 		 * @param string $post_type
 		 * @return array
 		 */
-		public function post_type( $post_type = 'post' ){
+		public function add_post_type( $post_type = 'post' ){
 			if( is_string( $post_type ) ) $post_type = [ $post_type ];
 			foreach( $post_type as $pt_name ){
 				self::$post_types[] = $pt_name;
@@ -263,6 +265,14 @@
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $newPath );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 			return $attachment_id;
+		}
+
+
+		static function post_type($post_type){
+			if(!self::$instance instanceof thumbnail_upload){
+				self::$instance = new thumbnail_upload();
+			}
+			self::$instance->add_post_type($post_type);
 		}
 
 	}

@@ -33,9 +33,11 @@
 		 * @version 1.1
 		 */
 		static function the(){
-			if( is_array( self::$messages ) && !context::is_ajax() && !context::is_cron() ){
-				foreach( self::$messages as $message ){
-					if( $message instanceof message ) $message->the();
+			if ( is_array( self::$messages ) && ( context::is_admin_page() || context::is_frontend_page() || context::is_login_page() ) ) {
+				foreach ( self::$messages as $message ) {
+					if ( $message instanceof message ) {
+						$message->the();
+					}
 				}
 			}
 		}

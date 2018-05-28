@@ -189,3 +189,10 @@
 		@include transform(translate(-50%, -50%));
 	}
 }
+
+
+@mixin vertical_middle(){
+	position: absolute;
+	top:50%;
+	@include transform(translateY(-50%));
+}
