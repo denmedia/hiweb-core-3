@@ -44,7 +44,7 @@
 		 * @return bool
 		 */
 		static function is_admin_page(){
-			return \is_admin();
+			return \is_admin() && !self::is_ajax() && !self::is_rest_api();
 		}
 
 

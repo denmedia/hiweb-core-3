@@ -510,5 +510,21 @@
 			return $this->get_original_src( $return_path );
 		}
 
+		/**
+		 * Get <img src="..."/> html string
+		 *
+		 * @param string $size
+		 * @param bool $crop
+		 * @param array $attr
+		 * @param bool $make_file
+		 *
+		 * @return string
+		 */
+		public function html( $size = 'thumbnail', $crop = false, $attr = [], $make_file = true ) {
+			$this->get_src( $size, $crop, $make_file );
+
+			return wp_get_attachment_image( $this->attach_id, $size, false, $attr );
+		}
+
 
 	}
