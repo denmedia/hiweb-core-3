@@ -17,13 +17,15 @@
 		 * @param string $content
 		 * @param string $type
 		 * @param bool $debugMod
+		 *
 		 * @return message
 		 */
-		static function make( $content = '', $type = 'info', $debugMod = false ){
+		static function make( $content = '', $type = 'info', $debugMod = false ) {
 			$message = new message( $content, $type );
 			$message->set_debugMod( $debugMod );
-			$global_id = spl_object_hash( $message );
+			$global_id                    = spl_object_hash( $message );
 			self::$messages[ $global_id ] = $message;
+
 			return $message;
 		}
 
@@ -32,7 +34,7 @@
 		 * Print messages script
 		 * @version 1.1
 		 */
-		static function the(){
+		static function the() {
 			if ( is_array( self::$messages ) && ( context::is_admin_page() || context::is_frontend_page() || context::is_login_page() ) ) {
 				foreach ( self::$messages as $message ) {
 					if ( $message instanceof message ) {
