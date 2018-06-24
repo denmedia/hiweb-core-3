@@ -140,6 +140,9 @@
   box-shadow: 0 -10px 35px 0 rgba(0, 0, 0, 0.2); }
   .hiweb-field-repeat[data-flex] > table > tbody > tr[data-flex-id] > td {
     padding-bottom: 30px; }
+    .hiweb-field-repeat[data-flex] > table > tbody > tr[data-flex-id] > td .flex-label {
+      font-size: 12pt;
+      margin-bottom: 2pt; }
 .hiweb-field-repeat .hiweb-field-repeat-flex {
   width: 100%; }
   .hiweb-field-repeat .hiweb-field-repeat-flex .hiweb-field-repeat-flex-header {

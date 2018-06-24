@@ -153,6 +153,10 @@
 		@include box-shadow(35px, .2, 0, -10px, false);
 		& > td {
 			padding-bottom: 30px;
+			.flex-label {
+				font-size: 12pt;
+				margin-bottom: 2pt;
+			}
 		}
 	}
 

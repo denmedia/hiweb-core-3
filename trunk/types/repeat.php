@@ -432,7 +432,13 @@
 														foreach ( $cols as $subindex => $col ) {
 															?>
 															<div class="compacted-col-input" data-col="<?= $col->id() ?>">
+																<?php if ( $subindex > 0 ) {
+																	?><p class="flex-label"><?= $col->label() ?></p><?php
+																} ?>
 																<?php $col->the() ?>
+																<?php if ( $col->description() != '' ) {
+																	?><p class="description flex-description"><?= $col->description() ?></p><?php
+																} ?>
 															</div>
 															<?php
 														}
