@@ -59,11 +59,15 @@ var hiweb_field_repeat = {
     },
 
     get_cols_by_row: function (row) {
-        return row.find('> [data-col], > .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col]'); //TODO!
+        return row.find('> [data-col], > .flex-column > .hiweb-field-repeat-flex > tbody > tr > td > [data-col]'); //TODO!
     },
 
     make_sortable: function () {
         var rows = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
+        if(typeof rows.sortable == 'undefined') {
+            alert('Плагин jquery.ui.sortable.js не подключен!');
+            return;
+        }
         if (rows['sortable'].hasOwnProperty('destroy')) {
             rows.sortable("destroy");
         }
@@ -207,6 +211,7 @@ var hiweb_field_repeat = {
         return returnArray;
     },
 
+    //TODO!
     click_duplicate: function (e) {
         e.preventDefault();
         var root = jQuery(this).closest(hiweb_field_repeat.selector);

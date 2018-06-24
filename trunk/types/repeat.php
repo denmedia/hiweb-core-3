@@ -50,6 +50,7 @@
 
 
 		use hiweb\arrays;
+		use hiweb\hidden_methods;
 		use function hiweb\css;
 		use function hiweb\js;
 
@@ -185,27 +186,34 @@
 							<th class="flex-column">&nbsp;</th><?php
 						} else {
 							if ( $this->have_cols() ) {
-								$width_full   = 0;
-								$last_col     = null;
-								$last_compact = false;
-								foreach ( $this->get_cols() as $col ) {
-									$width_full += $col->width();
-									if ( ! $last_compact ) {
-										$last_col = $col;
-									} elseif ( $last_col instanceof col ) {
-										$last_col->width += $col->width();
+								///COMPACT GROUP
+								$compacted_cols = [];
+								$index          = 0;
+								foreach ( $this->get_cols() as $col_id => $col ) {
+									$compacted_cols[ $index ][] = $col;
+									if ( ! $col->compact() ) {
+										$index ++;
 									}
-									$last_compact = $col->compact();
 								}
-								$last_compact = false;
-								foreach ( $this->get_cols() as $col ) {
-									$width = ceil( $col->width() / $width_full * 100 ) . '%';
+								///
+								$width_cols = [];
+								foreach ( $compacted_cols as $index => $cols ) {
+									/** @var col $col */
+									foreach ( $cols as $subindex => $col ) {
+										if ( ! isset( $width_cols[ $index ] ) || ( isset( $width_cols[ $index ] ) && $col->width() > $width_cols[ $index ] ) ) {
+											$width_cols[ $index ] = $col->width();
+										}
+									}
+								}
+								///
+								/** @var col[] $cols */
+								foreach ( $compacted_cols as $index => $cols ) {
+									$width = ceil( $width_cols[ $index ] / array_sum( $width_cols ) * 100 ) . '%';
 									?>
-									<th data-col="<?= $col->id() ?>" style="width:<?= $width ?>" class="<?= $last_compact ? 'compact' : '' ?>">
-										<?= $col->label() . ( $col->description() != '' ? '<p class="description">' . $col->description() . '</p>' : '' ) ?>
+									<th <?= count( $cols ) > 1 ? '' : 'data-col="' . $cols[0]->id() . '"' ?> style="width:<?= $width ?>" class="<?= count( $cols ) > 1 ? 'compacted' : '' ?>">
+										<?= $cols[0]->label() . ( $cols[0]->description() != '' ? '<p class="description">' . $cols[0]->description() . '</p>' : '' ) ?>
 									</th>
 									<?php
-									$last_compact = $col->compact();
 								}
 							}
 
@@ -274,6 +282,7 @@
 				}
 				ob_start();
 				css( HIWEB_URL_CSS . '/field-repeat.css' );
+				wp_enqueue_script( 'jquery-ui-sortable' );
 				js( HIWEB_URL_JS . '/field-repeat.js' );
 				?>
 				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>" data-global-id="<?= $this->get_parent_field()->global_id() ?>" data-flex="<?= $this->have_flex_rows() ? '1' : '0' ?>">
@@ -344,12 +353,6 @@
 			//				return $this->get_sanitized();
 			//			}
 		}
-	}
-
-	namespace hiweb\fields\types\repeat {
-
-
-		use hiweb\hidden_methods;
 
 
 		class row{
@@ -387,6 +390,14 @@
 				if ( ! $this->have_cols ) {
 					return;
 				}
+				$compacted_cols = [];
+				$index          = 0;
+				foreach ( $this->cols as $col_id => $col ) {
+					$compacted_cols[ $index ][] = $col;
+					if ( ! $col->compact() ) {
+						$index ++;
+					}
+				}
 				?>
 				<tr data-row="<?= $this->index ?>" data-flex-id="<?= $this->flex_row_id ?>">
 					<td data-drag data-col="_flex_row_id">
@@ -401,19 +412,32 @@
 								<table class="hiweb-field-repeat-flex">
 									<thead>
 									<?php
-										foreach ( $this->cols as $col_id => $col ) {
+										/**
+										 * @var int $index
+										 * @var col[] $cols
+										 */
+										foreach ( $compacted_cols as $index => $cols ) {
 											?>
-											<th class="hiweb-field-repeat-flex-header"><?= $col->label() ?></th>
+											<th class="hiweb-field-repeat-flex-header"><?= $cols[0]->label() ?></th>
 											<?php
 										} ?>
 									</thead>
 									<tbody>
 									<tr>
 										<?php
-											$last_compact = false;
-											foreach ( $this->cols as $col_id => $col ) {
+											foreach ( $compacted_cols as $index => $cols ) {
 												?>
-												<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+												<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-col="' . $cols[0]->id() . '"' ?>>
+													<?php
+														foreach ( $cols as $subindex => $col ) {
+															?>
+															<div class="compacted-col-input" data-col="<?= $col->id() ?>">
+																<?php $col->the() ?>
+															</div>
+															<?php
+														}
+													?>
+												</td>
 												<?php
 											} ?>
 									</tr>
@@ -487,7 +511,7 @@
 			/**
 			 * @return \hiweb\fields\value
 			 */
-			public function value(){
+			public function value() {
 				return $this->value;
 			}
 

@@ -126,8 +126,6 @@
     -o-filter: blur(0.2px);
     -ms-filter: blur(0.2px);
     filter: blur(0.2px); }
-.hiweb-field-repeat table th.compact {
-  display: none; }
 .hiweb-field-repeat table th .description {
   font-size: 85%;
   margin: 0; }
@@ -135,8 +133,6 @@
   text-align: center;
   vertical-align: top;
   padding: 4px 5px; }
-  .hiweb-field-repeat table td.compact {
-    display: block; }
 .hiweb-field-repeat[data-flex] > table > tbody > tr[data-flex-id] {
   -webkit-box-shadow: 0 -10px 35px 0 rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 -10px 35px 0 rgba(0, 0, 0, 0.2);

@@ -19,8 +19,6 @@
 	namespace hiweb\fields\types\editor {
 
 
-		use hiweb\strings;
-
 
 		class field extends \hiweb\fields\field{
 

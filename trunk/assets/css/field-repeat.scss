@@ -2,8 +2,6 @@
 
 .hiweb-field-repeat {
 
-
-
 	table {
 
 		&.widefat thead td, &.widefat thead th {
@@ -132,9 +130,6 @@
 		}
 
 		th {
-			&.compact {
-				display: none;
-			}
 
 			.description {
 				font-size: 85%;
@@ -148,10 +143,6 @@
 			padding: 4px 5px;
 
 			&[data-ctrl] {
-			}
-
-			&.compact {
-				display: block;
 			}
 
 		}
