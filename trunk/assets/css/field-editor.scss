@@ -3,9 +3,25 @@
 	//background-color: #fff;
 	//min-width: 200px;
 
-
 	&, p {
 		font-size: 12pt;
+	}
+
+	h1, h2, h3, h4 {
+		font-weight: 700;
+	}
+
+	h1 {
+		font-size: 24pt;
+	}
+	h2 {
+		font-size: 20pt;
+	}
+	h3 {
+		font-size: 16pt;
+	}
+	h4 {
+		font-size: 14pt;
 	}
 
 	.gray-theme.fr-box.fr-basic .fr-element {

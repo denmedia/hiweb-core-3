@@ -1,5 +1,15 @@
 .hiweb-field-editor, .hiweb-field-editor p {
   font-size: 12pt; }
+.hiweb-field-editor h1, .hiweb-field-editor h2, .hiweb-field-editor h3, .hiweb-field-editor h4 {
+  font-weight: 700; }
+.hiweb-field-editor h1 {
+  font-size: 24pt; }
+.hiweb-field-editor h2 {
+  font-size: 20pt; }
+.hiweb-field-editor h3 {
+  font-size: 16pt; }
+.hiweb-field-editor h4 {
+  font-size: 14pt; }
 .hiweb-field-editor .gray-theme.fr-box.fr-basic .fr-element {
   padding: 8px 16px;
   min-height: 100px; }
