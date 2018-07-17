@@ -66,8 +66,8 @@
 				$plugins_css_path = HIWEB_DIR_VENDORS . '/froala_editor/css/plugins/';
 				js( $plugins_js_path . 'paragraph_format.min.js', [ 'jquery', $froala_editor ] );
 				js( $plugins_js_path . 'align.min.js', [ 'jquery', $froala_editor ] );
-//				js( $plugins_js_path . 'char_counter.min.js', [ 'jquery', $froala_editor ] );
-//				css( $plugins_css_path . 'char_counter.min.css' );
+				js( $plugins_js_path . 'char_counter.min.js', [ 'jquery', $froala_editor ] );
+				css( $plugins_css_path . 'char_counter.min.css' );
 				js( $plugins_js_path . 'code_beautifier.min.js', [ 'jquery', $froala_editor ] );
 				js( $plugins_js_path . 'code_view.min.js', [ 'jquery', $froala_editor ] );
 				css( $plugins_css_path . 'code_view.min.css' );

@@ -31,9 +31,6 @@ jQuery(document).ready(function ($) {
 
     $('.hiweb-field-editor').each(hiweb_field_editor_init);
     $('body').on('init_3', '.hiweb-field-editor', hiweb_field_editor_init);
-    $('body').on('mousedown keydown', '.fr-element.fr-view', function () {
-        $(this).closest('.hiweb-field-editor').find('> textarea').froalaEditor('events.focus');
-    });
 
 });
 

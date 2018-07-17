@@ -94,7 +94,7 @@ var hiweb_field_repeat = {
                 ui.item.find('> [data-col] > *').trigger('drag_stop', ui.placeholder);
             }
         });
-        jQuery(hiweb_field_repeat.selector + ' tbody').disableSelection();
+        //jQuery(hiweb_field_repeat.selector + ' tbody').disableSelection();
     },
 
     make_table_names: function (root) {
