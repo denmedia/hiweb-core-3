@@ -452,12 +452,33 @@
 							</td>
 							<?php
 						} else {
-							$last_compact = false;
-							foreach ( $this->cols as $col ) {
+//							$last_compact = false;
+//							foreach ( $this->cols as $col ) {
+//								?>
+<!--								<td data-col="--><?//= $col->id() ?><!--" class="--><?//= ( $col->compact() || $last_compact ) ? 'compact' : '' ?><!--">--><?php //$col->the(); ?><!--</td>-->
+<!--								--><?php
+//								$last_compact = $col->compact();
+//							}
+							foreach ( $compacted_cols as $index => $cols ) {
 								?>
-								<td data-col="<?= $col->id() ?>" class="<?= ( $col->compact() || $last_compact ) ? 'compact' : '' ?>"><?php $col->the(); ?></td>
+								<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-col="' . $cols[0]->id() . '"' ?>>
+									<?php
+										foreach ( $cols as $subindex => $col ) {
+											?>
+											<div class="compacted-col-input" data-col="<?= $col->id() ?>">
+												<?php if ( $subindex > 0 ) {
+													?><p class="flex-label"><?= $col->label() ?></p><?php
+												} ?>
+												<?php $col->the() ?>
+												<?php if ( $col->description() != '' ) {
+													?><p class="description flex-description"><?= $col->description() ?></p><?php
+												} ?>
+											</div>
+											<?php
+										}
+									?>
+								</td>
 								<?php
-								$last_compact = $col->compact();
 							}
 						} ?>
 					<td data-ctrl>

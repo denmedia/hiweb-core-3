@@ -1,0 +1,40 @@
+.hiweb-field-editor {
+	//border: 1px solid grey;
+	//background-color: #fff;
+	//min-width: 200px;
+
+
+	&, p {
+		font-size: 12pt;
+	}
+
+	.gray-theme.fr-box.fr-basic .fr-element {
+		padding: 8px 16px;
+		min-height: 100px;
+	}
+
+	.gray-theme.fr-toolbar .fr-command.fr-btn, .gray-theme.fr-popup .fr-command.fr-btn {
+		margin: 0;
+	}
+
+	.gray-theme.fr-toolbar .fr-command.fr-btn, .gray-theme.fr-popup .fr-command.fr-btn {
+		width: 28px;
+		height: 28px;
+		text-align: center;
+		&[aria-haspopup="true"] {
+			min-width: 38px;
+		}
+	}
+	.gray-theme .fr-separator.fr-vs {
+		height: 24px;
+	}
+
+	.gray-theme.fr-toolbar .fr-command.fr-btn i, .gray-theme.fr-popup .fr-command.fr-btn i, .gray-theme.fr-toolbar .fr-command.fr-btn svg, .gray-theme.fr-popup .fr-command.fr-btn svg {
+		margin: 7px 7px;
+	}
+
+	.gray-theme.fr-toolbar .fr-command.fr-btn.fr-dropdown::after, .gray-theme.fr-popup .fr-command.fr-btn.fr-dropdown::after {
+		top: 12px;
+	}
+}
+
