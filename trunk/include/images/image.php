@@ -460,8 +460,27 @@
 			return abs( ( $width / $height ) - $this->aspect() ) > 0.1;
 		}
 
+		/**
+		 * Return SIZE object of IMAGE
+		 *
+		 * @param string $sizeOrName
+		 * @param int $crop
+		 * @param bool $make_file
+		 *
+		 * @return size|null
+		 */
+		public function get_size( $sizeOrName = 'thumbnail', $crop = 0, $make_file = true ) {
+			$SIZE = $this->get_size_by( $sizeOrName, $crop );
+			if ( ! $SIZE->exists && $make_file ) {
+				$SIZE->make();
+			}
+
+			return $SIZE;
+		}
 
 		/**
+		 * Return src of image by size
+		 *
 		 * @param string $sizeOrName
 		 * @param int $crop
 		 * @param bool $make_file
@@ -469,12 +488,7 @@
 		 * @return string
 		 */
 		public function get_src( $sizeOrName = 'thumbnail', $crop = 0, $make_file = true ) {
-			$SIZE = $this->get_size_by( $sizeOrName, $crop );
-			if ( ! $SIZE->exists && $make_file ) {
-				$SIZE->make();
-			}
-
-			return $SIZE->src;
+			return $this->get_size( $sizeOrName, $crop, $make_file )->src;
 		}
 
 		/**
@@ -521,9 +535,45 @@
 		 * @return string
 		 */
 		public function html( $size = 'thumbnail', $crop = false, $attr = [], $make_file = true ) {
-			$this->get_src( $size, $crop, $make_file );
+			$SIZE        = $this->get_size( $size, $crop, $make_file );
+			$other_sizes = $this->get_sizes();
+			if ( isset( $other_sizes[ $SIZE->name ] ) ) {
+				unset( $other_sizes[ $SIZE->name ] );
+			}
 
-			return wp_get_attachment_image( $this->attach_id, $size, false, $attr );
+			$tags           = [
+				'src'    => $SIZE->src,
+				'width'  => $SIZE->width,
+				'height' => $SIZE->height
+			];
+			$tags['srcset'] = [];
+			if ( is_array( $other_sizes ) && count( $other_sizes ) > 0 ) {
+				foreach ( $other_sizes as $other_size ) {
+					if ( ( $crop !== false && $crop !== 0 ) || ! $other_size->is_cropped ) {
+						$tags['srcset'][] = $other_size->src . ' ' . $other_size->width . 'w';
+					}
+				}
+			}
+			$tags['srcset'] = implode( ', ', $tags['srcset'] );
+			if ( $this->alt() != '' ) {
+				$tags['alt'] = htmlentities( $this->alt(), ENT_QUOTES, 'UTF-8' );
+			}
+			if ( $this->title() != '' ) {
+				$tags['title'] = htmlentities( $this->title(), ENT_QUOTES, 'UTF-8' );
+			}
+			//Attr merge
+			$tags = array_merge( $tags, $attr );
+			//
+			$tags_string = [];
+			foreach ( $tags as $key => $val ) {
+				$tags_string[] = $key . '="' . addslashes( $val ) . '"';
+			}
+			$tags_string = implode( ' ', $tags_string );
+
+			$R = '<img ' . $tags_string . '/>';
+
+			return $R;
+			//return wp_get_attachment_image( $this->attach_id, $size, false, $attr );
 		}
 
 

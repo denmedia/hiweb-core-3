@@ -128,7 +128,7 @@
 			 *
 			 * @param null|strings $label
 			 *
-			 * @return field|null|strings
+			 * @return field|null|string
 			 */
 			public function label( $label = null ){
 				return $this->set_property( __FUNCTION__, $label );
