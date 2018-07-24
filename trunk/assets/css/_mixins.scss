@@ -196,3 +196,27 @@
 	top:50%;
 	@include transform(translateY(-50%));
 }
+
+@mixin display-flex(){
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+@mixin flex($flex: 1){
+	-webkit-box-flex: $flex;
+	-moz-box-flex: $flex;
+	-webkit-flex: $flex;
+	-ms-flex: $flex;
+	flex: $flex;
+}
+
+@mixin order($order: 0){
+	-webkit-box-ordinal-group: $order;
+	-moz-box-ordinal-group: $order;
+	-ms-flex-order: $order;
+	-webkit-order: $order;
+	order: $order;
+}
