@@ -415,6 +415,7 @@
 		public function get_size_by( $sizeOrName = 'thumbnail', $crop = 0 ) {
 			$this->get_sizes();
 			$SIZE = null;
+			if ( $this->is_attachment_exists() ) {
 			if ( is_int( $sizeOrName ) && is_int( $crop ) && $crop > 1 ) {
 				$sizeOrName = [ $sizeOrName, $crop ];
 				$crop       = false;
@@ -437,6 +438,7 @@
 			} else {
 				$SIZE = new size( $this );
 				$SIZE->init( 0, 0, - 1, $this->sizes_by_name['full']->file()->filename . '-0x0' );
+			}
 			}
 
 			return $SIZE;
@@ -471,7 +473,7 @@
 		 */
 		public function get_size( $sizeOrName = 'thumbnail', $crop = 0, $make_file = true ) {
 			$SIZE = $this->get_size_by( $sizeOrName, $crop );
-			if ( ! $SIZE->exists && $make_file ) {
+			if ( $SIZE instanceof size && ! $SIZE->exists && $make_file ) {
 				$SIZE->make();
 			}
 
@@ -535,6 +537,11 @@
 		 * @return string
 		 */
 		public function html( $size = 'thumbnail', $crop = false, $attr = [], $make_file = true ) {
+			if ( ! $this->is_attachment_exists() ) {
+				$size = is_array( $size ) ? ' width="' . $size[0] . '" height="' . $size[1] . '"' : '';
+
+				return '<img src="' . \hiweb\images::get_default_src() . '" ' . $size . '/>';
+			} else {
 			$SIZE        = $this->get_size( $size, $crop, $make_file );
 			$other_sizes = $this->get_sizes();
 			if ( isset( $other_sizes[ $SIZE->name ] ) ) {
@@ -573,6 +580,7 @@
 			$R = '<img ' . $tags_string . '/>';
 
 			return $R;
+			}
 			//return wp_get_attachment_image( $this->attach_id, $size, false, $attr );
 		}
 

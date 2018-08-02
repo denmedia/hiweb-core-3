@@ -88,10 +88,11 @@
 						$this->src  = path::path_to_url( $this->path );
 						unset( $R['path'] );
 						$meta['sizes'][ $this->parent_image->size_to_string( $this->width, $this->height ) ] = $R;
-						if ( wp_update_attachment_metadata( $this->parent_image->attach_id(), $meta ) ) {
+						$B = wp_update_attachment_metadata( $this->parent_image->attach_id(), $meta );
+						if ( $B ) {
 							console::debug_info( 'Создан новый файл изображения', $R );
 						} else {
-							console::debug_error( 'Ошибка создания нового файла изображения', $R );
+							//console::debug_error( 'Ошибка создания нового файла изображения', $R );
 						}
 
 						return ( $return_path ? $this->path : $this->src );

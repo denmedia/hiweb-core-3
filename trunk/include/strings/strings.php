@@ -338,9 +338,9 @@
 		/**
 		 * @param $text
 		 * @param $limit
-		 * @param strings $ellipsis
+		 * @param string $ellipsis
 		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function truncate_by_chars( $text, $limit, $ellipsis = '...' ){
 			if( strlen( $text ) > $limit ){
