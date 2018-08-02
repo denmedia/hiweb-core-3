@@ -540,7 +540,7 @@
 			if ( ! $this->is_attachment_exists() ) {
 				$size = is_array( $size ) ? ' width="' . $size[0] . '" height="' . $size[1] . '"' : '';
 
-				return '<img src="' . \hiweb\images::get_default_src() . '" ' . $size . '/>';
+				return '<img src="' . images::get_default_src() . '" ' . $size . '/>';
 			} else {
 			$SIZE        = $this->get_size( $size, $crop, $make_file );
 			$other_sizes = $this->get_sizes();
@@ -564,9 +564,6 @@
 			$tags['srcset'] = implode( ', ', $tags['srcset'] );
 			if ( $this->alt() != '' ) {
 				$tags['alt'] = htmlentities( $this->alt(), ENT_QUOTES, 'UTF-8' );
-			}
-			if ( $this->title() != '' ) {
-				$tags['title'] = htmlentities( $this->title(), ENT_QUOTES, 'UTF-8' );
 			}
 			//Attr merge
 			$tags = array_merge( $tags, $attr );
