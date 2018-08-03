@@ -21,6 +21,9 @@
 	namespace hiweb\fields\types\fontawesome {
 
 
+		use hiweb\strings;
+
+
 		class field extends \hiweb\fields\field{
 
 			protected function get_input_class() {
@@ -41,20 +44,22 @@
 			public function html() {
 				\hiweb\css( HIWEB_DIR_VENDORS . '/font-awesome-5-free/svg-with-js/css/fa-svg-with-js.css' );
 				$font_awesome = \hiweb\js( HIWEB_DIR_VENDORS . '/font-awesome-5-free/svg-with-js/js/fontawesome-all.min.js' );
-				\hiweb\css( HIWEB_URL_VENDORS . '/fontawesome-iconpicker/css/fontawesome-iconpicker.min.css' );
 				\hiweb\css( HIWEB_URL_CSS . '/field-fontawesome.css' );
-				$js = \hiweb\js( HIWEB_URL_VENDORS . '/fontawesome-iconpicker/js/fontawesome-iconpicker.min.js', [ 'jquery', $font_awesome ] );
-				\hiweb\js( HIWEB_URL_ASSETS . '/js/field-fontawesome.js', [ 'jquery', $js ] );
+				wp_enqueue_script( 'jquery-ui-dialog' );
+				wp_enqueue_style( 'wp-jquery-ui-dialog' );
+				\hiweb\js( HIWEB_URL_ASSETS . '/js/field-fontawesome.js', [ 'jquery' ] );
 				///
 				ob_start();
 				$this->attributes['class'] = '';
 				$this->attributes['value'] = $this->VALUE()->get();
+				$rnd_id = strings::rand(10);
 				?>
-				<div class="hiweb-field-fontawesome input-group">
-					<input data-placement="top" class="form-control" <?= $this->sanitize_attributes() ?> type="text"/>
+				<div class="hiweb-field-fontawesome" data-dialog-title="Выбор иконки" data-rand-id="<?=$rnd_id?>">
+					<input data-placement="top" class="form-control" <?= $this->sanitize_attributes() ?> type="text" data-rand-id="<?=$rnd_id?>"/>
 					<span class="input-group-addon">
-						<i class="<?= $this->VALUE()->get() ?>"></i>
+						<i class="<?= $this->VALUE()->get() ?>" aria-hidden="true"></i>
 					</span>
+					<a href="#" data-click class="button" title="Выбрать иконку" data-rand-id="<?=$rnd_id?>">...</a>
 				</div>
 				<?php
 				return ob_get_clean();

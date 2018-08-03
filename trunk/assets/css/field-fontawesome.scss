@@ -6,7 +6,7 @@
 	display: inline-block;
 	.form-control {
 		padding-left: 40pt;
-		padding-right: 0;
+		padding-right: 40pt;
 		line-height: 23pt;
 	}
 	.input-group-addon {
@@ -20,14 +20,46 @@
 		text-align: center;
 		border-right: 1px solid #ccc;
 	}
+	.button {
+		position: absolute;
+		right: 2pt;
+		top: 2pt;
+		display: inline-block;
+		width: 25pt;
+		line-height: 25pt;
+		height: 25pt;
+	}
+	.input-group-addon {
+		border-right: 1px dotted grey;
+		display: inline-block;
+		width: 30pt;
+		line-height: 25pt;
+		height: 25pt;
+	}
 
 }
 
-.popover.iconpicker-popover {
-	border: 1px solid grey;
-	@include border_radius();
-	@include box-shadow();
-	.form-control.iconpicker-search {
-		width: 100%;
+.hiweb-field-fontawesome-modal-icons-wrap {
+	max-width: 800px;
+	max-height: 640px;
+	.item {
+		display: inline-block;
+		font-size: 24pt;
+		padding: 6pt;
+		cursor: pointer;
+		margin: 0 -1px -1px 0;
+		@include opacity(0.5);
+		@include transition(all, .2s, ease-out);
+		border: 1px dotted #ccc;
+		background: #fff;
+		position: relative;
+		@include box-shadow(0, 0, 0);
+
+		&:hover {
+			@include opacity(1);
+			@include transform(scale(1.5));
+			@include box-shadow(12px, .25);
+			z-index: 100;
+		}
 	}
 }

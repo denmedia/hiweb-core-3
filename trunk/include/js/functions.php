@@ -29,7 +29,7 @@
 		 *
 		 * @return bool
 		 */
-		function js( $jsPathOrURL, $deeps = [], $inFooter = false ) {
+		function js( $jsPathOrURL, $deeps = [], $inFooter = true ) {
 			return js\enqueue::add( $jsPathOrURL, $deeps, $inFooter );
 		}
 	}
