@@ -64,7 +64,7 @@ var hiweb_field_repeat = {
 
     make_sortable: function () {
         var rows = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
-        if(typeof rows.sortable == 'undefined') {
+        if (typeof rows.sortable == 'undefined') {
             alert('Плагин jquery.ui.sortable.js не подключен!');
             return;
         }
@@ -91,7 +91,7 @@ var hiweb_field_repeat = {
                 elements.helper.find('> [data-col] > *').trigger('drag_start', elements);
             },
             stop: function (e, ui) {
-                ui.item.find('> [data-col] > *').trigger('drag_stop', ui.placeholder);
+                ui.item.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('drag_stop', ui.placeholder);
             }
         });
         //jQuery(hiweb_field_repeat.selector + ' tbody').disableSelection();

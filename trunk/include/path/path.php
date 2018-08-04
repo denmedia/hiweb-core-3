@@ -200,9 +200,9 @@
 		 * Конвертирует путь в URL до файла
 		 * @version 2.1
 		 *
-		 * @param $path
+		 * @param string $path
 		 *
-		 * @return mixed
+		 * @return string
 		 */
 		static function path_to_url( $path ) {
 			if ( strpos( $path, 'http' ) === 0 ) {
@@ -217,9 +217,9 @@
 		/**
 		 * Конвертирует URL в путь
 		 *
-		 * @param $url
+		 * @param string $url
 		 *
-		 * @return mixed
+		 * @return string
 		 */
 		static function url_to_path( $url ) {
 			$url = str_replace( '\\', '/', $url );
@@ -272,7 +272,7 @@
 		 * @param null $url
 		 * @param int $index
 		 *
-		 * @return bool|array|strings
+		 * @return bool|array|string
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ) {
 			$urlArr = self::get_url_info( self::prepare_url( ! is_string( $url ) ? self::base_url() : $url ) );
@@ -288,7 +288,7 @@
 		 * @param null $url - если не указывать, будет взят текущий URL
 		 * @param null $indexOrKey - если не указывать, будет вернут массив параметров, иначе значение параметра
 		 *
-		 * @return strings|array|null
+		 * @return string|array|null
 		 */
 		static function get_paramas_from_url( $url = null, $indexOrKey = null ) {
 			$urlArr    = self::get_url_info( self::prepare_url( $url, self::base_url() ) );
@@ -306,7 +306,7 @@
 		 * @param null $startUrl
 		 * @param bool $returnParseArray
 		 *
-		 * @return bool|array|strings
+		 * @return bool|array|string
 		 */
 		static function prepare_url( $url, $startUrl = null, $returnParseArray = false ) {
 			if ( ! is_string( $url ) ) {
@@ -352,7 +352,7 @@
 		/**
 		 * Возвращает TRUE, если текущая страница соответствует указанному SLUG
 		 *
-		 * @param strings $pageSlug
+		 * @param string $pageSlug
 		 *
 		 * @return bool
 		 */
@@ -367,7 +367,7 @@
 		/**
 		 * Возвращает TRUE, если файл по заданному пути или URL существует и читабелен
 		 *
-		 * @param $pathOrUrl
+		 * @param string $pathOrUrl
 		 *
 		 * @return bool
 		 */
@@ -398,7 +398,7 @@
 		 * @param      $path - исходный путь
 		 * @param bool $removeLastSeparators - удалить самый хвостовой сепаратор
 		 *
-		 * @return strings | bool
+		 * @return string | bool
 		 * @version 1.1
 		 */
 		static function prepare_separator( $path, $removeLastSeparators = false ) {
@@ -417,9 +417,9 @@
 		 * Конвертация относитльного пути к коневой папке в реальный
 		 * @version 1.0.0.0
 		 *
-		 * @param $fileOrDirPath - путь до файла или папки
+		 * @param string $fileOrDirPath - путь до файла или папки
 		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function realpath( $fileOrDirPath ) {
 			$fileOrDirPath = self::prepare_separator( $fileOrDirPath );
@@ -431,7 +431,7 @@
 		/**
 		 * @param $fileOrDirPath
 		 *
-		 * @return bool|strings
+		 * @return bool|string
 		 */
 		static function simplepath( $fileOrDirPath ) {
 			return strpos( $fileOrDirPath, self::base_dir() ) === 0 ? substr( $fileOrDirPath, strlen( self::base_dir() ) ) : $fileOrDirPath;
@@ -443,7 +443,7 @@
 		 *
 		 * @param $dirPath - путь до папи, которую необходимо создать
 		 *
-		 * @return array|strings
+		 * @return array|string
 		 */
 		static function mkdir( $dirPath ) {
 			$dirPath = realpath( $dirPath );
@@ -472,7 +472,7 @@
 		/**
 		 * Удалить папку вместе с вложенными папками и файлами
 		 *
-		 * @param $dirPath
+		 * @param string $dirPath
 		 *
 		 * @return bool
 		 */
@@ -499,8 +499,8 @@
 		/**
 		 * Копирует папку целиком вместе с вложенными файлами и папками
 		 *
-		 * @param $sourcePath - исходная папка
-		 * @param $destinationDir - папка назначения
+		 * @param string $sourcePath - исходная папка
+		 * @param string $destinationDir - папка назначения
 		 *
 		 * @return bool
 		 */
@@ -526,9 +526,9 @@
 		/**
 		 * Возвращает форматированный вид размера файла из байтов
 		 *
-		 * @param $size - INT килобайты
+		 * @param int|string $size - INT килобайты
 		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function size_format( $size ) {
 			$size = intval( $size );
@@ -597,12 +597,12 @@
 		 * Выполняет архивацию папки в ZIP архив
 		 *
 		 * @param             $pathInput
-		 * @param strings $pathOut
-		 * @param strings $arhiveName
-		 * @param strings|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
+		 * @param string $pathOut
+		 * @param string $arhiveName
+		 * @param string|bool $baseDirInArhive - базовая папка / путь внутри архива для всех запакованных файлов и папок. Если установить TRUE - в архиве будет корневая папка, которая была указана в качестве исходной.
 		 * @param bool $appendToArchive
 		 *
-		 * @return bool|strings
+		 * @return bool|string
 		 */
 		static function archive( $pathInput, $pathOut = '', $arhiveName = 'arhive.zip', $baseDirInArhive = true, $appendToArchive = false ) {
 			$pathInput = realpath( $pathInput );
@@ -637,8 +637,8 @@
 		/**
 		 * Распаковывает ZIP архив
 		 *
-		 * @param        $archivePath
-		 * @param strings $destinationDir
+		 * @param string $archivePath
+		 * @param string $destinationDir
 		 *
 		 * @return bool
 		 */
@@ -667,9 +667,9 @@
 		/**
 		 * Возвращает расширение файла, уть которого указан в аргументе $path
 		 *
-		 * @param $path
+		 * @param string $path
 		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function file_extension( $path ) {
 			$pathInfo = pathinfo( $path );
@@ -681,10 +681,10 @@
 		/**
 		 * Возвращает содержимое файла PHP, подключая его через INCLUDE
 		 *
-		 * @param       $path
+		 * @param string $path
 		 * @param array $vars
 		 *
-		 * @return bool|strings
+		 * @return bool|string
 		 * @version 1.1
 		 */
 		static function get_content( $path, $vars = [] ) {
@@ -714,7 +714,7 @@
 		/**
 		 * Возвращает TRUE, если передан URL
 		 *
-		 * @param strings $url - тестовый URL
+		 * @param string $url - тестовый URL
 		 *
 		 * @return mixed
 		 */
@@ -817,7 +817,7 @@
 		/**
 		 * Get an attachment ID given a URL.
 		 *
-		 * @param strings $url
+		 * @param string $url
 		 *
 		 * @return int Attachment ID on success, 0 on failure
 		 */
