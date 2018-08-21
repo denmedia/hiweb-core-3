@@ -8,6 +8,7 @@
 	use function hiweb\css;
 	use hiweb\fields\locations\location;
 	use hiweb\fields\locations\locations;
+	use function hiweb\js;
 
 
 	class forms{
@@ -71,7 +72,7 @@
 		/**
 		 * Get template form php-file path
 		 * @param string $name
-		 * @param bool $get_field_template
+		 * @param bool   $get_field_template
 		 * @return bool|string
 		 */
 		static private function get_template( $name = 'default', $get_field_template = false ){
@@ -87,15 +88,18 @@
 
 
 		/**
-		 * @param field[] $fields
+		 * @param field[]                                $fields
 		 * @param null|\WP_Post|\WP_Term|\WP_User|string $contextObject
-		 * @param string $formTemplate
+		 * @param string                                 $formTemplate
 		 * @return string
 		 */
 		static public function get_form_by_fields( $fields = [], $contextObject = null, $formTemplate = 'default' ){
 			if( arrays::is_empty( $fields ) ) return '';
 			///
 			css( HIWEB_URL_CSS . '/fields.css' );
+			css( HIWEB_DIR_VENDORS . '/Semantic-UI-CSS-master/semantic.css' );
+			$semantic_js_id = js( HIWEB_DIR_VENDORS . '/Semantic-UI-CSS-master/semantic.min.js' );
+			js( HIWEB_DIR_ASSETS . '/js/fields.js', [ 'jquery', $semantic_js_id ] );
 			$template_path = self::get_template( $formTemplate, false );
 			if( $template_path === false ) return '';
 			$template_field_path = self::get_template( $formTemplate, true );
@@ -120,8 +124,8 @@
 
 
 		/**
-		 * @param array $fields
-		 * @param null $contextObject
+		 * @param array  $fields
+		 * @param null   $contextObject
 		 * @param string $formTemplate
 		 */
 		final static function the_form_by_fields( $fields = [], $contextObject = null, $formTemplate = 'default' ){
@@ -131,8 +135,8 @@
 
 		/**
 		 * @param location $contextLocation
-		 * @param null $contextObject
-		 * @param string $formTemplate
+		 * @param null     $contextObject
+		 * @param string   $formTemplate
 		 */
 		final static function the_form_by_contextLocation( location $contextLocation, $contextObject = null, $formTemplate = 'default' ){
 			$fields = locations::get_fields_by_contextLocation( $contextLocation );
@@ -141,7 +145,7 @@
 
 
 		/**
-		 * @param null $contextObject
+		 * @param null   $contextObject
 		 * @param string $formTemplate
 		 */
 		final static function the_form_by_contextObject( $contextObject = null, $formTemplate = 'default' ){

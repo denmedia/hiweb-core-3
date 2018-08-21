@@ -22,6 +22,7 @@
 
 
 		use function hiweb\css;
+		use hiweb\files;
 		use hiweb\images;
 		use function hiweb\js;
 		use hiweb\path;
@@ -71,6 +72,9 @@
 			private $has_image = [];
 
 
+			private $has_file = [];
+
+
 			/**
 			 * Возвращает URL до изображения
 			 *
@@ -114,36 +118,60 @@
 				return $this->has_image[ $key ];
 			}
 
+			/**
+			 * Возвращает TRUE, если файл существует
+			 * @return bool
+			 */
+			public function have_file(){
+				$attachment_url = wp_get_attachment_url( $this->VALUE()->get() );
+				$this->has_file[ $attachment_url ] = path::is_readable( $attachment_url );
+				return $this->has_file[ $attachment_url ];
+			}
+
 
 			public function html() {
 				wp_enqueue_media();
-				css( HIWEB_URL_CSS . '/field-image.css' );
-				js( HIWEB_URL_JS . '/field-image.js' );
+				\hiweb\js( HIWEB_DIR_JS . '/field-file.js', [ 'jquery' ] );
+				\hiweb\css( HIWEB_DIR_CSS . '/field-file.css' );
 				///
-				/** @var field $parent_field */
-				$parent_field = $this->get_parent_field();
-				$attr_width   = $parent_field->preview_width();
-				$attr_height  = $parent_field->preview_height();
-				$preview      = false;
-				$image_small  = true;
-				///
-				if ( $this->have_image() ) {
-					$image        = images::get( $this->VALUE()->get() );
-					$preview      = $image->get_src( [ $attr_width, $attr_height ], true );
-					$preview_size = $image->desire_to_size( $attr_width, $attr_height, - 1 );
-					$image_small  = ! ( $attr_width <= $preview_size[0] && $attr_height <= $preview_size[1] );
+				$file = false;
+				$attachment_id = $this->VALUE()->get();
+				if( $this->have_file() ){
+					$file = files::get( wp_get_attachment_url( $attachment_id ) );
 				}
-				///
 				ob_start();
 				?>
-				<div class="hiweb-field-image" id="<?= $this->global_id() ?>" data-has-image="<?= $this->have_image() ? '1' : '0' ?>" data-image-small="<?= $image_small ? '1' : '0' ?>">
-					<input type="hidden" <?= $this->sanitize_attributes() ?> value="<?= ( $this->has_image ? $this->VALUE()->get_sanitized() : '' ) ?>"/>
-					<a href="#" class="image-select" title="<?= __( 'Select/Deselect image...' ) ?>" data-click="<?= ( $this->have_image() ? 'deselect' : 'select' ) ?>" style="width: <?= $attr_width ?>px; height: <?= $attr_height ?>px;">
-						<div class="thumbnail" style="<?= $this->have_image() ? 'background-image:url(' . $preview . ')' : '' ?>"></div>
-						<div class="overlay"></div>
-						<i class="dashicons dashicons-format-image" data-icon="select"></i>
-						<i class="dashicons dashicons-dismiss" data-icon="deselect"></i>
-					</a>
+				<div class="ui move up reveal hiweb-field-image" id="<?= $this->global_id() ?>" data-has-file="<?= $this->have_file() ? '1' : '0' ?>" data-file-mime="<?= $file instanceof files\file ? $file->mime : '' ?>" data-file-image="<?= $file instanceof files\file ? ( $file->is_image() ? 'image' : 'file' ) : '' ?>">
+					<div class="visible content">
+						<div class="ui center aligned raised segment" data-segment="1">
+							<i class="question circle outline icon" data-icon="select"></i>
+							<i class="file alternate outline icon" data-icon="deselect"></i>
+							<div class="thumbnail" <?= ( $file instanceof files\file ? $file->is_image() : false ) ? 'style="background-image: url(' . get_image( $attachment_id )->get_src() . ')"' : '' ?>>
+
+							</div>
+						</div>
+						<div class="ui bottom attached label" data-file-nonselect-text>Файл не выбран</div>
+						<div class="ui bottom attached blue label" data-file-name><?= $file instanceof files\file ? $file->basename : '' ?></div>
+					</div>
+					<div class="hidden content">
+						<div class="ui segment center aligned" data-segment="2">
+
+							<div class="big ui primary icon button" data-click="select" data-tooltip="Выбрать файл..." data-inverted="">
+								<i class="folder open outline icon"></i>
+							</div>
+
+							<div class="ui buttons">
+								<div class="ui icon primary button" data-click="edit" data-tooltip="Редактировать..." data-inverted="">
+									<i class="edit outline icon"></i>
+								</div>
+								<div class="ui icon button" data-click="deselect" data-tooltip="Отменить выбор" data-inverted="">
+									<i class="window close outline icon"></i>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					<input type="hidden" <?= $this->sanitize_attributes() ?> value="<?= ( $this->has_file ? $this->VALUE()->get() : '' ) ?>"/>
 				</div>
 				<?php
 				return ob_get_clean();

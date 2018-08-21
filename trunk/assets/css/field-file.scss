@@ -1,84 +1,124 @@
 @import "mixins";
 
-.hiweb-field-file {
-	padding: 1px;
-	display: inline-block;
-	background: #fff;
-	border: 1px solid #e5e5e5;
+$hiweb_field_file_width: 120px;
 
-	.file-select {
-		color: #444;
-		border: 1px solid #ccc;
-		display: block;
-		min-height: 85px;
-		min-width: 85px;
-		max-width: 100%;
-		position: relative;
-		text-align: center;
-		text-decoration: none;
-		overflow: hidden;
-		@include box-shadow(15px, .1, 0px, 0px, false);
+.hiweb-field-file, .hiweb-field-image {
+	width: $hiweb_field_file_width;
+	&, &.ui.reveal {
+		display: inline-block;
+	}
 
-		//.thumbnail {
-		//	@include hw_background_image();
-		//	@include hw_position_stretch(1px);
-		//	@include hw_transition();
-		//}
+	.content {
+		width: $hiweb_field_file_width;
+	}
 
-		.overlay {
-			@include transition(all, 0.2s);
-			@include position_stretch();
-			@include opacity(0);
-		}
+	.thumbnail {
+		@include position_stretch_2();
+		background: 50% 50% no-repeat;
+		background-size: cover;
+		@include opacity(0);
+	}
 
-		.dashicons {
-			font-size: 34px;
-			line-height: 34px;
-			width: 34px;
-			height: 34px;
-			position: relative;
-			top: 50%;
-			@include opacity(.4);
-			@include transition(all, 0.2s);
-			@include transform(translateY(-50%));
-		}
-		.dashicons[data-icon="deselect"] {
-			@include opacity(.9);
-			@include text-shadow(10px, 0, 0, rgba(255, 255, 255, .8));
-		}
+	[data-segment="1"] {
+		width: $hiweb_field_file_width;
+		height: 120px;
+		background: url(../img/pattern-1.jpg);
 
-		&:hover {
-			background: none !important;
-
-			.dashicons {
-				@include opacity(1);
-				@include transition(all, .1s);
-				@include transform(translateY(-50%) scale(1.4));
-			}
-
-			//.thumbnail {
-			//	@include hw_transition(all, 0.2s);
-			//	@include hw_transform(scale(1.2));
-			//	@include hw_opacity(.4);
-			//	@include hw_filter(blur(6px) brightness(3) grayscale(50%));
-			//}
-			.overlay {
-				@include opacity(0.75);
-			}
+		[data-icon] {
+			position: absolute;
+			top: 20px;
+			left: 28px;
+			font-size: 56px;
+			line-height: 1;
+			vertical-align: middle;
+			@include transition(all, .5s, ease-in-out, .5s);
 		}
 	}
 
 	&[data-has-file="1"] {
-		.file-select {
-			//background: url(img/pattern-4.png) 50% 50%;
+		[data-icon="select"] {
+			//display: none;
+			@include opacity(0);
+			@include transform(scale(2));
 		}
-		.dashicons[data-icon="select"] {
+		[data-icon="deselect"] {
+			//display: none;
+			@include opacity(1);
+		}
+
+		[data-click="select"] {
+			display: none;
+		}
+		[data-click="edit"], [data-click="deselect"] {
+			//display: inherit;
+		}
+		[data-file-nonselect-text] {
+			display: none;
+		}
+		[data-file-name] {
+			display: block;
+			white-space: nowrap;
+		}
+		&[data-file-image="image"] {
+			[data-segment="1"] {
+				background: url(../img/pattern-4.png);
+				.icon {
+					@include opacity(0);
+				}
+			}
+			.thumbnail {
+				@include opacity(1);
+			}
+		}
+
+	}
+
+	&[data-has-file="0"] {
+		[data-icon="select"] {
+			//display: none;
+			@include opacity(.3);
+		}
+		[data-icon="deselect"] {
+			//display: none;
+			@include opacity(0);
+			@include transform(scale(.5));
+		}
+		[data-click="select"] {
+			//display: inherit;
+		}
+		[data-click="edit"], [data-click="deselect"] {
+			display: none;
+		}
+		[data-file-nonselect-text] {
+			display: block;
+		}
+		[data-file-name] {
 			display: none;
 		}
 	}
 
-	&[data-has-file="0"] .dashicons[data-icon="deselect"] {
-		display: none;
+	[data-segment="2"] {
+		width: $hiweb_field_file_width;
+		height: 134px;
+		background-image: url(../img/pattern-5d.png);
+
+		[data-click="select"] {
+			position: relative;
+			top: 28px;
+			margin-right: -8px;
+		}
+		.buttons {
+			position: relative;
+			top: 34px;
+			.button:last-child {
+				margin-right: -8px;
+			}
+		}
+	}
+
+	[data-tooltip][data-inverted]:after {
+		font-size: 8pt;
+		font-weight: 100;
 	}
 
 }

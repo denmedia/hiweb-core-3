@@ -57,7 +57,7 @@
 		 * @return bool|strings
 		 */
 		static public function get_default_src( $force_hiweb_default = false ){
-			$default_hiweb_src = HIWEB_URL_ASSETS . '/img/noimg.png';
+			$default_hiweb_src = HIWEB_URL_ASSETS . '/noimg.png';
 			return ( !$force_hiweb_default && self::$default_image_file instanceof file ) ? self::$default_image_file->url : $default_hiweb_src;
 		}
 

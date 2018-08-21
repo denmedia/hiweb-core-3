@@ -16,6 +16,7 @@
 		public $filename = '';
 		public $extension = '';
 		public $dirname = '';
+		public $mime = '';
 		///
 		public $is_dir = false;
 		public $is_executable = false;
@@ -76,6 +77,7 @@
 				$this->fileowner = fileowner( $this->path );
 				$this->fileperms = fileperms( $this->path );
 				$this->filetype = filetype( $this->path );
+				$this->mime = mime_content_type( $this->path );
 			}
 		}
 
@@ -88,6 +90,9 @@
 		}
 
 
+		/**
+		 * @return bool|int
+		 */
 		public function get_size(){
 			$R = false;
 			if( $this->is_file ){
@@ -117,6 +122,15 @@
 				}
 			}
 			return $this->subFiles[ $maskKey ];
+		}
+
+
+		/**
+		 * Return true, if file is exists and image
+		 * @return bool
+		 */
+		public function is_image(){
+			return strpos($this->mime,'image') === 0;
 		}
 
 

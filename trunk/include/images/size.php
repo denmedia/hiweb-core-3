@@ -83,17 +83,13 @@
 					$editor->resize( $this->width, $this->height, $this->crop );
 					$R = $editor->save();
 					if ( is_array( $R ) ) {
+						console::debug_info( 'Создан новый файл изображения', $R );
 						$meta       = $this->parent_image->get_attachment_meta();
 						$this->path = $R['path'];
 						$this->src  = path::path_to_url( $this->path );
 						unset( $R['path'] );
 						$meta['sizes'][ $this->parent_image->size_to_string( $this->width, $this->height ) ] = $R;
-						$B = wp_update_attachment_metadata( $this->parent_image->attach_id(), $meta );
-						if ( $B ) {
-							console::debug_info( 'Создан новый файл изображения', $R );
-						} else {
-							//console::debug_error( 'Ошибка создания нового файла изображения', $R );
-						}
+						wp_update_attachment_metadata( $this->parent_image->attach_id(), $meta );
 
 						return ( $return_path ? $this->path : $this->src );
 					} else {

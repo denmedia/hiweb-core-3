@@ -71,10 +71,25 @@ $breakpoint: 1180px;
 		}
 	}
 
+	.button {
+		height: unset;
+		line-height: unset;
+	}
+
 }
 
 .hiweb-fields-form-default {
 	.hiweb-fieldset {
 		margin-bottom: 20px;
+	}
+}
+
+
+[data-tooltip]:hover{
+	&:before{
+		z-index: 99999;
+	}
+	&:after {
+		z-index: 99990;
 	}
 }

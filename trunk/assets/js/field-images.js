@@ -59,7 +59,7 @@ var hiweb_field_images = {
             title: 'Выбор изображения',
             library: {type: 'image'},
             multiple: true,
-            button: {text: 'Выбрать Изображения'}
+            button: {text: 'Выбрать файлы'}
         });
         gallery_window.on('select', function () {
             gallery_window.state().get('selection').map(function (attachment) {

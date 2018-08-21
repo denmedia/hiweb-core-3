@@ -72,7 +72,7 @@
 
 
 			/**
-			 * @return strings
+			 * @return string
 			 */
 			public function id(){
 				return $this->id;
@@ -80,9 +80,9 @@
 
 
 			/**
-			 * @param null|strings $set
+			 * @param null|string $set
 			 *
-			 * @return field|strings
+			 * @return field|string
 			 */
 			public function global_id( $set = null ){
 				if( is_null( $set ) ){
@@ -140,7 +140,7 @@
 			 *
 			 * @param null|strings $description
 			 *
-			 * @return field|null|strings
+			 * @return field|null|string
 			 */
 			public function description( $description = null ){
 				return $this->set_property( __FUNCTION__, $description );

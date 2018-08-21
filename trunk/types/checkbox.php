@@ -57,11 +57,13 @@
 			public function html(){
 				ob_start();
 				css( HIWEB_URL_CSS . '/field-checkbox.css' );
-				$rand_id = \hiweb\strings::rand(10);
+				$rand_id = \hiweb\strings::rand( 10 );
 				?>
 				<div class="hw-input-checkbox">
-					<input class="checkbox" type="checkbox" id="<?= $rand_id ?>" <?= $this->sanitize_attributes() ?> <?= $this->VALUE()->get_sanitized() ? 'checked="checked"' : '' ?>>
-					<label for="<?= $rand_id ?>"><?= $this->get_parent_field()->label_checkbox() ?></label>
+					<div class="ui toggle checkbox">
+						<input class="checkbox" type="checkbox" id="<?= $rand_id ?>" <?= $this->sanitize_attributes() ?> <?= $this->VALUE()->get_sanitized() ? 'checked="checked"' : '' ?>>
+						<label for="<?= $rand_id ?>"><?= $this->get_parent_field()->label_checkbox() ?></label>
+					</div>
 				</div>
 				<?php
 				return ob_get_clean();

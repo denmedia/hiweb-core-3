@@ -17,9 +17,17 @@ var hiweb_field_repeat = {
     selector_button_duplicate: '[data-action-duplicate]',
 
     init: function () {
-        jQuery('body').on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_add, hiweb_field_repeat.click_add).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_remove, hiweb_field_repeat.click_remove).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_duplicate, hiweb_field_repeat.click_duplicate).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_clear, hiweb_field_repeat.click_clear_full);
         hiweb_field_repeat.make_sortable();
+        jQuery(hiweb_field_repeat.selector + ' .dropdown')
+            .dropdown({
+                action: 'hide'
+            });
         // hiweb_field_repeat.make_table_names(jQuery(hiweb_field_repeat.selector));
+    },
+
+    init_once: function () {
+        jQuery('body').on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_add, hiweb_field_repeat.click_add).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_remove, hiweb_field_repeat.click_remove).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_duplicate, hiweb_field_repeat.click_duplicate).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_clear, hiweb_field_repeat.click_clear_full);
+        hiweb_field_repeat.init();
     },
 
     /**
@@ -165,7 +173,13 @@ var hiweb_field_repeat = {
         jQuery.ajax({
             url: ajaxurl + '?action=hiweb-field-repeat-get-row',
             type: 'post',
-            data: {id: hiweb_field_repeat.get_global_id(root), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(root), index: index, flex_row_id: flex_row_id},
+            data: {
+                id: hiweb_field_repeat.get_global_id(root),
+                method: 'ajax_html_row',
+                input_name: hiweb_field_repeat.get_name_id(root),
+                index: index,
+                flex_row_id: flex_row_id
+            },
             dataType: 'json',
             success: function (data) {
 
@@ -226,7 +240,12 @@ var hiweb_field_repeat = {
         jQuery.ajax({
             url: ajaxurl + '?action=hiweb-field-repeat-get-row',
             type: 'post',
-            data: {id: hiweb_field_repeat.get_global_id(this), method: 'ajax_html_row', input_name: hiweb_field_repeat.get_name_id(this), value: {}}, //todo: value
+            data: {
+                id: hiweb_field_repeat.get_global_id(this),
+                method: 'ajax_html_row',
+                input_name: hiweb_field_repeat.get_name_id(this),
+                value: {}
+            }, //todo: value
             dataType: 'json',
             success: function (data) {
                 if (data.hasOwnProperty('result') && data.result === true) {
@@ -301,4 +320,5 @@ var hiweb_field_repeat = {
 
 };
 
-jQuery(document).ready(hiweb_field_repeat.init);
+jQuery(document).ready(hiweb_field_repeat.init_once);
+jQuery('body').on('init_3', '.hiweb-field-repeat', hiweb_field_repeat.init);

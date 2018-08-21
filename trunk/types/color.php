@@ -41,7 +41,9 @@
 				///
 				ob_start();
 				?>
-				<input <?= $this->sanitize_attributes() ?>>
+				<div class="ui field">
+					<input <?= $this->sanitize_attributes() ?>>
+				</div>
 				<?php
 				return ob_get_clean();
 			}
