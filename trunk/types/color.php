@@ -41,7 +41,7 @@
 				///
 				ob_start();
 				?>
-				<div class="ui field">
+				<div class="ui input">
 					<input <?= $this->sanitize_attributes() ?>>
 				</div>
 				<?php

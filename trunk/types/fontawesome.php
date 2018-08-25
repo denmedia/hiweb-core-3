@@ -54,12 +54,15 @@
 				$this->attributes['value'] = $this->VALUE()->get();
 				$rnd_id = strings::rand(10);
 				?>
-				<div class="hiweb-field-fontawesome" data-dialog-title="Выбор иконки" data-rand-id="<?=$rnd_id?>">
+				<div class="hiweb-field-fontawesome ui action input" data-dialog-title="Выбор иконки" data-rand-id="<?=$rnd_id?>">
 					<input data-placement="top" class="form-control" <?= $this->sanitize_attributes() ?> type="text" data-rand-id="<?=$rnd_id?>"/>
 					<span class="input-group-addon">
 						<i class="<?= $this->VALUE()->get() ?>" aria-hidden="true"></i>
 					</span>
-					<a href="#" data-click class="button" title="Выбрать иконку" data-rand-id="<?=$rnd_id?>">...</a>
+					<!--<a href="#" data-click class="button" title="Выбрать иконку" data-rand-id="<?=$rnd_id?>">...</a>-->
+                    <button class="ui icon button" data-click data-rand-id="<?=$rnd_id?>">
+                        <i class="ellipsis horizontal icon"></i>
+                    </button>
 				</div>
 				<?php
 				return ob_get_clean();

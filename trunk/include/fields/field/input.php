@@ -93,7 +93,7 @@
 		 */
 		public function html(){
 			$this->attributes['value'] = $this->VALUE()->get_sanitized();
-			return '<input ' . $this->sanitize_attributes( $this->attributes ) . '>';
+			return '<div class="ui fluid input"><input ' . $this->sanitize_attributes( $this->attributes ) . '></div>';
 		}
 
 

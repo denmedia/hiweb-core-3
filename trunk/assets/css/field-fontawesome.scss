@@ -5,37 +5,34 @@
 	text-align: left;
 	display: inline-block;
 	.form-control {
-		padding-left: 40pt;
-		padding-right: 40pt;
-		line-height: 23pt;
+		padding-left: 40pt !important;
+		//padding-right: 40pt;
+		//line-height: 23pt;
 	}
 	.input-group-addon {
 		display: inline-block;
-		font-size: 25pt;
+		font-size: 23pt;
 		position: absolute;
 		left: 3px;
 		top: 4px;
-		line-height: 25pt;
+		line-height: 23pt;
 		width: 34pt;
 		text-align: center;
 		border-right: 1px solid #ccc;
-	}
-	.button {
-		position: absolute;
-		right: 2pt;
-		top: 2pt;
-		display: inline-block;
-		width: 25pt;
-		line-height: 25pt;
-		height: 25pt;
-	}
-	.input-group-addon {
 		border-right: 1px dotted grey;
-		display: inline-block;
-		width: 30pt;
-		line-height: 25pt;
 		height: 25pt;
+		overflow: hidden;
 	}
+
+	//.button {
+	//	position: absolute;
+	//	right: 2pt;
+	//	top: 2pt;
+	//	display: inline-block;
+	//	width: 25pt;
+	//	line-height: 25pt;
+	//	height: 25pt;
+	//}
 
 }
 
