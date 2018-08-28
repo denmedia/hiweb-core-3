@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAAA,mBAAoB,CACnB,KAAK,CAAE,IAAI,CACX,SAAS,CAAE,KAAK",
+"mappings": "AAAA,mBAAoB;EACnB,KAAK,EAAE,IAAI;EACX,SAAS,EAAE,KAAK",
 "sources": ["field-select.scss"],
 "names": [],
 "file": "field-select.css"

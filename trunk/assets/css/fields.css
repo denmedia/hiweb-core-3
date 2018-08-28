@@ -87,6 +87,10 @@
   .hiweb-fields-form .button {
     height: unset;
     line-height: unset; }
+  .hiweb-fields-form .menu {
+    padding-top: 0; }
+  .hiweb-fields-form .search {
+    background-color: transparent; }
 
 .hiweb-fields-form-default .hiweb-fieldset {
   margin-bottom: 20px; }

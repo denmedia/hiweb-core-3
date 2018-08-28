@@ -48,7 +48,7 @@
 
 			public function html(){
 				\hiweb\css( HIWEB_URL_CSS . '/field-textarea.css' );
-				return '<textarea class="hiweb-field-textarea" ' . $this->sanitize_attributes() . '>' . $this->VALUE()->get() . '</textarea>';
+				return '<textarea class="hiweb-field-textarea ui segment" ' . $this->sanitize_attributes() . '>' . $this->VALUE()->get() . '</textarea>';
 			}
 
 		}

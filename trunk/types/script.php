@@ -19,6 +19,9 @@
 	namespace hiweb\fields\types\script {
 
 
+		use hiweb\strings;
+
+
 		class field extends \hiweb\fields\field{
 
 
@@ -56,18 +59,23 @@
 				//				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/javascript/javascript.js' );
 				//				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/css/css.js' );
 				//				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/htmlmixed/htmlmixed.js' );
+				\hiweb\css( HIWEB_DIR_ASSETS . '/css/field-script.css' );
 				ob_start();
-				$rnd_id = $this->global_id() . '_' . \hiweb\strings::rand( 5 );
-				wp_enqueue_code_editor( [
-					'mode' => "text/html",
-					'lineWrapping' => true,
-					'lineNumbers' => true,
-					'inputStyle' => 'textarea',
-					'extraKeys' => [ "Ctrl-Space" => "autocomplete" ],
-					'theme' => $this->script_theme
-				] );
+				$rnd_id = $this->global_id() . '_' . strings::rand( 5 );
 				?>
-				<textarea name="<?= $this->name() ?>" id="<?= $rnd_id ?>"><?= $this->VALUE()->get() ?></textarea>
+				<div class="hiweb-field-script ui raised segment"><?php
+						wp_enqueue_code_editor( [
+							//'type' => "text/html",
+							'file' => 'file.php',
+							'lineWrapping' => true,
+							'lineNumbers' => true,
+							'inputStyle' => 'textarea',
+							'extraKeys' => [ "Ctrl-Space" => "autocomplete" ],
+							'theme' => $this->script_theme
+						] );
+					?>
+					<textarea name="<?= $this->name() ?>" id="<?= $rnd_id ?>"><?= $this->VALUE()->get() ?></textarea>
+				</div>
 				<script type="text/javascript">
                     window.onload = function () {
                         wp.codeEditor.initialize("<?= $rnd_id ?>", {

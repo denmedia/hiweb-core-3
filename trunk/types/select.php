@@ -19,6 +19,9 @@
 	namespace hiweb\fields\types\select {
 
 
+		use function hiweb\js;
+
+
 		class field extends \hiweb\fields\field{
 
 
@@ -45,6 +48,7 @@
 
 
 			public function html(){
+				\hiweb\js( HIWEB_DIR_JS . '/field-select.min.js' );
 				\hiweb\css( HIWEB_DIR_CSS . '/field-select.css' );
 				$options = [];
 				if( is_array( $this->options ) ) $options = $this->options;
@@ -56,7 +60,7 @@
 					}
 					$R .= '<option ' . $selected . ' value="' . htmlentities( $key, ENT_QUOTES, 'UTF-8' ) . '">' . $val . '</option>';
 				}
-				return '<select class="hiweb-field-select" ' . $this->sanitize_attributes() . '>' . $R . '</select>';
+				return '<div class="hiweb-field-select"><select class="ui fluid search selection dropdown" ' . $this->sanitize_attributes() . '>' . $R . '</select></div>';
 			}
 
 

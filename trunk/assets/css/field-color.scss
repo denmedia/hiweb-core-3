@@ -1,0 +1,27 @@
+.hiweb-field-color {
+
+	input {
+		width: 120px;
+	}
+
+	[data-colorpicker-wrap] {
+		width: 200px;
+		height: 200px;
+		overflow: hidden;
+		text-align: center;
+		img {
+			max-width: 200px;
+			max-height: 200px;
+			object-fit: contain;
+			cursor: crosshair;
+		}
+		canvas {
+			display: none;
+		}
+	}
+
+	.popup {
+		width: 220px;
+	}
+
+}

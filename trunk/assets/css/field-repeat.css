@@ -34,8 +34,6 @@
       -o-filter: blur(0.2px);
       -ms-filter: blur(0.2px);
       filter: blur(0.2px); }
-.hiweb-field-repeat .menu {
-  padding-top: 0; }
 .hiweb-field-repeat .ui.dropdown {
   z-index: 100; }
 .hiweb-field-repeat thead th {

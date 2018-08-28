@@ -24,6 +24,8 @@
 
 		class field extends \hiweb\fields\field{
 
+			protected $placeholder = '';
+
 
 			/**
 			 * @param null $set
@@ -31,6 +33,15 @@
 			 */
 			public function taxonomy( $set = null ){
 				return $this->set_input_property( __FUNCTION__, $set );
+			}
+
+
+			/**
+			 * @param null $set
+			 * @return $this|string
+			 */
+			public function placeholder( $set = null ){
+				return $this->set_property( __FUNCTION__, $set );
 			}
 
 
@@ -94,8 +105,8 @@
 				ob_start();
 				$terms_by_taxonomy = $this->get_terms_by_taxonomy();
 				?>
-				<div class="hw-input-terms">
-					<select class="hw-input-terms-select" name="<?= $this->name() ?>[]" <?= $this->sanitize_attributes() ?>>
+				<div class="hiweb-field-terms">
+					<select class="ui fluid search dropdown" name="<?= $this->name() ?>[]" <?= $this->sanitize_attributes() ?>>
 						<?php
 
 							foreach( $terms_by_taxonomy as $taxonomy_name => $terms ){

@@ -20,6 +20,7 @@
 
 
 		use hiweb\arrays;
+		use hiweb\images;
 		use hiweb\path;
 
 
@@ -83,32 +84,31 @@
 			}
 
 
-			private function html_row( $img_id = null ){
-				$img_src = false;
-				$img_path = '';
-				if( !is_null( $img_id ) ){
-					$img_url = wp_get_attachment_image_src( $img_id, [
-						$this->preview_width,
-						$this->preview_height
-					] );
-					if( $img_url !== false ){
-						$img_path = path::url_to_path( $img_url[0] );
-					}
-					if( trim( $img_path ) != '' && file_exists( $img_path ) && is_file( $img_path ) && is_readable( $img_path ) ){
-						$img_src = $img_url[0];
-					}
+			private function html_row( $IMAGE = null ){
+				$is_source = false;
+				if( !( $IMAGE instanceof images\image ) ){
+					$is_source = true;
+					$IMAGE = images::get( 0 );
 				}
-				if( is_null( $img_id ) || ( is_string( $img_src ) && trim( $img_src ) != '' ) ){
+				if( $is_source || $IMAGE->is_attachment_exists() ){
 					?>
-					<li tabindex="0" <?= is_null( $img_id ) ? 'data-source' : 'data-image-id="' . $img_id . '"' ?> class="attachment" style="width: <?= $this->get_col_width() ?>;">
-						<input type="hidden" value="<?= $img_id ?>" <?= is_null( $img_id ) ? 'data-' : '' ?>name="<?= $this->name() ?>[]"/>
-						<div class="attachment-preview type-image subtype-png landscape">
-							<div class="thumbnail">
-								<div data-click-remove=""><i class="dashicons dashicons-dismiss"></i></div>
-								<div class="centered">
-									<img src="<?= $img_src ?>" alt="">
+					<li tabindex="0" <?= $is_source ? 'data-source' : 'data-image-id="' . $IMAGE->attach_id() . '"' ?> data-file-name data-tooltip="<?=$is_source ? '' : $IMAGE->filename()?>" data-variation="mini">
+						<div class="inner">
+							<input type="hidden" value="<?= $IMAGE->attach_id() ?>" <?= $is_source ? 'data-' : '' ?>name="<?= $this->name() ?>[]"/>
+							<div class="overlay">
+								<div class="background"></div>
+								<div data-ctrl>
+									<div class="ui buttons">
+										<div class="ui icon primary button" data-click-edit>
+											<i class="edit outline icon"></i>
+										</div>
+										<div class="ui icon button" data-click-remove>
+											<i class="window close outline icon"></i>
+										</div>
+									</div>
 								</div>
 							</div>
+							<img src="<?= $IMAGE->get_src() ?>" alt="">
 						</div>
 					</li>
 					<?php
@@ -118,47 +118,70 @@
 
 			public function html(){
 				wp_enqueue_media();
-				\hiweb\js( HIWEB_DIR_JS . '/field-images.js', [ 'jquery-ui-sortable' ] );
-				\hiweb\css( HIWEB_DIR_CSS . '/field-images.css' );
+				\hiweb\js( HIWEB_DIR_JS . '/field-images.min.js', [ 'jquery-ui-sortable' ] );
+				\hiweb\css( HIWEB_DIR_CSS . '/field-images.min.css' );
 				////
+				$IMAGES = [];
+				foreach( $this->VALUE()->get_sanitized() as $image_id ){
+					$IMAGE = images::get( $image_id );
+					if( $IMAGE->is_attachment_exists() ){
+						$IMAGES[  ] = $IMAGE;
+					}
+				}
 				ob_start();
 				?>
-				<div class="postbox hiweb-field-images" <?= $this->sanitize_attributes() ?>>
-
-					<div data-ctrl>
-						<button><i class="dashicons dashicons-update" data-click-reverse></i></button>
-						<button><i class="dashicons dashicons-marker" data-click-clear></i></button>
-						<button><i class="dashicons dashicons-plus-alt" data-click-add></i></button>
-					</div>
-
-					<ul tabindex="-1" class="attachments">
-						<li class="attachment" data-ctrl-sub="left" style="width: <?= $this->get_col_width() ?>;">
-							<div class="attachment-preview">
-								<div class="thumbnail">
-									<i class="dashicons dashicons-plus-alt"></i>
+				<div class="hiweb-field-images" data-images-count="<?= count( $IMAGES ) ?>">
+					<div class="ui segments">
+						<div class="ui mini top attached menu">
+							<div class="ui item">
+								Изображений: <b data-images-count class="text"><?= count( $IMAGES ) ?></b>
+							</div>
+							<div class="ui right dropdown icon item">
+								<i class="ellipsis vertical icon"></i>
+								<div class="menu">
+									<div class="item">
+										<i class="plus square icon"></i>
+										<span class="text" data-ctrl-sub="right">Добавить файл(ы) в конце</span>
+									</div>
+									<div class="item">
+										<i class="plus square outline icon"></i>
+										<span class="text" data-ctrl-sub="left">Добавить файл(ы) в начале</span>
+									</div>
+									<div class="divider"></div>
+									<div class="item" data-click-reverse>
+										<i class="retweet icon"></i>
+										<span class="text">Обратить порядок</span>
+									</div>
+									<div class="item" data-click-random>
+										<i class="random icon"></i>
+										<span class="text">Смешать порядок</span>
+									</div>
+									<div class="divider"></div>
+									<div class="item" data-click-clear>
+										<i class="trash alternate icon"></i>
+										<span class="text">Убрать все изображения</span>
+									</div>
 								</div>
 							</div>
-						</li>
-						<?php $this->html_row() ?>
-						<div class="items">
-							<?php
-								if( $this->VALUE()->have_images() ){
-									foreach( $this->VALUE()->get_sanitized() as $item ){
-										$this->html_row( $item );
-									}
-								}
-							?>
 						</div>
-						<li class="attachment" data-ctrl-sub="right" style="width: <?= $this->get_col_width() ?>;">
-							<div class="attachment-preview">
-								<div class="thumbnail">
-									<i class="dashicons dashicons-plus-alt"></i>
-								</div>
+						<div class="ui bottom attached secondary segment">
+							<div data-message-empty>
+								Не выбрано ни одного изображения. Для добавления одного или более, кликните по кнопке сверху справа
+								<button class="ui tiny labeled primary icon button" data-click-add>
+									<i class="plus icon"></i>
+									Добавить изображение
+								</button>
 							</div>
-						</li>
-					</ul>
-					<div class="clear"></div>
-
+							<ul data-images-wrap>
+								<?php
+									$this->html_row();
+									foreach( $IMAGES as $IMAGE ){
+										$this->html_row( $IMAGE );
+									}
+								?>
+							</ul>
+						</div>
+					</div>
 				</div>
 				<?php
 				////
