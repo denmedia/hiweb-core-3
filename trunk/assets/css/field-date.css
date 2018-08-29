@@ -1,3 +1,5 @@
+.hiweb-field-date .ui.popup {
+  padding: 0.233em 0; }
 .hiweb-field-date [data-calendarpicker] div.zabuto_calendar .table tr.calendar-month-header td {
   padding: 0; }
 .hiweb-field-date [data-calendarpicker] div.zabuto_calendar .table tr.calendar-month-header td span {

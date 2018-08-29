@@ -56,14 +56,19 @@
 				if( $index < 0 ){
 					$array = array_reverse( $array );
 				}
+				$pushed = false;
 				foreach( $array as $k => $v ){
 					if( $n == abs( $index ) ){
 						if( is_numeric( $key ) || is_string( $key ) ) $R[ $key ] = $value; else $R[] = $value;
+						$pushed = true;
 					}
 					if( array_key_exists( $k, $R ) ){
 						if( is_int( $k ) ) $R[ intval( $k ) + 1 ] = $v;
 					} else $R[ $k ] = $v;
 					$n ++;
+				}
+				if(!$pushed) {
+					if( is_numeric( $key ) || is_string( $key ) ) $R[ $key ] = $value; else $R[] = $value;
 				}
 				$array = $R;
 				if( $index < 0 ){
@@ -83,17 +88,17 @@
 		 * @param $destination_index
 		 * @return array
 		 */
-		static function move($array, $source_key, $destination_index){
-			if(!array_key_exists($source_key, $array)) return $array;
-			$item = $array[$source_key];
-			unset($array[$source_key]);
+		static function move( $array, $source_key, $destination_index ){
+			if( !array_key_exists( $source_key, $array ) ) return $array;
+			$item = $array[ $source_key ];
+			unset( $array[ $source_key ] );
 			return self::push( $array, $item, $destination_index, $source_key );
 		}
 
 
 		/**
 		 * Возвращает значение ключа по его индексу
-		 * @param array $array
+		 * @param array     $array
 		 * @param int|array $index = номер (массив номеров) индекса значения. Напрмиер 0 - первый ключ. Чтобы получить последний ключ, укажите -1, так же - 2 вернет предпоследний ключ. Если индекс ключа превысит
 		 * @return mixed
 		 */
@@ -121,11 +126,9 @@
 
 		/**
 		 * Осуществляет поиск значения в массиве и возвращает ключ
-		 *
 		 * @param      $array
 		 * @param      $search_value
 		 * @param bool $use_regexp
-		 *
 		 * @return int|null|strings|array
 		 */
 		static function find_key_by_value( $array, $search_value, $use_regexp = false ){
@@ -214,10 +217,8 @@
 
 		/**
 		 * Ищет и возвращает массив ключей, чьи значения совпадают с $needle или FALSE - если ничего не найдено. Возвращаемый массив имеет вид: array(ключ => номер найденного).
-		 *
-		 * @param array  $haystack - массив, в котором искать совпадения со значениями
+		 * @param array   $haystack - массив, в котором искать совпадения со значениями
 		 * @param strings $needle   - необходимый фрагмент для поиска
-		 *
 		 * @return array|bool
 		 */
 		static function strPos_keys( $haystack = [], $needle = '' ){
@@ -235,10 +236,8 @@
 
 		/**
 		 * Возвращает массив array(ключ => номер найденного) или FALSE - если ничего не найдено
-		 *
-		 * @param array  $needle   - массив фрагментов для поиска
+		 * @param array   $needle   - массив фрагментов для поиска
 		 * @param strings $haystack - строка, в которой произвести поиск
-		 *
 		 * @return array|bool
 		 */
 		static function strPos( $needle = [], $haystack = '' ){
@@ -280,11 +279,9 @@
 
 		/**
 		 * Возвращает значение ключа из массива, а так же вложенные значения, например array1(key1 => array2(key2 => value))
-		 *
-		 * @param array|object         $haystack - целевой массив
+		 * @param array|object          $haystack - целевой массив
 		 * @param strings|integer|array $keyMix   - ключ (массив вложенных ключей) в целевом массиве
-		 * @param mixed                $def      - вернуть значение, если значение не найдено
-		 *
+		 * @param mixed                 $def      - вернуть значение, если значение не найдено
 		 * @return mixed
 		 * @version 1.2
 		 */
@@ -320,38 +317,35 @@
 
 		/**
 		 * @param strings $needle
-		 * @param array $haystack
+		 * @param array   $haystack
 		 * @return bool
 		 */
-		static function in_array($needle = '',$haystack = []){
-			if(!is_array($haystack)) $haystack = [$haystack];
-			$haystack = @array_flip($haystack);
-			if(array_key_exists($needle, $haystack)) return true;
+		static function in_array( $needle = '', $haystack = [] ){
+			if( !is_array( $haystack ) ) $haystack = [ $haystack ];
+			$haystack = @array_flip( $haystack );
+			if( array_key_exists( $needle, $haystack ) ) return true;
 			return false;
 		}
 
 
 		/**
-		 * @param array $haystack
+		 * @param array   $haystack
 		 * @param strings $value
-		 *
 		 * @return array
 		 */
-		static function unset_by_value($haystack = [], $value = '') {
-			if(!is_array($haystack)) $haystack = [$haystack];
+		static function unset_by_value( $haystack = [], $value = '' ){
+			if( !is_array( $haystack ) ) $haystack = [ $haystack ];
 			$haystack_flip = array_flip( $haystack );
-			if(array_key_exists($value, $haystack_flip)) unset($haystack[ $haystack_flip[$value] ]);
+			if( array_key_exists( $value, $haystack_flip ) ) unset( $haystack[ $haystack_flip[ $value ] ] );
 			return $haystack;
 		}
 
 
 		/**
 		 * Возвращает значение, найденное по ключу в массиве, исключая вложенные массивы
-		 *
-		 * @param array $haystack - целевой массив
+		 * @param array   $haystack - целевой массив
 		 * @param strings $keyMix   - список проверяемых ключей
-		 * @param null   $def      - значение, которое будлет вернуто в случае неудачи
-		 *
+		 * @param null    $def      - значение, которое будлет вернуто в случае неудачи
 		 * @return null
 		 * @version 1.0
 		 */
@@ -465,10 +459,8 @@
 
 		/**
 		 * Return free key in array
-		 *
 		 * @param      $haystack
 		 * @param null $must_key
-		 *
 		 * @return bool|strings
 		 */
 		static function get_free_key( $haystack, $must_key = null ){

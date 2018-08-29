@@ -14,10 +14,16 @@
 	//Post type Meta Box
 	add_action( 'add_meta_boxes', 'hiweb\\fields\\locations\\admin::add_meta_boxes', 8, 2 );
 	///Posts List Columns
-	//add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
-	//add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
-	//add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 1 );
-	//add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 2 );
+	add_action( 'manage_pages_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
+	add_action( 'manage_posts_custom_column', 'hiweb\\fields\\locations\\admin::manage_posts_custom_column', 10, 2 );
+	add_filter( 'manage_pages_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 1 );
+	add_filter( 'manage_posts_columns', 'hiweb\\fields\\locations\\admin::manage_posts_columns', 10, 2 );
+	//Sort Columns
+	add_action( 'admin_init', function(){
+		foreach( get_post_types() as $post_type ){
+			add_filter( 'manage_edit-' . $post_type . '_sortable_columns', 'hiweb\\fields\\locations\\admin::manage_posts_sortable_columns', 10, 1 );
+		}
+	} );
 	///Post Save
 	add_action( 'save_post', 'hiweb\\fields\\locations\\admin::save_post', 10, 3 );
 	//	////////
@@ -51,5 +57,5 @@
 	//	///ADMIN MENU FIELDS
 	//	add_action( 'current_screen', [ $this, 'admin_menu_fields' ], 999999 );
 
-/// THEME SETTINGS
-	add_action('customize_register' ,'hiweb\\fields\\locations\\admin::customize_register');
+	/// THEME SETTINGS
+	add_action( 'customize_register', 'hiweb\\fields\\locations\\admin::customize_register' );

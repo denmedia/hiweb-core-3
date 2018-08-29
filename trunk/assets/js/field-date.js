@@ -26,17 +26,17 @@ jQuery(document).ready(function ($) {
                         hide: 800
                     }
                 });
-            $(root).find('[data-calendarpicker]').zabuto_calendar({
+            $(root).find('[data-calendarpicker="1"]').zabuto_calendar({
                 language: "ru",
                 cell_border: false,
                 nav_icon: {
                     prev: '<i class="angle left icon"></i>',
                     next: '<i class="angle right icon"></i>'
                 },
-                action: function() {
-                    $(root).find('input[name]').val( $(this).data("date") );
+                action: function () {
+                    $(root).find('input[name]').val($(this).data("date"));
                 }
-            });
+            }).attr('data-calendarpicker', '0');
         }
 
     };

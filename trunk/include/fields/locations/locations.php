@@ -59,8 +59,17 @@
 		 * @return location[]
 		 */
 		static function get_locations_by_contextLocation( location $context_location ){
+			return self::get_locations_by_options($context_location->_get_options());
+		}
+
+
+		/**
+		 * @param array $options
+		 * @return location[]
+		 */
+		static function get_locations_by_options(array $options) {
 			$R = [];
-			foreach( $context_location->_get_options() as $context_options_type => $context_options ){
+			foreach( $options as $context_options_type => $context_options ){
 				foreach( self::$locations as $location_id => $register_location ){
 					foreach( $register_location->_get_options() as $register_options_type => $register_options ){
 						if( $context_options_type != $register_options_type ) continue;

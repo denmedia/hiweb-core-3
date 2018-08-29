@@ -61,9 +61,7 @@
 						</button>
 
 						<div class="ui flowing popup top center transition hidden">
-							<div data-calendarpicker>
-
-							</div>
+							<div data-calendarpicker="1"></div>
 						</div>
 
 					</div>

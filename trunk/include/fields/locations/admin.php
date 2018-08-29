@@ -3,7 +3,9 @@
 	namespace hiweb\fields\locations;
 
 
+	use hiweb\arrays;
 	use hiweb\console;
+	use hiweb\fields;
 	use hiweb\fields\field;
 	use hiweb\fields\forms;
 	use hiweb\strings;
@@ -114,14 +116,61 @@
 		//COLUMNS POST TYPE MANAGE
 
 		static function manage_posts_custom_column( $columns_name, $post_id ){
-			//todo
+			if( strpos( $columns_name, 'hiweb-field-' ) === 0 ){
+				$field_id = substr( $columns_name, strlen( 'hiweb-field-' ) );
+				$field = fields::get( $field_id );
+				$column_manager_options = $field->LOCATION()->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
+				if( isset( $column_manager_options['callback'] ) && is_callable( $column_manager_options['callback'] ) ){
+					call_user_func( $column_manager_options['callback'], $post_id, $field );
+				} else {
+					echo $field->CONTEXT( get_post( $post_id ) )->VALUE()->get_sanitized();
+				}
+			}
 		}
 
 
 		static function manage_posts_columns( $posts_columns, $post_type = 'page' ){
-			//todo
+			$context_locations = locations::get_locations_by_options( [
+				'post_types' => [
+					'post_type' => $post_type
+				]
+			] );
+			/** @var field[] $fields */
+			foreach( $context_locations as $location ){
+				if( array_key_exists( 'COLUMNS_MANAGER', $location->_get_options_by_type( 'post_types' ) ) ){
+					foreach( locations::get_fields_by_contextLocation( $location ) as $field_id => $field ){
+						$column_manager_options = $location->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
+						$posts_columns = arrays::push( $posts_columns, $column_manager_options['name'], $column_manager_options['position'], 'hiweb-field-' . $field->id() );
+					}
+				}
+			}
+			return $posts_columns;
 		}
 
+
+		/**
+		 * @param $sortable_columns
+		 * @return array
+		 */
+		static function manage_posts_sortable_columns( $sortable_columns ){
+			$context_locations = locations::get_locations_by_options( [
+				'post_types' => [
+					'post_type' => get_current_screen()->post_type
+				]
+			] );
+			foreach( $context_locations as $location ){
+				$location_options = $location->_get_options_by_type( 'post_types' );
+				if( array_key_exists( 'COLUMNS_MANAGER', $location_options ) && array_key_exists( 'sortable', $location_options['COLUMNS_MANAGER'] ) && $location_options['COLUMNS_MANAGER']['sortable'] ){
+					foreach( locations::get_fields_by_contextLocation( $location ) as $field_id => $field ){
+						$sortable_columns['hiweb-field-' . $field->id()] = 'hiweb-field-' . $field->id();
+					}
+				}
+			}
+			return $sortable_columns;
+		}
+
+
+		///SAVE POST
 
 		static function save_post( $post_id, $post, $update ){
 			$location = locations::get_abstractLocation_from_contextObject( $post );
@@ -151,7 +200,7 @@
 		static function taxonomy_edit_form( $term, $taxonomy ){
 			$context_location = locations::get_abstractLocation_from_contextObject( $term );
 			$fields = locations::get_fields_by_contextLocation( $context_location );
-			forms::the_form_by_fields( $fields, $term,'term-edit' );
+			forms::the_form_by_fields( $fields, $term, 'term-edit' );
 		}
 
 
@@ -176,7 +225,7 @@
 
 		/**
 		 * @param \WP_User $wp_user
-		 * @param null $position
+		 * @param null     $position
 		 * @return array|field[]
 		 */
 		static private function get_users_fields( $wp_user, $position = null ){
