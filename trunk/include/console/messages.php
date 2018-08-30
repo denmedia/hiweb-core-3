@@ -30,10 +30,10 @@
 
 		/**
 		 * Print messages script
-		 * @version 1.1
+		 * @version 1.2
 		 */
 		static function the(){
-			if( is_array( self::$messages ) && !context::is_ajax() && !context::is_cron() ){
+			if( is_array( self::$messages ) && !context::is_ajax() && (context::is_frontend_page() || context::is_login_page() || context::is_admin_page()) ){
 				foreach( self::$messages as $message ){
 					if( $message instanceof message ) $message->the();
 				}

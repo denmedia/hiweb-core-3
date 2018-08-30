@@ -768,6 +768,26 @@
 
 
 		/**
+		 * Возвращает свободное имя файла в папке
+		 * @param      $filePath - желаемый путь
+		 * @return string
+		 */
+		static function get_freeFileName( $filePath ){
+			if( !file_exists( $filePath ) ){
+				return $filePath;
+			}
+			$FILE = files::get( $filePath );
+			for( $n = 1; $n < 9999; $n ++ ){
+				$test_path = $FILE->dirname . '/' . $FILE->filename . '-' . sprintf( "%04d", $n ) . '.' . $FILE->extension;
+				if( !file_exists( $test_path ) ){
+					return $test_path;
+				}
+			}
+			return $FILE->dirname . '/' . $FILE->filename . '-' . strings::rand( 5 ) . '.' . $FILE->extension;
+		}
+
+
+		/**
 		 * Upload file or files
 		 *
 		 * @param $_fileOrUrl - $_FILES[file_id]
@@ -801,7 +821,8 @@
 			$wp_filetype   = wp_check_filetype( $fileName, null );
 			$wp_upload_dir = wp_upload_dir();
 			$newPath       = $wp_upload_dir['path'] . '/' . sanitize_file_name( $fileName );
-			if ( ! copy( $tmp_name, $newPath ) ) {
+			$newPath = self::get_freeFileName( $newPath );
+			if( !copy( $tmp_name, $newPath ) ){
 				return - 2;
 			}
 			$attachment    = [ 'guid' => $wp_upload_dir['url'] . '/' . $fileName, 'post_mime_type' => $wp_filetype['type'], 'post_title' => preg_replace( '/\.[^.]+$/', '', $fileName ), 'post_content' => '', 'post_status' => 'inherit' ];
