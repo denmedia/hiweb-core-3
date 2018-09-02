@@ -9,13 +9,12 @@
 	namespace {
 
 
-		if ( ! function_exists( 'add_field_content' ) ) {
+		if( !function_exists( 'add_field_content' ) ){
 			/**
 			 * @param $id
-			 *
 			 * @return \hiweb\fields\types\content\field
 			 */
-			function add_field_content( $id ) {
+			function add_field_content( $id ){
 				$new_field = new hiweb\fields\types\content\field( $id );
 				hiweb\fields::register_field( $new_field );
 
@@ -36,12 +35,12 @@
 
 		class field extends \hiweb\fields\field{
 
-			protected function get_input_class() {
+			protected function get_input_class(){
 				return __NAMESPACE__ . '\\input';
 			}
 
 
-			protected function get_value_class() {
+			protected function get_value_class(){
 				return __NAMESPACE__ . '\\value';
 			}
 
@@ -50,27 +49,38 @@
 
 		class input extends \hiweb\fields\input{
 
-			public function __construct( \hiweb\fields\field $field, \hiweb\fields\value $value ) {
+			static $first_init = false;
+
+
+			public function __construct( \hiweb\fields\field $field, \hiweb\fields\value $value ){
 				parent::__construct( $field, $value );
-				if ( \hiweb\context::is_admin_page() && ! \hiweb\context::is_ajax() && ! \hiweb\context::is_rest_api() ) {
+			}
+
+
+			public function first_init(){
+				if( self::$first_init ){
+					return;
+				}
+				self::$first_init;
+				if( \hiweb\context::is_admin_page() && !\hiweb\context::is_ajax() && !\hiweb\context::is_rest_api() ){
 					css( WPINC . '/css/editor.min.css' );
 					global $tinymce_version, $concatenate_scripts, $compress_scripts;
 
-					if ( ! isset( $concatenate_scripts ) ) {
+					if( !isset( $concatenate_scripts ) ){
 						script_concat_settings();
 					}
 
-					$suffix  = SCRIPT_DEBUG ? '' : '.min';
+					$suffix = SCRIPT_DEBUG ? '' : '.min';
 					$version = 'ver=' . $tinymce_version;
 					$baseurl = includes_url( 'js/tinymce' );
 
 					$has_custom_theme = false;
 
-					$compressed = $compress_scripts && $concatenate_scripts && isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== stripos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && ! $has_custom_theme;
+					$compressed = $compress_scripts && $concatenate_scripts && isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== stripos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && !$has_custom_theme;
 
 					$mce_suffix = false !== strpos( get_bloginfo( 'version' ), '-src' ) ? '' : '.min';
 
-					if ( $compressed ) {
+					if( $compressed ){
 						$tinymce = include_js( "{$baseurl}/wp-tinymce.php?c=1&amp;$version" );
 					} else {
 						$tinymce = include_js( "{$baseurl}/tinymce{$mce_suffix}.js?$version" );
@@ -78,9 +88,9 @@
 					}
 					wp_enqueue_media();
 					js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js' );
-					js( path::realpath(WPINC) . '/js/quicktags.min.js' );
+					js( path::realpath( WPINC ) . '/js/quicktags.min.js' );
 					js( HIWEB_DIR_JS . '/field-content.js', [ 'jquery', 'editor', $tinymce ] );
-					add_action( 'admin_head', function() {
+					add_action( 'admin_head', function(){
 						?>
 						<script type="text/javascript">
                             window.hiweb_field_content_tinymce_default = {
@@ -178,11 +188,13 @@
 				}
 			}
 
-			public function html() {
+
+			public function html(){
+				$this->first_init();
 				ob_start();
-				$rand_id                          = strings::rand( 10 );
+				$rand_id = strings::rand( 10 );
 				$this->attributes['data-rand-id'] = $rand_id;
-				$this->attributes['id']           = $rand_id;
+				$this->attributes['id'] = $rand_id;
 				?>
 			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>">
 				<div id="wp-<?= $rand_id ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
@@ -208,7 +220,7 @@
 
 		class value extends \hiweb\fields\value{
 
-			public function get_content() {
+			public function get_content(){
 				return apply_filters( 'the_content', $this->get_sanitized() );
 			}
 
