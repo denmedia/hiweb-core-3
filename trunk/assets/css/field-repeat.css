@@ -34,13 +34,14 @@
       -o-filter: blur(0.2px);
       -ms-filter: blur(0.2px);
       filter: blur(0.2px); }
-.hiweb-field-repeat .ui.dropdown {
-  z-index: 100; }
-.hiweb-field-repeat thead th {
+.hiweb-field-repeat thead .ui.dropdown {
+  z-index: 1150; }
+.hiweb-field-repeat tfoot .ui.dropdown {
+  z-index: 1050; }
+.hiweb-field-repeat .ui.table thead th, .hiweb-field-repeat .ui.table tfoot th {
   padding: 4px 6px; }
 .hiweb-field-repeat tbody[data-rows-list] tr [data-ctrl] {
-  padding: 2px;
-  width: 36px; }
+  padding: 2px; }
   .hiweb-field-repeat tbody[data-rows-list] tr [data-ctrl] .ui.menu .item {
     padding: 12px 10px; }
 .hiweb-field-repeat tbody[data-rows-list] tr [data-drag] {
@@ -64,5 +65,16 @@
   width: 100%; }
   .hiweb-field-repeat .hiweb-field-repeat-flex .hiweb-field-repeat-flex-header {
     border-bottom: none; }
+  .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table tr > td {
+    border-top: 1px solid rgba(34, 36, 38, 0.1); }
+  .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table tr:first-child > td {
+    border-top: none; }
+  .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table thead th, .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table tfoot th {
+    font-size: 80%;
+    padding: 0.4em 0.5em; }
+  .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table thead .ui.dropdown {
+    z-index: 1020; }
+  .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table tfoot .ui.dropdown {
+    z-index: 1010; }
 
 /*# sourceMappingURL=field-repeat.css.map */

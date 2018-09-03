@@ -2,219 +2,119 @@
 
 .hiweb-field-repeat {
 
-  table.ui.table {
+	table.ui.table {
+		@include box-shadow(8px, .1);
 
-    @include box-shadow(8px, .1);
+		tbody[data-rows-message] {
+			[data-row-empty="1"] {
+				display: none;
+			}
+		}
 
-    //&.widefat thead td, &.widefat thead th {
-    //	border: none;
-    //}
-    //
-    //.nowrap[data-ctrl] {
-    //	white-space: nowrap;
-    //}
-    //
-    //.flex-column {
-    //	width: 100%;
-    //}
-    //
-    //[data-ctrl] {
-    //	position: relative;
-    //	button {
-    //		background: transparent;
-    //		border: none;
-    //		padding: 0;
-    //		width: 20px;
-    //		height: 20px;
-    //		opacity: 0.5;
-    //		cursor: pointer;
-    //		@include transition();
-    //		&:hover {
-    //			opacity: 1;
-    //			transform: scale(1.3);
-    //		}
-    //	}
-    //	[data-sub-flex-dropdown] {
-    //		position: absolute;
-    //		z-index: 10000;
-    //		border: 1px solid #ccc;
-    //		background: #fff;
-    //		padding: 12px 24px;
-    //		display: none;
-    //		right: 0;
-    //		@include box-shadow(8px, .1);
-    //		div {
-    //			text-align: center;
-    //			a {
-    //				display: inline-block;
-    //				padding-bottom: 0;
-    //				margin: 3px 12px 8px 12px;
-    //				border-bottom: 1px solid #fff;
-    //				@include transition();
-    //				&:hover {
-    //					padding-bottom: 5px;
-    //					margin: 3px 12px 3px 12px;
-    //					border-bottom: 1px solid #000;
-    //				}
-    //			}
-    //		}
-    //	}
-    //}
-    //
-    //thead, tfoot {
-    //	tr, th {
-    //		text-align: center;
-    //	}
-    //}
-    //
-    //tbody[data-rows-source] {
-    //	opacity: 0.3;
-    //	display: none;
-    //}
-    //
-    //tbody[data-rows-list] {
-    //	thead, tfoot {
-    //		th {
-    //			padding: 0;
-    //			font-size: 0.9em;
-    //		}
-    //	}
-    //
-    //	tr {
-    //		[data-ctrl] {
-    //			padding: auto 2px;
-    //			width: 38px;
-    //		}
-    //
-    //		[data-drag] {
-    //			background-image: url(../img/pattern-2.png);
-    //			cursor: move;
-    //			border-right: 1px dotted #eee;
-    //			border-bottom: 1px dotted #eee;
-    //			width: 16px;
-    //			padding: 8px 2px;
-    //			button, i {
-    //				cursor: move;
-    //			}
-    //			i {
-    //				opacity: 0.5;
-    //			}
-    //			&:hover i {
-    //				opacity: 1;
-    //			}
-    //		}
-    //
-    //		&:last-child [data-drag] {
-    //			border-bottom: none;
-    //		}
-    //	}
-    //
-    //}
+		tr[data-row] {
+			@include transition((transform, opacity, box-shadow, filter), 500ms);
 
-    tbody[data-rows-message] {
-      [data-row-empty="1"] {
-        display: none;
-      }
-    }
+			&.ui-sortable-helper {
+				padding: 0;
+				background-color: white;
+				@include transition((transform, opacity, box-shadow, filter), 200ms);
+				transform: scale(1.02);
+				z-index: 10000 !important;
+				@include opacity(0.85);
+				@include box-shadow(10px, 0.1, 10px, 20px);
+				@include filter(blur(0.2px));
+			}
+		}
 
-    tr[data-row] {
-    	@include transition((transform, opacity, box-shadow, filter), 500ms);
+	}
 
-    	&.ui-sortable-helper {
-          padding: 0;
-    		background-color: white;
-    		@include transition((transform, opacity, box-shadow, filter), 200ms);
-    		transform: scale(1.02);
-    		z-index: 10000 !important;
-    		@include opacity(0.85);
-    		@include box-shadow(10px, 0.1, 10px, 20px);
-    		@include filter(blur(0.2px));
-    	}
-    }
-    //
-    //th {
-    //
-    //	.description {
-    //		font-size: 85%;
-    //		margin: 0;
-    //	}
-    //}
-    //
-    //td {
-    //	text-align: center;
-    //	vertical-align: top;
-    //	padding: 4px 5px;
-    //
-    //	&[data-ctrl] {
-    //	}
-    //
-    //}
+	thead {
+		.ui.dropdown {
+			z-index: 1150;
+		}
+	}
+	tfoot {
+		.ui.dropdown {
+			z-index: 1050;
+		}
+	}
 
-  }
+	.ui.table {
 
-  //&[data-flex] > table > tbody > tr[data-flex-id] {
-  //	@include box-shadow(35px, .2, 0, -10px, false);
-  //	& > td {
-  //		padding-bottom: 30px;
-  //		.flex-label {
-  //			font-size: 12pt;
-  //			margin-bottom: 2pt;
-  //		}
-  //	}
-  //}
+		thead th, tfoot th {
+			padding: 4px 6px;
+		}
+	}
 
-  .ui.dropdown {
-    z-index: 100;
-  }
+	tbody[data-rows-list] {
+		tr {
+			[data-ctrl] {
+				padding: 2px;
+				.ui.menu .item {
+					padding: 12px 10px;
+				}
+			}
 
-  thead th {
-    padding: 4px 6px;
-  }
+			[data-drag] {
+				background-image: url(../img/pattern-2.png);
+				cursor: move;
+				border-right: 1px dotted #eee;
+				border-bottom: 1px dotted #eee;
+				width: 16px;
+				padding: 8px 2px;
+				button, i {
+					cursor: move;
+				}
+				i {
+					opacity: 0.5;
+				}
+				&:hover i {
+					opacity: 1;
+				}
+			}
 
-  tbody[data-rows-list] {
-    tr {
-      [data-ctrl] {
-        padding: 2px;
-        width: 36px;
-        .ui.menu .item {
-          padding: 12px 10px;
-        }
-      }
+			.flex-column {
+				padding: 0;
+			}
 
-      [data-drag] {
-        background-image: url(../img/pattern-2.png);
-        cursor: move;
-        border-right: 1px dotted #eee;
-        border-bottom: 1px dotted #eee;
-        width: 16px;
-        padding: 8px 2px;
-        button, i {
-          cursor: move;
-        }
-        i {
-          opacity: 0.5;
-        }
-        &:hover i {
-          opacity: 1;
-        }
-      }
+			&:last-child [data-drag] {
+				border-bottom: none;
+			}
+		}
+	}
 
-      .flex-column {
-        padding: 0;
-      }
+	.hiweb-field-repeat-flex {
+		width: 100%;
 
-      &:last-child [data-drag] {
-        border-bottom: none;
-      }
-    }
-  }
+		.hiweb-field-repeat-flex-header {
+			border-bottom: none;
+		}
 
-  .hiweb-field-repeat-flex {
-    width: 100%;
+		.ui.table tr > td {
+			border-top: 1px solid rgba(34, 36, 38, 0.1);
+		}
 
-    .hiweb-field-repeat-flex-header {
-      border-bottom: none;
-    }
-  }
+		.ui.table tr:first-child > td {
+			border-top: none;
+		}
+
+		.ui.table {
+			thead th, tfoot th {
+				font-size: 80%;
+				padding: 0.4em 0.5em;
+			}
+			thead {
+				.ui.dropdown {
+					z-index: 1020;
+				}
+			}
+			tfoot {
+				.ui.dropdown {
+					z-index: 1010;
+				}
+			}
+		}
+
+	}
 
 }

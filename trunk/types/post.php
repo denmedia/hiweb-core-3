@@ -126,10 +126,10 @@
 
 
 			public function html(){
-				\hiweb\css( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.css' );
+				//\hiweb\css( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.css' );
 				\hiweb\css( HIWEB_DIR_CSS . '/field-post.css' );
-				$js_id = \hiweb\js( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
-				\hiweb\js( HIWEB_DIR_JS . '/field-post.js', [ 'jquery', $js_id ], true );
+				//$js_id = \hiweb\js( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
+				\hiweb\js( HIWEB_DIR_JS . '/field-post.js', [ 'jquery'], true );
 
 				$post_types = $this->get_parent_field()->post_type();
 				if( is_string( $post_types ) ) $post_types = [ $post_types ];

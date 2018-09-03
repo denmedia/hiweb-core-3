@@ -91,6 +91,8 @@
     padding-top: 0; }
   .hiweb-fields-form .search {
     background-color: transparent; }
+  .hiweb-fields-form .ui.selection.dropdown.visible, .hiweb-fields-form .ui.selection.dropdown.active {
+    z-index: 1050; }
 
 .hiweb-fields-form-default .hiweb-fieldset {
   margin-bottom: 20px; }

@@ -84,6 +84,10 @@ $breakpoint: 1180px;
 		background-color: transparent;
 	}
 
+	.ui.selection.dropdown.visible, .ui.selection.dropdown.active {
+		z-index: 1050;
+	}
+
 }
 
 .hiweb-fields-form-default {

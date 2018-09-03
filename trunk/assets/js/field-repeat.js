@@ -16,18 +16,20 @@ var hiweb_field_repeat = {
     selector_button_remove: '[data-action-remove]',
     selector_button_duplicate: '[data-action-duplicate]',
 
-    init: function () {
-        hiweb_field_repeat.make_sortable();
-        jQuery(hiweb_field_repeat.selector + ' .dropdown')
+    init: function (root) {
+        hiweb_field_repeat.make_sortable(root);
+        jQuery(root).find('> table > thead .dropdown, > table > tfoot .dropdown')
             .dropdown({
                 action: 'hide'
             });
-        // hiweb_field_repeat.make_table_names(jQuery(hiweb_field_repeat.selector));
+        hiweb_field_repeat.make_table_names(root);
     },
 
     init_once: function () {
+        jQuery(hiweb_field_repeat.selector).each(function () {
+            hiweb_field_repeat.init(this);
+        });
         jQuery('body').on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_add, hiweb_field_repeat.click_add).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_remove, hiweb_field_repeat.click_remove).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_duplicate, hiweb_field_repeat.click_duplicate).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_clear, hiweb_field_repeat.click_clear_full);
-        hiweb_field_repeat.init();
     },
 
     /**
@@ -66,12 +68,17 @@ var hiweb_field_repeat = {
         return jQuery(root).find('> table > thead [data-col]');
     },
 
+    /**
+     *
+     * @param row
+     * @returns {*}
+     */
     get_cols_by_row: function (row) {
-        return row.find('> [data-col], > .flex-column > .hiweb-field-repeat-flex > tbody > tr > td > [data-col]'); //TODO!
+        return jQuery(row).find('> [data-col], > td > [data-col], > td > table > tbody > tr > [data-col]');
     },
 
-    make_sortable: function () {
-        var rows = hiweb_field_repeat.get_rows_list(hiweb_field_repeat.selector);
+    make_sortable: function (root) {
+        var rows = hiweb_field_repeat.get_rows_list(root);
         if (typeof rows.sortable == 'undefined') {
             alert('Плагин jquery.ui.sortable.js не подключен!');
             return;
@@ -112,6 +119,7 @@ var hiweb_field_repeat = {
         var index = 0;
         //Each rows
         hiweb_field_repeat.get_rows(root).each(function () {
+            ////....
             var row = jQuery(this).attr('data-row', index);
             //Each cols
             hiweb_field_repeat.get_cols_by_row(row).each(function () {
@@ -191,7 +199,7 @@ var hiweb_field_repeat = {
                         } else {
                             row_list.append(newLine);
                         }
-                        newLine.css('opacity', 0).animate({opacity: 1}).find('> td')
+                        newLine.find('> td')
                             .wrapInner('<div style="display: none;" />')
                             .parent()
                             .find('> td > div')
