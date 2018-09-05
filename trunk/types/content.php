@@ -49,154 +49,144 @@
 
 		class input extends \hiweb\fields\input{
 
-			static $first_init = false;
-
-
 			public function __construct( \hiweb\fields\field $field, \hiweb\fields\value $value ){
 				parent::__construct( $field, $value );
-			}
+				add_action('admin_enqueue_scripts', function(){
+					if( \hiweb\context::is_admin_page() && !\hiweb\context::is_ajax() && !\hiweb\context::is_rest_api() ){
+						css( WPINC . '/css/editor.min.css' );
+						global $tinymce_version, $concatenate_scripts, $compress_scripts;
 
+						if( !isset( $concatenate_scripts ) ){
+							script_concat_settings();
+						}
 
-			public function first_init(){
-				if( self::$first_init ){
-					return;
-				}
-				self::$first_init;
-				if( \hiweb\context::is_admin_page() && !\hiweb\context::is_ajax() && !\hiweb\context::is_rest_api() ){
-					css( WPINC . '/css/editor.min.css' );
-					global $tinymce_version, $concatenate_scripts, $compress_scripts;
+						$suffix = SCRIPT_DEBUG ? '' : '.min';
+						$version = 'ver=' . $tinymce_version;
+						$baseurl = includes_url( 'js/tinymce' );
 
-					if( !isset( $concatenate_scripts ) ){
-						script_concat_settings();
-					}
+						$has_custom_theme = false;
 
-					$suffix = SCRIPT_DEBUG ? '' : '.min';
-					$version = 'ver=' . $tinymce_version;
-					$baseurl = includes_url( 'js/tinymce' );
+						$compressed = $compress_scripts && $concatenate_scripts && isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== stripos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && !$has_custom_theme;
 
-					$has_custom_theme = false;
+						$mce_suffix = false !== strpos( get_bloginfo( 'version' ), '-src' ) ? '' : '.min';
 
-					$compressed = $compress_scripts && $concatenate_scripts && isset( $_SERVER['HTTP_ACCEPT_ENCODING'] ) && false !== stripos( $_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip' ) && !$has_custom_theme;
-
-					$mce_suffix = false !== strpos( get_bloginfo( 'version' ), '-src' ) ? '' : '.min';
-
-					if( $compressed ){
-						$tinymce = include_js( "{$baseurl}/wp-tinymce.php?c=1&amp;$version" );
-					} else {
-						$tinymce = include_js( "{$baseurl}/tinymce{$mce_suffix}.js?$version" );
-						include_js( "{$baseurl}/plugins/compat3x/plugin{$suffix}.js?$version" );
-					}
-					wp_enqueue_media();
-					js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js' );
-					js( path::realpath( WPINC ) . '/js/quicktags.min.js' );
-					js( HIWEB_DIR_JS . '/field-content.js', [ 'jquery', 'editor', $tinymce ] );
-					add_action( 'admin_head', function(){
-						?>
-						<script type="text/javascript">
-                            window.hiweb_field_content_tinymce_default = {
-                                theme: "modern",
-                                skin: "lightgray",
-                                language: "ru",
-                                formats: {
-                                    alignleft: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "left"}}, {selector: "img,table,dl.wp-caption", classes: "alignleft"}],
-                                    aligncenter: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "center"}}, {selector: "img,table,dl.wp-caption", classes: "aligncenter"}],
-                                    alignright: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "right"}}, {selector: "img,table,dl.wp-caption", classes: "alignright"}],
-                                    strikethrough: {inline: "del"}
-                                },
-                                relative_urls: false,
-                                remove_script_host: false,
-                                convert_urls: false,
-                                browser_spellcheck: true,
-                                fix_list_elements: true,
-                                entities: "38,amp,60,lt,62,gt",
-                                entity_encoding: "raw",
-                                keep_styles: false,
-                                //cache_suffix: "wp-mce-4800-20180716",
-                                resize: false,
-                                menubar: false,
-                                branding: false,
-                                preview_styles: "font-family font-size font-weight font-style text-decoration text-transform",
-                                end_container_on_empty_block: true,
-                                wpeditimage_html5_captions: true,
-                                wp_lang_attr: "ru-RU",
-                                wp_keep_scroll_position: true,
-                                wp_shortcut_labels: {
-                                    "Heading 1": "access1",
-                                    "Heading 2": "access2",
-                                    "Heading 3": "access3",
-                                    "Heading 4": "access4",
-                                    "Heading 5": "access5",
-                                    "Heading 6": "access6",
-                                    "Paragraph": "access7",
-                                    "Blockquote": "accessQ",
-                                    "Underline": "metaU",
-                                    "Strikethrough": "accessD",
-                                    "Bold": "metaB",
-                                    "Italic": "metaI",
-                                    "Code": "accessX",
-                                    "Align center": "accessC",
-                                    "Align right": "accessR",
-                                    "Align left": "accessL",
-                                    "Justify": "accessJ",
-                                    "Cut": "metaX",
-                                    "Copy": "metaC",
-                                    "Paste": "metaV",
-                                    "Select all": "metaA",
-                                    "Undo": "metaZ",
-                                    "Redo": "metaY",
-                                    "Bullet list": "accessU",
-                                    "Numbered list": "accessO",
-                                    "Insert\/edit image": "accessM",
-                                    "Remove link": "accessS",
-                                    "Toolbar Toggle": "accessZ",
-                                    "Insert Read More tag": "accessT",
-                                    "Insert Page Break tag": "accessP",
-                                    "Distraction-free writing mode": "accessW",
-                                    "Keyboard Shortcuts": "accessH"
-                                },
-                                content_css: "",
-                                plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview",
-                                //selector: "#content",
-                                wpautop: true,
-                                indent: false,
-                                toolbar1: "formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,spellchecker,dfw,wp_adv",
-                                toolbar2: "strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
-                                toolbar3: "",
-                                toolbar4: "",
-                                tabfocus_elements: "content-html,save-post",
-                                body_class: "content post-type-page post-status-publish page-template-default locale-ru-ru",
-                                wp_autoresize_on: true,
-                                add_unload_trigger: false
-                            };
-                            window.hiweb_field_content_qtags_default = {buttons: "strong,em,link,block,del,ins,img,ul,ol,li,code,more,close,dfw"};
-                            if (!window.tinyMCEPreInit) {
-                                window.tinyMCEPreInit = {
-                                    baseURL: "<?=path::path_to_url( WPINC )?>/js/tinymce",
-                                    suffix: ".min",
-                                    dragDropUpload: true,
-                                    ref: {plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview", theme: "modern", language: "ru"},
-                                    load_ext: function (url, lang) {
-                                        var sl = tinymce.ScriptLoader;
-                                        sl.markDone(url + '/langs/' + lang + '.js');
-                                        sl.markDone(url + '/langs/' + lang + '_dlg.js');
-                                    }
+						if( $compressed ){
+							$tinymce = include_js( "{$baseurl}/wp-tinymce.php?c=1&amp;$version" );
+						} else {
+							$tinymce = include_js( "{$baseurl}/tinymce{$mce_suffix}.js?$version" );
+							include_js( "{$baseurl}/plugins/compat3x/plugin{$suffix}.js?$version" );
+						}
+						add_action( 'admin_init', 'wp_enqueue_media' );
+						js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js' );
+						js( path::realpath( WPINC ) . '/js/quicktags.min.js' );
+						js( HIWEB_DIR_JS . '/field-content.js', [ 'jquery', 'editor', $tinymce ] );
+						add_action( 'in_admin_header', function(){
+							?>
+							<script type="text/javascript">
+                                window.hiweb_field_content_tinymce_default = {
+                                    theme: "modern",
+                                    skin: "lightgray",
+                                    language: "ru",
+                                    formats: {
+                                        alignleft: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "left"}}, {selector: "img,table,dl.wp-caption", classes: "alignleft"}],
+                                        aligncenter: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "center"}}, {selector: "img,table,dl.wp-caption", classes: "aligncenter"}],
+                                        alignright: [{selector: "p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li", styles: {textAlign: "right"}}, {selector: "img,table,dl.wp-caption", classes: "alignright"}],
+                                        strikethrough: {inline: "del"}
+                                    },
+                                    relative_urls: false,
+                                    remove_script_host: false,
+                                    convert_urls: false,
+                                    browser_spellcheck: true,
+                                    fix_list_elements: true,
+                                    entities: "38,amp,60,lt,62,gt",
+                                    entity_encoding: "raw",
+                                    keep_styles: false,
+                                    //cache_suffix: "wp-mce-4800-20180716",
+                                    resize: false,
+                                    menubar: false,
+                                    branding: false,
+                                    preview_styles: "font-family font-size font-weight font-style text-decoration text-transform",
+                                    end_container_on_empty_block: true,
+                                    wpeditimage_html5_captions: true,
+                                    wp_lang_attr: "ru-RU",
+                                    wp_keep_scroll_position: true,
+                                    wp_shortcut_labels: {
+                                        "Heading 1": "access1",
+                                        "Heading 2": "access2",
+                                        "Heading 3": "access3",
+                                        "Heading 4": "access4",
+                                        "Heading 5": "access5",
+                                        "Heading 6": "access6",
+                                        "Paragraph": "access7",
+                                        "Blockquote": "accessQ",
+                                        "Underline": "metaU",
+                                        "Strikethrough": "accessD",
+                                        "Bold": "metaB",
+                                        "Italic": "metaI",
+                                        "Code": "accessX",
+                                        "Align center": "accessC",
+                                        "Align right": "accessR",
+                                        "Align left": "accessL",
+                                        "Justify": "accessJ",
+                                        "Cut": "metaX",
+                                        "Copy": "metaC",
+                                        "Paste": "metaV",
+                                        "Select all": "metaA",
+                                        "Undo": "metaZ",
+                                        "Redo": "metaY",
+                                        "Bullet list": "accessU",
+                                        "Numbered list": "accessO",
+                                        "Insert\/edit image": "accessM",
+                                        "Remove link": "accessS",
+                                        "Toolbar Toggle": "accessZ",
+                                        "Insert Read More tag": "accessT",
+                                        "Insert Page Break tag": "accessP",
+                                        "Distraction-free writing mode": "accessW",
+                                        "Keyboard Shortcuts": "accessH"
+                                    },
+                                    content_css: "<?=\hiweb\path::path_to_url( HIWEB_DIR_VENDORS )?>/wp-default.min.css",
+                                    plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview",
+                                    //selector: "#content",
+                                    wpautop: true,
+                                    indent: false,
+                                    toolbar1: "formatselect,bold,italic,bullist,numlist,blockquote,alignleft,aligncenter,alignright,link,wp_more,spellchecker,dfw,wp_adv",
+                                    toolbar2: "strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+                                    toolbar3: "",
+                                    toolbar4: "",
+                                    tabfocus_elements: "content-html,save-post",
+                                    body_class: "content post-type-page post-status-publish page-template-default locale-ru-ru",
+                                    wp_autoresize_on: true,
+                                    add_unload_trigger: false
                                 };
-                            }
-						</script>
-						<?php
-					} );
-				}
+                                window.hiweb_field_content_qtags_default = {buttons: "strong,em,link,block,del,ins,img,ul,ol,li,code,more,close,dfw"};
+                                if (!window.tinyMCEPreInit) {
+                                    window.tinyMCEPreInit = {
+                                        baseURL: "<?=\hiweb\path::base_url() . '/' . WPINC ?>/js/tinymce",
+                                        suffix: ".min",
+                                        dragDropUpload: true,
+                                        ref: {plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview", theme: "modern", language: "ru"},
+                                        load_ext: function (url, lang) {
+                                            var sl = tinymce.ScriptLoader;
+                                            sl.markDone(url + '/langs/' + lang + '.js');
+                                            sl.markDone(url + '/langs/' + lang + '_dlg.js');
+                                        }
+                                    };
+                                }
+							</script>
+							<?php
+						} );
+					}
+				});
 			}
 
 
 			public function html(){
-				$this->first_init();
 				ob_start();
 				$rand_id = strings::rand( 10 );
 				$this->attributes['data-rand-id'] = $rand_id;
 				$this->attributes['id'] = $rand_id;
 				?>
-			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>">
+			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>" data-baseurl="<?= \hiweb\path::base_url() ?>">
 				<div id="wp-<?= $rand_id ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
 					<div id="wp-<?= $rand_id ?>-editor-tools" class="wp-editor-tools hide-if-no-js">
 						<div id="wp-<?= $rand_id ?>-media-buttons" class="wp-media-buttons">

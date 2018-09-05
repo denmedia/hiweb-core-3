@@ -329,4 +329,6 @@ var hiweb_field_repeat = {
 };
 
 jQuery(document).ready(hiweb_field_repeat.init_once);
-jQuery('body').on('init_3', '.hiweb-field-repeat', hiweb_field_repeat.init);
+jQuery('body').on('init_3', '.hiweb-field-repeat', function(){
+    hiweb_field_repeat.init(this)
+});

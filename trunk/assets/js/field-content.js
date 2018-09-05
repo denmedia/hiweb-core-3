@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
 
             }
             tinyMCEPreInit = {
-                baseURL: "http://develop.hiweb.site/wp-includes/js/tinymce",
+                baseURL: $(hiweb_field_content.root_selector).attr('data-baseurl') + "/wp-includes/js/tinymce",
                 suffix: ".min",
                 mceInit: {},
                 qtInit: {},

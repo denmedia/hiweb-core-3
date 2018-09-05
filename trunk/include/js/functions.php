@@ -11,7 +11,7 @@
 			 *
 			 * @return bool
 			 */
-			function include_js( $jsPathOrURL, $deeps = [], $inFooter = false ) {
+			function include_js( $jsPathOrURL, $deeps = [], $inFooter = true ) {
 				return hiweb\js\enqueue::add( $jsPathOrURL, $deeps, $inFooter );
 			}
 		} else {
