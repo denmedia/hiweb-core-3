@@ -329,8 +329,8 @@
 
 
 		/**
-		 * @param     $sizeOrName
-		 * @param int $crop
+		 * @param $width
+		 * @param $height
 		 * @return string
 		 */
 		public function size_to_string( $width, $height ){
@@ -448,7 +448,7 @@
 				if( is_array( $sizeOrName ) && array_key_exists( $sizeString, $this->sizes_by_size ) ){
 					$SIZE = $this->sizes_by_size[ $sizeString ];
 				} elseif( is_array( $desireSize ) ) {
-					$new_file_name = $this->sizes_by_name['full']->file()->filename . '-' . $desireSize[0] . 'x' . $desireSize[1] . $this->sizes_by_name['full']->file()->extension;
+					$new_file_name = $this->sizes_by_name['full']->file()->filename . '-' . $desireSize[0] . 'x' . $desireSize[1] . '.' . $this->sizes_by_name['full']->file()->extension;
 					$SIZE = new size( $this );
 					$SIZE->name = $this->size_to_string( $desireSize[0], $desireSize[1] );
 					$SIZE->init( $desireSize[0], $desireSize[1], $crop, $new_file_name );
@@ -475,7 +475,7 @@
 				return true;
 			}
 
-			return abs( ( $width / $height ) - $this->aspect() ) > 0.1;
+			return abs( ( $width / $height ) - $this->aspect() ) > 0.01;
 		}
 
 
