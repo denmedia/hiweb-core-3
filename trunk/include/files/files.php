@@ -12,17 +12,20 @@
 		/**
 		 * Возвращает объект файла
 		 * @version 1.0
-		 * @param $pathOrUrl
+		 * @param $pathOrUrlOrAttachID
 		 * @return files\file
 		 */
-		static function get( $pathOrUrl ){
-			if( !array_key_exists( $pathOrUrl, self::$files ) ){
-				$file = new files\file( $pathOrUrl );
-				self::$files[ $pathOrUrl ] = $file;
+		static function get( $pathOrUrlOrAttachID ){
+			if(is_numeric($pathOrUrlOrAttachID)){
+				$pathOrUrlOrAttachID = get_attached_file($pathOrUrlOrAttachID);
+			}
+			if( !array_key_exists( $pathOrUrlOrAttachID, self::$files ) ){
+				$file = new files\file( $pathOrUrlOrAttachID );
+				self::$files[ $pathOrUrlOrAttachID ] = $file;
 				self::$files[ $file->path ] = $file;
 				self::$files[ $file->url ] = $file;
 			}
-			return self::$files[ $pathOrUrl ];
+			return self::$files[ $pathOrUrlOrAttachID ];
 		}
 
 

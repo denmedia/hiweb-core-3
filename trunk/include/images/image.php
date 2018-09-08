@@ -175,7 +175,7 @@
 		 * @return string
 		 */
 		public function filename(){
-			if($this->wp_post instanceof \WP_Post) {
+			if( $this->wp_post instanceof \WP_Post ){
 				return $this->wp_post->post_title;
 			}
 			return '';

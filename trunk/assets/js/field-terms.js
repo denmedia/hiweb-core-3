@@ -11,9 +11,36 @@ jQuery(document).ready(function ($) {
             $(root).find('.ui.dropdown').dropdown({
                 saveRemoteData: false,
                 filterRemoteData: true,
-                multiple: true
+                multiple: true,
+                forceSelection: false,
+                onChange: function(value, text, $choice){
+                    console.info( [value, text, $choice] );
+                }
             });
-        }
+            //hiweb_field_terms.make_sortable(root);
+        },
+
+        // make_sortable: function(root){
+        //     var sortable_root = $(root).find('.ui.dropdown.selection');
+        //     var input = $(root).find('input[name]');
+        //     sortable_root.sortable({
+        //         items: '> .ui.label[data-value]',
+        //         opacity: 0.5,
+        //         revert: true,
+        //         cursor: 'move',
+        //         distance: 5,
+        //         forceHelperSize: true,
+        //         forcePlaceholderSize: true,
+        //         start: function(event, ui){
+        //             sortable_root.find('.ui-sortable-placeholder').width( ui.helper.width() );
+        //         },
+        //         change: function(){
+        //             sortable_root.find('> .ui.label[data-value]').each(function(){
+        //                 input.find("option[value='" + e + "']").prop("selected", true);
+        //             });
+        //         }
+        //     });
+        // }
 
     };
     $('body').on('init_3', hiweb_field_terms.selector_root, function () {

@@ -41,9 +41,9 @@
 
 		class input extends \hiweb\fields\input{
 
-			public function html() {
-				\hiweb\css( HIWEB_DIR_VENDORS . '/font-awesome-5-free/svg-with-js/css/fa-svg-with-js.css' );
-				$font_awesome = \hiweb\js( HIWEB_DIR_VENDORS . '/font-awesome-5-free/svg-with-js/js/fontawesome-all.min.js' );
+			public function html(){
+				\hiweb\css( HIWEB_DIR_VENDORS . '/font-awesome-5-free/css/svg-with-js.min.css' );
+				$font_awesome = \hiweb\js( HIWEB_DIR_VENDORS . '/font-awesome-5-free/js/all.min.js' );
 				\hiweb\css( HIWEB_URL_CSS . '/field-fontawesome.css' );
 				wp_enqueue_script( 'jquery-ui-dialog' );
 				wp_enqueue_style( 'wp-jquery-ui-dialog' );

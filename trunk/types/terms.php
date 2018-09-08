@@ -100,8 +100,6 @@
 			public function html(){
 				\hiweb\css( HIWEB_DIR_CSS . '/field-terms.css' );
 				\hiweb\js( HIWEB_DIR_JS . '/field-terms.js', [ 'jquery' ] );
-				\hiweb\css( HIWEB_DIR_VENDORS . '/chosen/chosen.min.css' );
-				\hiweb\js( HIWEB_DIR_VENDORS . '/chosen/chosen.jquery.min.js', [ 'jquery' ] );
 				ob_start();
 				$terms_by_taxonomy = $this->get_terms_by_taxonomy();
 				?>

@@ -28,6 +28,8 @@ jQuery(document).ready(function ($) {
                 } else {
                     hiweb_field_fontawesome.modal_element.attr('data-rand-id', root_element.attr('data-rand-id')).dialog('open');
                 }
+            }).on('change keyup', 'input[name]', function () {
+                root_element.find('.input-group-addon').html('').append('<i class="' + $(this).val() + '"></i>');
             });
         },
 

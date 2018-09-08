@@ -119,11 +119,13 @@
 			if( strpos( $columns_name, 'hiweb-field-' ) === 0 ){
 				$field_id = substr( $columns_name, strlen( 'hiweb-field-' ) );
 				$field = fields::get( $field_id );
-				$column_manager_options = $field->LOCATION()->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
-				if( isset( $column_manager_options['callback'] ) && is_callable( $column_manager_options['callback'] ) ){
-					call_user_func( $column_manager_options['callback'], $post_id, $field );
-				} else {
-					echo $field->CONTEXT( get_post( $post_id ) )->VALUE()->get_sanitized();
+				if( array_key_exists( 'COLUMNS_MANAGER', $field->LOCATION()->_get_options_by_type( 'post_types' ) ) ){
+					$column_manager_options = $field->LOCATION()->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
+					if( isset( $column_manager_options['callback'] ) && is_callable( $column_manager_options['callback'] ) ){
+						call_user_func( $column_manager_options['callback'], $post_id, $field );
+					} else {
+						echo $field->CONTEXT( get_post( $post_id ) )->VALUE()->get_sanitized();
+					}
 				}
 			}
 		}
@@ -135,13 +137,15 @@
 					'post_type' => $post_type
 				]
 			] );
-			/** @var field[] $fields */
+			/** @var location $location */
 			foreach( $context_locations as $location ){
 				if( array_key_exists( 'COLUMNS_MANAGER', $location->_get_options_by_type( 'post_types' ) ) ){
-					foreach( locations::get_fields_by_contextLocation( $location ) as $field_id => $field ){
-						$column_manager_options = $location->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
-						$posts_columns = arrays::push( $posts_columns, $column_manager_options['name'], $column_manager_options['position'], 'hiweb-field-' . $field->id() );
-					}
+					//					foreach( locations::get_fields_by_contextLocation( $location ) as $field_id => $field ){
+					//						$column_manager_options = $location->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
+					//						$posts_columns = arrays::push( $posts_columns, $column_manager_options['name'], $column_manager_options['position'], 'hiweb-field-' . $field->id() );
+					//					}
+					$column_manager_options = $location->_get_options_by_type( 'post_types' )['COLUMNS_MANAGER'];
+					$posts_columns = arrays::push( $posts_columns, $column_manager_options['name'], $column_manager_options['position'], 'hiweb-field-' . $location->_get_parent_field()->id() );
 				}
 			}
 			return $posts_columns;
@@ -162,7 +166,7 @@
 				$location_options = $location->_get_options_by_type( 'post_types' );
 				if( array_key_exists( 'COLUMNS_MANAGER', $location_options ) && array_key_exists( 'sortable', $location_options['COLUMNS_MANAGER'] ) && $location_options['COLUMNS_MANAGER']['sortable'] ){
 					foreach( locations::get_fields_by_contextLocation( $location ) as $field_id => $field ){
-						$sortable_columns['hiweb-field-' . $field->id()] = 'hiweb-field-' . $field->id();
+						$sortable_columns[ 'hiweb-field-' . $field->id() ] = 'hiweb-field-' . $field->id();
 					}
 				}
 			}

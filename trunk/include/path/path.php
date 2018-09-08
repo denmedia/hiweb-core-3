@@ -535,19 +535,19 @@
 			if ( $size < 1024 ) {
 				return $size . ' B';
 			} elseif ( $size < 1048576 ) {
-				return round( $size / 1024, 2 ) . ' KiB';
+				return round( $size / 1024, 2 ) . ' КБ';
 			} elseif ( $size < 1073741824 ) {
-				return round( $size / 1048576, 2 ) . ' MiB';
+				return round( $size / 1048576, 2 ) . ' МБ';
 			} elseif ( $size < 1099511627776 ) {
-				return round( $size / 1073741824, 2 ) . ' GiB';
+				return round( $size / 1073741824, 2 ) . ' ГБ';
 			} elseif ( $size < 1125899906842624 ) {
-				return round( $size / 1099511627776, 2 ) . ' TiB';
+				return round( $size / 1099511627776, 2 ) . ' ТБ';
 			} elseif ( $size < 1152921504606846976 ) {
-				return round( $size / 1125899906842624, 2 ) . ' PiB';
+				return round( $size / 1125899906842624, 2 ) . ' ПБ';
 			} elseif ( $size < 1180591620717411303424 ) {
-				return round( $size / 1152921504606846976, 2 ) . ' EiB';
+				return round( $size / 1152921504606846976, 2 ) . ' ЭБ';
 			} elseif ( $size < 1208925819614629174706176 ) {
-				return round( $size / 1180591620717411303424, 2 ) . ' ZiB';
+				return round( $size / 1180591620717411303424, 2 ) . ' ЗБ';
 			} else {
 				return round( $size / 1208925819614629174706176, 2 ) . ' YiB';
 			}

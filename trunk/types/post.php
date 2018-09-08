@@ -92,7 +92,7 @@
 					$wp_query = new \WP_Query( [
 						'post_type' => $post_types,
 						'posts_per_page' => 99,
-						'post_status' => 'publish',
+						'post_status' => 'any',
 						's' => $_POST['search'],
 						'orderby' => 'title',
 						'order' => 'ASC'
@@ -144,7 +144,7 @@
 
 				ob_start();
 				///
-				$wp_query = new \WP_Query( [ 'post_type' => $post_types, 'posts_per_page' => 20 ] );
+				$wp_query = new \WP_Query( [ 'post_type' => $post_types, 'posts_per_page' => 20, 'post_status' => 'any' ] );
 
 				///
 				$this->attributes['data-global-id'] = $this->get_parent_field()->global_id();

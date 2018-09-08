@@ -105,6 +105,14 @@
 
 
 		/**
+		 * @return string
+		 */
+		public function get_size_formatted(){
+			return path::size_format( $this->get_size() );
+		}
+
+
+		/**
 		 * Возвращает массив вложенных файлов
 		 * @param array $mask - маска файлов
 		 * @return array|file[]

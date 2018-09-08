@@ -4,9 +4,9 @@
 
 
 	/**
-	 * @param $pathOrUrl
+	 * @param $pathOrUrlOrAttachID
 	 * @return files\file
 	 */
-	function file( $pathOrUrl ){
-		return files::get( $pathOrUrl );
+	function file( $pathOrUrlOrAttachID ){
+		return files::get( $pathOrUrlOrAttachID );
 	}

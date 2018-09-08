@@ -10,7 +10,10 @@ jQuery(document).ready(function ($) {
         make_dropdown: function (root) {
             var max = 999, min = 1;
             var rand = Math.floor(Math.random() * (max - min + 1)) + min;
-            $(root).find('select').addClass('rand-' + rand).dropdown();
+            $(root).find('select').addClass('rand-' + rand).dropdown({
+                forceSelection: false,
+                sortSelect: true
+            });
         }
 
 
