@@ -345,7 +345,7 @@
 		static function truncate_by_chars( $text, $limit, $ellipsis = '...' ){
 			if( strlen( $text ) > $limit ){
 				$endpos = strpos( str_replace( [ "\r\n", "\r", "\n", "\t" ], ' ', $text ), ' ', $limit );
-				if( $endpos !== false ) $text = trim( substr( $text, 0, $endpos ) ) . $ellipsis;
+				if( $endpos !== false ) $text = trim( mb_substr( $text, 0, $endpos ) ) . $ellipsis;
 			}
 			return $text;
 		}
@@ -364,7 +364,7 @@
 				end( $words ); //ignore last element since it contains the rest of the string
 				$last_word = prev( $words );
 
-				$text = substr( $text, 0, $last_word[1] + strlen( $last_word[0] ) ) . $ellipsis;
+				$text = mb_substr( $text, 0, $last_word[1] + strlen( $last_word[0] ) ) . $ellipsis;
 			}
 			return $text;
 		}

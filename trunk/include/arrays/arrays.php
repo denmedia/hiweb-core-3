@@ -218,7 +218,7 @@
 		/**
 		 * Ищет и возвращает массив ключей, чьи значения совпадают с $needle или FALSE - если ничего не найдено. Возвращаемый массив имеет вид: array(ключ => номер найденного).
 		 * @param array   $haystack - массив, в котором искать совпадения со значениями
-		 * @param strings $needle   - необходимый фрагмент для поиска
+		 * @param string $needle   - необходимый фрагмент для поиска
 		 * @return array|bool
 		 */
 		static function strPos_keys( $haystack = [], $needle = '' ){
@@ -237,7 +237,7 @@
 		/**
 		 * Возвращает массив array(ключ => номер найденного) или FALSE - если ничего не найдено
 		 * @param array   $needle   - массив фрагментов для поиска
-		 * @param strings $haystack - строка, в которой произвести поиск
+		 * @param string $haystack - строка, в которой произвести поиск
 		 * @return array|bool
 		 */
 		static function strPos( $needle = [], $haystack = '' ){
@@ -280,7 +280,7 @@
 		/**
 		 * Возвращает значение ключа из массива, а так же вложенные значения, например array1(key1 => array2(key2 => value))
 		 * @param array|object          $haystack - целевой массив
-		 * @param strings|integer|array $keyMix   - ключ (массив вложенных ключей) в целевом массиве
+		 * @param string|integer|array $keyMix   - ключ (массив вложенных ключей) в целевом массиве
 		 * @param mixed                 $def      - вернуть значение, если значение не найдено
 		 * @return mixed
 		 * @version 1.2
@@ -316,7 +316,7 @@
 
 
 		/**
-		 * @param strings $needle
+		 * @param string $needle
 		 * @param array   $haystack
 		 * @return bool
 		 */
@@ -330,7 +330,7 @@
 
 		/**
 		 * @param array   $haystack
-		 * @param strings $value
+		 * @param string $value
 		 * @return array
 		 */
 		static function unset_by_value( $haystack = [], $value = '' ){
@@ -344,7 +344,7 @@
 		/**
 		 * Возвращает значение, найденное по ключу в массиве, исключая вложенные массивы
 		 * @param array   $haystack - целевой массив
-		 * @param strings $keyMix   - список проверяемых ключей
+		 * @param string $keyMix   - список проверяемых ключей
 		 * @param null    $def      - значение, которое будлет вернуто в случае неудачи
 		 * @return null
 		 * @version 1.0

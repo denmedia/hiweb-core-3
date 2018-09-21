@@ -59,7 +59,7 @@
 				css( HIWEB_DIR_VENDORS . '/froala_editor/css/froala_editor.min.css' );
 				css( HIWEB_DIR_VENDORS . '/froala_editor/css/froala_style.min.css' );
 				css( HIWEB_DIR_VENDORS . '/froala_editor/css/themes/gray.min.css' );
-				js( HIWEB_DIR_VENDORS . '/font-awesome-5-free/svg-with-js/js/fontawesome-all.min.js' );
+				js( HIWEB_DIR_VENDORS . '/font-awesome-5-free/js/all.min.js' );
 				$froala_editor = js( HIWEB_DIR_VENDORS . '/froala_editor/js/froala_editor.min.js', [ 'jquery' ] );
 				//Plugins
 				$plugins_js_path  = HIWEB_DIR_VENDORS . '/froala_editor/js/plugins/';

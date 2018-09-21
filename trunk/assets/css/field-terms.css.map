@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AAEC,2CAAyB;EACxB,UAAU,EAAE,yBAAsB;EAClC,MAAM,EAAE,oCAAiC;AAG1C,wCAAsB;EACrB,WAAW,EAAE,MAAM",
+"mappings": "AAEC,+BAAa;EACZ,OAAO,EAAE,GAAG;AAGb,2CAAyB;EACxB,UAAU,EAAE,yBAAsB;EAClC,MAAM,EAAE,oCAAiC;AAG1C,wCAAsB;EACrB,WAAW,EAAE,MAAM",
 "sources": ["field-terms.scss"],
 "names": [],
 "file": "field-terms.css"

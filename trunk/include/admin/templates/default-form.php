@@ -9,9 +9,11 @@
 
 	if( isset( $_GET['settings-updated'] ) ){
 		if( $_GET['settings-updated'] ){
-			$notice = add_admin_notice( 'Для страницы "' . $this->page_title() . '" все данные успешно сохранены' );
-			$notice->CLASS_()->success();
-			$notice->the();
+			if(get_current_screen()->parent_file != 'options-general.php'){
+				$notice = add_admin_notice( 'Для страницы "' . $this->page_title() . '" все данные успешно сохранены' );
+				$notice->CLASS_()->success();
+				$notice->the();
+			}
 		} else {
 			$notice = add_admin_notice( 'Ошибка в момент сохранения опций' );
 			$notice->CLASS_()->error();

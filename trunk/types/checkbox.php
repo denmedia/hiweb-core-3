@@ -59,7 +59,7 @@
 				css( HIWEB_URL_CSS . '/field-checkbox.css' );
 				$rand_id = \hiweb\strings::rand( 10 );
 				?>
-				<div class="hw-input-checkbox">
+				<div class="hiweb-field-checkbox">
 					<div class="ui toggle checkbox">
 						<input class="checkbox" type="checkbox" id="<?= $rand_id ?>" <?= $this->sanitize_attributes() ?> <?= $this->VALUE()->get_sanitized() ? 'checked="checked"' : '' ?>>
 						<label for="<?= $rand_id ?>"><?= $this->get_parent_field()->label_checkbox() ?></label>

@@ -3,6 +3,7 @@
 	namespace hiweb\files;
 
 
+	use hiweb\arrays;
 	use hiweb\files;
 	use hiweb\path;
 
@@ -125,8 +126,14 @@
 					if( $subFileName == '.' || $subFileName == '..' ) continue;
 					$subFilePath = $this->path . '/' . $subFileName;
 					$subFile = files::get( $subFilePath );
-					$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
-					$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
+					if( $subFile->is_dir ){
+						$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
+					} else {
+						if( is_array( $mask ) && count( $mask ) > 0 ){
+							if( !arrays::in_array( path::extension( $subFileName ), $mask ) ) continue;
+						}
+						$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
+					}
 				}
 			}
 			return $this->subFiles[ $maskKey ];
@@ -138,7 +145,7 @@
 		 * @return bool
 		 */
 		public function is_image(){
-			return strpos($this->mime,'image') === 0;
+			return strpos( $this->mime, 'image' ) === 0;
 		}
 
 

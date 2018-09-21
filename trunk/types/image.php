@@ -151,7 +151,7 @@
 							</div>
 						</div>
 						<div class="ui bottom attached label" data-file-nonselect-text>Файл не выбран</div>
-						<div class="ui bottom attached blue label" data-file-name><?= $file instanceof files\file ? $file->basename : '' ?></div>
+						<div class="ui bottom attached mini blue label" data-file-name><?= $file instanceof files\file ? $file->basename : '' ?></div>
 					</div>
 					<div class="hidden content">
 						<div class="ui segment center aligned" data-segment="2">

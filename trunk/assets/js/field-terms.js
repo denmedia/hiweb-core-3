@@ -13,6 +13,7 @@ jQuery(document).ready(function ($) {
                 filterRemoteData: true,
                 multiple: true,
                 forceSelection: false,
+                allowCategorySelection: true,
                 onChange: function(value, text, $choice){
                     console.info( [value, text, $choice] );
                 }

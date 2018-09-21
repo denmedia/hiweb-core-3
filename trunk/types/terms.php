@@ -19,6 +19,7 @@
 	namespace hiweb\fields\types\terms {
 
 
+		use hiweb\arrays;
 		use hiweb\fields\value;
 
 
@@ -97,6 +98,25 @@
 			}
 
 
+			/**
+			 * @param \WP_Term[] $wp_terms
+			 * @param null       $terms_level
+			 */
+			private function get_html_options_from_terms( $wp_terms, $terms_level = null ){
+				/** @var \WP_Term $wp_term */
+				foreach( $wp_terms as $wp_term ){
+					$selected = is_array( $this->VALUE()->get() ) ? @in_array( $wp_term->term_id, $this->VALUE()->get() ) : ( $wp_term->term_id == $this->VALUE()->get() );
+					$title = $wp_term->name . ( $wp_term->count > 0 ? ' (' . $wp_term->count . ')' : '' );
+					if(is_array($terms_level) && array_key_exists($wp_term->term_id, $terms_level)){
+						$title = implode('', array_fill(0, intval($terms_level[$wp_term->term_id]),' &nbsp; ')).$title;
+					}
+					?>
+					<option <?= $selected ? 'selected' : '' ?> value="<?= $wp_term->term_taxonomy_id ?>"><?= $title ?></option>
+					<?php
+				}
+			}
+
+
 			public function html(){
 				\hiweb\css( HIWEB_DIR_CSS . '/field-terms.css' );
 				\hiweb\js( HIWEB_DIR_JS . '/field-terms.js', [ 'jquery' ] );
@@ -114,12 +134,15 @@
 									?>
 									<optgroup label="<?= $taxonomy->label ?>">
 										<?php
-											/** @var \WP_Term $wp_term */
-											foreach( $terms as $wp_term ){
-												$selected = is_array( $this->VALUE()->get() ) ? @in_array( $wp_term->term_id, $this->VALUE()->get() ) : ( $wp_term->term_id == $this->VALUE()->get() );
-												?>
-												<option <?= $selected ? 'selected' : '' ?> value="<?= $wp_term->term_taxonomy_id ?>"><?= $wp_term->name ?></option>
-												<?php
+											if( $taxonomy->hierarchical ){
+												$terms_level = [];
+												/** @var \WP_Term $wp_term */
+												foreach( $terms as $wp_term ){
+													$terms_level[ $wp_term->term_id ] = $wp_term->parent == 0 ? 0 : ( $terms_level[ $wp_term->parent ] + 1 );
+												}
+												self::get_html_options_from_terms( $terms, $terms_level );
+											} else {
+												self::get_html_options_from_terms( $terms );
 											}
 										?>
 									</optgroup>

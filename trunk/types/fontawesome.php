@@ -3,13 +3,12 @@
 	namespace {
 
 
-		if ( ! function_exists( 'add_field_fontawesome' ) ) {
+		if( !function_exists( 'add_field_fontawesome' ) ){
 			/**
 			 * @param $id
-			 *
 			 * @return \hiweb\fields\types\fontawesome\field
 			 */
-			function add_field_fontawesome( $id ) {
+			function add_field_fontawesome( $id ){
 				$new_field = new hiweb\fields\types\fontawesome\field( $id );
 				hiweb\fields::register_field( $new_field );
 
@@ -26,12 +25,12 @@
 
 		class field extends \hiweb\fields\field{
 
-			protected function get_input_class() {
+			protected function get_input_class(){
 				return __NAMESPACE__ . '\\input';
 			}
 
 
-			protected function get_value_class() {
+			protected function get_value_class(){
 				return __NAMESPACE__ . '\\value';
 			}
 
@@ -52,17 +51,17 @@
 				ob_start();
 				$this->attributes['class'] = '';
 				$this->attributes['value'] = $this->VALUE()->get();
-				$rnd_id = strings::rand(10);
+				$rnd_id = strings::rand( 10 );
 				?>
-				<div class="hiweb-field-fontawesome ui action input" data-dialog-title="Выбор иконки" data-rand-id="<?=$rnd_id?>">
-					<input data-placement="top" class="form-control" <?= $this->sanitize_attributes() ?> type="text" data-rand-id="<?=$rnd_id?>"/>
+				<div class="hiweb-field-fontawesome ui action input" data-dialog-title="Выбор иконки" data-rand-id="<?= $rnd_id ?>">
+					<input data-placement="top" class="form-control" <?= $this->sanitize_attributes() ?> type="text" data-rand-id="<?= $rnd_id ?>"/>
 					<span class="input-group-addon">
 						<i class="<?= $this->VALUE()->get() ?>" aria-hidden="true"></i>
 					</span>
-					<!--<a href="#" data-click class="button" title="Выбрать иконку" data-rand-id="<?=$rnd_id?>">...</a>-->
-                    <button class="ui icon button" data-click data-rand-id="<?=$rnd_id?>">
-                        <i class="ellipsis horizontal icon"></i>
-                    </button>
+					<!--<a href="#" data-click class="button" title="Выбрать иконку" data-rand-id="<?= $rnd_id ?>">...</a>-->
+					<button class="ui icon button" data-click data-rand-id="<?= $rnd_id ?>">
+						<i class="ellipsis horizontal icon"></i>
+					</button>
 				</div>
 				<?php
 				return ob_get_clean();

@@ -3,6 +3,7 @@
 	namespace hiweb;
 
 
+	use hiweb\files;
 	use hiweb\files\file;
 	use hiweb\images\image;
 
@@ -30,16 +31,14 @@
 
 		/**
 		 * Set default image url/path
-		 *
-		 * @param strings $urlOrPath
-		 *
+		 * @param strings $urlOrPathOrAttachID
 		 * @return bool
 		 */
-		static public function set_default_src( $urlOrPath ){
-			if( !is_string( $urlOrPath ) ){
+		static public function set_default_src( $urlOrPathOrAttachID ){
+			if( !is_string( $urlOrPathOrAttachID ) ){
 				//
 			} else {
-				$file = \hiweb\files::get( $urlOrPath );
+				$file = files::get( $urlOrPathOrAttachID );
 				if( $file->is_exists_and_readable() ){
 					self::$default_image_file = $file;
 					return true;
