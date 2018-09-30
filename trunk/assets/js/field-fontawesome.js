@@ -4,106 +4,118 @@ jQuery(document).ready(function ($) {
 
     var hiweb_field_fontawesome = {
 
-        modal_id: 'hiweb-field-fontawesome-modal',
-        modal_element: null,
         icons: [],
+        timeout: null,
+        ajax_request: null,
 
 
         init: function () {
-            var input = $('.hiweb-field-fontawesome');
-            // var offset = input.offset();
-            // if (offset !== undefined && offset.hasOwnProperty('top')) {
-            //     if (offset.top < 250) input.attr('data-placement', 'bottom');
-            // }
-            input.each(hiweb_field_fontawesome.make);
+            $('.hiweb-field-fontawesome').each(hiweb_field_fontawesome.make);
         },
 
         make: function () {
-            var root_element = $(this);
-            root_element.on('click', '[data-click]', function (e) {
-                hiweb_field_fontawesome.make_modal(root_element);
+            var $root = $(this);
+            $root.on('click', '[data-click="icons"]', function (e) {
                 e.preventDefault();
-                if (hiweb_field_fontawesome.modal_element === null || hiweb_field_fontawesome.modal_element.length === 0) {
-                    console.error('Окно диалога не создано...');
-                } else {
-                    hiweb_field_fontawesome.modal_element.attr('data-rand-id', root_element.attr('data-rand-id')).dialog('open');
-                }
+                hiweb_field_fontawesome.do_query_icons($root, '');
             }).on('change keyup', 'input[name]', function () {
-                root_element.find('.input-group-addon').html('').append('<i class="' + $(this).val() + '"></i>');
+                var $this = $(this);
+                $root.find('.input-group-addon').html('<i class="' + $this.val() + '"></i>');
+                $root.find('.ui.icon.button[data-click="icons"]').removeClass('loading');
+                clearTimeout(hiweb_field_fontawesome.timeout);
+                hiweb_field_fontawesome.timeout = setTimeout(function () {
+                    $root.find('.ui.icon.button[data-click="icons"]').addClass('loading');
+                    hiweb_field_fontawesome.do_query_icons($root, $this.val());
+                }, 1000);
+            }).on('blur', 'input[name]', function () {
+                setTimeout(function(){
+                    $root.find('.ui.icon.button[data-click="icons"]').removeClass('loading');
+                    clearTimeout(hiweb_field_fontawesome.timeout);
+                    $root.find('.ui.dropdown').dropdown('hide');
+                }, 500);
+            }).on('click', '[data-click="styles"]', function (e) {
+                e.preventDefault();
+                $root.find('[data-click="styles"]').popup('show');
+            });
+            //dropdown
+            $root.find('.ui.dropdown').dropdown({
+                on: 'manual',
+                allowAdditions: true,
+                hideAdditions: false,
+                //action: 'auto',
+                selectOnKeydown: false,
+                forceSelection: false
+            });
+            //popup
+            $root.find('[data-click="styles"]').popup({
+                inline: true,
+                content: 'TEST',
+                hoverable: true,
+                exclusive: true,
+                position: 'top center',
+                on: 'click'
+            });
+            //Close Dropdown
+            $('body').on('click', function (e) {
+                if (!$root.is(e.target) && $root.has(e.target).length === 0 && $root.is('.ui.popup[data-field-rand-id="' + $root.data('rand-id') + '"]')) {
+                    $root.find('.ui.dropdown').dropdown('hide');
+                }
+            });
+            //Select Icon
+            $('body').on('click', '.hiweb-field-fontawesome .dropdown .menu .item', function () {
+                var $root = $(this).closest('.hiweb-field-fontawesome');
+                hiweb_field_fontawesome.set_value($root, $(this).data('value'));
+                var styles = hiweb_field_fontawesome.icons['styles'][$(this).data('text')];
+                if (styles.length > 1) {
+                    $root.find('.ui.icon.button[data-click="styles"]').removeClass('disabled');
+                    $root.find('.ui.icon.button[data-click="styles"]').popup('create');
+                    $root.find('.ui.icon.button[data-click="styles"]').popup('get popup').find('.content').html('');
+                    for (var id in styles) {
+                        $root.find('.ui.icon.button[data-click="styles"]').popup('get popup').find('.content').append('<div class="item" data-value="' + styles[id] + '"><i class="' + styles[id] + '"></i></div>');
+                    }
+                } else {
+                    $root.find('.ui.icon.button[data-click="styles"]').addClass('disabled');
+                    $root.find('.ui.icon.button[data-click="styles"]').popup('create');
+                    $root.find('.ui.icon.button[data-click="styles"]').popup('hide');
+                    $root.find('.ui.icon.button[data-click="styles"]').popup('get popup').find('.content').html('');
+                }
+            });
+            //Select Style Icon
+            $('body').on('click', '.hiweb-field-fontawesome .ui.popup .content .item', function () {
+                hiweb_field_fontawesome.set_value($root, $(this).data('value'));
             });
         },
 
-        make_modal: function (root_element) {
-            if (hiweb_field_fontawesome.modal_element === null) {
-                hiweb_field_fontawesome.modal_element = $('<div/>').attr('id', hiweb_field_fontawesome.modal_id).addClass('hiweb-field-fontawesome-modal-icons-wrap');
-                ///
-                if (typeof ___FONT_AWESOME___ === 'object' && ___FONT_AWESOME___.hasOwnProperty('styles')) {
-                    for (var prefix in ___FONT_AWESOME___.styles) {
-                        var sub_icons = ___FONT_AWESOME___.styles[prefix];
-                        for (var index in sub_icons) {
-                            var icon_class = prefix + ' fa-' + index;
-                            var icon_element = $('<div class="item" data-click="' + icon_class + '"><i class="' + icon_class + '"></i></div>').on('click', function () {
-                                var data_rand_id = hiweb_field_fontawesome.modal_element.attr('data-rand-id');
-                                var icon_class = $(this).attr('data-click');
-                                $('input[data-rand-id="' + data_rand_id + '"]').val(icon_class);
-                                $('.hiweb-field-fontawesome[data-rand-id="' + data_rand_id + '"] .input-group-addon').html('').append('<i class="' + icon_class + '"></i>');
-                                hiweb_field_fontawesome.modal_element.dialog('close');
-                            });
-                            hiweb_field_fontawesome.icons.push(icon_class);
-                            hiweb_field_fontawesome.modal_element.append(icon_element);
-                        }
-                    }
-                } else {
-                    console.error('hiweb/field/fontawesome: FontAwesome не содержит список иконок');
-                }
-                ///
-                hiweb_field_fontawesome.modal_element.append(hiweb_field_fontawesome.modal_element);
-                $('body').append(hiweb_field_fontawesome.modal_element);
-
-                hiweb_field_fontawesome.modal_element.dialog({
-                    title: root_element.attr('data-dialog-title'),
-                    dialogClass: 'wp-dialog',
-                    autoOpen: false,
-                    draggable: false,
-                    width: 'auto',
-                    modal: true,
-                    resizable: false,
-                    closeOnEscape: true,
-                    closeText: 'Закрыть',
-                    minHeight: 480,
-                    minWidth: 750,
-                    maxHeight: 400,
-                    maxWidth: 600,
-                    position: {
-                        my: "center",
-                        at: "center",
-                        of: window
-                    },
-                    open: function () {
-                        // close dialog by clicking the overlay behind it
-                        $('.ui-widget-overlay').bind('click', function () {
-                            $('#my-dialog').dialog('close');
-                        })
-                    },
-                    create: function () {
-                        // style fix for WordPress admin
-                        $('.ui-dialog-titlebar-close').addClass('ui-button');
-                    }
-                });
-
-            }
+        set_value: function ($root, value) {
+            $root.find('input[name]').val(value);
+            $root.find('.input-group-addon').html('<i class="' + value + '"></i>');
         },
 
-        input_change: function () {
-            // var input = $(this);
-            // var icon_wrap = input.closest('.hiweb-field-fontawesome').find('.input-group-addon');
-            // icon_wrap.remove('svg, i').append('<i class="' + input.val() + '"></i>');
+        do_query_icons: function ($root, query) {
+            if (hiweb_field_fontawesome.ajax_request !== null) hiweb_field_fontawesome.ajax_request.abort();
+            $root.find('.ui.icon.button[data-click="icons"]').addClass('loading');
+            hiweb_field_fontawesome.ajax_request = $.ajax({
+                url: ajaxurl + '?action=hiweb-type-fontawesome',
+                type: 'post',
+                data: {query: query},
+                dataType: 'json',
+                success: function (response) {
+                    hiweb_field_fontawesome.icons = response;
+                    $root.find('.ui.icon.button[data-click="icons"]').removeClass('loading');
+                    $root.find('.ui.dropdown').dropdown('setup').menu({values: response.values});
+                    $root.find('.ui.dropdown').dropdown('refresh');
+                    $root.find('.ui.dropdown').dropdown('show');
+                },
+                error: function (response) {
+                    console.info(response);
+                    $root.find('.ui.icon.button[data-click="icons"]').removeClass('loading');
+                }
+            });
         }
 
     };
 
     hiweb_field_fontawesome.init();
     jQuery('body').on('init_3', '.hiweb-field-fontawesome', hiweb_field_fontawesome.init);
-    jQuery('body').on('change keyup', '.hiweb-field-fontawesome input', hiweb_field_fontawesome.input_change);
 
 });

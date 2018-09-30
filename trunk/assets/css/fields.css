@@ -95,6 +95,7 @@
     z-index: 1050; }
 
 .hiweb-fields-form-default .hiweb-fieldset {
+  margin-top: 8px;
   margin-bottom: 20px; }
 
 [data-tooltip]:hover:before {

@@ -15,7 +15,7 @@ jQuery(document).ready(function ($) {
                 forceSelection: false,
                 allowCategorySelection: true,
                 onChange: function(value, text, $choice){
-                    console.info( [value, text, $choice] );
+                    //console.info( [value, text, $choice] );
                 }
             });
             //hiweb_field_terms.make_sortable(root);

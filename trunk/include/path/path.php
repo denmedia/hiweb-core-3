@@ -334,9 +334,8 @@
 		 * @return bool
 		 */
 		static function is_page( $pageSlug = '' ){
-			$currentUrl = ltrim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
-			$pageSlug = ltrim( $pageSlug, '/\\' );
-
+			$currentUrl = trim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
+			$pageSlug = trim( $pageSlug, '/\\' );
 			return ( strpos( $currentUrl, $pageSlug ) === 0 );
 		}
 
