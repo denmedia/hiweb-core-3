@@ -63,6 +63,8 @@
   border-bottom: none; }
 .hiweb-field-repeat .hiweb-field-repeat-flex {
   width: 100%; }
+  .hiweb-field-repeat .hiweb-field-repeat-flex td {
+    vertical-align: top; }
   .hiweb-field-repeat .hiweb-field-repeat-flex .hiweb-field-repeat-flex-header {
     border-bottom: none; }
   .hiweb-field-repeat .hiweb-field-repeat-flex .ui.table tr > td {

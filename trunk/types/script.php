@@ -60,10 +60,11 @@
 				//				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/css/css.js' );
 				//				\hiweb\js( HIWEB_DIR_VENDORS . '/codemirror/mode/htmlmixed/htmlmixed.js' );
 				\hiweb\css( HIWEB_DIR_ASSETS . '/css/field-script.css' );
+				\hiweb\js( HIWEB_DIR_ASSETS . '/js/field-script.min.js' );
 				ob_start();
-				$rnd_id = $this->global_id() . '_' . strings::rand( 5 );
+				$rand_id = $this->global_id() . '_' . strings::rand( 5 );
 				?>
-				<div class="hiweb-field-script ui raised segment"><?php
+				<div class="hiweb-field-script ui raised segment" data-rand-id="<?= $rand_id ?>" data-script-theme="<?= $this->script_theme ?>"><?php
 						wp_enqueue_code_editor( [
 							//'type' => "text/html",
 							'file' => 'file.php',
@@ -74,28 +75,8 @@
 							'theme' => $this->script_theme
 						] );
 					?>
-					<textarea name="<?= $this->name() ?>" id="<?= $rnd_id ?>"><?= $this->VALUE()->get() ?></textarea>
+					<textarea name="<?= $this->name() ?>" id="<?= $rand_id ?>"><?= $this->VALUE()->get() ?></textarea>
 				</div>
-				<script type="text/javascript">
-                    window.onload = function () {
-                        wp.codeEditor.initialize("<?= $rnd_id ?>", {
-                            mode: "text/html",
-                            lineWrapping: true,
-                            lineNumbers: true,
-                            inputStyle: 'textarea',
-                            extraKeys: {"Ctrl-Space": "autocomplete"},
-                            theme: '<?=$this->script_theme?>'
-                        });
-                        //var editor = CodeMirror.fromTextArea(document.getElementById("<?//= $this->global_id() ?>//"), {
-                        //    mode: "text/html",
-                        //    lineWrapping: true,
-                        //    lineNumbers: true,
-                        //    inputStyle: 'textarea',
-                        //    extraKeys: {"Ctrl-Space": "autocomplete"},
-                        //    theme: '<?//=$this->script_theme?>//'
-                        //});
-                    };
-				</script>
 				<?php
 				return ob_get_clean();
 			}
