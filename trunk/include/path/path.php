@@ -336,7 +336,8 @@
 		static function is_page( $pageSlug = '' ){
 			$currentUrl = trim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
 			$pageSlug = trim( $pageSlug, '/\\' );
-			return ( strpos( $currentUrl, $pageSlug ) === 0 );
+			if( strpos( $pageSlug, self::base_url() ) === 0 ) $pageSlug = (string)substr( $pageSlug, strlen( self::base_url() ) + 1 );
+			return (( strpos( $currentUrl, $pageSlug ) === 0 ) || $currentUrl === $pageSlug);
 		}
 
 
@@ -759,7 +760,7 @@
 			} elseif( is_string( $_fileOrUrl ) && self::is_url( $_fileOrUrl ) ) {
 				$fileName = trim( $force_file_name ) == '' ? file( $_fileOrUrl )->basename : $force_file_name;
 				$tmp_name = $_fileOrUrl;
-			} elseif( is_string( $_fileOrUrl ) && file_exists($_fileOrUrl) && is_file($_fileOrUrl) && is_readable($_fileOrUrl) ) {
+			} elseif( is_string( $_fileOrUrl ) && file_exists( $_fileOrUrl ) && is_file( $_fileOrUrl ) && is_readable( $_fileOrUrl ) ) {
 				$fileName = trim( $force_file_name ) == '' ? file( $_fileOrUrl )->basename : $force_file_name;
 				$tmp_name = $_fileOrUrl;
 			} else {
