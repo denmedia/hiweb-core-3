@@ -114,28 +114,51 @@ var hiweb_field_repeat = {
 
     make_table_names: function (root) {
         root = jQuery(root);
-        var base_name = root.attr('name');
         //set rows
-        var index = 0;
         //Each rows
+        //OLD SET INPUT NAMES
+        // hiweb_field_repeat.get_rows(root).each(function () {
+        //     ////....
+        //     var row = jQuery(this).attr('data-row', index);
+        //     //Each cols
+        //     hiweb_field_repeat.get_cols_by_row(row).each(function () {
+        //         var col_id = jQuery(this).attr('data-col');
+        //         var replace_name = base_name + '[' + index + '][' + col_id + ']';
+        //         //Each inputs
+        //         jQuery(this).find('[name]').each(function () {
+        //             var input = jQuery(this);
+        //             var pattern = '^' + base_name.escapeRegExp() + '\\\[(\\\s{1}|\\\d+)\\\]\\\[' + col_id + '\\\]';
+        //             var newName = input.attr('name').replace(new RegExp(pattern, 'i'), replace_name);
+        //             input.attr('name', newName);
+        //         });
+        //     });
+        //     index++;
+        // });
+        //NEW SET INPUT NAMES
+        //set rows index
         hiweb_field_repeat.get_rows(root).each(function () {
-            ////....
-            var row = jQuery(this).attr('data-row', index);
-            //Each cols
-            hiweb_field_repeat.get_cols_by_row(row).each(function () {
-                var col_id = jQuery(this).attr('data-col');
-                var replace_name = base_name + '[' + index + '][' + col_id + ']';
-                //Each inputs
-                jQuery(this).find('[name]').each(function () {
-                    var input = jQuery(this);
-                    var pattern = '^' + base_name.escapeRegExp() + '\\\[(\\\s{1}|\\\d+)\\\]\\\[' + col_id + '\\\]';
-                    var newName = input.attr('name').replace(new RegExp(pattern, 'i'), replace_name);
-                    input.attr('name', newName);
-                });
-            });
-            index++;
+            jQuery(this).attr('data-row', jQuery(this).index());
         });
-        root.find('> table > tbody[data-rows-message] [data-row-empty]').attr('data-row-empty', index > 0 ? '1' : '0');
+        //set sub-input names
+        var $sub_inputs = root.find('[name]');
+        $sub_inputs.each(function () {
+            var $current_input = jQuery(this);
+            var $current_root = $current_input.closest('.hiweb-field-repeat[data-input-name]');
+            if ($current_root.length === 1) {
+                var $current_col = $current_input.closest('[data-col]');
+                var index = $current_input.closest('[data-row]').attr('data-row');
+                var col_id = $current_col.data('col');
+                var base_name = $current_root.data('input-name').escapeRegExp();
+                var replace_name = base_name + '[' + index + '][' + col_id + ']';
+                var pattern = '^' + base_name + '\\\[(\\\s{1}|\\\d+)\\\]\\\[' + $current_col.data('col') + '\\\]';
+                var newName = $current_input.attr('name').replace(new RegExp(pattern, 'i'), replace_name);
+                $current_input.attr('name', newName);
+            } else {
+                console.warn('hiweb_field_repeat: ошибка в поиске корневого элемента, их количество не равно 1, [' + $current_root.length + ']');
+            }
+        });
+        //
+        root.find('> table > tbody[data-rows-message] [data-row-empty]').attr('data-row-empty', hiweb_field_repeat.get_rows(root).length > 0 ? '1' : '0');
         hiweb_field_repeat.make_sortable();
     },
 
@@ -329,6 +352,6 @@ var hiweb_field_repeat = {
 };
 
 jQuery(document).ready(hiweb_field_repeat.init_once);
-jQuery('body').on('init_3', '.hiweb-field-repeat', function(){
+jQuery('body').on('init_3', '.hiweb-field-repeat', function () {
     hiweb_field_repeat.init(this)
 });

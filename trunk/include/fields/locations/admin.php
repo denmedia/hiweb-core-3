@@ -184,7 +184,7 @@
 				if( isset( $_POST[ $field->INPUT()->name() ] ) ){
 					update_post_meta( $post_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
 				} else {
-					update_post_meta( $post_id, $field->id(), '' );
+					//Не удалять мета-данные, если они не передаются
 				}
 			}
 		}
@@ -316,7 +316,7 @@
 			/** @var location[] $theme_locations */
 			$theme_locations = [];
 			if( is_array( locations::$locations ) ) foreach( locations::$locations as $location_global_id => $location ){
-				if( isset( $location->options['theme'] ) ){
+				if( isset( $location->options['hiweb_theme'] ) ){
 					$theme_locations[ $location_global_id ] = $location;
 				}
 			}
@@ -325,7 +325,7 @@
 			///
 			$sections = [];
 			foreach( $theme_locations as $location_id => $location ){
-				$options = $location->options['theme']->options;
+				$options = $location->options['hiweb_theme']->options;
 				$section_id = \hiweb\strings::sanitize_id( $options['section_title'] );
 				if( !isset( $sections[ $section_id ] ) ) $sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
 				if( !isset( $sections[ $section_id ]['args']['title'] ) ) $sections[ $section_id ]['args']['title'] = $options['section_title'];

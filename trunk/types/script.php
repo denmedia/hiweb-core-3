@@ -72,7 +72,7 @@
 							'lineNumbers' => true,
 							'inputStyle' => 'textarea',
 							'extraKeys' => [ "Ctrl-Space" => "autocomplete" ],
-							'theme' => $this->script_theme
+							'hiweb_theme' => $this->script_theme
 						] );
 					?>
 					<textarea name="<?= $this->name() ?>" id="<?= $rand_id ?>"><?= $this->VALUE()->get() ?></textarea>

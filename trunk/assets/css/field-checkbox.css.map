@@ -1,6 +1,6 @@
 {
 "version": 3,
-"mappings": "AACC,wCAAmB;EAClB,SAAS,EAAE,KAAK;EAChB,WAAW,EAAE,KAAK",
+"mappings": "AACC,wCAAmB;EAClB,SAAS,EAAE,KAAK;EAChB,WAAW,EAAE,KAAK;AAGnB,gCAAW;EACV,MAAM,EAAE,OAAO",
 "sources": ["field-checkbox.scss"],
 "names": [],
 "file": "field-checkbox.css"

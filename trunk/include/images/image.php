@@ -597,4 +597,12 @@
 		}
 
 
+		/**
+		 * @return string
+		 */
+		public function __toString(){
+			return $this->html('full');
+		}
+
+
 	}

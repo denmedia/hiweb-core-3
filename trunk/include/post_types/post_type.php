@@ -3,6 +3,7 @@
 	namespace hiweb\post_types;
 
 
+	use hiweb\post_types;
 	use hiweb\post_types\post_type\labels;
 	use hiweb\post_types\post_type\rewrite;
 	use hiweb\post_types\post_type\supports;
@@ -182,6 +183,7 @@
 		 * @return post_type|mixed|null
 		 */
 		public function menu_icon( $set = null ){
+			if(is_string($set)) $set = post_types::filter_fontawesome_menu_icon($set);
 			return $this->set_arg( __FUNCTION__, $set );
 		}
 

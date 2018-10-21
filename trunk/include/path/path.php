@@ -337,7 +337,9 @@
 			$currentUrl = trim( str_replace( self::base_url(), '', self::url_full() ), '/\\' );
 			$pageSlug = trim( $pageSlug, '/\\' );
 			if( strpos( $pageSlug, self::base_url() ) === 0 ) $pageSlug = (string)substr( $pageSlug, strlen( self::base_url() ) + 1 );
-			return (( strpos( $currentUrl, $pageSlug ) === 0 ) || $currentUrl === $pageSlug);
+			if( $currentUrl === $pageSlug ) return true;
+			if( $pageSlug == '' ) return false;
+			return strpos( $currentUrl, $pageSlug ) === 0;
 		}
 
 
@@ -679,11 +681,12 @@
 
 		/**
 		 * Подключить файла PHP, CSS и JS из папки
-		 * @param       $path
-		 * @param array $fileExtension - массив типов подключаемых файлов, доступны типы: php, js, css
+		 * @param        $path
+		 * @param array  $fileExtension - массив типов подключаемых файлов, доступны типы: php, js, css
+		 * @param string $excludeFiles_withPrefix
 		 * @return array
 		 */
-		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ] ){
+		static function include_dir( $path, $fileExtension = [ 'php', 'css', 'js' ], $excludeFiles_withPrefix = '-' ){
 			$dir = files::get( $path );
 			$R = [];
 			if( !$dir->is_readable || !$dir->is_dir ){
@@ -694,6 +697,7 @@
 					if( !$file->is_readable ){
 						continue;
 					}
+					if( $excludeFiles_withPrefix != '' && strpos( $file->basename, $excludeFiles_withPrefix ) === 0 ) continue;
 					switch( $file->extension ){
 						case 'php':
 							include_once $file->path;

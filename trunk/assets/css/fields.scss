@@ -1,6 +1,6 @@
 @import "mixins";
 
-$breakpoint: 1180px;
+$breakpoint: 576px;
 
 @mixin flexprop($percent) {
 	width: $percent;

@@ -82,6 +82,7 @@ jQuery(document).ready(function ($) {
             });
             //Select Style Icon
             $('body').on('click', '.hiweb-field-fontawesome .ui.popup .content .item', function () {
+                var $root = $(this).closest( '.hiweb-field-fontawesome' );
                 hiweb_field_fontawesome.set_value($root, $(this).data('value'));
             });
         },

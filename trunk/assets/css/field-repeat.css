@@ -57,6 +57,8 @@
     opacity: 0.5; }
   .hiweb-field-repeat tbody[data-rows-list] tr [data-drag]:hover i {
     opacity: 1; }
+.hiweb-field-repeat tbody[data-rows-list] tr td.compacted {
+  vertical-align: top; }
 .hiweb-field-repeat tbody[data-rows-list] tr .flex-column {
   padding: 0; }
 .hiweb-field-repeat tbody[data-rows-list] tr:last-child [data-drag] {

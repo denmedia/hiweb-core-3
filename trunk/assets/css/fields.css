@@ -20,7 +20,7 @@
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
   align-items: flex-start; }
-  @media (max-width: 1180px) {
+  @media (max-width: 576px) {
     .hiweb-fields-form {
       display: block; } }
   .hiweb-fields-form .hiweb-fieldset .post-attributes-label-wrapper {
@@ -80,7 +80,7 @@
   .hiweb-fields-form .hiweb-fieldset-width-half, .hiweb-fields-form .hiweb-fieldset-width-third, .hiweb-fields-form .hiweb-fieldset-width-two_third, .hiweb-fields-form .hiweb-fieldset-width-quarter, .hiweb-fields-form .hiweb-fieldset-width-three_quarter, .hiweb-fields-form .hiweb-fieldset-width-fifth, .hiweb-fields-form .hiweb-fieldset-width-two_fifth, .hiweb-fields-form .hiweb-fieldset-width-three_fifth, .hiweb-fields-form .hiweb-fieldset-width-four_fifths {
     box-sizing: border-box;
     padding-right: 16px; }
-    @media (max-width: 1180px) {
+    @media (max-width: 576px) {
       .hiweb-fields-form .hiweb-fieldset-width-half, .hiweb-fields-form .hiweb-fieldset-width-third, .hiweb-fields-form .hiweb-fieldset-width-two_third, .hiweb-fields-form .hiweb-fieldset-width-quarter, .hiweb-fields-form .hiweb-fieldset-width-three_quarter, .hiweb-fields-form .hiweb-fieldset-width-fifth, .hiweb-fields-form .hiweb-fieldset-width-two_fifth, .hiweb-fields-form .hiweb-fieldset-width-three_fifth, .hiweb-fields-form .hiweb-fieldset-width-four_fifths {
         width: 100%;
         display: block; } }

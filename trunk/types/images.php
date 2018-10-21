@@ -194,6 +194,14 @@
 
 		class value extends \hiweb\fields\value{
 
+			/**
+			 * @param $value
+			 * @return mixed
+			 */
+			public function sanitize( $value ){
+				return is_array($value) ? $value : [];
+			}
+
 
 			/**
 			 * @return array

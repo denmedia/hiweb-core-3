@@ -24,13 +24,13 @@
 	$params: null;
 	@each $val in $key {
 		@if ($params == '') {
-			@if($delay != 0){
+			@if ($delay != 0) {
 				$params: $val $duration $easing $delay;
 			} @else {
 				$params: $val $duration $easing;
 			}
 		} @else {
-			@if($delay != 0){
+			@if ($delay != 0) {
 				$params: $params, $val $duration $easing $delay;
 			} @else {
 				$params: $params, $val $duration $easing;
@@ -145,7 +145,6 @@
 	animation: rotating $time $easing infinite;
 }
 
-
 @mixin clearfix() {
 	&:before,
 	&:after {
@@ -180,7 +179,7 @@
 	}
 }
 
-@mixin image_centered(){
+@mixin image_centered() {
 	@include transform(translate(50%, 50%));
 	> img {
 		width: 100%;
@@ -190,14 +189,14 @@
 	}
 }
 
-
-@mixin vertical_middle(){
+@mixin vertical_middle($top: 50%) {
 	position: absolute;
-	top:50%;
+	top: $top;
+	bottom: unset;
 	@include transform(translateY(-50%));
 }
 
-@mixin display-flex(){
+@mixin display-flex() {
 	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
@@ -205,7 +204,7 @@
 	display: flex;
 }
 
-@mixin flex($flex: 1){
+@mixin flex($flex: 1) {
 	-webkit-box-flex: $flex;
 	-moz-box-flex: $flex;
 	-webkit-flex: $flex;
@@ -213,10 +212,61 @@
 	flex: $flex;
 }
 
-@mixin order($order: 0){
+@mixin order($order: 0) {
 	-webkit-box-ordinal-group: $order;
 	-moz-box-ordinal-group: $order;
 	-ms-flex-order: $order;
 	-webkit-order: $order;
 	order: $order;
+}
+
+@mixin media-size($css_name: 'font-size', $size: 12px) {
+	#{$css_name}: $size;
+	@media all and (max-width: 992px) {
+		#{$css_name}: $size * 0.90;
+	}
+	@media all and (max-width: 768px) {
+		#{$css_name}: $size * 0.84;
+	}
+	@media all and (max-width: 576px) {
+		#{$css_name}: $size * 0.78;
+	}
+}
+
+@mixin media-size-x2($css_name: 'font-size', $size: 12px) {
+	#{$css_name}: $size;
+	@media all and (max-width: 992px) {
+		#{$css_name} : $size * 0.86;
+	}
+	@media all and (max-width: 768px) {
+		#{$css_name}: $size * 0.78;
+	}
+	@media all and (max-width: 576px) {
+		#{$css_name}: $size * 0.62;
+	}
+}
+
+@mixin media-size-x3($css_name: 'font-size', $size: 12px) {
+	#{$css_name}: $size;
+	@media all and (max-width: 992px) {
+		#{$css_name}: $size * 0.75;
+	}
+	@media all and (max-width: 768px) {
+		#{$css_name}: $size * 0.50;
+	}
+	@media all and (max-width: 576px) {
+		#{$css_name}: $size * 0.35;
+	}
+}
+
+@mixin font-size-media($font-size) {
+	@include media-size(font-size, $font-size);
+}
+
+@mixin font-size-media-x2($font-size) {
+	@include media-size-x2(font-size, $font-size);
+}
+
+@mixin font-size-media-x3($font-size) {
+	@include media-size-x3(font-size, $font-size);
 }

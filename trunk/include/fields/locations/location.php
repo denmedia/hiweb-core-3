@@ -173,8 +173,8 @@
 		 * @return theme|options\options
 		 */
 		public function THEME(){
-			if( !isset( $this->options['theme'] ) ) $this->options['theme'] = new theme( $this );
-			return $this->options['theme'];
+			if( !isset( $this->options['hiweb_theme'] ) ) $this->options['hiweb_theme'] = new theme( $this );
+			return $this->options['hiweb_theme'];
 		}
 
 	}
