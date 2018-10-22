@@ -148,10 +148,7 @@ var hiweb_field_repeat = {
                 var $current_col = $current_input.closest('[data-col]');
                 var index = $current_input.closest('[data-row]').attr('data-row');
                 var col_id = $current_col.data('col');
-                var base_name = $current_root.data('input-name').escapeRegExp();
-                var replace_name = base_name + '[' + index + '][' + col_id + ']';
-                var pattern = '^' + base_name + '\\\[(\\\s{1}|\\\d+)\\\]\\\[' + $current_col.data('col') + '\\\]';
-                var newName = $current_input.attr('name').replace(new RegExp(pattern, 'i'), replace_name);
+                var newName = $current_root.data('input-name') +'['+index+']['+col_id+']';
                 $current_input.attr('name', newName);
             } else {
                 console.warn('hiweb_field_repeat: ошибка в поиске корневого элемента, их количество не равно 1, [' + $current_root.length + ']');
@@ -159,7 +156,6 @@ var hiweb_field_repeat = {
         });
         //
         root.find('> table > tbody[data-rows-message] [data-row-empty]').attr('data-row-empty', hiweb_field_repeat.get_rows(root).length > 0 ? '1' : '0');
-        hiweb_field_repeat.make_sortable();
     },
 
 
@@ -168,7 +164,7 @@ var hiweb_field_repeat = {
     },
 
     get_name_id: function (e) {
-        return jQuery(e).is('[data-input-name]') ? jQuery(e).attr('name') : jQuery(e).closest('[data-input-name]').attr('name');
+        return jQuery(e).is('[data-input-name]') ? jQuery(e).data('input-name') : jQuery(e).closest('[data-input-name]').data('input-name');
     },
 
     click_add: function (e) {
@@ -212,10 +208,10 @@ var hiweb_field_repeat = {
                 flex_row_id: flex_row_id
             },
             dataType: 'json',
-            success: function (data) {
+            success: function (response) {
 
-                if (data.hasOwnProperty('result') && data.result === true) {
-                    var newLine = jQuery(data.data).hide().fadeIn();
+                if (response.hasOwnProperty('result') && response.result === true) {
+                    var newLine = jQuery(response.data).hide().fadeIn();
                     for (n = 0; n < rows_count; n++) {
                         if (prepend) {
                             row_list.prepend(newLine);
@@ -231,18 +227,18 @@ var hiweb_field_repeat = {
                                 $set.replaceWith($set.contents());
                                 newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init_3');
                             });
-                        hiweb_field_repeat.make_table_names(root);
-                        newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init');
+                        //hiweb_field_repeat.make_table_names(root);
+                        //newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init');
                         if (typeof callback === 'function') {
-                            callback(root, newLine);
+                            //callback(root, newLine);
                         }
                     }
                 } else {
-                    console.warn(data);
+                    console.warn(response);
                 }
             },
-            error: function (data) {
-                console.warn(data);
+            error: function (response) {
+                console.warn(response);
             }
         });
     },
