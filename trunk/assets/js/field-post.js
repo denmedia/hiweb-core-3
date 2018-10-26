@@ -6,7 +6,9 @@
 var hw_input_post = {
 
     init: function () {
-        jQuery('body').on('init', '.hiweb-field-post', hw_input_post.make_dropdown);
+        jQuery('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function(e, col, row, root){
+            col.find('.hiweb-field-post').each(hw_input_post.make_dropdown);
+        });
         jQuery('.hiweb-field-post').each(hw_input_post.make_dropdown);
     },
 

@@ -20,8 +20,8 @@ jQuery(document).ready(function ($) {
     };
 
     hiweb_field_select.init();
-    $('body').on('init_3', '.hiweb-field-select', function () {
-        hiweb_field_select.make_dropdown(this);
+    jQuery('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function(e, col, row, root){
+        col.find('.hiweb-field-select').each(hiweb_field_select.make_dropdown);
     });
 
 });

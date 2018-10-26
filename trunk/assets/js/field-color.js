@@ -3,8 +3,8 @@ jQuery(document).ready(function ($) {
     var hiweb_field_color = {
 
         init: function () {
-            jQuery('body').on('init_3', '.hiweb-field-color', function () {
-                hiweb_field_color._make(this);
+            jQuery('body').on('hiweb-field-repeat-added-row', '[data-col]', function () {
+                hiweb_field_color._make($(this).find('.hiweb-field-color'));
             });
             jQuery('.hiweb-field-color').each(function () {
                 hiweb_field_color._make(this);

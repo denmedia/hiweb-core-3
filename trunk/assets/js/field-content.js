@@ -56,8 +56,13 @@ jQuery(document).ready(function ($) {
     };
 
     hiweb_field_content.init();
-    $('body').on('init_3 drag_stop', '.hiweb-field-content', function () {
-        hiweb_field_content.make(this);
+    // $('body').on('init_3 drag_stop', '.hiweb-field-content', function () {
+    //     hiweb_field_content.make(this);
+    // });
+    jQuery('body').on('hiweb-field-repeat-added-new-row-fadein hiweb-field-repeat-drag-stop', '[data-col]', function (e, col, row, root) {
+        col.find('.hiweb-field-content').each(function () {
+            hiweb_field_content.make(this);
+        });
     });
 
 });

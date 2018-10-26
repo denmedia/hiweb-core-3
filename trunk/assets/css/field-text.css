@@ -1,16 +1,16 @@
 .hiweb-field-text {
   width: 100%; }
   .hiweb-field-text::-webkit-input-placeholder {
-    color: #ccc;
+    color: #aaa;
     font-weight: 100; }
   .hiweb-field-text::-moz-placeholder {
-    color: #ccc;
+    color: #aaa;
     font-weight: 100; }
   .hiweb-field-text:-moz-placeholder {
-    color: #ccc;
+    color: #aaa;
     font-weight: 100; }
   .hiweb-field-text:-ms-input-placeholder {
-    color: #ccc;
+    color: #aaa;
     font-weight: 100; }
   .hiweb-field-text[placeholder] {
     text-overflow: ellipsis; }

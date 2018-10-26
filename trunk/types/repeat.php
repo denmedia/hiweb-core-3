@@ -23,7 +23,8 @@
 					$field = fields::$fields[ $field_global_id ];
 					/** @var fields\types\repeat\input $input */
 					$input = $field->INPUT();
-					$R['data'] = $input->ajax_html_row( path::request( 'input_name' ) );
+					$R['data'] = $input->ajax_html_row( path::request( 'input_name' ), path::request( 'row_index' ), path::request( 'values' ) );
+					$R['values'] = $input->ajax_filter_values(path::request( 'values' ));
 				}
 			}
 			//
@@ -284,13 +285,47 @@
 
 
 			/**
-			 * @param $input_name
+			 * Merge parameters to once array
+			 * @param     $array
+			 * @param int $level
+			 * @return array
+			 */
+			public function ajax_filter_values( $array, $level = null ){
+				$R = [];
+				$first = false;
+				if(is_null($level)) {
+					$first = true;
+					$level = 20;
+				}
+				foreach( $array as $key => $val ){
+					if( is_array( $val ) ){
+						if( $level > 1 ){
+							$R[ $key ] = $this->ajax_filter_values( $val, $level -- );
+						} else {
+							$R[ $key ] = json_encode( $val );
+						}
+					} else {
+						$R[ $key ] = $val;
+					}
+				}
+				return $R;
+			}
+
+
+			/**
+			 * @param        $input_name
+			 * @param int    $row_index
+			 * @param null   $values
 			 * @return string
 			 */
-			public function ajax_html_row( $input_name ){
+			public function ajax_html_row( $input_name, $row_index = 0, $values = null ){
 				$this->name( $input_name );
-				$new_row = new row( $this, [ '_flex_row_id' => isset( $_POST['flex_row_id'] ) ? $_POST['flex_row_id'] : '' ], intval( $_POST['index'] ) );
-				$new_row->index = 0;
+				if( is_array( $values ) ){
+					$new_row = new row( $this, $this->ajax_filter_values( $values ), $row_index );
+				} else {
+					$new_row = new row( $this, [ '_flex_row_id' => isset( $_POST['flex_row_id'] ) ? $_POST['flex_row_id'] : '' ], $row_index );
+				}
+				//$new_row->index = intval( $row_index );
 				ob_start();
 				$new_row->the();
 
@@ -311,10 +346,12 @@
 				ob_start();
 				css( HIWEB_URL_CSS . '/field-repeat.css' );
 				wp_enqueue_script( 'jquery-ui-sortable' );
+				js( HIWEB_URL_JS . '/deepMerge.min.js' );
 				js( HIWEB_URL_JS . '/field-repeat.js' );
 				?>
 				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>"
 					 data-global-id="<?= $this->get_parent_field()->global_id() ?>"
+					 data-id="<?= $this->get_parent_field()->id() ?>"
 					 data-flex="<?= $this->have_flex_rows() ? '1' : '0' ?>">
 					<?php if( !$this->have_cols() ){
 						?>
@@ -460,7 +497,7 @@
 										<?php
 											foreach( $compacted_cols as $index => $cols ){
 												?>
-												<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-col="' . $cols[0]->id() . '"' ?>>
+												<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-first-col="' . $cols[0]->id() . '"' ?>>
 													<?php
 														foreach( $cols as $subindex => $col ){
 															?>
@@ -495,7 +532,7 @@
 							//							}
 							foreach( $compacted_cols as $index => $cols ){
 								?>
-								<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-col="' . $cols[0]->id() . '"' ?>>
+								<td <?= count( $cols ) > 1 ? 'class="compacted"' : 'data-first-col="' . $cols[0]->id() . '"' ?>>
 									<?php
 										foreach( $cols as $subindex => $col ){
 											?>

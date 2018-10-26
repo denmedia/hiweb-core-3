@@ -89,12 +89,27 @@
 			return $this->set( 'custom-fields' );
 		}
 
+		/**
+		 * @return supports
+		 */
+		public function comments(){
+			return $this->set( 'comments' );
+		}
+
 
 		/**
 		 * @return supports
 		 */
 		public function revisions(){
 			return $this->set( __FUNCTION__ );
+		}
+
+
+		/**
+		 * @return supports
+		 */
+		public function page_attributes(){
+			return $this->set( 'page-attributes' );
 		}
 
 

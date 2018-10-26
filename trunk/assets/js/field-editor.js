@@ -32,7 +32,11 @@ jQuery(document).ready(function ($) {
 
 
     $('.hiweb-field-editor').each(hiweb_field_editor_init);
-    $('body').on('init_3', '.hiweb-field-editor', hiweb_field_editor_init);
+    //.hiweb-field-editor
+    $('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function (e, col, row, root) {
+        col.find('.hiweb-field-editor').each(hiweb_field_editor_init);
+    });
+
 
 });
 

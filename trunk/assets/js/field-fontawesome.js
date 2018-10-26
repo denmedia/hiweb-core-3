@@ -28,7 +28,7 @@ jQuery(document).ready(function ($) {
                     hiweb_field_fontawesome.do_query_icons($root, $this.val());
                 }, 1000);
             }).on('blur', 'input[name]', function () {
-                setTimeout(function(){
+                setTimeout(function () {
                     $root.find('.ui.icon.button[data-click="icons"]').removeClass('loading');
                     clearTimeout(hiweb_field_fontawesome.timeout);
                     $root.find('.ui.dropdown').dropdown('hide');
@@ -82,7 +82,7 @@ jQuery(document).ready(function ($) {
             });
             //Select Style Icon
             $('body').on('click', '.hiweb-field-fontawesome .ui.popup .content .item', function () {
-                var $root = $(this).closest( '.hiweb-field-fontawesome' );
+                var $root = $(this).closest('.hiweb-field-fontawesome');
                 hiweb_field_fontawesome.set_value($root, $(this).data('value'));
             });
         },
@@ -117,6 +117,9 @@ jQuery(document).ready(function ($) {
     };
 
     hiweb_field_fontawesome.init();
-    jQuery('body').on('init_3', '.hiweb-field-fontawesome', hiweb_field_fontawesome.init);
+    //jQuery('body').on('init_3', '.hiweb-field-fontawesome', hiweb_field_fontawesome.init);
+    jQuery(document).on('hiweb-field-repeat-added-new-row', '[data-col]', function (e, col, row, root) {
+        col.find('.hiweb-field-fontawesome').each(hiweb_field_fontawesome.init);
+    });
 
 });

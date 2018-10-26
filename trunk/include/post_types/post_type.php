@@ -111,6 +111,9 @@
 		 * @return post_type|mixed|null
 		 */
 		public function hierarchical( $set = null ){
+			if($set === true) {
+				$this->supports()->page_attributes();
+			}
 			return $this->set_arg( __FUNCTION__, $set );
 		}
 

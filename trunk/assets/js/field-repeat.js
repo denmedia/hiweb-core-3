@@ -1,11 +1,8 @@
 /**
  * Created by hiweb on 21.10.2016.
  */
-String.prototype.escapeRegExp = function () {
-    return this.toString().replace(/[\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
-};
 
-var hiweb_field_repeat = {
+let hiweb_field_repeat = {
 
     selector: '.hiweb-field-repeat',
     selector_source: '[data-row-source]',
@@ -22,7 +19,10 @@ var hiweb_field_repeat = {
             .dropdown({
                 action: 'hide'
             });
-        hiweb_field_repeat.make_table_names(root);
+        ///Set init names super repeat root
+        if (jQuery(root).parent().closest(hiweb_field_repeat.selector).length === 0) {
+            hiweb_field_repeat.set_input_names(root);
+        }
     },
 
     init_once: function () {
@@ -30,6 +30,7 @@ var hiweb_field_repeat = {
             hiweb_field_repeat.init(this);
         });
         jQuery('body').on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_add, hiweb_field_repeat.click_add).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_remove, hiweb_field_repeat.click_remove).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_duplicate, hiweb_field_repeat.click_duplicate).on('click', hiweb_field_repeat.selector + ' ' + hiweb_field_repeat.selector_button_clear, hiweb_field_repeat.click_clear_full);
+
     },
 
     /**
@@ -88,8 +89,10 @@ var hiweb_field_repeat = {
         }
         rows.sortable({
             update: function (e, ui) {
-                hiweb_field_repeat.make_table_names(jQuery(this).closest(hiweb_field_repeat.selector));
-                ui.placeholder.find('> [data-col] > *').trigger('drag_update');
+                hiweb_field_repeat.set_input_names(jQuery(this).closest(hiweb_field_repeat.selector));
+                ui.placeholder.find('[data-col]').each(function () {
+                    jQuery(this).trigger('hiweb-field-repeat-drag-update', [jQuery(this), jQuery(this).closest('[data-row]'), root]);
+                });
             },
             distance: 3,
             handle: '> [data-drag], > [data-drag] button, > [data-drag] i',
@@ -97,65 +100,83 @@ var hiweb_field_repeat = {
                 ui.find('th, td').each(function () {
                     jQuery(this).width(jQuery(this).width());
                 });
-                ui.find('> [data-col] > *').trigger('dragged');
+                ui.find('[data-col]').each(function () {
+                    jQuery(this).trigger('hiweb-field-repeat-dragged', [jQuery(this), jQuery(this).closest('[data-row]'), root]);
+                });
                 return ui;
             },
             revert: true,
             start: function (e, elements) {
                 elements.placeholder.height(elements.helper.height());
-                elements.helper.find('> [data-col] > *').trigger('drag_start', elements);
+                elements.helper.find('[data-col]').each(function () {
+                    jQuery(this).trigger('hiweb-field-repeat-drag-start', [jQuery(this), jQuery(this).closest('[data-row]'), root]);
+                });
             },
             stop: function (e, ui) {
-                ui.item.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('drag_stop', ui.placeholder);
+                ui.item.find('[data-col]').each(function () {
+                    jQuery(this).trigger('hiweb-field-repeat-drag-stop', [jQuery(this), jQuery(this).closest('[data-row]'), root]);
+                });
             }
         });
-        //jQuery(hiweb_field_repeat.selector + ' tbody').disableSelection();
     },
 
-    make_table_names: function (root) {
+    getRandomColor: function () {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    },
+
+    set_input_names: function (root) {
         root = jQuery(root);
-        //set rows
-        //Each rows
-        //OLD SET INPUT NAMES
-        // hiweb_field_repeat.get_rows(root).each(function () {
-        //     ////....
-        //     var row = jQuery(this).attr('data-row', index);
-        //     //Each cols
-        //     hiweb_field_repeat.get_cols_by_row(row).each(function () {
-        //         var col_id = jQuery(this).attr('data-col');
-        //         var replace_name = base_name + '[' + index + '][' + col_id + ']';
-        //         //Each inputs
-        //         jQuery(this).find('[name]').each(function () {
-        //             var input = jQuery(this);
-        //             var pattern = '^' + base_name.escapeRegExp() + '\\\[(\\\s{1}|\\\d+)\\\]\\\[' + col_id + '\\\]';
-        //             var newName = input.attr('name').replace(new RegExp(pattern, 'i'), replace_name);
-        //             input.attr('name', newName);
-        //         });
-        //     });
-        //     index++;
-        // });
-        //NEW SET INPUT NAMES
         //set rows index
-        hiweb_field_repeat.get_rows(root).each(function () {
+        root.find('[data-row]').each(function () {
             jQuery(this).attr('data-row', jQuery(this).index());
         });
         //set sub-input names
         var $sub_inputs = root.find('[name]');
         $sub_inputs.each(function () {
-            var $current_input = jQuery(this);
-            var $current_root = $current_input.closest('.hiweb-field-repeat[data-input-name]');
-            if ($current_root.length === 1) {
-                var $current_col = $current_input.closest('[data-col]');
-                var index = $current_input.closest('[data-row]').attr('data-row');
-                var col_id = $current_col.data('col');
-                var newName = $current_root.data('input-name') +'['+index+']['+col_id+']';
-                $current_input.attr('name', newName);
-            } else {
-                console.warn('hiweb_field_repeat: ошибка в поиске корневого элемента, их количество не равно 1, [' + $current_root.length + ']');
-            }
+            jQuery(this).attr('name', hiweb_field_repeat.get_input_name(jQuery(this)));
         });
         //
         root.find('> table > tbody[data-rows-message] [data-row-empty]').attr('data-row-empty', hiweb_field_repeat.get_rows(root).length > 0 ? '1' : '0');
+    },
+
+    get_input_name: function ($input) {
+        $input = jQuery($input);
+        var name_items = [];
+        var limit = 10;
+        while (limit > 0) {
+            var $col = $input.closest('[data-col]');
+            if ($col.length !== 1) {
+                return $input.closest('.hiweb-field-repeat[data-input-name]').attr('data-input-name');
+            }
+            name_items.push('[' + $col.attr('data-col') + ']');
+            //row
+            var $row = $col.closest('[data-row]');
+            if ($row.length !== 1) {
+                console.warn('2: row not found');
+                break;
+            }
+            name_items.push('[' + $row.attr('data-row') + ']');
+            //repeat or super col
+            var $repeat = $row.closest('.hiweb-field-repeat[data-id]');
+            if ($repeat.length !== 1) {
+                console.warn('3: repeat not found');
+            }
+            var $super_col = $repeat.closest('[data-col]');
+            if ($super_col.length !== 1) {
+                //name_items.push($repeat.attr('data-id'));
+                name_items.push($repeat.attr('data-input-name'));
+                break;
+            } else {
+                $input = $repeat;
+            }
+            limit--;
+        }
+        return name_items.reverse().join('');
     },
 
 
@@ -209,7 +230,6 @@ var hiweb_field_repeat = {
             },
             dataType: 'json',
             success: function (response) {
-
                 if (response.hasOwnProperty('result') && response.result === true) {
                     var newLine = jQuery(response.data).hide().fadeIn();
                     for (n = 0; n < rows_count; n++) {
@@ -218,6 +238,9 @@ var hiweb_field_repeat = {
                         } else {
                             row_list.append(newLine);
                         }
+                        newLine.find('[data-col]').each(function () {
+                            jQuery(this).trigger('hiweb-field-repeat-add-new-row', [jQuery(this), newLine, root]);
+                        });
                         newLine.find('> td')
                             .wrapInner('<div style="display: none;" />')
                             .parent()
@@ -225,13 +248,16 @@ var hiweb_field_repeat = {
                             .slideDown(400, function () {
                                 var $set = jQuery(this);
                                 $set.replaceWith($set.contents());
-                                newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init_3');
+                                newLine.find('[data-col]').each(function () {
+                                    jQuery(this).trigger('hiweb-field-repeat-added-row-fadein', [jQuery(this), newLine, root]);
+                                    jQuery(this).trigger('hiweb-field-repeat-added-new-row-fadein', [jQuery(this), newLine, root]);
+                                });
                             });
-                        //hiweb_field_repeat.make_table_names(root);
-                        //newLine.find('[data-col] > *, .flex-column > .hiweb-field-repeat-flex > tbody > tr > [data-col] > *').trigger('init');
-                        if (typeof callback === 'function') {
-                            //callback(root, newLine);
-                        }
+                        hiweb_field_repeat.set_input_names(root);
+                        newLine.find('[data-col]').each(function () {
+                            jQuery(this).trigger('hiweb-field-repeat-added-row', [jQuery(this), newLine, root]);
+                            jQuery(this).trigger('hiweb-field-repeat-added-new-row', [jQuery(this), newLine, root]);
+                        });
                     }
                 } else {
                     console.warn(response);
@@ -243,25 +269,34 @@ var hiweb_field_repeat = {
         });
     },
 
-    objectifyForm: function (formArray) {//serialize data function
-
-        var returnArray = {};
-        for (var i = 0; i < formArray.length; i++) {
-            returnArray[formArray[i]['name']] = formArray[i]['value'];
+    paramsToArray: function (name, value) {
+        var keys = name.match(/(\[?[\d\w\-\_]+\]?)/g);
+        var R = temp = {};
+        for (var i = 0; i < keys.length; i++) {
+            var key = keys[i].replace(/^\[?([\d\w\-\_]+)\]?/, '$1');
+            if (i === keys.length - 1) {
+                temp = temp[key] = value;
+            } else {
+                temp = temp[key] = {};
+            }
         }
-        return returnArray;
+        return R;
     },
 
-    //TODO!
+
     click_duplicate: function (e) {
         e.preventDefault();
         var root = jQuery(this).closest(hiweb_field_repeat.selector);
         var row_list = hiweb_field_repeat.get_rows_list(root);
         var currentRow = jQuery(this).closest(hiweb_field_repeat.selector_row);
-        var values = {};
-        hiweb_field_repeat.get_cols(root).each(function () {
-            var col_id = jQuery(this).attr('data-col');
-            values[col_id] = hiweb_field_repeat.objectifyForm(currentRow.find('> td[data-col="' + col_id + '"] [name]').serializeArray());
+        var values = [];
+        var base_name = hiweb_field_repeat.get_input_name(this) + '[' + currentRow.attr('data-row') + ']';
+        currentRow.find('[name]').each(function () {
+            var input_name = jQuery(this).attr('name');
+            if (input_name.indexOf(base_name) === 0) {
+                input_name = input_name.substr(base_name.toString().length).replace(/^\[([\w\d\-_]+)\]/g, '$1');
+                values.push(hiweb_field_repeat.paramsToArray(input_name, jQuery(this).val()));
+            }
         });
 
         jQuery.ajax({
@@ -270,15 +305,17 @@ var hiweb_field_repeat = {
             data: {
                 id: hiweb_field_repeat.get_global_id(this),
                 method: 'ajax_html_row',
-                input_name: hiweb_field_repeat.get_name_id(this),
-                value: {}
-            }, //todo: value
+                row_index: currentRow.attr('data-row'),
+                values: deepMerge.all(values)
+            },
             dataType: 'json',
-            success: function (data) {
-                if (data.hasOwnProperty('result') && data.result === true) {
-                    var newLine = jQuery(data.data).hide().fadeIn();
-                    row_list.append(newLine);
-                    newLine.find('[data-col] > *').trigger('init');
+            success: function (response) {
+                if (response.hasOwnProperty('result') && response.result === true) {
+                    var newLine = jQuery(response.data).hide().fadeIn();
+                    currentRow.after(newLine);
+                    newLine.find('[data-col]').each(function () {
+                        jQuery(this).trigger('hiweb-field-repeat-add-new-row', [jQuery(this), newLine, root]);
+                    });
                     newLine.css('opacity', 0).animate({opacity: 1}).find('> td')
                         .wrapInner('<div style="display: none;" />')
                         .parent()
@@ -286,31 +323,24 @@ var hiweb_field_repeat = {
                         .slideDown(700, function () {
                             var $set = jQuery(this);
                             $set.replaceWith($set.contents());
+                            newLine.find('[data-col]').each(function () {
+                                jQuery(this).trigger('hiweb-field-repeat-cloned-row-fadein', [jQuery(this), newLine, root]);
+                                jQuery(this).trigger('hiweb-field-repeat-added-new-row-fadein', [jQuery(this), newLine, root]);
+                            });
                         });
-                    hiweb_field_repeat.make_table_names(root);
+                    hiweb_field_repeat.set_input_names(root);
+                    newLine.find('[data-col]').each(function () {
+                        jQuery(this).trigger('hiweb-field-repeat-cloned-row', [jQuery(this), newLine, root]);
+                        jQuery(this).trigger('hiweb-field-repeat-added-new-row', [jQuery(this), newLine, root]);
+                    });
                 } else {
-                    console.warn(data);
+                    console.warn(response);
                 }
             },
             error: function (data) {
                 console.warn(data);
             }
         });
-        /*
-        var row = jQuery(this).closest(hiweb_field_repeat.selector_row);
-        var newRow = row.clone(false).insertAfter(row);
-        newRow.find('[data-col] > *').trigger('init');
-        newRow.css('opacity', 0).animate({opacity: 1}).find('> td')
-            .wrapInner('<div style="display: none;" />')
-            .parent()
-            .find('> td > div')
-            .slideDown(700, function () {
-                var $set = jQuery(this);
-                $set.replaceWith($set.contents());
-
-            });
-        hiweb_field_repeat.make_table_names(jQuery(this).closest(hiweb_field_repeat.selector));
-         newRow.find('[data-col] > *').trigger('init_2');*/
     },
 
     click_remove: function (e) {
@@ -328,7 +358,7 @@ var hiweb_field_repeat = {
                 var root = row.closest(hiweb_field_repeat.selector);
                 jQuery(this).parent().parent().remove();
                 row.remove();
-                hiweb_field_repeat.make_table_names(root);
+                hiweb_field_repeat.set_input_names(root);
                 if (hiweb_field_repeat.get_rows(root).length === 0) {
                     jQuery(root).find('.message').fadeIn();
                 }
@@ -348,6 +378,8 @@ var hiweb_field_repeat = {
 };
 
 jQuery(document).ready(hiweb_field_repeat.init_once);
-jQuery('body').on('init_3', '.hiweb-field-repeat', function () {
-    hiweb_field_repeat.init(this)
+jQuery('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function (e, col, row, root) {
+    col.find('.hiweb-field-repeat').each(function () {
+        hiweb_field_repeat.init(this);
+    });
 });
