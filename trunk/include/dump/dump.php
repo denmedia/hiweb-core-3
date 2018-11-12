@@ -120,9 +120,14 @@
 				file_put_contents( path::realpath( 'error.txt' ), dirname( $filePath ) . ' => not exists' );
 				return false;
 			}
-			$returnStr = '<style type="text/css">.sep { border-bottom: 1px dotted #ccc; } .sepLast { margin-bottom: 35px; }</style>';
+			//$returnStr = '<style type="text/css">.sep { border-bottom: 1px dotted #ccc; } .sepLast { margin-bottom: 35px; }</style>';
+			$returnStr = '';
 			$separatorHtml = '<div class="sep"></div>';
-			$returnStr .= date::format() . ' / ' . microtime( true ) . ' / ' . $separatorHtml . self::getHtml_arrayPrint( $dataMix ) . $separatorHtml;
+			$returnStr .= date::format() . ' / ' . microtime( true ) . ' / ' . $separatorHtml;
+			ob_start();
+			self::the($dataMix);
+			$returnStr .= ob_get_clean();
+			$returnStr .= $separatorHtml;
 			$fileContent = '';
 			if( file_exists( $filePath ) && is_file( $filePath ) ){
 				$time = time();
@@ -130,6 +135,12 @@
 				$timeDelta = $time - $filetime;
 				if( $autoDeleteOldFile === false || $timeDelta > $autoDeleteOldFile ){
 					unlink( $filePath );
+					$returnStr = '<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title>'.microtime(true).'</title>
+ </head>'.$returnStr;
 				} else {
 					$fileContent = file_get_contents( $filePath );
 				}

@@ -1,2 +1,4 @@
-.hiweb-field-post .selectator_element{width:100% !important}
+.hiweb-field-post .ui.dropdown {
+  z-index: 10; }
+
 /*# sourceMappingURL=field-post.css.map */

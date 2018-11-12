@@ -153,6 +153,14 @@ let hiweb_field_repeat = {
             if ($col.length !== 1) {
                 return $input.closest('.hiweb-field-repeat[data-input-name]').attr('data-input-name');
             }
+            //name sufix extract
+            let name_segments = $input.attr('name').split('[' + $col.attr('data-col') + ']');
+            if (name_segments.length > 1) {
+                let name_sufix = name_segments.pop();
+                if (name_sufix !== '') {
+                    name_items.push(name_sufix);
+                }
+            }
             name_items.push('[' + $col.attr('data-col') + ']');
             //row
             var $row = $col.closest('[data-row]');
