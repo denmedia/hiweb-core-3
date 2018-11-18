@@ -252,13 +252,13 @@
 
 		/**
 		 * Возвращает папки или папку(если указать индекс) из URL
-		 * @version 2.1
+		 * @version 2.2
 		 * @param null $url
 		 * @param int  $index
 		 * @return bool|array|string
 		 */
 		static function get_dirs_from_url( $url = null, $index = null ){
-			$urlArr = self::get_url_info( self::prepare_url( !is_string( $url ) ? self::base_url() : $url ) );
+			$urlArr = self::get_url_info( self::prepare_url( !is_string( $url ) ? self::url_full() : $url ) );
 			$R = is_int( $index ) ? ( isset( $urlArr['dirs_arr'][ $index ] ) ? $urlArr['dirs_arr'][ $index ] : false ) : $urlArr['dirs_arr'];
 
 			return $R;
@@ -420,7 +420,7 @@
 			if( @file_exists( $dirPath ) ){
 				return is_dir( $dirPath ) ? $dirPath : false;
 			}
-			$dirPathArr = explode( '/', str_replace( '/', '/', $dirPath ) );
+			$dirPathArr = explode( '/', str_replace( '\\', '/', $dirPath ) );
 			$newDirArr = [];
 			$newDirDoneArr = [];
 			foreach( $dirPathArr as $name ){

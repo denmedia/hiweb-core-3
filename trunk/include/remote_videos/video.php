@@ -71,15 +71,15 @@
 			} else {
 				if ( $this->is_youtube() ) {
 					$youtube = "http://www.youtube.com/oembed?url=" . $this->url . "&format=json";
-					if ( ! cache::get_cache_exists( $youtube ) ) {
+					if ( ! cache::is_exists( $youtube ) ) {
 						$curl = curl_init( $youtube );
 						curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
 						$return = curl_exec( $curl );
 						curl_close( $curl );
 						$data = json_decode( $return, true );
-						cache::set_cache( $youtube, $data );
+						cache::set( $youtube, $data );
 					} else {
-						$data = cache::get_cache( $youtube );
+						$data = cache::get( $youtube );
 					}
 					if ( isset( $data['thumbnail_url'] ) ) {
 						$this->thumbnail_url = $data['thumbnail_url'];
@@ -92,15 +92,15 @@
 					}
 				} elseif ( $this->is_vimeo() ) {
 					$vimeo = "http://vimeo.com/api/v2/video/" . $this->get_id() . ".json";
-					if ( ! cache::get_cache_exists( $vimeo ) ) {
+					if ( ! cache::is_exists( $vimeo ) ) {
 						$curl = curl_init( $vimeo );
 						curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
 						$return = curl_exec( $curl );
 						curl_close( $curl );
 						$data = json_decode( $return, true );
-						cache::set_cache( $vimeo, $data );
+						cache::set( $vimeo, $data );
 					} else {
-						$data = cache::get_cache( $vimeo );
+						$data = cache::get( $vimeo );
 					}
 					if ( isset( $data[0] ) ) {
 						$this->thumbnail_url = $data[0]['thumbnail_large'];

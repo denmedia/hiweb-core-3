@@ -67,7 +67,7 @@
 		static function filter_fontawesome_menu_icon( $menu_icon ){
 			if( preg_match( '/^fa(?>b|l|s|r) fa[\-\w\d]+$/i', $menu_icon ) > 0 ){
 				$cache_key = 'hiweb-core-post-type-menu-icon-fontawesome-' . $menu_icon;
-				if( cache::get_cache_exists( $cache_key ) ) return cache::get_cache( $cache_key );
+				if( cache::is_exists( $cache_key ) ) return cache::get( $cache_key );
 				$sprites_path = HIWEB_DIR_VENDORS . '/font-awesome-5/sprites/';
 				switch( $menu_icon[2] ){
 					case 'b':
@@ -100,7 +100,7 @@
 						break;
 					}
 				}
-				cache::set_cache( $cache_key, $menu_icon );
+				cache::set( $cache_key, $menu_icon );
 				return $menu_icon;
 			} else {
 				return $menu_icon;

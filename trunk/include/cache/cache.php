@@ -2,8 +2,8 @@
 	/**
 	 * Created by PhpStorm.
 	 * User: denmedia
-	 * Date: 13.03.2018
-	 * Time: 13:26
+	 * Date: 01/11/2018
+	 * Time: 09:47
 	 */
 
 	namespace hiweb;
@@ -11,71 +11,77 @@
 
 	class cache{
 
-		static $option_name = 'hiweb_cache';
-		static $life_time = 84600;
+		/** @var string */
+		static private $default_group = 'hiweb_cache';
+		/** @var group[] */
+		static $caches = [];
 
 
 		/**
-		 * @param $key
-		 * @param null $value
-		 * @return bool|null
+		 * @param null $group
+		 * @return group
 		 */
-		static function set_cache( $key, $value = null ){
-			$R = self::get_cache();
-			if( !is_string( $key ) ){
-				console_warn( 'Попытука установить кэш без ключа' );
-				return null;
+		static private function get_group( $group = null ){
+			if( !is_string( $group ) ) $group = self::$default_group;
+			if( !array_key_exists( $group, self::$caches ) ){
+				self::$caches[ $group ] = new group( $group );
 			}
-			$R[ $key ] = [ $value, microtime( true ) ];
-			return update_option( self::$option_name, $R, true );
+			return self::$caches[ $group ];
 		}
 
 
 		/**
-		 * @param null $key
-		 * @param null $default
+		 * @param      $key
+		 * @param null $group
 		 * @return array
 		 */
-		static function get_cache( $key = null, $default = null ){
-			$R = get_option( self::$option_name, [] );
-			$R = is_array( $R ) ? $R : [];
-			if( !is_string( $key ) ){
-				return $R;
-			} else {
-				return array_key_exists( $key, $R ) ? $R[ $key ][0] : $default;
-			}
+		static function get( $key = null, $group = null ){
+			return self::get_group( $group )->get( $key );
+		}
+
+		static function get_group_data($group = null){
+			return self::get_group($group)->get();
 		}
 
 
 		/**
-		 * @param $key
-		 * @param bool $use_alive
+		 * @param      $key
+		 * @param null $value
+		 * @param null $group
 		 * @return bool|null
 		 */
-		static function get_cache_exists( $key, $use_alive = true ){
-			if( !is_string( $key ) ){
-				console_warn( 'Попытука получить кэш без ключа' );
-				return null;
-			}
-			$cache = self::get_cache();
-			$exists = array_key_exists( $key, $cache );
-			if( array_key_exists( $key, $cache ) && intval( $cache[ $key ][1] ) == 0 ) return false;
-			return ( !$exists || !$use_alive ) ? $exists : ( microtime( true ) - intval( $cache[ $key ][1] ) < intval( self::$life_time ) );
+		static function set( $key, $value = null, $group = null ){
+			return self::get_group( $group )->set( $key, $value );
 		}
 
 
 		/**
-		 * @param null $key
+		 * @param      $key
+		 * @param null $group
 		 * @return bool
 		 */
-		static function clear_cache( $key = null ){
-			if( !is_string( $key ) ){
-				$R = [];
-			} else {
-				$R = self::get_cache();
-				unset( $R[ $key ] );
-			}
-			return update_option( self::$option_name, $R, true );
+		static function clear($key, $group = null){
+			return self::get_group( $group )->clear($key);
+		}
+
+
+		/**
+		 * @param null $group
+		 * @return bool
+		 */
+		static function clear_group($group = null){
+			return self::get_group( $group )->clear();
+		}
+
+
+		/**
+		 * @param      $key
+		 * @param bool $use_alive
+		 * @param null $group
+		 * @return bool|null
+		 */
+		static function is_exists( $key, $use_alive = true, $group = null ){
+			return self::get_group($group)->is_exists($key, $use_alive);
 		}
 
 	}

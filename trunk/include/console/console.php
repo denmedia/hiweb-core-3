@@ -85,10 +85,12 @@
 		 * @return console\message
 		 */
 		static function debug_error( $content, $addition_data = null ){
-			$R = console\messages::make( $content, 'error', 2 );
-			if( !is_null( $addition_data ) ){
-				console\messages::make( $addition_data, 'info', false );
-				console\messages::make( self::$str_debug_delimeter, 'info', false );
+			if(false){
+				$R = console\messages::make( $content, 'error', 2 );
+				if( !is_null( $addition_data ) ){
+					console\messages::make( $addition_data, 'info', false );
+					console\messages::make( self::$str_debug_delimeter, 'info', false );
+				}
 			}
 			return $R;
 		}

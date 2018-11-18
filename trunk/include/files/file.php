@@ -149,8 +149,12 @@
 		}
 
 
+		/**
+		 * @return string
+		 */
 		public function get_content(){
-			//todo
+			if($this->is_exists_and_readable()) return file_get_contents( $this->path );
+			else return '';
 		}
 
 	}
