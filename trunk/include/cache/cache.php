@@ -32,8 +32,8 @@
 
 		/**
 		 * @param      $key
-		 * @param null $group
-		 * @return array
+		 * @param null|string $group
+		 * @return array|mixed
 		 */
 		static function get( $key = null, $group = null ){
 			return self::get_group( $group )->get( $key );

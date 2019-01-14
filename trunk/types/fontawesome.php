@@ -20,7 +20,6 @@
 	namespace hiweb\fields\types\fontawesome {
 
 
-		use hiweb\path;
 		use hiweb\strings;
 
 
@@ -45,7 +44,7 @@
 				parent::__construct( $field, $value );
 				add_action( 'wp_ajax_hiweb-type-fontawesome', function(){
 					header( 'Content-Type: application/json' );
-					echo json_encode( self::get_icons_list( path::request( 'query' ) ) );
+					echo json_encode( self::get_icons_list( \hiweb\urls::request( 'query' ) ) );
 					die;
 				} );
 			}

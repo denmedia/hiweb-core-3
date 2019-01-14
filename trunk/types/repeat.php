@@ -4,11 +4,10 @@
 
 
 		use hiweb\fields;
-		use hiweb\path;
 
 
 		add_action( 'wp_ajax_hiweb-field-repeat-get-row', function(){
-			$field_global_id = path::request( 'id' );
+			$field_global_id = \hiweb\urls::request( 'id' );
 			///
 			$R = [ 'result' => false, 'filed-id' => $field_global_id ];
 			//
@@ -23,8 +22,8 @@
 					$field = fields::$fields[ $field_global_id ];
 					/** @var fields\types\repeat\input $input */
 					$input = $field->INPUT();
-					$R['data'] = $input->ajax_html_row( path::request( 'input_name' ), path::request( 'row_index' ), path::request( 'values' ) );
-					$R['values'] = $input->ajax_filter_values(path::request( 'values' ));
+					$R['data'] = $input->ajax_html_row( \hiweb\urls::request( 'input_name' ), \hiweb\urls::request( 'row_index' ), \hiweb\urls::request( 'values' ) );
+					$R['values'] = $input->ajax_filter_values( \hiweb\urls::request( 'values' ) );
 				}
 			}
 			//
@@ -169,7 +168,7 @@
 			}
 
 
-			private function the_head_html( $thead = true ){
+			private function the_head_html( $thead = true, $handle_title = '&nbsp;' ){
 				?>
 				<?= $thead ? '<thead class="ui segment">' : '<tfoot class="ui segment">' ?>
 				<tr>
@@ -177,7 +176,7 @@
 					<?php
 						if( $this->have_flex_rows() ){
 							?>
-							<th class="flex-column">&nbsp;</th><?php
+							<th class="flex-column"><?= $handle_title ?></th><?php
 						} else {
 							if( $this->have_cols() ){
 								///COMPACT GROUP
@@ -293,7 +292,7 @@
 			public function ajax_filter_values( $array, $level = null ){
 				$R = [];
 				$first = false;
-				if(is_null($level)) {
+				if( is_null( $level ) ){
 					$first = true;
 					$level = 20;
 				}

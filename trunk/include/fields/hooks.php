@@ -50,6 +50,7 @@
 	add_action( 'show_user_profile', 'hiweb\\fields\\locations\\admin::edit_user_profile' );
 	add_action( 'edit_user_profile', 'hiweb\\fields\\locations\\admin::edit_user_profile' );
 	/// USERS SAVE
+	add_action( 'user_register', 'hiweb\\fields\\locations\\admin::edit_user_profile_update' );
 	add_action( 'personal_options_update', 'hiweb\\fields\\locations\\admin::edit_user_profile_update' );
 	add_action( 'edit_user_profile_update', 'hiweb\\fields\\locations\\admin::edit_user_profile_update' );
 	//	///OPTIONS FIELDS

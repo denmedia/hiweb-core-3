@@ -7,17 +7,24 @@
 
 		public $content = '';
 		public $type = 'info';
-		public $debugMod = false;
+		public $debugMod = '';
+		public $addition_data = [];
 
 
-		public function __construct( $content = '', $type = 'info' ){
+		public function __construct( $content = '', $type = 'info', $addition_data = [] ){
 			$this->content = $content;
 			$this->type = $type;
+			$this->addition_data = $addition_data;
 		}
 
 
 		public function set_content( $content = null ){
 			$this->content = $content;
+		}
+
+
+		public function set_addition_data( $addition_data ){
+			$this->addition_data = $addition_data;
 		}
 
 
@@ -34,7 +41,12 @@
 		 * @return string
 		 */
 		public function html(){
-			return '<script>console.' . $this->type() . '(' . json_encode( $this->content ) . ');</script>';
+			$params = [ json_encode( $this->content ) ];
+			if( is_array( $this->addition_data ) ) foreach( $this->addition_data as $data ){
+				$params[] = json_encode( $data );
+			}
+			$params = implode( ', ', $params );
+			return '<script>console.' . $this->type() . '(' . $params . ');</script>';
 		}
 
 
@@ -47,7 +59,7 @@
 		}
 
 
-		public function set_debugMod( $set = true ){
+		public function set_groupTitle( $set = true ){
 			$this->debugMod = $set;
 		}
 

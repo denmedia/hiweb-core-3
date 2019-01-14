@@ -3,10 +3,63 @@
 	namespace hiweb;
 
 
+	use hiweb\arrays\array_;
+
+
 	class arrays{
+
+		/** @var array_[] */
+		static private $arrays = [];
+		static private $objectId_to_arrayKeys = [];
+		/** @var array_ */
+		static private $arr;
+
+
+		/**
+		 * Возвращает объект array для работы с массивом
+		 * @param $array
+		 * @return array_
+		 */
+		static function get( $array = [] ){
+			$array = new array_( $array );
+			self::$arrays[ spl_object_hash( $array ) ] = $array;
+			return $array;
+		}
+
+
+		/**
+		 * Обновить массив в менеджере
+		 * @param array_ $array_
+		 * @return array_
+		 */
+		//		static function _renew( array_ $array_ ){
+		//			if( $array_ instanceof array_ ){
+		//				$objectId = spl_object_hash( $array_ );
+		//				$old_key = self::$objectId_to_arrayKeys[ $objectId ];
+		//				unset( self::$arrays[ $old_key ] );
+		//				self::$arrays[ json_encode( $array_->get() ) ] = $array_;
+		//			}
+		//			return $array_;
+		//		}
+
+		/**
+		 * Use this functions to economy ram memory
+		 * @param $array
+		 * @return array_
+		 */
+		static function get_temp( $array ){
+			if( !self::$arr instanceof array_ ){
+				self::$arr = new array_( $array );
+			} else {
+				self::$arr->set( $array );
+			}
+			return self::$arr;
+		}
+
 
 		/**
 		 * Возвращает массив, соединенный из двух массивов
+		 * @deprecated
 		 * @param      $array1
 		 * @param      $array2
 		 * @param bool $createEmptyArr - если один их параметров не массив, то не соединять массив, иначе создавать <b>array(параметр)</b>
@@ -25,17 +78,7 @@
 
 
 		/**
-		 * Возвращает массив слитый из двух, исключая несовпадающие ключи второго массива
-		 * @param      $array1
-		 * @param      $array2
-		 * @param bool $createEmptyArr
-		 */
-		//TODO написать функцию
-		static function mergeExclude( $array1, $array2, $createEmptyArr = true ){
-		}
-
-
-		/**
+		 * @deprecated
 		 * Поместить значение в массив на определенную виртуальную позицию, указав ключ
 		 * @param      $array
 		 * @param      $value
@@ -67,7 +110,7 @@
 					} else $R[ $k ] = $v;
 					$n ++;
 				}
-				if(!$pushed) {
+				if( !$pushed ){
 					if( is_numeric( $key ) || is_string( $key ) ) $R[ $key ] = $value; else $R[] = $value;
 				}
 				$array = $R;
@@ -82,7 +125,8 @@
 
 
 		/**
-		 * Move array item to desctination index
+		 * @deprecated
+		 * Move array item to destination index
 		 * @param $array
 		 * @param $source_key
 		 * @param $destination_index
@@ -97,6 +141,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает значение ключа по его индексу
 		 * @param array     $array
 		 * @param int|array $index = номер (массив номеров) индекса значения. Напрмиер 0 - первый ключ. Чтобы получить последний ключ, укажите -1, так же - 2 вернет предпоследний ключ. Если индекс ключа превысит
@@ -125,6 +170,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Осуществляет поиск значения в массиве и возвращает ключ
 		 * @param      $array
 		 * @param      $search_value
@@ -205,6 +251,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает TRUE, если $mix не массив, либо пустой
 		 * @param      $mix     - массив
 		 * @param bool $nullVal - если единственное значение null - считать массив пустым
@@ -216,8 +263,9 @@
 
 
 		/**
+		 * @deprecated
 		 * Ищет и возвращает массив ключей, чьи значения совпадают с $needle или FALSE - если ничего не найдено. Возвращаемый массив имеет вид: array(ключ => номер найденного).
-		 * @param array   $haystack - массив, в котором искать совпадения со значениями
+		 * @param array  $haystack - массив, в котором искать совпадения со значениями
 		 * @param string $needle   - необходимый фрагмент для поиска
 		 * @return array|bool
 		 */
@@ -235,8 +283,9 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает массив array(ключ => номер найденного) или FALSE - если ничего не найдено
-		 * @param array   $needle   - массив фрагментов для поиска
+		 * @param array  $needle   - массив фрагментов для поиска
 		 * @param string $haystack - строка, в которой произвести поиск
 		 * @return array|bool
 		 */
@@ -254,6 +303,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает массив найденных совпадений массива фрагментов в массиве
 		 * @param array $haystack
 		 * @param array $needle
@@ -278,10 +328,11 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает значение ключа из массива, а так же вложенные значения, например array1(key1 => array2(key2 => value))
-		 * @param array|object          $haystack - целевой массив
+		 * @param array|object         $haystack - целевой массив
 		 * @param string|integer|array $keyMix   - ключ (массив вложенных ключей) в целевом массиве
-		 * @param mixed                 $def      - вернуть значение, если значение не найдено
+		 * @param mixed                $def      - вернуть значение, если значение не найдено
 		 * @return mixed
 		 * @version 1.2
 		 */
@@ -301,6 +352,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает массив, сконвертированный из $mix
 		 * @param      $mix
 		 * @param null $subKey - если $mix - массив, то из него можно извлеч значение ключа и сконвертировать его в массив
@@ -316,8 +368,9 @@
 
 
 		/**
+		 * @deprecated
 		 * @param string $needle
-		 * @param array   $haystack
+		 * @param array  $haystack
 		 * @return bool
 		 */
 		static function in_array( $needle = '', $haystack = [] ){
@@ -329,7 +382,8 @@
 
 
 		/**
-		 * @param array   $haystack
+		 * @deprecated
+		 * @param array  $haystack
 		 * @param string $value
 		 * @return array
 		 */
@@ -342,10 +396,11 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает значение, найденное по ключу в массиве, исключая вложенные массивы
-		 * @param array   $haystack - целевой массив
+		 * @param array  $haystack - целевой массив
 		 * @param string $keyMix   - список проверяемых ключей
-		 * @param null    $def      - значение, которое будлет вернуто в случае неудачи
+		 * @param null   $def      - значение, которое будлет вернуто в случае неудачи
 		 * @return null
 		 * @version 1.0
 		 */
@@ -366,6 +421,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает разбитую строку на массив через делимитер, сократив пустоты в краях разбитых частях возвращаемого массива
 		 * @param      $delimiter        - делимитер
 		 * @param      $haystack         - целевая строка
@@ -389,6 +445,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Возвращает количество ключей, включая количество вложенных ключей
 		 * @param      $haystack - массив
 		 * @param null $keyMix   - укажите вложенные массивы в текущий массив (не обязательно, если массив простой)
@@ -407,6 +464,7 @@
 
 
 		/**
+		 * @deprecated
 		 * Группирует массивы в массиве по значению ключа
 		 * @param $array
 		 * @param $groupKey
@@ -429,33 +487,38 @@
 		}
 
 
-		static function ungroup( $array, $level = 0 ){
-			$R = [];
-			//$object = $array;
-			if( is_object( $array ) ){
-				$array = (array)$array;
-			}
-			if( is_array( $array ) ){
-				foreach( $array as $key => $value ){
-					if( $level < 1 ){
-						if( is_array( $value ) || is_object( $value ) ){
-							foreach( (array)$value as $subKey => $subValue ){
-								$R[ $subKey ] = $subValue;
-							}
-						} else {
-							$R[] = $value;
-						}
-					} else {
-						$R[ $key ] = self::ungroup( $value, $level - 1 );
-					}
-				}
-			} else {
-				$R = '!';
-			}
-
-			return $R;
-		}
-
+		/**
+		 * @deprecated
+		 * @param     $array
+		 * @param int $level
+		 * @return array|string
+		 */
+		//		static function ungroup( $array, $level = 0 ){
+		//			$R = [];
+		//			//$object = $array;
+		//			if( is_object( $array ) ){
+		//				$array = (array)$array;
+		//			}
+		//			if( is_array( $array ) ){
+		//				foreach( $array as $key => $value ){
+		//					if( $level < 1 ){
+		//						if( is_array( $value ) || is_object( $value ) ){
+		//							foreach( (array)$value as $subKey => $subValue ){
+		//								$R[ $subKey ] = $subValue;
+		//							}
+		//						} else {
+		//							$R[] = $value;
+		//						}
+		//					} else {
+		//						$R[ $key ] = self::ungroup( $value, $level - 1 );
+		//					}
+		//				}
+		//			} else {
+		//				$R = '!';
+		//			}
+		//
+		//			return $R;
+		//		}
 
 		/**
 		 * Return free key in array

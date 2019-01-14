@@ -3,11 +3,11 @@
 	namespace {
 
 
-		if ( ! function_exists( 'dump_var' ) ) {
+		if( !function_exists( 'dump_var' ) ){
 			/**
 			 * @param $variable
 			 */
-			function dump_var( $variable ) {
+			function dump_var( $variable ){
 				hiweb\dump::the( $variable );
 			}
 		} else {

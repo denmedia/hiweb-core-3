@@ -16,6 +16,7 @@
 				if( file_exists( $class_path ) && is_dir( $class_path ) && is_readable( $class_path ) ){
 					foreach( scandir( $class_path ) as $file ){
 						if( preg_match( '/^(.){1,2}$/', $file ) > 0 ) continue;
+						if( preg_match( '/^-/i', $file ) > 0 ) continue;
 						$php_path = $class_path . '/' . $file;
 						if( preg_match( '/\.php$/i', $file ) > 0 ){
 							include_once $php_path;

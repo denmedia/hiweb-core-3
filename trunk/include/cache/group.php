@@ -37,9 +37,9 @@
 
 
 		/**
-		 * @param null $key
-		 * @param null $default
-		 * @return array
+		 * @param null|string $key
+		 * @param null|mixed $default
+		 * @return mixed|array
 		 */
 		public function get( $key = null, $default = null ){
 			$R = get_option( $this->group, [] );

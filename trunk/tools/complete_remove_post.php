@@ -2,10 +2,11 @@
 
 	namespace hiweb\tools;
 
-	use hiweb\path;
+
+	use hiweb\images;
 
 
-	class comlete_remove_post{
+	class complete_remove_post{
 
 		public $post_id = 0;
 
@@ -40,17 +41,28 @@
 				if( has_post_thumbnail( $this->post_id ) ){
 					$R[] = get_post_thumbnail_id( $this->post_id );
 				}
-				$content = $this->get_post()->post_content;
+				$content = apply_filters( 'the_content', $this->get_post()->post_content );
 				$doc = new \DOMDocument();
 				@$doc->loadHTML( $content );
 				$tags = $doc->getElementsByTagName( 'img' );
 				foreach( $tags as $tag ){
-					$R[] = path::get_attachment_id( $tag->getAttribute( 'src' ) );
+					$R[] = images::get( $tag->getAttribute( 'src' ) )->attach_id();
 				}
 			}
 			return $R;
 		}
 
 
-	}
+		/**
+		 * @return false|null|\WP_Post
+		 */
+		public function do_remove(){
+			foreach( $this->get_attachment_ids() as $attachment_id ){
+				if( $attachment_id == $this->post_id ) continue;
+				( new complete_remove_post( $attachment_id ) )->do_remove();
+			}
+			return wp_delete_post( $this->post_id, true );
+		}
 
+
+	}

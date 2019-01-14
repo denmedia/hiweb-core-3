@@ -3,16 +3,18 @@
 	namespace {
 
 
-		if ( ! function_exists( 'include_js' ) ) {
+		if( !function_exists( 'include_js' ) ){
 			/**
-			 * @param string $jsPathOrURL
+			 * @param       $jsPathOrURL
 			 * @param array $deeps
-			 * @param bool $inFooter
-			 *
-			 * @return bool
+			 * @param bool  $inFooter
+			 * @return \hiweb\js\file
 			 */
-			function include_js( $jsPathOrURL, $deeps = [], $inFooter = true ) {
-				return hiweb\js\enqueue::add( $jsPathOrURL, $deeps, $inFooter );
+			function include_js( $jsPathOrURL, $deeps = [], $inFooter = true ){
+				$file = hiweb\js::add( $jsPathOrURL );
+				$file->add_deeps( $deeps );
+				if( $inFooter ) $file->put_to_footer();
+				return $file;
 			}
 		} else {
 			hiweb\console::debug_warn( 'Function [include_js] is exists...' );
@@ -24,12 +26,14 @@
 
 		/**
 		 * @param string $jsPathOrURL
-		 * @param array $deeps
-		 * @param bool $inFooter
-		 *
-		 * @return bool
+		 * @param array  $deeps
+		 * @param bool   $inFooter
+		 * @return js\file
 		 */
-		function js( $jsPathOrURL, $deeps = [], $inFooter = true ) {
-			return js\enqueue::add( $jsPathOrURL, $deeps, $inFooter );
+		function js( $jsPathOrURL, $deeps = [], $inFooter = true ){
+			$file = js::add( $jsPathOrURL );
+			$file->add_deeps( $deeps );
+			if( $inFooter ) $file->put_to_footer();
+			return $file;
 		}
 	}

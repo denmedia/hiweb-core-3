@@ -10,7 +10,7 @@
 
 		public function __construct( location $location ){
 			parent::__construct( $location );
-			$this->options['position'] = 2;
+			$this->options['position'] = 1;
 		}
 
 

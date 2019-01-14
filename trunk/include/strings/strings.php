@@ -43,10 +43,8 @@
 
 		/**
 		 * Convert string utf8 to ansii
-		 *
-		 * @param strings $utf8
-		 *
-		 * @return strings
+		 * @param string $utf8
+		 * @return string
 		 */
 		static function utf8_to_ansii( $utf8 ){
 			if( function_exists( 'iconv' ) ){
@@ -135,10 +133,8 @@
 
 		/**
 		 * Convert ansii to utf-8
-		 *
-		 * @param strings $ansii
-		 *
-		 * @return strings
+		 * @param string $ansii
+		 * @return string
 		 */
 		static function ansii_to_utf8( $ansii ){
 			if( function_exists( 'iconv' ) ){
@@ -224,7 +220,7 @@
 
 
 		/**
-		 * @param strings $parseStr
+		 * @param string $parseStr
 		 * @return array
 		 */
 		static function explode_to_string_numeric( $parseStr ){
@@ -251,10 +247,8 @@
 
 		/**
 		 * Formatting JSON string
-		 *
-		 * @param strings $json
-		 *
-		 * @return strings
+		 * @param string $json
+		 * @return string
 		 */
 		static function json_format( $json ){
 			if( !is_string( $json ) ){
@@ -297,9 +291,7 @@
 
 		/**
 		 * Return TRUE, if haystack string is REGEX
-		 *
-		 * @param strings $haystackString
-		 *
+		 * @param string $haystackString
 		 * @return bool
 		 */
 		static function is_regex( $haystackString ){ return preg_match( "/^\/[\s\S]+\/$/", $haystackString ) > 0; }
@@ -307,11 +299,9 @@
 
 		/**
 		 * Return TRUE, if haystack string is JSON
-		 *
-		 * @param strings $haystack
-		 * @param bool $returnIfFalse
-		 * @param bool $returnDecodeIfJson
-		 *
+		 * @param string $haystack
+		 * @param bool   $returnIfFalse
+		 * @param bool   $returnDecodeIfJson
 		 * @return bool|mixed
 		 */
 		static function is_json( $haystack, $returnIfFalse = false, $returnDecodeIfJson = true ){
@@ -336,10 +326,9 @@
 
 
 		/**
-		 * @param $text
-		 * @param $limit
+		 * @param        $text
+		 * @param        $limit
 		 * @param string $ellipsis
-		 *
 		 * @return string
 		 */
 		static function truncate_by_chars( $text, $limit, $ellipsis = '...' ){
@@ -352,10 +341,9 @@
 
 
 		/**
-		 * @param $text
-		 * @param $limit
+		 * @param        $text
+		 * @param        $limit
 		 * @param string $ellipsis
-		 *
 		 * @return string
 		 */
 		static function truncate_by_words( $text, $limit, $ellipsis = '...' ){
@@ -372,16 +360,15 @@
 
 		/**
 		 * base::convert_str_toId()
-		 *
-		 * @param mixed $string
+		 * @param mixed   $string
+		 * @param string  $default_unknown_symbol
 		 * @param integer $limit
-		 * @param bool $useRegistr
-		 * @param bool $ifEmpty_generateRandomKey
-		 * @param array $additionSymbolsArr
-		 *
-		 * @return bool|int|strings
+		 * @param bool    $useRegistr
+		 * @param bool    $ifEmpty_generateRandomKey
+		 * @param array   $additionSymbolsArr
+		 * @return bool|int|string
 		 */
-		static function sanitize_id( $string, $limit = 99, $useRegistr = false, $ifEmpty_generateRandomKey = true, $additionSymbolsArr = [] ){
+		static function sanitize_id( $string, $default_unknown_symbol = '_', $limit = 99, $useRegistr = false, $ifEmpty_generateRandomKey = true, $additionSymbolsArr = [] ){
 			$symbolsAllowArr = [
 				'а' => 'a',
 				'б' => 'b',
@@ -526,7 +513,7 @@
 						//$list_n ++;
 					} //Если киррилица, брать 2 символа
 					///
-					$convertStr = '_';
+					$convertStr = $default_unknown_symbol;
 					if( isset( $symbolsAllowArr[ $symStr ] ) ){
 						$convertStr = $symbolsAllowArr[ $symStr ];
 					} else if( !$useRegistr && isset( $symbolsAllowArr[ $symStrLow ] ) ){

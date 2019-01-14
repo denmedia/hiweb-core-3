@@ -124,7 +124,7 @@
 						<div class="img noimg"></div>
 						<div class="img" data-img <?php
 							if( has_post_thumbnail( $P ) ){
-						?>style="background-image: url(<?= get_image( get_post_thumbnail_id( $P ) )->get_similar_src() ?>)"<?php
+						?>style="background-image: url(<?= get_image( get_post_thumbnail_id( $P ) )->get_src('thumbnail', 0) ?>)"<?php
 							}
 						?>></div>
 						<div data-drop-logo>

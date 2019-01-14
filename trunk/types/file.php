@@ -20,7 +20,7 @@
 
 
 		use hiweb\files;
-		use hiweb\path;
+		use hiweb\paths;
 
 
 		class field extends \hiweb\fields\field{
@@ -46,7 +46,7 @@
 			 */
 			public function have_file(){
 				$attachment_url = wp_get_attachment_url( $this->VALUE()->get() );
-				$this->has_file[ $attachment_url ] = path::is_readable( $attachment_url );
+				$this->has_file[ $attachment_url ] = paths::get( $attachment_url )->is_readable();
 				return $this->has_file[ $attachment_url ];
 			}
 
@@ -63,7 +63,7 @@
 				}
 				ob_start();
 				?>
-				<div class="ui move up reveal hiweb-field-file" id="<?= $this->global_id() ?>" data-has-file="<?= $this->have_file() ? '1' : '0' ?>" data-file-mime="<?= $file instanceof files\file ? $file->mime : '' ?>" data-file-image="<?= $file instanceof files\file ? ( $file->is_image() ? 'image' : 'file' ) : '' ?>">
+				<div class="ui move up reveal hiweb-field-file" id="<?= $this->global_id() ?>" data-has-file="<?= $this->have_file() ? '1' : '0' ?>" data-file-mime="<?= $file instanceof files\file ? $file->mime() : '' ?>" data-file-image="<?= $file instanceof files\file ? ( $file->is_image() ? 'image' : 'file' ) : '' ?>">
 					<div class="visible content">
 						<div class="ui center aligned raised segment" data-segment="1">
 							<i class="question circle outline icon" data-icon="select"></i>

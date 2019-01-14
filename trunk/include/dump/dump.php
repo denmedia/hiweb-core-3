@@ -3,20 +3,15 @@
 	namespace hiweb;
 
 
-	use hiweb\path;
-
-
 	class dump{
 
 
 		/**
 		 * Выводить структуру заданной переменной
-		 *
 		 * @param      $mixed
 		 * @param int  $depth       - установить глубину массивов и объектов
 		 * @param bool $showObjects - раскрывать объекты
-		 *
-		 * @return strings
+		 * @return string
 		 * @version 1.4
 		 */
 		static function getHtml_arrayPrint( $mixed, $depth = 6, $showObjects = true ){
@@ -30,7 +25,8 @@
 				'array' => '',
 				'object' => ''
 			] ) ){
-				if( $type_of_var == 'object' ) $type_of_var_name = $type_of_var . ':' . get_class( $mixed );
+				if( $type_of_var == 'object' )
+					$type_of_var_name = $type_of_var . ':' . get_class( $mixed );
 				$r .= ' <span data-type>[' . $type_of_var_name . ']</span>';
 			}
 			switch( $type_of_var ){
@@ -78,7 +74,7 @@
 		static function the( $mixed, $depth = 6, $showObjects = true ){
 			$css = \hiweb\file( HIWEB_DIR_CSS . '/dump-the.css' );
 			?>
-			<link rel="stylesheet" href="<?= $css->url ?>"/>
+			<link rel="stylesheet" href="<?= $css->get_url() ?>"/>
 			<div class="hiweb-core-dump-the">
 				<?= self::getHtml_arrayPrint( $mixed, $depth, $showObjects ); ?>
 			</div>
@@ -89,12 +85,12 @@
 		/**
 		 * @param      $mixed
 		 * @param bool $echo
-		 *
-		 * @return strings
+		 * @return string
 		 */
 		static function print_r( $mixed, $echo = true ){
 			$R = '<pre>' . print_r( $mixed, true ) . '</pre>';
-			if( $echo ) echo $R;
+			if( $echo )
+				echo $R;
 			return $R;
 		}
 
@@ -106,18 +102,16 @@
 
 		/**
 		 * Записывает данные `$dataMix` в формате HTML в файл. Это удобно для похоже на собственный лог-файл. Этой функцией можно в течении некоторого времени (установленного параметром `$autoDeleteOldFile`) многократно дозаписать информацию в один и тот же файл для дальнейшего анализа. По умолчанию все записывается в файл `log.html` в корне сайта.
-		 *
 		 * @param        $dataMix           - значения
-		 * @param strings $filePath          - имя файла дампа
+		 * @param string $filePath          - имя файла дампа
 		 * @param bool   $append            - не удалять предыдущие записи
 		 * @param int    $autoDeleteOldFile - указать время в секундах, в течении которого старые записи не будут удаляться из файла
-		 *
 		 * @return int
 		 */
 		static function to_file( $dataMix, $filePath = 'log.html', $append = true, $autoDeleteOldFile = 5 ){
-			$filePath = path::realpath( $filePath );
+			$filePath = paths::get( $filePath )->get_path();
 			if( !file_exists( dirname( $filePath ) ) ){
-				file_put_contents( path::realpath( 'error.txt' ), dirname( $filePath ) . ' => not exists' );
+				file_put_contents( paths::get( 'error.txt' )->get_path(), dirname( $filePath ) . ' => not exists' );
 				return false;
 			}
 			//$returnStr = '<style type="text/css">.sep { border-bottom: 1px dotted #ccc; } .sepLast { margin-bottom: 35px; }</style>';
@@ -125,12 +119,12 @@
 			$separatorHtml = '<div class="sep"></div>';
 			$returnStr .= date::format() . ' / ' . microtime( true ) . ' / ' . $separatorHtml;
 			ob_start();
-			self::the($dataMix);
+			self::the( $dataMix );
 			$returnStr .= ob_get_clean();
 			$returnStr .= $separatorHtml;
 			$fileContent = '';
 			if( file_exists( $filePath ) && is_file( $filePath ) ){
-				$time = time();
+				$time = date::time();
 				$filetime = filemtime( $filePath );
 				$timeDelta = $time - $filetime;
 				if( $autoDeleteOldFile === false || $timeDelta > $autoDeleteOldFile ){
@@ -139,8 +133,8 @@
 <html>
  <head>
   <meta charset="utf-8">
-  <title>'.microtime(true).'</title>
- </head>'.$returnStr;
+  <title>' . date::format() . '</title>
+ </head>' . $returnStr;
 				} else {
 					$fileContent = file_get_contents( $filePath );
 				}

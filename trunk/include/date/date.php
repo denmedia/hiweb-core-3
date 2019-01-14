@@ -43,6 +43,49 @@
 		];
 
 
+		static private $timezone;
+
+
+		static function detect_timezone(){
+			if( !is_string( self::$timezone ) ){
+				self::$timezone = 'UTC';
+				if( is_link( '/etc/localtime' ) ){
+					// Mac OS X (and older Linuxes)
+					// /etc/localtime is a symlink to the
+					// timezone in /usr/share/zoneinfo.
+					$filename = readlink( '/etc/localtime' );
+					if( strpos( $filename, '/usr/share/zoneinfo/' ) === 0 ){
+						self::$timezone = substr( $filename, 20 );
+					}
+				} elseif( file_exists( '/etc/timezone' ) ) {
+					// Ubuntu / Debian.
+					$data = file_get_contents( '/etc/timezone' );
+					if( $data ){
+						self::$timezone = $data;
+					}
+				} elseif( file_exists( '/etc/sysconfig/clock' ) ) {
+					// RHEL / CentOS
+					$data = parse_ini_file( '/etc/sysconfig/clock' );
+					if( !empty( $data['ZONE'] ) ){
+						self::$timezone = $data['ZONE'];
+					}
+				}
+
+				date_default_timezone_set( self::$timezone );
+			}
+
+			return self::$timezone;
+		}
+
+
+		/**
+		 * @return int
+		 */
+		static function time(){
+			return intval( function_exists( 'current_time' ) ? current_time( 'timestamp' ) : time() );
+		}
+
+
 		/**
 		 * Возвращает форматированное дату и время
 		 * @param int    $time   - необходимое время в секундах, если не указывать, будет взято текущее время
@@ -50,11 +93,11 @@
 		 * @return bool|strings
 		 */
 		static function format( $time = null, $format = 'Y-m-d H:i:s' ){
-			if( intval( $time ) < 100 ){
-				$time = time();
+			$time = intval( $time );
+			if( $time < 100 ){
+				$time = self::time();
 			}
-
-			return date( $format, intval( $time ) );
+			return date( $format, $time );
 		}
 
 

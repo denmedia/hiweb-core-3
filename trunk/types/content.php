@@ -27,10 +27,10 @@
 
 
 		use function hiweb\css;
-		use hiweb\fields\field\context;
 		use function hiweb\js;
-		use hiweb\path;
+		use hiweb\paths;
 		use hiweb\strings;
+		use hiweb\urls;
 
 
 		class field extends \hiweb\fields\field{
@@ -78,14 +78,14 @@
 					$mce_suffix = false !== strpos( get_bloginfo( 'version' ), '-src' ) ? '' : '.min';
 
 					if( $compressed ){
-						$tinymce = include_js( "{$baseurl}/wp-tinymce.php?c=1&amp;$version" );
+						$tinymce = js( "{$baseurl}/wp-tinymce.php?c=1&$version", [ 'jquery' ] )->handle();
 					} else {
-						$tinymce = include_js( "{$baseurl}/tinymce{$mce_suffix}.js?$version" );
-						include_js( "{$baseurl}/plugins/compat3x/plugin{$suffix}.js?$version" );
+						$tinymce = js( "{$baseurl}/tinymce{$mce_suffix}.js?$version", [ 'jquery' ] )->handle();
+						js( "{$baseurl}/plugins/compat3x/plugin{$suffix}.js?$version" );
 					}
 					add_action( 'admin_init', 'wp_enqueue_media' );
-					js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js' );
-					js( path::realpath( WPINC ) . '/js/quicktags.min.js' );
+					$lang = js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js', [ $tinymce ] )->handle();
+					js( paths::get( WPINC . '/js/quicktags.min.js' )->get(), [ $lang ] );
 					js( HIWEB_DIR_JS . '/field-content.js', [ 'jquery', 'editor', $tinymce ] );
 					?>
 					<script type="text/javascript">
@@ -150,7 +150,7 @@
                                 "Distraction-free writing mode": "accessW",
                                 "Keyboard Shortcuts": "accessH"
                             },
-                            content_css: "<?=\hiweb\path::path_to_url( HIWEB_DIR_VENDORS )?>/wp-default.min.css",
+                            content_css: "<?=HIWEB_URL_VENDORS?>/wp-default.min.css",
                             plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview",
                             //selector: "#content",
                             wpautop: true,
@@ -159,15 +159,15 @@
                             toolbar2: "strikethrough,hr,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
                             toolbar3: "",
                             toolbar4: "",
-                            tabfocus_elements: "content-html,save-post",
-                            body_class: "content post-type-page post-status-publish page-template-default locale-ru-ru",
+                            //tabfocus_elements: "content-html,save-post",
+                            //body_class: "content post-type-page post-status-publish page-template-default locale-ru-ru",
                             wp_autoresize_on: true,
                             add_unload_trigger: false
                         };
                         window.hiweb_field_content_qtags_default = {buttons: "strong,em,link,block,del,ins,img,ul,ol,li,code,more,close,dfw"};
                         if (!window.tinyMCEPreInit) {
                             window.tinyMCEPreInit = {
-                                baseURL: "<?=\hiweb\path::base_url() . '/' . WPINC ?>/js/tinymce",
+                                baseURL: "<?=urls::root() . '/' . WPINC ?>/js/tinymce",
                                 suffix: ".min",
                                 dragDropUpload: true,
                                 ref: {plugins: "charmap,colorpicker,hr,lists,media,paste,tabfocus,textcolor,fullscreen,wordpress,wpautoresize,wpeditimage,wpemoji,wpgallery,wplink,wpdialogs,wptextpattern,wpview", theme: "modern", language: "ru"},
@@ -189,11 +189,11 @@
 				$rand_id = strings::rand( 10 );
 				$this->attributes['data-rand-id'] = $rand_id;
 				$this->attributes['id'] = $rand_id;
-				add_action('in_admin_footer', function(){
+				add_action( 'in_admin_footer', function(){
 					self::print_mceInit();
-				});
+				} );
 				?>
-			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>" data-baseurl="<?= \hiweb\path::base_url() ?>">
+			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>" data-baseurl="<?= urls::root() ?>">
 				<div id="wp-<?= $rand_id ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
 					<div id="wp-<?= $rand_id ?>-editor-tools" class="wp-editor-tools hide-if-no-js">
 						<div id="wp-<?= $rand_id ?>-media-buttons" class="wp-media-buttons">

@@ -11,7 +11,7 @@
 
 		protected $page_title = '⚙️ Options';
 		protected $menu_title = '⚙️ Options';
-		protected $capability = 'edit_pages';
+		protected $capability = 'manage_options';
 		protected $menu_slug = 'options';
 		protected $function;
 		protected $function_params = [];

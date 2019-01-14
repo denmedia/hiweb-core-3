@@ -88,6 +88,10 @@ $breakpoint: 576px;
 		z-index: 1050;
 	}
 
+	.wp-core-ui .button, .wp-core-ui .button-primary, .wp-core-ui .button-secondary {
+		height: unset;
+	}
+
 }
 
 .hiweb-fields-form-default {
@@ -106,3 +110,4 @@ $breakpoint: 576px;
 		z-index: 99990;
 	}
 }
+

@@ -21,7 +21,6 @@
 
 		use hiweb\arrays;
 		use hiweb\images;
-		use hiweb\path;
 
 
 		class field extends \hiweb\fields\field{
@@ -90,11 +89,12 @@
 					$is_source = true;
 					$IMAGE = images::get( 0 );
 				}
+				/** @var images\image $IMAGE */
 				if( $is_source || $IMAGE->is_attachment_exists() ){
 					?>
-					<li tabindex="0" <?= $is_source ? 'data-source' : 'data-image-id="' . $IMAGE->attach_id() . '"' ?> data-file-name data-tooltip="<?=$is_source ? '' : $IMAGE->filename()?>" data-variation="mini">
+					<li tabindex="0" <?= $is_source ? 'data-source' : 'data-image-id="' . $IMAGE->get_attachment_id() . '"' ?> data-file-name data-tooltip="<?= $is_source ? '' : $IMAGE->get_size_original()->filename() ?>" data-variation="mini">
 						<div class="inner">
-							<input type="hidden" value="<?= $IMAGE->attach_id() ?>" <?= $is_source ? 'data-' : '' ?>name="<?= $this->name() ?>[]"/>
+							<input type="hidden" value="<?= $IMAGE->get_attachment_id() ?>" <?= $is_source ? 'data-' : '' ?>name="<?= $this->name() ?>[]"/>
 							<div class="overlay">
 								<div class="background"></div>
 								<div data-ctrl>
@@ -108,7 +108,7 @@
 									</div>
 								</div>
 							</div>
-							<img src="<?= $IMAGE->get_src() ?>" alt="">
+							<img src="<?= $IMAGE->get_src([92,92], 0) ?>" alt="">
 						</div>
 					</li>
 					<?php
@@ -125,7 +125,7 @@
 				foreach( $this->VALUE()->get_sanitized() as $image_id ){
 					$IMAGE = images::get( $image_id );
 					if( $IMAGE->is_attachment_exists() ){
-						$IMAGES[  ] = $IMAGE;
+						$IMAGES[] = $IMAGE;
 					}
 				}
 				ob_start();
@@ -199,7 +199,7 @@
 			 * @return mixed
 			 */
 			public function sanitize( $value ){
-				return is_array($value) ? $value : [];
+				return is_array( $value ) ? $value : [];
 			}
 
 

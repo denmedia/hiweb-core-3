@@ -75,6 +75,11 @@ img {
 }
 
 blockquote {
+
+	display: block;
+	padding-left: 1em;
+	border-left: 3px solid grey;
+
 	&.left {
 		margin-right: 20px;
 		text-align: right;

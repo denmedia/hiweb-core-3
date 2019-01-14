@@ -3,16 +3,23 @@
 	namespace {
 
 
-		if ( ! function_exists( 'include_css' ) ) {
+		use hiweb\css;
+
+
+		if( !function_exists( 'include_css' ) ){
 			/**
 			 * @param        $filePathOrUrl
+			 * @param bool   $in_footer
 			 * @param array  $deeps
 			 * @param string $media
-			 * @param bool   $in_footer
-			 * @return bool
+			 * @return css\file
 			 */
-			function include_css( $filePathOrUrl, $in_footer = false, $deeps = [], $media = 'all' ) {
-				return hiweb\css\enqueue::add( $filePathOrUrl, $deeps, $media, $in_footer );
+			function include_css( $filePathOrUrl, $in_footer = false, $deeps = [], $media = 'all' ){
+				$filePathOrUrl = apply_filters( 'hiweb-core-include_css', $filePathOrUrl, $deeps, $media, $in_footer );
+				$css = css::add( $filePathOrUrl );
+				if( $in_footer ) $css->put_to_footer();
+				return $css;
+				//return hiweb\css\enqueue::add( $filePathOrUrl, $deeps, $media, $in_footer );
 			}
 		} else {
 			hiweb\console::debug_warn( 'Function [include_css] is exists...' );
@@ -24,14 +31,15 @@
 
 		/**
 		 * Поставить в очередь файл CSS
+		 * @deprecated
 		 * @version  2.0
 		 * @param string $filePathOrUrl
 		 * @param bool   $in_footer
-		 * @param array  $deeps
-		 * @param string $media = all|screen|handheld|print
-		 * @return bool
+		 * @return css\file
 		 */
-		function css( $filePathOrUrl, $in_footer = false, $deeps = [], $media = 'all' ) {
-			return css\enqueue::add( $filePathOrUrl, $deeps, $media, $in_footer );
+		function css( $filePathOrUrl, $in_footer = false ){
+			$css = css::add( $filePathOrUrl );
+			if( $in_footer ) $css->put_to_footer();
+			return $css;
 		}
 	}

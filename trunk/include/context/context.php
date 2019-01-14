@@ -3,15 +3,14 @@
 	namespace hiweb;
 
 
-
 	class context{
 
 		/**
-		 * @version 1.1
+		 * @version 1.2
 		 * @return bool
 		 */
 		static function is_frontend_page(){
-			return ( $_SERVER['SCRIPT_FILENAME'] == path::base_dir() . '/index.php' ) && !self::is_rest_api();
+			return ( preg_match( '/^' . preg_quote( paths::root(),'/' ) . '\/index(-hiweb-cache)?\.php$/i', $_SERVER['SCRIPT_FILENAME'] ) > 0 && !self::is_rest_api() );
 		}
 
 
@@ -71,8 +70,7 @@
 		 * @return bool
 		 */
 		static function is_rest_api(){
-			$dirs = path::get_url_info()['dirs_arr'];
-			return reset( $dirs ) == 'wp-json';
+			return urls::get()->dir( 0 ) == 'wp-json';
 		}
 
 

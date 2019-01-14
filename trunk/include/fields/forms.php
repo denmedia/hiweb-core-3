@@ -5,7 +5,7 @@
 
 	use hiweb\arrays;
 	use hiweb\console;
-	use function hiweb\css;
+	use hiweb\css;
 	use hiweb\fields\locations\location;
 	use hiweb\fields\locations\locations;
 	use function hiweb\js;
@@ -96,8 +96,8 @@
 		static public function get_form_by_fields( $fields = [], $contextObject = null, $formTemplate = 'default' ){
 			if( arrays::is_empty( $fields ) ) return '';
 			///
-			css( HIWEB_URL_CSS . '/fields.css' );
-			css( HIWEB_DIR_VENDORS . '/Semantic-UI-CSS-master/semantic.css' );
+			css::add( HIWEB_URL_CSS . '/fields.min.css' );
+			css::add( HIWEB_DIR_VENDORS . '/Semantic-UI-CSS-master/semantic.css' );
 			$semantic_js_id = js( HIWEB_DIR_VENDORS . '/Semantic-UI-CSS-master/semantic.min.js' );
 			js( HIWEB_DIR_ASSETS . '/js/fields.js', [ 'jquery', $semantic_js_id ] );
 			$template_path = self::get_template( $formTemplate, false );

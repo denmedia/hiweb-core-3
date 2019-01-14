@@ -10,7 +10,7 @@
 
 
 	use hiweb\cache;
-	use hiweb\path;
+	use hiweb\urls;
 
 
 	class video{
@@ -37,7 +37,7 @@
 		public function get_id() {
 			if ( is_null( $this->id ) ) {
 				if ( $this->is_youtube() ) {
-					$this->id = path::get_paramas_from_url( $this->url, 'v' );
+					$this->id = urls::get($this->url )->param('v');
 				} elseif ( $this->is_vimeo() ) {
 					$this->id = trim( parse_url( $this->url )['path'], '/' );
 				} else {

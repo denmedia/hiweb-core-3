@@ -6,26 +6,26 @@
 var hw_input_post = {
 
     init: function () {
-        jQuery('body').on('init', '.hiweb-field-post', hw_input_post.make_dropdown);
+        jQuery('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function(e, col, row, root){
+            col.find('.hiweb-field-post').each(hw_input_post.make_dropdown);
+        });
         jQuery('.hiweb-field-post').each(hw_input_post.make_dropdown);
     },
 
     make_dropdown: function () {
         var select = jQuery(this).find('select');
         var global_id = select.attr('data-global-id');
-        var dropdown = jQuery(this).find('.ui.dropdown');
+        var dropdown = jQuery(this).find('.selection.dropdown');
         dropdown.dropdown({
-            ignoreCase: true,
+            //ignoreCase: true,
             //forceSelection: false,
-            sortSelect: true,
-            clearable: true,
-            useLabels: true,
-            // apiSettings: {
+            //sortSelect: true,
+            apiSettings: {
                 // this url just returns a list of tags (with API response expected above)
-                // url: ajaxurl + '?action=hiweb-type-post&search={query}'
-            // },
+                url: ajaxurl + '?action=hiweb-type-post&search={query}'
+            },
             saveRemoteData: false,
-            // filterRemoteData: true,
+            filterRemoteData: true,
             message: {
                 count: '{count} выбрано',
                 maxSelections: 'Максимум {maxCount} элементов',

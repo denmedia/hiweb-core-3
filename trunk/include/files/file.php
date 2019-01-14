@@ -3,158 +3,169 @@
 	namespace hiweb\files;
 
 
-	use hiweb\arrays;
 	use hiweb\files;
-	use hiweb\path;
+	use hiweb\paths;
 
 
-	class file{
-
-		public $path = '';
-		public $url = '';
-		///
-		public $basename = '';
-		public $filename = '';
-		public $extension = '';
-		public $dirname = '';
-		public $mime = '';
-		///
-		public $is_dir = false;
-		public $is_executable = false;
-		public $is_file = false;
-		public $is_link = false;
-		public $is_readable = false;
-		public $is_uploaded_file = false;
-		public $is_writable = false;
-		public $is_exists = false;
-		public $is_url = false;
-		///
-		public $filetype;
-		///
-		private $size;
-		private $subFiles = [];
-		///
-		public $fileatime = 0;
-		public $filectime = 0;
-		public $filemtime = 0;
-		public $filegroup;
-		public $fileinode;
-		public $fileowner;
-		public $fileperms;
+	class file extends paths\path{
 
 
-		public function __construct( $path ){
-			if( path::is_url( $path ) ){
-				$this->path = path::url_to_path( $path );
-				$this->url = path::prepare_url( $path );
+		protected $width;
+		protected $height;
+
+
+		/**
+		 * @param $file_name
+		 * @return file
+		 */
+		public function get_next_file( $file_name ){
+			return files::get( $this->dirname() . '/' . $file_name );
+		}
+
+
+		public function make_file( $content = '' ){
+			if( !$this->is_local() ){
+				if( function_exists( 'console_error' ) ){
+					console_error( '\hiweb\files\file::make: не удалось создать файл [' . $this->path . '], потому что ссылка не локальная' );
+				}
+				return - 1;
+			}
+			if( $this->is_exists() ){
+				if( function_exists( 'console_error' ) ){
+					console_error( '\hiweb\files\file::make: не удалось создать файл [' . $this->path . '], потому что он уже существует' );
+				}
+				return - 2;
+			}
+			if( $this->is_writable() ){
+				if( function_exists( 'console_error' ) ){
+					console_error( '\hiweb\files\file::make: не удалось создать файл [' . $this->path . '], потому что нет прав на запись' );
+				}
+				return - 3;
+			}
+
+			if( file_put_contents( $this->get_path(), $content ) ){
+				return true;
 			} else {
-				$this->path = path::realpath( $path );
-				$this->url = path::path_to_url( $this->path );
-			}
-			////
-			$this->is_url = filter_var( $path, FILTER_VALIDATE_URL );;
-			////
-			$this->basename = basename( $this->path );
-			$this->extension = path::file_extension( $this->path );
-			$this->filename = basename( $this->path, '.' . $this->extension );
-			$this->dirname = dirname( $this->path );
-			////
-			$this->is_exists = file_exists( $this->path );
-			if( $this->is_exists ){
-				$this->is_readable = is_readable( $this->path );
-				$this->is_dir = is_dir( $this->path );
-				$this->is_file = is_file( $this->path );
-				$this->is_link = is_link( $this->path );
-				$this->is_writable = is_writable( $this->path );
-				$this->is_uploaded_file = is_uploaded_file( $this->path );
-				$this->is_executable = is_executable( $this->path );
-				///
-				$this->filemtime = filemtime( $this->path );
-				$this->filectime = filectime( $this->path );
-				$this->fileatime = fileatime( $this->path );
-				///
-				$this->filegroup = filegroup( $this->path );
-				$this->fileinode = fileinode( $this->path );
-				$this->fileowner = fileowner( $this->path );
-				$this->fileperms = fileperms( $this->path );
-				$this->filetype = filetype( $this->path );
-				$this->mime = mime_content_type( $this->path );
+				if( function_exists( 'console_error' ) ){
+					console_error( '\hiweb\files\file::make: не удалось создать файл [' . $this->path . ']' );
+				}
+				return - 4;
 			}
 		}
 
 
 		/**
-		 * @return bool
+		 * @return int
 		 */
-		public function is_exists_and_readable(){
-			return path::is_readable( $this->path );
-		}
-
-
-		/**
-		 * @return bool|int
-		 */
-		public function get_size(){
-			$R = false;
-			if( $this->is_file ){
-				return filesize( $this->path );
-			} elseif( $this->is_dir ) {
-				//todo!
-			}
-			return $R;
-		}
-
-
-		/**
-		 * @return string
-		 */
-		public function get_size_formatted(){
-			return path::size_format( $this->get_size() );
-		}
-
-
-		/**
-		 * Возвращает массив вложенных файлов
-		 * @param array $mask - маска файлов
-		 * @return array|file[]
-		 */
-		public function get_sub_files( $mask = [] ){
-			$maskKey = json_encode( $mask );
-			if( !array_key_exists( $maskKey, $this->subFiles ) ){
-				$this->subFiles[ $maskKey ] = [];
-				if( $this->is_dir ) foreach( scandir( $this->path ) as $subFileName ){
-					if( $subFileName == '.' || $subFileName == '..' ) continue;
-					$subFilePath = $this->path . '/' . $subFileName;
-					$subFile = files::get( $subFilePath );
-					if( $subFile->is_dir ){
-						$this->subFiles[ $maskKey ] = array_merge( $this->subFiles[ $maskKey ], $subFile->get_sub_files( $mask ) );
-					} else {
-						if( is_array( $mask ) && count( $mask ) > 0 ){
-							if( !arrays::in_array( path::extension( $subFileName ), $mask ) ) continue;
-						}
-						$this->subFiles[ $maskKey ][ $subFile->path ] = $subFile;
-					}
+		public function width(){
+			if( !is_int( $this->width ) ){
+				$this->width = 0;
+				if( $this->is_readable() ){
+					$size = getimagesize( $this->get_path() );
+					if( is_array( $size ) ) list( $this->width, $this->height ) = $size;
 				}
 			}
-			return $this->subFiles[ $maskKey ];
+			return $this->width;
 		}
 
 
 		/**
-		 * Return true, if file is exists and image
+		 * @return int
+		 */
+		public function height(){
+			if( !is_int( $this->height ) ){
+				$this->height = 0;
+				if( $this->is_readable() ){
+					$size = getimagesize( $this->get_path() );
+					if( is_array( $size ) ) list( $this->width, $this->height ) = $size;
+				}
+			}
+			return $this->height;
+		}
+
+
+		/**
+		 * @return float|int
+		 */
+		public function aspect(){
+			if( $this->width() == 0 || $this->height() == 0 ) return 0;
+			return $this->width() / $this->height();
+		}
+
+
+		/**
+		 * Resize/recompress current file
+		 * @param int  $dest_width      - destination file width or leave 0 for current file width
+		 * @param int  $dest_height     - destination file height or leave 0 for current file height
+		 * @param null $dest_file_path  - destination file or leave empty for select current file path
+		 * @param int  $quality_jpg_png - 0...100 quality for jpg or png files
 		 * @return bool
 		 */
-		public function is_image(){
-			return strpos( $this->mime, 'image' ) === 0;
+		public function resize( $dest_width = 0, $dest_height = 0, $dest_file_path = null, $quality_jpg_png = 75 ){
+			if( $this->is_image() && $this->aspect() != 0 ){
+				if( !is_string( $dest_file_path ) || strlen( $dest_file_path ) < 2 ) $dest_file_path = $this->get_path();
+				if( $dest_width > $this->width() ) $dest_width = $this->width();
+				if( $dest_height > $this->height() ) $dest_height = $this->height();
+				$dest_width = (int)$dest_width == 0 ? $this->width() : (int)$dest_width;
+				$dest_height = (int)$dest_height == 0 ? $this->height() : (int)$dest_height;
+				$dest_aspect = $dest_width / $dest_height;
+				//GD
+				if( extension_loaded( 'gd' ) ){
+					///
+					switch( $this->get_image_mime_type() ){
+						case 'image/jpg':
+							$src_image = imagecreatefromjpeg( $this->get_path() );
+							break;
+						case 'image/png':
+							$src_image = imagecreatefrompng( $this->get_path() );
+							break;
+						case 'image/gif':
+							$src_image = imagecreatefromgif( $this->get_path() );
+							break;
+						default:
+							return - 1;
+					}
+					///calculate dimensions
+					$src_x = 0;
+					$src_y = 0;
+					$src_width = $this->width();
+					$src_height = $this->height();
+					if( $this->aspect() < $dest_aspect ){
+						$proportions = $this->width() / $dest_width;
+						$src_height = $dest_height * $proportions;
+						$src_y = ( $this->height() - $src_height ) / 2;
+					} elseif( $this->aspect() > $dest_aspect ) {
+						$proportions = $this->height() / $dest_height;
+						$src_width = $dest_width * $proportions;
+						$src_x = ( $this->width() - $src_width ) / 2;
+					}
+					///create new source image
+					$image_gd_new = imagecreatetruecolor( $dest_width, $dest_height );
+					///Use alpha chanel
+					imagealphablending( $image_gd_new, false );
+					imagesavealpha( $image_gd_new, true );
+					///resize
+					imagecopyresampled( $image_gd_new, $src_image, 0, 0, $src_x, $src_y, $dest_width, $dest_height, $src_width, $src_height );
+					$B = - 2;
+					switch( $this->get_image_mime_type() ){
+						case 'image/jpg':
+							imageinterlace( $image_gd_new, true );
+							$B = imagejpeg( $image_gd_new, $dest_file_path, $quality_jpg_png );
+							break;
+						case 'image/png':
+							$B = imagepng( $image_gd_new, $dest_file_path );
+							break;
+						case 'image/gif':
+							$B = imagegif( $image_gd_new, $dest_file_path );
+							break;
+					}
+					imagedestroy( $src_image );
+					imagedestroy( $image_gd_new );
+					return $B;
+				}
+			}
+			return - 3;
 		}
 
-
-		/**
-		 * @return string
-		 */
-		public function get_content(){
-			if($this->is_exists_and_readable()) return file_get_contents( $this->path );
-			else return '';
-		}
 
 	}

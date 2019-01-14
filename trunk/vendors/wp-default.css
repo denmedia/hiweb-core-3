@@ -31,18 +31,22 @@ img.aligncenter, .aligncenter {
   margin: 0 !important;
   max-height: 1em; }
 
-blockquote.left {
-  margin-right: 20px;
-  text-align: right;
-  margin-left: 0;
-  width: 33%;
-  float: left; }
-blockquote.right {
-  margin-left: 20px;
-  text-align: left;
-  margin-right: 0;
-  width: 33%;
-  float: right; }
+blockquote {
+  display: block;
+  padding-left: 1em;
+  border-left: 3px solid grey; }
+  blockquote.left {
+    margin-right: 20px;
+    text-align: right;
+    margin-left: 0;
+    width: 33%;
+    float: left; }
+  blockquote.right {
+    margin-left: 20px;
+    text-align: left;
+    margin-right: 0;
+    width: 33%;
+    float: right; }
 
 .entry-content img {
   margin: 0 0 1.5em 0; }

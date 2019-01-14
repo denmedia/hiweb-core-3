@@ -5,6 +5,7 @@
 
 	use hiweb\arrays;
 	use hiweb\console;
+	use hiweb\dump;
 	use hiweb\fields;
 	use hiweb\fields\field;
 	use hiweb\fields\forms;
@@ -195,7 +196,8 @@
 			$context_location->TAXONOMIES( $taxonomy );
 			$fields = locations::get_fields_by_contextLocation( $context_location );
 			foreach( $fields as $field ){
-				if( trim( $field->template() ) == 'default' ) $field->template( 'term-add' );
+				if( trim( $field->template() ) == 'default' )
+					$field->template( 'term-add' );
 			}
 			forms::the_form_by_fields( $fields );
 		}
@@ -315,31 +317,37 @@
 			///
 			/** @var location[] $theme_locations */
 			$theme_locations = [];
-			if( is_array( locations::$locations ) ) foreach( locations::$locations as $location_global_id => $location ){
-				if( isset( $location->options['hiweb_theme'] ) ){
-					$theme_locations[ $location_global_id ] = $location;
+			if( is_array( locations::$locations ) )
+				foreach( locations::$locations as $location_global_id => $location ){
+					if( isset( $location->options['hiweb_theme'] ) ){
+						$theme_locations[ $location_global_id ] = $location;
+					}
 				}
-			}
 			///
-			if( !is_array( $theme_locations ) || count( $theme_locations ) == 0 ) return;
+			if( !is_array( $theme_locations ) || count( $theme_locations ) == 0 )
+				return;
 			///
 			$sections = [];
 			foreach( $theme_locations as $location_id => $location ){
 				$options = $location->options['hiweb_theme']->options;
 				$section_id = \hiweb\strings::sanitize_id( $options['section_title'] );
-				if( !isset( $sections[ $section_id ] ) ) $sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
-				if( !isset( $sections[ $section_id ]['args']['title'] ) ) $sections[ $section_id ]['args']['title'] = $options['section_title'];
-				if( !isset( $sections[ $section_id ]['args']['description'] ) ) $sections[ $section_id ]['args']['description'] = $options['section_description'];
+				if( !isset( $sections[ $section_id ] ) )
+					$sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
+				if( !isset( $sections[ $section_id ]['args']['title'] ) )
+					$sections[ $section_id ]['args']['title'] = $options['section_title'];
+				if( !isset( $sections[ $section_id ]['args']['description'] ) )
+					$sections[ $section_id ]['args']['description'] = $options['section_description'];
 				$sections[ $section_id ]['fields'][] = $location->_get_parent_field();
 			}
 			/// ADD SECTIONS and SETTING FIELDS
 			foreach( $sections as $section_id => $section ){
 				$wp_customize->add_section( $section_id, $section['args'] );
-				if( is_array( $section['fields'] ) && count( $section['fields'] ) > 0 ) foreach( $section['fields'] as $field ){
-					/** @var field $field */
-					$wp_customize->add_setting( $field->id(), [ 'default' => '', 'type' => 'theme_mod' ] );
-					$wp_customize->add_control( $field->INPUT()->THEME_CONTROL( $wp_customize, $section_id ) );
-				}
+				if( is_array( $section['fields'] ) && count( $section['fields'] ) > 0 )
+					foreach( $section['fields'] as $field ){
+						/** @var field $field */
+						$wp_customize->add_setting( $field->id(), [ 'default' => '', 'type' => 'theme_mod' ] );
+						$wp_customize->add_control( $field->INPUT()->THEME_CONTROL( $wp_customize, $section_id ) );
+					}
 			}
 		}
 

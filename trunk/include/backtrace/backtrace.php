@@ -1,25 +1,35 @@
 <?php
 
 	namespace hiweb;
-	
+
+
+	use hiweb\backtrace\point;
+
 
 	class backtrace{
 
 		/**
+		 * @param int $depth
+		 * @return point
+		 */
+		static function point( $depth = 0 ){
+			return new point( $depth );
+		}
+
+
+		/**
 		 * Возвращает массив
-		 *
-		 * @param bool   $class            - возвращать классы className
-		 * @param bool   $functions        - возвращать имена функций functionName
-		 * @param bool   $files            - возвращать имена файлов fileName
-		 * @param bool   $dirs             - возвращать имена папки, из которой вызван файл
-		 * @param bool   $paths            - возвращать путь папки с файлом
-		 * @param bool   $returnChunkArray - возвращать разбитый массив на ключевые значения array('class' => ..., 'functions' => ..., 'file' => ...)
-		 * @param int    $minDepth         - минимальная глубина
-		 * @param int    $maxDepth         - максимальная глубина
+		 * @param bool    $class            - возвращать классы className
+		 * @param bool    $functions        - возвращать имена функций functionName
+		 * @param bool    $files            - возвращать имена файлов fileName
+		 * @param bool    $dirs             - возвращать имена папки, из которой вызван файл
+		 * @param bool    $paths            - возвращать путь папки с файлом
+		 * @param bool    $returnChunkArray - возвращать разбитый массив на ключевые значения array('class' => ..., 'functions' => ..., 'file' => ...)
+		 * @param int     $minDepth         - минимальная глубина
+		 * @param int     $maxDepth         - максимальная глубина
 		 * @param strings $prepend          - добавлять до значения
 		 * @param strings $append           - добавлять после каждого значения
-		 * @param bool   $args             - возвращать аргументы
-		 *
+		 * @param bool    $args             - возвращать аргументы
 		 * @return array
 		 * @version 1.2
 		 */
@@ -77,9 +87,7 @@
 
 		/**
 		 * Возвращает путь и строку файла, откуда была запущена функция
-		 *
 		 * @param int $depth - глубина родительских функций
-		 *
 		 * @return strings
 		 * @version 2.0
 		 */
@@ -98,26 +106,24 @@
 
 		/**
 		 * Возвращает функцию, откуда была запущена текущая функция
-		 *
 		 * @param int $depth
-		 *
 		 * @return strings
 		 */
 		static function function_trace( $depth = 0 ){
 			return ''; //TODO!
-//			$debugBacktrace = debug_backtrace();
-//			$class = arrays::get_byKey( $debugBacktrace, [ $depth, 'class' ], '' );
-//			$function = arrays::get_byKey( $debugBacktrace, [ $depth, 'function' ], '' );
-//			$type = arrays::get_byKey( $debugBacktrace, [ $depth, 'type' ], '' );
-//			//Class filter
-//			if( strpos( $class, 'hiweb_' ) === 0 && method_exists( hiweb(), substr( $class, 6 ) ) ){
-//				$r = 'hiweb->' . substr( $class, 6 );
-//			} else {
-//				$r = $class;
-//			}
-//			$r .= $type . $function;
-//
-//			return $r;
+			//			$debugBacktrace = debug_backtrace();
+			//			$class = arrays::get_byKey( $debugBacktrace, [ $depth, 'class' ], '' );
+			//			$function = arrays::get_byKey( $debugBacktrace, [ $depth, 'function' ], '' );
+			//			$type = arrays::get_byKey( $debugBacktrace, [ $depth, 'type' ], '' );
+			//			//Class filter
+			//			if( strpos( $class, 'hiweb_' ) === 0 && method_exists( hiweb(), substr( $class, 6 ) ) ){
+			//				$r = 'hiweb->' . substr( $class, 6 );
+			//			} else {
+			//				$r = $class;
+			//			}
+			//			$r .= $type . $function;
+			//
+			//			return $r;
 		}
 
 
@@ -157,7 +163,7 @@
 				if( $index >= $start && $index < ( $start + $offset ) ){
 					if( isset( $items['class'] ) ){
 						if( isset( $items['file'] ) ){
-							$R[] = $items['class'] . $items['type'] . $items['function'] . '() ➜ ' . path::simplepath( $items['file'] ) . ' ⇶ ' . $items['line'];
+							$R[] = $items['class'] . $items['type'] . $items['function'] . '() ➜ ' . paths::get( $items['file'] )->get_path_relative() . ' ⇶ ' . $items['line'];
 						} else {
 							$R[] = $items['class'] . $items['type'] . $items['function'] . '()';
 						}
