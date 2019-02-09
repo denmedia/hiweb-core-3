@@ -218,6 +218,8 @@
 				$R['users']['user_status'] = $contextObject->user_status;
 				$R['users']['user_url'] = $contextObject->user_url;
 				$R['users']['roles'] = $contextObject->roles;
+			}elseif($contextObject instanceof \WP_Comment){
+				$R['comments']['comment_ID'] = $contextObject->comment_ID;
 			} elseif( is_string( $contextObject ) ) {
 				$R['admin_menus']['menu_slug'] = $contextObject;
 			}

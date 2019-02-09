@@ -87,6 +87,7 @@
 					$lang = js( HIWEB_DIR_JS . '/tinymce-language-ru.min.js', [ $tinymce ] )->handle();
 					js( paths::get( WPINC . '/js/quicktags.min.js' )->get(), [ $lang ] );
 					js( HIWEB_DIR_JS . '/field-content.js', [ 'jquery', 'editor', $tinymce ] );
+					add_action('admin_print_footer_scripts', function(){
 					?>
 					<script type="text/javascript">
                         window.hiweb_field_content_tinymce_default = {
@@ -180,6 +181,7 @@
                         }
 					</script>
 					<?php
+					});
 				}
 			}
 

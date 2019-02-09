@@ -1,49 +1,69 @@
 .hiweb-field-textarea {
   width: 100%;
-  height: 100px; }
-  .hiweb-field-textarea::-webkit-input-placeholder {
-    color: #ccc;
-    font-weight: 100; }
-  .hiweb-field-textarea::-moz-placeholder {
-    color: #ccc;
-    font-weight: 100; }
-  .hiweb-field-textarea:-moz-placeholder {
-    color: #ccc;
-    font-weight: 100; }
-  .hiweb-field-textarea:-ms-input-placeholder {
-    color: #ccc;
-    font-weight: 100; }
-  .hiweb-field-textarea[placeholder] {
-    text-overflow: ellipsis; }
-  .hiweb-field-textarea::-moz-placeholder {
-    text-overflow: ellipsis; }
-  .hiweb-field-textarea:-moz-placeholder {
-    text-overflow: ellipsis; }
-  .hiweb-field-textarea:-ms-input-placeholder {
-    text-overflow: ellipsis; }
-  .hiweb-field-textarea::-webkit-input-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea::-moz-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:-moz-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:-ms-input-placeholder {
-    opacity: 1;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:focus::-webkit-input-placeholder {
-    opacity: 0;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:focus::-moz-placeholder {
-    opacity: 0;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:focus:-moz-placeholder {
-    opacity: 0;
-    transition: opacity 0.3s ease; }
-  .hiweb-field-textarea:focus:-ms-input-placeholder {
-    opacity: 0;
-    transition: opacity 0.3s ease; }
+  height: 100px;
+}
+.hiweb-field-textarea.ui.segment {
+  margin: 0;
+}
+.hiweb-field-textarea::-webkit-input-placeholder {
+  color: #ccc;
+  font-weight: 100;
+}
+.hiweb-field-textarea::-moz-placeholder {
+  color: #ccc;
+  font-weight: 100;
+}
+.hiweb-field-textarea:-moz-placeholder {
+  color: #ccc;
+  font-weight: 100;
+}
+.hiweb-field-textarea:-ms-input-placeholder {
+  color: #ccc;
+  font-weight: 100;
+}
+.hiweb-field-textarea[placeholder] {
+  text-overflow: ellipsis;
+}
+.hiweb-field-textarea::-moz-placeholder {
+  text-overflow: ellipsis;
+}
+.hiweb-field-textarea:-moz-placeholder {
+  text-overflow: ellipsis;
+}
+.hiweb-field-textarea:-ms-input-placeholder {
+  text-overflow: ellipsis;
+}
+.hiweb-field-textarea::-webkit-input-placeholder {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea::-moz-placeholder {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:-moz-placeholder {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:-ms-input-placeholder {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:focus::-webkit-input-placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:focus::-moz-placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:focus:-moz-placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.hiweb-field-textarea:focus:-ms-input-placeholder {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 
 /*# sourceMappingURL=field-textarea.css.map */

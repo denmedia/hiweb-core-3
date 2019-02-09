@@ -3,7 +3,7 @@ jQuery(document).ready(function ($) {
     var hiweb_field_color = {
 
         init: function () {
-            jQuery('body').on('hiweb-field-repeat-added-row', '[data-col]', function () {
+            jQuery('body').on('hiweb-field-repeat-added-row-fadein', '[data-col]', function () {
                 hiweb_field_color._make($(this).find('.hiweb-field-color'));
             });
             jQuery('.hiweb-field-color').each(function () {
@@ -19,6 +19,7 @@ jQuery(document).ready(function ($) {
             jQuery('body').on('click', '.hiweb-field-color .ui.icon.button', function (e) {
                 e.preventDefault();
             });
+            console.info( root.length ); //todo-
             jQuery(root).find('[data-colorpicker-show]')
                 .popup({
                     inline: false,

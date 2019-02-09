@@ -245,7 +245,9 @@
 		 * @return bool
 		 */
 		public function is_dirs_intersect( $url ){
-			return ( count( $this->get_dirs_intersect( $url ) ) > 0 );
+			$url = trim($url, '/');
+			$url_dirs = count( urls::get( $url )->dirs() );
+			return ( count( $this->get_dirs_intersect( $url ) ) >= $url_dirs );
 		}
 
 

@@ -8,6 +8,10 @@ $color_grey: #ccc;
 	width: 100%;
 	height: 100px;
 
+	&.ui.segment {
+		margin: 0;
+	}
+
 	&::-webkit-input-placeholder { @include placeholder() }
 	&::-moz-placeholder { @include placeholder() }
 	&:-moz-placeholder { @include placeholder() }

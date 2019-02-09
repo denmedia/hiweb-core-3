@@ -7,6 +7,7 @@
 	use hiweb\fields;
 	use hiweb\fields\field;
 	use hiweb\fields\locations\options\admin_menus;
+	use hiweb\fields\locations\options\comments;
 	use hiweb\fields\locations\options\post_types;
 	use hiweb\fields\locations\options\taxonomies;
 	use hiweb\fields\locations\options\theme;
@@ -175,6 +176,15 @@
 		public function THEME(){
 			if( !isset( $this->options['hiweb_theme'] ) ) $this->options['hiweb_theme'] = new theme( $this );
 			return $this->options['hiweb_theme'];
+		}
+
+
+		/**
+		 * @return options\options
+		 */
+		public function COMMENTS(){
+			if( !isset( $this->options['comments'] ) ) $this->options['comments'] = new comments( $this );
+			return $this->options['comments'];
 		}
 
 	}

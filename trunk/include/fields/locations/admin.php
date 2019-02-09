@@ -351,4 +351,55 @@
 			}
 		}
 
+
+		/**
+		 * Add form fields to comments
+		 * @param $comment
+		 */
+		static function add_meta_boxes_comment( $comment ){
+			$locations = [];
+			if( is_array( locations::$locations ) )
+				foreach( locations::$locations as $location_global_id => $location ){
+					if( isset( $location->options['comments'] ) ){
+						$locations[ $location_global_id ] = $location;
+					}
+				}
+			///
+			if( !is_array( $locations ) || count( $locations ) == 0 )
+				return;
+			///
+			foreach( $locations as $location ){
+				forms::the_form_by_contextLocation( $location, $comment );
+			}
+		}
+
+
+		/**
+		 * Save fields in comment
+		 */
+		static function comment_edit_redirect( $in_location, $comment_id ){
+			$locations = [];
+			if( is_array( locations::$locations ) )
+				foreach( locations::$locations as $location_global_id => $location ){
+					if( isset( $location->options['comments'] ) ){
+						$locations[ $location_global_id ] = $location;
+					}
+				}
+			///
+			if( !is_array( $locations ) || count( $locations ) == 0 )
+				return;
+			///
+			foreach( $locations as $location ){
+				$fields = locations::get_fields_by_contextLocation( $location );
+				foreach( $fields as $field_id => $field ){
+					if( isset( $_POST[ $field->INPUT()->name() ] ) ){
+						update_comment_meta( $comment_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
+					} else {
+						update_comment_meta( $comment_id, $field->id(), '' );
+					}
+				}
+			}
+			return $in_location;
+		}
+
 	}

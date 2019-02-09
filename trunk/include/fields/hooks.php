@@ -60,3 +60,8 @@
 
 	/// THEME SETTINGS
 	add_action( 'customize_register', 'hiweb\\fields\\locations\\admin::customize_register' );
+
+
+	///COMMENTS
+	add_action('add_meta_boxes_comment', 'hiweb\\fields\\locations\\admin::add_meta_boxes_comment');
+	add_action('comment_edit_redirect', 'hiweb\\fields\\locations\\admin::comment_edit_redirect', 10, 2);

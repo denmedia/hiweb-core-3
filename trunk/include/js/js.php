@@ -40,18 +40,19 @@
 		static public function get_handle( $pathOrHandle = 'jquery-core' ){
 			if( !array_key_exists( $pathOrHandle, self::$handles ) ){
 				global $wp_scripts;
-				if(is_array( $wp_scripts->registered ) && array_key_exists( $pathOrHandle, $wp_scripts->registered ) ) {
+				if( is_array( $wp_scripts->registered ) && array_key_exists( $pathOrHandle, $wp_scripts->registered ) ){
 					self::$handles[ $pathOrHandle ] = $pathOrHandle;//$wp_scripts->registeredх[ $pathOrHandle ]->src;
 				} else {
 					$path = paths::get( $pathOrHandle );
 					self::$handles[ $pathOrHandle ] = $path->handle();
-					foreach( $wp_scripts->registered as $handle => $file_data ){
-						$test_path = paths::get( $file_data->src );
-						if( $path->get_path_relative() == $test_path->get_path_relative() ){
-							self::$handles[ $pathOrHandle ] = $handle;
-							break;
+					if( is_array( $wp_scripts->registered ) )
+						foreach( $wp_scripts->registered as $handle => $file_data ){
+							$test_path = paths::get( $file_data->src );
+							if( $path->get_path_relative() == $test_path->get_path_relative() ){
+								self::$handles[ $pathOrHandle ] = $handle;
+								break;
+							}
 						}
-					}
 				}
 			}
 			return self::$handles[ $pathOrHandle ];

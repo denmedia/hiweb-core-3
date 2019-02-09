@@ -60,6 +60,16 @@
 
 
 		/**
+		 * Test string to url
+		 * @param string $test_url_string
+		 * @return bool
+		 */
+		static function is_url($test_url_string){
+			return is_string( $test_url_string ) && ( strpos( $test_url_string, '//' ) === 0 || filter_var( $test_url_string, FILTER_VALIDATE_URL ) );
+		}
+
+
+		/**
 		 * Возвращает корневой URL
 		 * @param null|bool $use_noscheme
 		 * @return string

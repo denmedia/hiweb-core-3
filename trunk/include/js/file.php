@@ -126,7 +126,7 @@
 		 */
 		public function the(){
 			?>
-<script data-handle="<?=$this->handle()?>" src="<?= $this->get_url() ?>"></script>
+<script <?=$this->get_async() != '' ? $this->get_async() : ''?> data-handle="<?=$this->handle()?>" src="<?= $this->get_url() ?>"></script>
 <?php
 		}
 

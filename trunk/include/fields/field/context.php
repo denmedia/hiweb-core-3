@@ -45,6 +45,9 @@
 				$data = metadata_exists( 'user', $user_id, $this->field->id() ) ? get_user_meta( $user_id, $this->field->id(), true ) : $this->field->VALUE()->get();
 			} elseif( key_exists( 'admin_menus', $this->contextOptions ) && key_exists( 'menu_slug', $this->contextOptions['admin_menus'] ) ) {
 				$data = get_option( forms::get_field_input_option_name( $this->field ), $this->field->VALUE()->get() );
+			} elseif( key_exists( 'comments', $this->contextOptions ) ) {
+				$comment_id = $this->contextOptions['comments']['comment_ID'];
+				$data = metadata_exists( 'comment', $comment_id, $this->field->id() ) ? get_comment_meta( $comment_id, $this->field->id(), true ) : $this->field->VALUE()->get();
 			} else {
 				console::debug_error( 'Попытка получения значения из контекста, но опции не подходят ни под одину из опций', $this->get_contextOptions() );
 			}

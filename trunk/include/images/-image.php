@@ -614,14 +614,16 @@
 		public function html( $dimensionsOrSizeName = 'thumbnail', $resize_mod = 1, $attr = [], $extension_priority = [], $make_new_file = true ){
 			$dimensions = $this->size_calculator()->get_dimensions_by_dimensionsOrSizeName( $dimensionsOrSizeName, $resize_mod );
 			if( !$this->is_attachment_exists() ){
-				$size = is_array( $dimensions ) ? ' width="' . $this->width() . '" height="' . $this->height() . '"' : '';
+				$size = ( is_array( $dimensions ) && $this->width() > 0 && $this->height() > 0 ) ? ' width="' . $this->width() . '" height="' . $this->height() . '"' : '';
 				return '<img src="' . images::get_default_src() . '" ' . $size . '/>';
 			} else {
 				$attributes = arrays::get();
 				$size_current = $this->get_size_by_dimension( $dimensionsOrSizeName, $resize_mod, $make_new_file, $extension_priority );
 				$attributes->push( 'src', $size_current->get_url() );
-				$attributes->push( 'width', $size_current->width() );
-				$attributes->push( 'height', $size_current->height() );
+				if( $size_current->width() > 0 )
+					$attributes->push( 'width', $size_current->width() );
+				if( $size_current->height() > 0 )
+					$attributes->push( 'height', $size_current->height() );
 				///
 				$sizes = [];
 				$srcset = [ $size_current->get_url() . ' ' . $size_current->width() . 'w' ];

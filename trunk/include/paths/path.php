@@ -202,6 +202,11 @@
 		}
 
 
+		/**
+		 * @param array  $fileExtension
+		 * @param string $excludeFiles_withPrefix
+		 * @return files\file[]
+		 */
 		public function include_files( $fileExtension = [ 'php', 'css', 'js' ], $excludeFiles_withPrefix = '-' ){
 			$dir = $this->FILE();
 			$R = [];
@@ -234,6 +239,53 @@
 							\hiweb\js( $path ); //TODO!
 							$R[ $file->path ] = $file;
 							break;
+					}
+				}
+			}
+
+			return $R;
+		}
+
+
+		/**
+		 * @param array $needle_file_names
+		 * @return files\file[]
+		 */
+		public function include_files_by_name( $needle_file_names = [ 'functions.php' ] ){
+			if( !is_array( $needle_file_names ) )
+				$needle_file_names = [ $needle_file_names ];
+			$dir = $this->FILE();
+			$R = [];
+			if( !$dir->is_readable() || !$dir->is_dir() ){
+				console::debug_error( __METHOD__ . ': Папка не читаема или не существует', $dir );
+			} else {
+				$needle_file_names_flip = array_flip( $needle_file_names );
+				$subFiles = $dir->get_sub_files();
+				foreach( $subFiles as $file ){
+					///skip folders and files
+					if( $file->get_next_file( '.notinclude' )->is_exists() )
+						continue;
+					if( !$file->is_readable() )
+						continue;
+					//
+					if( array_key_exists( $file->basename(), $needle_file_names_flip ) ){
+						switch( $file->extension() ){
+							case 'php':
+								$path = apply_filters( '\hiweb\paths\path::include_files_by_name-php', $file->get_path(), $file );
+								include_once $path;
+								$R[ $file->path ] = $file;
+								break;
+							case 'css':
+								$path = apply_filters( '\hiweb\paths\path::include_files_by_name-css', $file->get_path(), $file );
+								css::add( $path );
+								$R[ $file->path ] = $file;
+								break;
+							case 'js':
+								$path = apply_filters( '\hiweb\paths\path::include_files_by_name-js', $file->get_url(), $file );
+								\hiweb\js( $path ); //TODO!
+								$R[ $file->path ] = $file;
+								break;
+						}
 					}
 				}
 			}

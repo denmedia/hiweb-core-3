@@ -22,7 +22,7 @@
 		private $json;
 
 
-		public function __construct( $array ){
+		public function __construct( $array = [] ){
 			$this->array = (array)$array;
 		}
 
