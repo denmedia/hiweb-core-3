@@ -48,7 +48,7 @@ jQuery(document).ready(function ($) {
             }
 
             if ( typeof quicktags !== 'undefined' ) {
-                for ( id in tinyMCEPreInit.qtInit ) {
+                for (let id in tinyMCEPreInit.qtInit ) {
                     quicktags( tinyMCEPreInit.qtInit[id] );
 
                     if ( ! window.wpActiveEditor ) {

@@ -22,39 +22,43 @@
 					$sub_file = files::get( $image_file->dirname() . '/' . $size_data->value_by_key( 'file' ) );
 					if( $sub_file->is_readable() ){
 						$sub_file->resize();
-						foreach( \hiweb\images::$progressive_types as $extension ){
-							$sub_editor = $editor->make_file( $image_file->dirname() . '/' . $image_file->filename() . '-' . $sub_file->width() . 'x' . $sub_file->height() . '.' . $extension, $sub_file->width(), $sub_file->height() );
-							if( $sub_editor instanceof \hiweb\images\editor ){
-								if( $sub_editor->is_readable() && $sub_editor->aspect() > 0 && $sub_editor->get_size() > 1024 && $sub_editor->get_size() < $sub_file->get_size() ){
-									$metadata['sizes'][ $sub_editor->get_dimensions_size_string() . '-' . $extension ] = [
-										'file' => $sub_editor->basename(),
-										'width' => $sub_editor->width(),
-										'height' => $sub_editor->height(),
-										'mime-type' => $sub_editor->get_image_mime_type()
-									];
-								} else {
-									//remove if file greater that current similar image size file
-									unlink( $sub_editor->get_path() );
+						if( \hiweb\images::$progressive_create_on_upload ){
+							foreach( \hiweb\images::$progressive_types as $extension ){
+								$sub_editor = $editor->make_file( $image_file->dirname() . '/' . $image_file->filename() . '-' . $sub_file->width() . 'x' . $sub_file->height() . '.' . $extension, $sub_file->width(), $sub_file->height() );
+								if( $sub_editor instanceof \hiweb\images\editor ){
+									if( $sub_editor->is_readable() && $sub_editor->aspect() > 0 && $sub_editor->get_size() > 1024 && $sub_editor->get_size() < $sub_file->get_size() ){
+										$metadata['sizes'][ $sub_editor->get_dimensions_size_string() . '-' . $extension ] = [
+											'file' => $sub_editor->basename(),
+											'width' => $sub_editor->width(),
+											'height' => $sub_editor->height(),
+											'mime-type' => $sub_editor->get_image_mime_type()
+										];
+									} else {
+										//remove if file greater that current similar image size file
+										unlink( $sub_editor->get_path() );
+									}
 								}
 							}
 						}
 					}
 				}
 				///Original Make Progressive file types
-				foreach( \hiweb\images::$progressive_types as $extension ){
-					$sub_editor = $editor->make_file( $image_file->dirname() . '/' . $image_file->filename() . '.' . $extension, $editor->width(), $editor->height() );
-					if( $sub_editor instanceof \hiweb\images\editor ){
+				if( \hiweb\images::$progressive_create_on_upload ){
+					foreach( \hiweb\images::$progressive_types as $extension ){
+						$sub_editor = $editor->make_file( $image_file->dirname() . '/' . $image_file->filename() . '.' . $extension, $editor->width(), $editor->height() );
+						if( $sub_editor instanceof \hiweb\images\editor ){
 
-						if( $sub_editor->is_readable() && $sub_editor->aspect() > 0 && $sub_editor->get_size() > 1024 && $sub_editor->get_size() < $editor->get_size() ){
-							$metadata['sizes'][ $sub_editor->get_dimensions_size_string() . '-' . $extension ] = [
-								'file' => $sub_editor->basename(),
-								'width' => $sub_editor->width(),
-								'height' => $sub_editor->height(),
-								'mime-type' => $sub_editor->get_image_mime_type()
-							];
-						} else {
-							//remove if file greater that original file
-							unlink( $sub_editor->get_path() );
+							if( $sub_editor->is_readable() && $sub_editor->aspect() > 0 && $sub_editor->get_size() > 1024 && $sub_editor->get_size() < $editor->get_size() ){
+								$metadata['sizes'][ $sub_editor->get_dimensions_size_string() . '-' . $extension ] = [
+									'file' => $sub_editor->basename(),
+									'width' => $sub_editor->width(),
+									'height' => $sub_editor->height(),
+									'mime-type' => $sub_editor->get_image_mime_type()
+								];
+							} else {
+								//remove if file greater that original file
+								unlink( $sub_editor->get_path() );
+							}
 						}
 					}
 				}

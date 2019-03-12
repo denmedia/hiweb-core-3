@@ -42,7 +42,7 @@
 		static function root(){
 			if( !is_string( self::$root ) ){
 				self::$root = '';
-				$patch = explode( '/', trim( dirname( $_SERVER['SCRIPT_FILENAME'] ) ) );
+				$patch = explode( '/', trim( __DIR__ ) );
 				$patches = [];
 				$last_path = '';
 				foreach( $patch as $dir ){

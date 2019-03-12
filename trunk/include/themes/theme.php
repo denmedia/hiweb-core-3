@@ -73,7 +73,8 @@
 			if( isset( $menu_locations[ $location ] ) ){
 				foreach( $menus as $menu ){
 					if( $menu->term_id == $menu_locations[ $location ] ){
-						return wp_get_nav_menu_items( $menu );
+						$items = wp_get_nav_menu_items( $menu );
+						return $items;
 					}
 				}
 			}
@@ -131,6 +132,7 @@
 		 * @return array|null|\WP_Post
 		 */
 		public function get_blog_page(){
+			if(get_option( 'page_for_posts' ) == 0) return null;
 			return get_post( get_option( 'page_for_posts' ) );
 		}
 	}

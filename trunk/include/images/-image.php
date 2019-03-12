@@ -38,6 +38,8 @@
 		protected $image_meta_raw = null;
 		protected $attachment_sizes_raw = null;
 
+		protected $path_attachment_by_upload_dir;
+
 		/** @var string */
 		protected $original_size_name = 'original';
 		protected $size_original;
@@ -67,6 +69,7 @@
 				$this->attach_id = intval( $attachment_id );
 				$this->_load_sizes_from_meta();
 			}
+			$this->path_attachment_by_upload_dir = ltrim( str_replace( images::get_upload_dirs()->get_path(), '', $this->get_original_src( true ) ), '/' );
 		}
 
 
@@ -154,7 +157,7 @@
 				$this->size_original = false;
 				$attach_meta = $this->get_attachment_meta();
 				if( array_key_exists( 'file', $attach_meta ) ){
-					$file_original_path = images::get_upload_dir()->get_path() . '/' . $attach_meta['file'];
+					$file_original_path = images::get_upload_dirs()->get_path() . '/' . $attach_meta['file'];
 					if( strlen( $attach_meta['file'] ) > 3 ){
 						$this->size_original = new size( $file_original_path, $this );
 					} else {
@@ -163,6 +166,15 @@
 				}
 			}
 			return $this->size_original;
+		}
+
+
+		/**
+		 * Возвращает папку с именем файла, относительно папки UPLOAD
+		 * @return string
+		 */
+		public function get_path_attachment_by_upload_dir(){
+			return $this->path_attachment_by_upload_dir;
 		}
 
 
@@ -520,10 +532,10 @@
 
 		/**
 		 * @param $return_path
-		 * @return string
+		 * @return string | false
 		 */
 		public function get_original_src( $return_path = false ){
-			return $return_path ? $this->get_size_original()->get_path() : $this->get_size_original()->get_url();
+			return $this->get_size_original() instanceof size ? ( $return_path ? $this->get_size_original()->get_path() : $this->get_size_original()->get_url() ) : false;
 		}
 
 
@@ -611,7 +623,7 @@
 		 * @param bool   $make_new_file
 		 * @return mixed|string
 		 */
-		public function html( $dimensionsOrSizeName = 'thumbnail', $resize_mod = 1, $attr = [], $extension_priority = [], $make_new_file = true ){
+		public function html_img( $dimensionsOrSizeName = 'thumbnail', $resize_mod = 1, $attr = [], $extension_priority = [], $make_new_file = true ){
 			$dimensions = $this->size_calculator()->get_dimensions_by_dimensionsOrSizeName( $dimensionsOrSizeName, $resize_mod );
 			if( !$this->is_attachment_exists() ){
 				$size = ( is_array( $dimensions ) && $this->width() > 0 && $this->height() > 0 ) ? ' width="' . $this->width() . '" height="' . $this->height() . '"' : '';
@@ -653,6 +665,19 @@
 				$attributes = apply_filters( '\hiweb\images\image::html-attributes', $attributes, $this );
 				return apply_filters( '\hiweb\images\image::html-return', "<img {$attributes->get_param_html_tags()}/>", $this );
 			}
+		}
+
+
+		/**
+		 * @param string $dimensionsOrSizeName
+		 * @param int    $resize_mod
+		 * @param array  $attr
+		 * @param array  $extension_priority
+		 * @param bool   $make_new_file
+		 * @return string
+		 */
+		public function html( $dimensionsOrSizeName = 'thumbnail', $resize_mod = 1, $attr = [], $extension_priority = [], $make_new_file = true ){
+			return $this->html_picture($dimensionsOrSizeName, $resize_mod, $attr, $extension_priority, $make_new_file);
 		}
 
 	}

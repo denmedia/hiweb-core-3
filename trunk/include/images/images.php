@@ -17,15 +17,16 @@
 		/** @var null|file */
 		static private $default_image_file = null;
 		/** @var path */
-		static private $upload_dir;
+		static private $upload_dirs = [];
 
 		static $original_size_name = 'original';
 
-		static $mime_default_priority = [ 'png', 'gif', 'jpg', 'jpe', 'jpeg', 'webp', 'jp2', 'jxr' ];
+		static $mime_default_priority = [ 'png', 'gif', 'jpg', 'jpe', 'jpeg'/*, 'webp', 'jp2', 'jxr'*/ ];
 		static $classic_file_types = [ 'png', 'jpg', 'jpeg', 'jpe', 'gif' ];
-		static $progressive_types = [ 'jxr', 'webp','jp2'];
+		static $progressive_types = [ 'jxr', 'webp', 'jp2' ];
+		static $progressive_create_on_upload = false;
 		static $meta_key_optimized = 'hiweb-optimized';
-		static $extension_priority = [ 'png', 'gif', 'jpg', 'jpe','jpeg','webp', 'jxr', 'jp2' ];
+		static $extension_priority = [ 'png', 'gif', 'jpg', 'jpe', 'jpeg',/*'webp', 'jxr', 'jp2'*/ ];
 		static $default_quality = 75;
 
 
@@ -99,15 +100,30 @@
 		/**
 		 * @return path
 		 */
-		static function get_upload_dir(){
-			if( !self::$upload_dir instanceof path ){
+		static function get_upload_dirs(){
+			if( !self::$upload_dirs[ get_current_blog_id() ] instanceof path ){
 				if( function_exists( 'wp_get_upload_dir' ) ){
-					self::$upload_dir = paths::get( arrays::get_temp( wp_get_upload_dir() )->value_by_key( 'basedir' ) );
+					self::$upload_dirs[ get_current_blog_id() ] = paths::get( arrays::get_temp( wp_get_upload_dir() )->value_by_key( 'basedir' ) );
 				} else {
-					self::$upload_dir = paths::get( WP_CONTENT_DIR . '/uploads' );
+					self::$upload_dirs[ get_current_blog_id() ] = paths::get( WP_CONTENT_DIR . '/uploads' );
 				}
 			}
-			return self::$upload_dir;
+			return self::$upload_dirs[ get_current_blog_id() ];
+		}
+
+
+		/**
+		 * @return path
+		 */
+		static function get_upload_path_dirs(){
+			if( !self::$upload_dirs[ get_current_blog_id() ] instanceof path ){
+				if( function_exists( 'wp_get_upload_dir' ) ){
+					self::$upload_dirs[ get_current_blog_id() ] = paths::get( arrays::get_temp( wp_get_upload_dir() )->value_by_key( 'path' ) );
+				} else {
+					self::$upload_dirs[ get_current_blog_id() ] = paths::get( WP_CONTENT_DIR . '/uploads/'.date('Y', time()).'/'.date('m', time()) );
+				}
+			}
+			return self::$upload_dirs[ get_current_blog_id() ];
 		}
 
 

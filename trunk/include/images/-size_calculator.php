@@ -186,7 +186,7 @@
 			if( is_array( $dimensionsOrSizeName ) && isset( $dimensionsOrSizeName[0] ) && $dimensionsOrSizeName[1] ){
 				$dimensions = $this->get_dimensions_by_resizeMod( $dimensionsOrSizeName[0], $dimensionsOrSizeName[1], $resize_mod );
 			} else {
-				if( $dimensionsOrSizeName == '' ) console_info( debug_backtrace() ); //todo-
+				//if( $dimensionsOrSizeName == '' ) console_info( debug_backtrace() ); //todo-
 				$dimensions = $this->get_dimensions_by_sizeName( $dimensionsOrSizeName, $resize_mod );
 			}
 			return $dimensions;

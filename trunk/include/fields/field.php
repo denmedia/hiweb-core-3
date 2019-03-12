@@ -62,6 +62,16 @@
 			}
 
 
+			public function __clone(){
+				$old_global_location_id = spl_object_hash( $this->location );
+				$this->location = clone $this->location;
+				$new_global_location_id = spl_object_hash( $this->location );
+				locations::$locations[ $new_global_location_id ] = locations::$locations[ $old_global_location_id ];
+				locations::$rules[ $new_global_location_id ] = locations::$rules[ $old_global_location_id ];
+				locations::$rulesId[ $new_global_location_id ] = locations::$rulesId[ $old_global_location_id ];
+			}
+
+
 			/**
 			 * @param null $set
 			 * @return field|null
@@ -72,16 +82,22 @@
 
 
 			/**
-			 * @return string
+			 * @param null $set
+			 * @return field|string
 			 */
-			public function id(){
-				return $this->id;
+			public function id( $set = null ){
+				if( is_null( $set ) ){
+					return $this->id;
+				} else {
+					$this->id = $set;
+					$this->INPUT()->name( $this->id() );
+					return $this;
+				}
 			}
 
 
 			/**
 			 * @param null|string $set
-			 *
 			 * @return field|string
 			 */
 			public function global_id( $set = null ){
@@ -125,9 +141,7 @@
 
 			/**
 			 * Set|get field label
-			 *
 			 * @param null|strings $label
-			 *
 			 * @return field|null|string
 			 */
 			public function label( $label = null ){
@@ -137,9 +151,7 @@
 
 			/**
 			 * Set|get field description
-			 *
 			 * @param null|strings $description
-			 *
 			 * @return field|null|string
 			 */
 			public function description( $description = null ){

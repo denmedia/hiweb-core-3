@@ -33092,7 +33092,7 @@ select.ui.dropdown {
 
 .ui.fluid.dropdown {
   display: block;
-  width: 100%;
+  /*width: 100%;*/
   min-width: 0em;
 }
 

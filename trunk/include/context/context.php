@@ -6,11 +6,11 @@
 	class context{
 
 		/**
-		 * @version 1.2
+		 * @version 1.3
 		 * @return bool
 		 */
 		static function is_frontend_page(){
-			return ( preg_match( '/^' . preg_quote( paths::root(),'/' ) . '\/index(-hiweb-cache)?\.php$/i', $_SERVER['SCRIPT_FILENAME'] ) > 0 && !self::is_rest_api() );
+			return ( preg_match( '/^\/index(-hiweb-cache)?\.php$/i', $_SERVER['PHP_SELF'] ) > 0 && !self::is_rest_api() );
 		}
 
 

@@ -1,118 +1,142 @@
 .hiweb-field-file, .hiweb-field-image {
-  width: 120px; }
-  .hiweb-field-file, .hiweb-field-file.ui.reveal, .hiweb-field-image, .hiweb-field-image.ui.reveal {
-    display: inline-block; }
-  .hiweb-field-file .content, .hiweb-field-image .content {
-    width: 120px; }
-  .hiweb-field-file .thumbnail, .hiweb-field-image .thumbnail {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background: 50% 50% no-repeat;
-    background-size: cover;
-    -webkit-opacity: 0;
-    -moz-opacity: 0;
-    -ms-opacity: 0;
-    -o-opacity: 0;
-    opacity: 0;
-    filter: alpha(opacity=0); }
-  .hiweb-field-file [data-segment="1"], .hiweb-field-image [data-segment="1"] {
-    width: 120px;
-    height: 120px;
-    background: url(../img/pattern-1.jpg); }
-    .hiweb-field-file [data-segment="1"] [data-icon], .hiweb-field-image [data-segment="1"] [data-icon] {
-      position: absolute;
-      top: 20px;
-      left: 28px;
-      font-size: 56px;
-      line-height: 1;
-      vertical-align: middle;
-      -webkit-transition: all 0.5s ease-in-out 0.5s;
-      -moz-transition: all 0.5s ease-in-out 0.5s;
-      -o-transition: all 0.5s ease-in-out 0.5s;
-      transition: all 0.5s ease-in-out 0.5s; }
-  .hiweb-field-file[data-has-file="1"] [data-icon="select"], .hiweb-field-image[data-has-file="1"] [data-icon="select"] {
-    -webkit-opacity: 0;
-    -moz-opacity: 0;
-    -ms-opacity: 0;
-    -o-opacity: 0;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    -webkit-transform: scale(2);
-    -moz-transform: scale(2);
-    -o-transform: scale(2);
-    transform: scale(2); }
-  .hiweb-field-file[data-has-file="1"] [data-icon="deselect"], .hiweb-field-image[data-has-file="1"] [data-icon="deselect"] {
-    -webkit-opacity: 1;
-    -moz-opacity: 1;
-    -ms-opacity: 1;
-    -o-opacity: 1;
-    opacity: 1;
-    filter: alpha(opacity=100); }
-  .hiweb-field-file[data-has-file="1"] [data-click="select"], .hiweb-field-image[data-has-file="1"] [data-click="select"] {
-    display: none; }
-  .hiweb-field-file[data-has-file="1"] [data-file-nonselect-text], .hiweb-field-image[data-has-file="1"] [data-file-nonselect-text] {
-    display: none; }
-  .hiweb-field-file[data-has-file="1"] [data-file-name], .hiweb-field-image[data-has-file="1"] [data-file-name] {
-    display: block;
-    white-space: nowrap; }
-  .hiweb-field-file[data-has-file="1"][data-file-image="image"] [data-segment="1"], .hiweb-field-image[data-has-file="1"][data-file-image="image"] [data-segment="1"] {
-    background: url(../img/pattern-4.png); }
-    .hiweb-field-file[data-has-file="1"][data-file-image="image"] [data-segment="1"] .icon, .hiweb-field-image[data-has-file="1"][data-file-image="image"] [data-segment="1"] .icon {
-      -webkit-opacity: 0;
-      -moz-opacity: 0;
-      -ms-opacity: 0;
-      -o-opacity: 0;
-      opacity: 0;
-      filter: alpha(opacity=0); }
-  .hiweb-field-file[data-has-file="1"][data-file-image="image"] .thumbnail, .hiweb-field-image[data-has-file="1"][data-file-image="image"] .thumbnail {
-    -webkit-opacity: 1;
-    -moz-opacity: 1;
-    -ms-opacity: 1;
-    -o-opacity: 1;
-    opacity: 1;
-    filter: alpha(opacity=100); }
-  .hiweb-field-file[data-has-file="0"] [data-icon="select"], .hiweb-field-image[data-has-file="0"] [data-icon="select"] {
-    -webkit-opacity: 0.3;
-    -moz-opacity: 0.3;
-    -ms-opacity: 0.3;
-    -o-opacity: 0.3;
-    opacity: 0.3;
-    filter: alpha(opacity=30); }
-  .hiweb-field-file[data-has-file="0"] [data-icon="deselect"], .hiweb-field-image[data-has-file="0"] [data-icon="deselect"] {
-    -webkit-opacity: 0;
-    -moz-opacity: 0;
-    -ms-opacity: 0;
-    -o-opacity: 0;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    -webkit-transform: scale(0.5);
-    -moz-transform: scale(0.5);
-    -o-transform: scale(0.5);
-    transform: scale(0.5); }
-  .hiweb-field-file[data-has-file="0"] [data-click="edit"], .hiweb-field-file[data-has-file="0"] [data-click="deselect"], .hiweb-field-image[data-has-file="0"] [data-click="edit"], .hiweb-field-image[data-has-file="0"] [data-click="deselect"] {
-    display: none; }
-  .hiweb-field-file[data-has-file="0"] [data-file-nonselect-text], .hiweb-field-image[data-has-file="0"] [data-file-nonselect-text] {
-    display: block; }
-  .hiweb-field-file[data-has-file="0"] [data-file-name], .hiweb-field-image[data-has-file="0"] [data-file-name] {
-    display: none; }
-  .hiweb-field-file [data-segment="2"], .hiweb-field-image [data-segment="2"] {
-    width: 120px;
-    height: 134px;
-    background-image: url(../img/pattern-5d.png); }
-    .hiweb-field-file [data-segment="2"] [data-click="select"], .hiweb-field-image [data-segment="2"] [data-click="select"] {
-      position: relative;
-      top: 28px;
-      margin-right: -8px; }
-    .hiweb-field-file [data-segment="2"] .buttons, .hiweb-field-image [data-segment="2"] .buttons {
-      position: relative;
-      top: 34px; }
-      .hiweb-field-file [data-segment="2"] .buttons .button:last-child, .hiweb-field-image [data-segment="2"] .buttons .button:last-child {
-        margin-right: -8px; }
-  .hiweb-field-file [data-tooltip][data-inverted]:after, .hiweb-field-image [data-tooltip][data-inverted]:after {
-    font-size: 8pt;
-    font-weight: 100; }
+  width: 120px;
+}
+.hiweb-field-file, .hiweb-field-file.ui.reveal, .hiweb-field-image, .hiweb-field-image.ui.reveal {
+  display: inline-block;
+}
+.hiweb-field-file .content, .hiweb-field-image .content {
+  width: 120px;
+}
+.hiweb-field-file .thumbnail, .hiweb-field-image .thumbnail {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: 50% 50% no-repeat;
+  background-size: cover;
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  -ms-opacity: 0;
+  -o-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.hiweb-field-file [data-segment="1"], .hiweb-field-image [data-segment="1"] {
+  width: 120px;
+  height: 120px;
+  background: url(../img/pattern-1.jpg);
+}
+.hiweb-field-file [data-segment="1"] [data-icon], .hiweb-field-image [data-segment="1"] [data-icon] {
+  position: absolute;
+  top: 20px;
+  left: 28px;
+  font-size: 56px;
+  line-height: 1;
+  vertical-align: middle;
+  -webkit-transition: all 0.5s ease-in-out 0.5s;
+  -moz-transition: all 0.5s ease-in-out 0.5s;
+  -o-transition: all 0.5s ease-in-out 0.5s;
+  transition: all 0.5s ease-in-out 0.5s;
+}
+.hiweb-field-file[data-has-file="1"] [data-icon=select], .hiweb-field-image[data-has-file="1"] [data-icon=select] {
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  -ms-opacity: 0;
+  -o-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transform: scale(2);
+  -moz-transform: scale(2);
+  -o-transform: scale(2);
+  transform: scale(2);
+}
+.hiweb-field-file[data-has-file="1"] [data-icon=deselect], .hiweb-field-image[data-has-file="1"] [data-icon=deselect] {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.hiweb-field-file[data-has-file="1"] [data-click=select], .hiweb-field-image[data-has-file="1"] [data-click=select] {
+  display: none;
+}
+.hiweb-field-file[data-has-file="1"] [data-file-nonselect-text], .hiweb-field-image[data-has-file="1"] [data-file-nonselect-text] {
+  display: none;
+}
+.hiweb-field-file[data-has-file="1"] [data-file-name], .hiweb-field-image[data-has-file="1"] [data-file-name] {
+  display: block;
+  white-space: nowrap;
+}
+.hiweb-field-file[data-has-file="1"][data-file-image=image] [data-segment="1"], .hiweb-field-image[data-has-file="1"][data-file-image=image] [data-segment="1"] {
+  background: url(../img/pattern-4.png);
+}
+.hiweb-field-file[data-has-file="1"][data-file-image=image] [data-segment="1"] .icon, .hiweb-field-image[data-has-file="1"][data-file-image=image] [data-segment="1"] .icon {
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  -ms-opacity: 0;
+  -o-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.hiweb-field-file[data-has-file="1"][data-file-image=image] .thumbnail, .hiweb-field-image[data-has-file="1"][data-file-image=image] .thumbnail {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+.hiweb-field-file[data-has-file="0"] [data-icon=select], .hiweb-field-image[data-has-file="0"] [data-icon=select] {
+  -webkit-opacity: 0.3;
+  -moz-opacity: 0.3;
+  -ms-opacity: 0.3;
+  -o-opacity: 0.3;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+.hiweb-field-file[data-has-file="0"] [data-icon=deselect], .hiweb-field-image[data-has-file="0"] [data-icon=deselect] {
+  -webkit-opacity: 0;
+  -moz-opacity: 0;
+  -ms-opacity: 0;
+  -o-opacity: 0;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  -webkit-transform: scale(0.5);
+  -moz-transform: scale(0.5);
+  -o-transform: scale(0.5);
+  transform: scale(0.5);
+}
+.hiweb-field-file[data-has-file="0"] [data-click=edit], .hiweb-field-file[data-has-file="0"] [data-click=deselect], .hiweb-field-image[data-has-file="0"] [data-click=edit], .hiweb-field-image[data-has-file="0"] [data-click=deselect] {
+  display: none;
+}
+.hiweb-field-file[data-has-file="0"] [data-file-nonselect-text], .hiweb-field-image[data-has-file="0"] [data-file-nonselect-text] {
+  display: block;
+}
+.hiweb-field-file[data-has-file="0"] [data-file-name], .hiweb-field-image[data-has-file="0"] [data-file-name] {
+  display: none;
+}
+.hiweb-field-file [data-segment="2"], .hiweb-field-image [data-segment="2"] {
+  width: 120px;
+  height: 134px;
+  background-image: url(../img/pattern-5d.png);
+}
+.hiweb-field-file [data-segment="2"] [data-click=select], .hiweb-field-image [data-segment="2"] [data-click=select] {
+  position: relative;
+  top: 28px;
+  margin-right: -8px;
+}
+.hiweb-field-file [data-segment="2"] .buttons, .hiweb-field-image [data-segment="2"] .buttons {
+  position: relative;
+  top: 34px;
+}
+.hiweb-field-file [data-segment="2"] .buttons .button:last-child, .hiweb-field-image [data-segment="2"] .buttons .button:last-child {
+  margin-right: -8px;
+}
+.hiweb-field-file [data-tooltip][data-inverted]:after, .hiweb-field-image [data-tooltip][data-inverted]:after {
+  font-size: 8pt;
+  font-weight: 100;
+}
 
 /*# sourceMappingURL=field-file.css.map */

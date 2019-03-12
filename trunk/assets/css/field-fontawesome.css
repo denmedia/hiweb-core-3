@@ -1,122 +1,134 @@
 .hiweb-field-fontawesome {
   position: relative;
   text-align: left;
-  display: inline-block; }
-  .hiweb-field-fontawesome .form-control {
-    padding-left: 40pt !important; }
-  .hiweb-field-fontawesome .input-group-addon {
-    display: inline-block;
-    font-size: 23pt;
-    position: absolute;
-    left: 3px;
-    top: 4px;
-    line-height: 23pt;
-    width: 34pt;
-    text-align: center;
-    border-right: 1px solid #ccc;
-    border-right: 1px dotted grey;
-    height: 25pt;
-    overflow: hidden; }
-  .hiweb-field-fontawesome .ui.input {
-    position: relative;
-    z-index: 10; }
-  .hiweb-field-fontawesome .ui.dropdown {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0; }
-    .hiweb-field-fontawesome .ui.dropdown .menu {
-      max-width: 180%;
-      max-height: 200px;
-      min-width: 100%;
-      z-index: 100000;
-      overflow: auto;
-      padding: 8px; }
-  .hiweb-field-fontawesome .ui.dropdown .item, .hiweb-field-fontawesome .ui.popup .item {
-    display: inline-block;
-    font-size: 20pt;
-    padding: 6pt !important;
-    cursor: pointer;
-    margin: 0 -1px -1px 0;
-    -webkit-opacity: 0.5;
-    -moz-opacity: 0.5;
-    -ms-opacity: 0.5;
-    -o-opacity: 0.5;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-    -webkit-transition: all 0.2s ease-out;
-    -moz-transition: all 0.2s ease-out;
-    -o-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
-    border: 1px dotted #ccc;
-    background: #fff !important;
-    position: relative;
-    -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    -o-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0); }
-    .hiweb-field-fontawesome .ui.dropdown .item:hover, .hiweb-field-fontawesome .ui.popup .item:hover {
-      -webkit-opacity: 1;
-      -moz-opacity: 1;
-      -ms-opacity: 1;
-      -o-opacity: 1;
-      opacity: 1;
-      filter: alpha(opacity=100);
-      -webkit-transform: scale(1.5);
-      -moz-transform: scale(1.5);
-      -o-transform: scale(1.5);
-      transform: scale(1.5);
-      -webkit-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      -moz-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      -o-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      z-index: 100; }
-  .hiweb-field-fontawesome .ui.popup {
-    white-space: nowrap; }
+  display: inline-block;
+}
+.hiweb-field-fontawesome .form-control {
+  padding-left: 40pt !important;
+}
+.hiweb-field-fontawesome .input-group-addon {
+  display: inline-block;
+  font-size: 23pt;
+  position: absolute;
+  left: 3px;
+  top: 4px;
+  line-height: 23pt;
+  width: 34pt;
+  text-align: center;
+  border-right: 1px solid #ccc;
+  border-right: 1px dotted grey;
+  height: 25pt;
+  overflow: hidden;
+}
+.hiweb-field-fontawesome .ui.input {
+  position: relative;
+  z-index: 10;
+}
+.hiweb-field-fontawesome .ui.dropdown {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.hiweb-field-fontawesome .ui.dropdown .menu {
+  max-width: 180%;
+  max-height: 200px;
+  min-width: 100%;
+  z-index: 100000;
+  overflow: auto;
+  padding: 8px;
+}
+.hiweb-field-fontawesome .ui.dropdown .item, .hiweb-field-fontawesome .ui.popup .item {
+  display: inline-block;
+  font-size: 20pt;
+  padding: 6pt !important;
+  cursor: pointer;
+  margin: 0 -1px -1px 0;
+  -webkit-opacity: 0.5;
+  -moz-opacity: 0.5;
+  -ms-opacity: 0.5;
+  -o-opacity: 0.5;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-transition: all 0.2s ease-out 0ms;
+  -moz-transition: all 0.2s ease-out 0ms;
+  -o-transition: all 0.2s ease-out 0ms;
+  transition: all 0.2s ease-out 0ms;
+  border: 1px dotted #ccc;
+  background: #fff !important;
+  position: relative;
+  -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  -o-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+}
+.hiweb-field-fontawesome .ui.dropdown .item:hover, .hiweb-field-fontawesome .ui.popup .item:hover {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  transform: scale(1.5);
+  -webkit-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  -o-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  z-index: 100;
+}
+.hiweb-field-fontawesome .ui.popup {
+  white-space: nowrap;
+}
 
 .hiweb-field-fontawesome-popup {
   max-width: 800px;
   max-height: 340px;
-  overflow: auto; }
-  .hiweb-field-fontawesome-popup .item {
-    display: inline-block;
-    font-size: 24pt;
-    padding: 6pt;
-    cursor: pointer;
-    margin: 0 -1px -1px 0;
-    -webkit-opacity: 0.5;
-    -moz-opacity: 0.5;
-    -ms-opacity: 0.5;
-    -o-opacity: 0.5;
-    opacity: 0.5;
-    filter: alpha(opacity=50);
-    -webkit-transition: all 0.2s ease-out;
-    -moz-transition: all 0.2s ease-out;
-    -o-transition: all 0.2s ease-out;
-    transition: all 0.2s ease-out;
-    border: 1px dotted #ccc;
-    background: #fff;
-    position: relative;
-    -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    -o-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
-    box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0); }
-    .hiweb-field-fontawesome-popup .item:hover {
-      -webkit-opacity: 1;
-      -moz-opacity: 1;
-      -ms-opacity: 1;
-      -o-opacity: 1;
-      opacity: 1;
-      filter: alpha(opacity=100);
-      -webkit-transform: scale(1.5);
-      -moz-transform: scale(1.5);
-      -o-transform: scale(1.5);
-      transform: scale(1.5);
-      -webkit-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      -moz-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      -o-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
-      z-index: 100; }
+  overflow: auto;
+}
+.hiweb-field-fontawesome-popup .item {
+  display: inline-block;
+  font-size: 24pt;
+  padding: 6pt;
+  cursor: pointer;
+  margin: 0 -1px -1px 0;
+  -webkit-opacity: 0.5;
+  -moz-opacity: 0.5;
+  -ms-opacity: 0.5;
+  -o-opacity: 0.5;
+  opacity: 0.5;
+  filter: alpha(opacity=50);
+  -webkit-transition: all 0.2s ease-out 0ms;
+  -moz-transition: all 0.2s ease-out 0ms;
+  -o-transition: all 0.2s ease-out 0ms;
+  transition: all 0.2s ease-out 0ms;
+  border: 1px dotted #ccc;
+  background: #fff;
+  position: relative;
+  -webkit-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  -o-box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0px 0 0 rgba(0, 0, 0, 0);
+}
+.hiweb-field-fontawesome-popup .item:hover {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  -ms-opacity: 1;
+  -o-opacity: 1;
+  opacity: 1;
+  filter: alpha(opacity=100);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -o-transform: scale(1.5);
+  transform: scale(1.5);
+  -webkit-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  -o-box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0px 0px 12px 0 rgba(0, 0, 0, 0.25);
+  z-index: 100;
+}
 
 /*# sourceMappingURL=field-fontawesome.css.map */

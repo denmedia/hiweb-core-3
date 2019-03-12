@@ -672,7 +672,6 @@ apple:
   label: Apple
   search:
     terms:
-      - food
       - fruit
       - ios
       - mac
@@ -690,7 +689,6 @@ apple-alt:
   search:
     terms:
       - fall
-      - food
       - fruit
       - fuji
       - macintosh
@@ -710,7 +708,6 @@ apple-crate:
       - bushel
       - container
       - fall
-      - food
       - fruit
       - fuji
       - macintosh
@@ -1721,6 +1718,24 @@ backward:
     - light
   unicode: f04a
   voted: false
+bacon:
+  changes:
+    - 5.7.0
+  label: Bacon
+  search:
+    terms:
+      - breakfast
+      - ham
+      - meat
+      - pancetta
+      - pork
+      - vegan
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e5
+  voted: false
 badge:
   changes:
     - 5.0.0
@@ -1856,6 +1871,7 @@ balance-scale-right:
 ball-pile:
   changes:
     - 5.6.0
+    - 5.7.0
   label: Ball Pile
   search:
     terms:
@@ -1892,6 +1908,9 @@ ballot-check:
       - done
       - election
       - finished
+      - select
+      - success
+      - tick
       - vote
       - voting
   styles:
@@ -2182,6 +2201,7 @@ battery-quarter:
 battery-slash:
   changes:
     - 5.0.0
+    - 5.7.0
   label: Battery Slash
   search:
     terms:
@@ -2433,6 +2453,7 @@ binoculars:
 biohazard:
   changes:
     - 5.6.0
+    - 5.7.0
   label: Biohazard
   search:
     terms:
@@ -2785,6 +2806,18 @@ book-heart:
     - light
   unicode: f499
   voted: false
+book-medical:
+  changes:
+    - 5.7.0
+  label: Medical Book
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e6
+  voted: false
 book-open:
   changes:
     - 5.0.13
@@ -2845,6 +2878,18 @@ book-spells:
     - light
   unicode: f6b8
   voted: false
+book-user:
+  changes:
+    - 5.7.0
+  label: Book with User
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e7
+  voted: false
 bookmark:
   changes:
     - '1'
@@ -2870,6 +2915,18 @@ books:
     - regular
     - light
   unicode: f5db
+  voted: false
+books-medical:
+  changes:
+    - 5.7.0
+  label: Medical Books
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e8
   voted: false
 boot:
   changes:
@@ -3005,6 +3062,7 @@ box-check:
       - ok
       - select
       - success
+      - tick
       - todo
       - 'yes'
   styles:
@@ -3029,6 +3087,7 @@ box-fragile:
 box-full:
   changes:
     - 5.0.9
+    - 5.7.0
   label: Box Full
   search:
     terms:
@@ -3057,6 +3116,7 @@ box-heart:
 box-open:
   changes:
     - 5.0.9
+    - 5.7.0
   label: Box Open
   search:
     terms: []
@@ -3130,6 +3190,36 @@ boxing-glove:
     - light
   unicode: f438
   voted: false
+brackets:
+  changes:
+    - 5.7.0
+  label: Brackets
+  search:
+    terms:
+      - code
+      - developer
+      - development
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e9
+  voted: false
+brackets-curly:
+  changes:
+    - 5.7.0
+  label: Curly Brackets
+  search:
+    terms:
+      - code
+      - developer
+      - development
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ea
+  voted: true
 braille:
   changes:
     - '4.6'
@@ -3161,6 +3251,54 @@ brain:
     - regular
     - light
   unicode: f5dc
+  voted: false
+bread-loaf:
+  changes:
+    - 5.7.0
+  label: Loaf of Bread
+  search:
+    terms:
+      - bake
+      - bakery
+      - baking
+      - dough
+      - flour
+      - gluten
+      - grain
+      - sandwich
+      - sourdough
+      - toast
+      - wheat
+      - yeast
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7eb
+  voted: false
+bread-slice:
+  changes:
+    - 5.7.0
+  label: Bread Slice
+  search:
+    terms:
+      - bake
+      - bakery
+      - baking
+      - dough
+      - flour
+      - gluten
+      - grain
+      - sandwich
+      - sourdough
+      - toast
+      - wheat
+      - yeast
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ec
   voted: false
 briefcase:
   changes:
@@ -3370,7 +3508,13 @@ burn:
   label: Burn
   search:
     terms:
+      - caliente
       - energy
+      - fire
+      - flame
+      - gas
+      - heat
+      - hot
   styles:
     - solid
     - regular
@@ -3386,6 +3530,25 @@ buromobelexperte:
   styles:
     - brands
   unicode: f37f
+  voted: false
+burrito:
+  changes:
+    - 5.7.0
+  label: Burrito
+  search:
+    terms:
+      - beans
+      - breakfast
+      - chimichanga
+      - mexican
+      - salsa
+      - taco
+      - tortilla
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ed
   voted: false
 bus:
   changes:
@@ -3523,6 +3686,7 @@ calendar-alt:
     - '1'
     - 5.0.0
     - 5.6.0
+    - 5.7.0
   label: Alternate Calendar
   search:
     terms:
@@ -3557,6 +3721,7 @@ calendar-check:
       - schedule
       - select
       - success
+      - tick
       - time
       - todo
       - when
@@ -3840,7 +4005,6 @@ candy-cane:
     terms:
       - candy
       - christmas
-      - food
       - holiday
       - mint
       - peppermint
@@ -3857,7 +4021,6 @@ candy-corn:
   label: Candy Corn
   search:
     terms:
-      - food
       - halloween
       - holiday
       - sugar
@@ -4225,7 +4388,6 @@ carrot:
   search:
     terms:
       - bugs bunny
-      - food
       - holiday
       - orange
       - vegetable
@@ -4346,6 +4508,7 @@ cc-amex:
   changes:
     - '4.2'
     - 5.0.0
+    - 5.7.0
   label: American Express Credit Card
   search:
     terms:
@@ -4676,6 +4839,18 @@ chart-pie-alt:
     - light
   unicode: f64e
   voted: false
+chart-scatter:
+  changes:
+    - 5.7.0
+  label: Scatter Chart
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ee
+  voted: true
 check:
   changes:
     - '1'
@@ -4719,6 +4894,7 @@ check-circle:
       - ok
       - select
       - success
+      - tick
       - todo
       - 'yes'
   styles:
@@ -4769,6 +4945,7 @@ check-square:
       - ok
       - select
       - success
+      - tick
       - todo
       - 'yes'
   styles:
@@ -4776,6 +4953,71 @@ check-square:
     - regular
     - light
   unicode: f14a
+  voted: false
+cheese:
+  changes:
+    - 5.7.0
+  label: Cheese
+  search:
+    terms:
+      - cheddar
+      - curd
+      - gouda
+      - melt
+      - parmesan
+      - sandwich
+      - swiss
+      - wedge
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ef
+  voted: false
+cheese-swiss:
+  changes:
+    - 5.7.0
+  label: Swiss Cheese
+  search:
+    terms:
+      - cheddar
+      - curd
+      - gouda
+      - melt
+      - parmesan
+      - sandwich
+      - swiss
+      - wedge
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f0
+  voted: false
+cheeseburger:
+  changes:
+    - 5.7.0
+  label: Cheeseburger
+  search:
+    terms:
+      - bacon
+      - beef
+      - burger
+      - burger king
+      - fast food
+      - grill
+      - ground beef
+      - hamburger
+      - mcdonalds
+      - sandwich
+      - slider
+      - wendys
+      - white castle
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f1
   voted: false
 chess:
   changes:
@@ -4816,6 +5058,7 @@ chess-bishop-alt:
 chess-board:
   changes:
     - 5.0.5
+    - 5.7.0
   label: Chess Board
   search:
     terms: []
@@ -5326,6 +5569,25 @@ claw-marks:
     - light
   unicode: f6c2
   voted: false
+clinic-medical:
+  changes:
+    - 5.7.0
+  label: Medical Clinic
+  search:
+    terms:
+      - doctor
+      - general practitioner
+      - hospital
+      - infirmary
+      - medicine
+      - office
+      - outpatient
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f2
+  voted: false
 clipboard:
   changes:
     - 5.0.0
@@ -5352,6 +5614,7 @@ clipboard-check:
       - ok
       - select
       - success
+      - tick
       - todo
       - 'yes'
   styles:
@@ -5373,6 +5636,7 @@ clipboard-list:
       - intinerary
       - ol
       - schedule
+      - tick
       - todo
       - ul
   styles:
@@ -5395,6 +5659,7 @@ clipboard-list-check:
       - intinerary
       - ol
       - schedule
+      - tick
       - todo
       - ul
       - vote
@@ -5416,6 +5681,21 @@ clipboard-prescription:
     - regular
     - light
   unicode: f5e8
+  voted: false
+clipboard-user:
+  changes:
+    - 5.7.0
+  label: Clipboard with User
+  search:
+    terms:
+      - attendance
+      - roster
+      - staff
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f3
   voted: false
 clock:
   changes:
@@ -5488,7 +5768,7 @@ cloud-download:
   label: Cloud Download
   search:
     terms:
-      - import
+      - export
   styles:
     - solid
     - regular
@@ -5502,7 +5782,7 @@ cloud-download-alt:
   label: Alternate Cloud Download
   search:
     terms:
-      - import
+      - export
   styles:
     - solid
     - regular
@@ -6100,7 +6380,8 @@ comment-alt-check:
     - 5.0.9
   label: Alternate Comment Check
   search:
-    terms: []
+    terms:
+      - tick
   styles:
     - solid
     - regular
@@ -6172,6 +6453,21 @@ comment-alt-lines:
     - regular
     - light
   unicode: f4a6
+  voted: false
+comment-alt-medical:
+  changes:
+    - 5.7.0
+  label: Medical Chat
+  search:
+    terms:
+      - advice
+      - diagnose
+      - prescription
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f4
   voted: false
 comment-alt-minus:
   changes:
@@ -6250,7 +6546,12 @@ comment-check:
     - 5.0.9
   label: Comment Check
   search:
-    terms: []
+    terms:
+      - select
+      - success
+      - synced
+      - tick
+      - todo
   styles:
     - solid
     - regular
@@ -6322,6 +6623,21 @@ comment-lines:
     - regular
     - light
   unicode: f4b0
+  voted: false
+comment-medical:
+  changes:
+    - 5.7.0
+  label: Alternate Medical Chat
+  search:
+    terms:
+      - advice
+      - diagnose
+      - prescription
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f5
   voted: false
 comment-minus:
   changes:
@@ -6541,7 +6857,6 @@ compress-arrows-alt:
   label: Alternate Compress Arrows
   search:
     terms:
-      - arrows-alt
       - collapse
       - fullscreen
       - minimize
@@ -6665,7 +6980,6 @@ cookie:
     terms:
       - baked good
       - chips
-      - food
       - snack
       - sweet
       - treat
@@ -6685,7 +6999,6 @@ cookie-bite:
       - bitten
       - chips
       - eating
-      - food
       - snack
       - sweet
       - treat
@@ -6734,7 +7047,6 @@ corn:
       - cob
       - ear
       - fall
-      - food
       - kernel
       - maize
       - seasonal
@@ -7016,6 +7328,27 @@ critical-role:
     - brands
   unicode: f6c9
   voted: false
+croissant:
+  changes:
+    - 5.7.0
+  label: Croissant
+  search:
+    terms:
+      - bakery
+      - breakfast
+      - brioche
+      - butter
+      - crescent
+      - dough
+      - gluten
+      - pastry
+      - roll
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f6
+  voted: false
 crop:
   changes:
     - '3.1'
@@ -7103,6 +7436,36 @@ crown:
     - light
   unicode: f521
   voted: true
+crutch:
+  changes:
+    - 5.7.0
+  label: Crutch
+  search:
+    terms:
+      - cane
+      - injury
+      - wheelchair
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f7
+  voted: false
+crutches:
+  changes:
+    - 5.7.0
+  label: Crutches
+  search:
+    terms:
+      - cane
+      - injury
+      - wheelchair
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f8
+  voted: false
 css3:
   changes:
     - '3.1'
@@ -7275,6 +7638,22 @@ deaf:
     - light
   unicode: f2a4
   voted: false
+debug:
+  changes:
+    - 5.7.0
+  label: Debug
+  search:
+    terms:
+      - error
+      - fix
+      - optimize
+      - warning
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7f9
+  voted: false
 deer:
   changes:
     - 5.6.0
@@ -7317,7 +7696,8 @@ delicious:
   changes:
     - '4.1'
     - 5.0.0
-  label: Delicious Logo
+    - 5.7.0
+  label: Delicious
   search:
     terms: []
   styles:
@@ -7473,9 +7853,15 @@ dhl:
 diagnoses:
   changes:
     - 5.0.7
+    - 5.7.0
   label: Diagnoses
   search:
-    terms: []
+    terms:
+      - analyze
+      - detect
+      - diagnosis
+      - examine
+      - medicine
   styles:
     - solid
     - regular
@@ -7753,6 +8139,7 @@ digg:
 digital-ocean:
   changes:
     - 5.0.0
+    - 5.7.0
   label: Digital Ocean
   search:
     terms: []
@@ -7816,6 +8203,24 @@ discourse:
   styles:
     - brands
   unicode: f393
+  voted: false
+disease:
+  changes:
+    - 5.7.0
+  label: Disease
+  search:
+    terms:
+      - bacteria
+      - cancer
+      - illness
+      - infection
+      - sickness
+      - virus
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7fa
   voted: false
 divide:
   changes:
@@ -8087,7 +8492,7 @@ download:
   label: Download
   search:
     terms:
-      - import
+      - export
   styles:
     - solid
     - regular
@@ -8261,14 +8666,14 @@ drum-steelpan:
 drumstick:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Drumstick
   search:
     terms:
       - bone
       - chicken
-      - fall
-      - food
       - leg
+      - meat
       - poultry
       - seasonal
       - turkey
@@ -8281,9 +8686,17 @@ drumstick:
 drumstick-bite:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Drumstick with Bite Taken Out
   search:
-    terms: []
+    terms:
+      - bone
+      - chicken
+      - leg
+      - meat
+      - poultry
+      - seasonal
+      - turkey
   styles:
     - solid
     - regular
@@ -8448,6 +8861,7 @@ earlybirds:
 ebay:
   changes:
     - 5.0.11
+    - 5.7.0
   label: eBay
   search:
     terms: []
@@ -8509,6 +8923,37 @@ edit:
     - regular
     - light
   unicode: f044
+  voted: false
+egg:
+  changes:
+    - 5.7.0
+  label: Egg
+  search:
+    terms:
+      - breakfast
+      - chicken
+      - easter
+      - yolk
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7fb
+  voted: false
+egg-fried:
+  changes:
+    - 5.7.0
+  label: Fried Egg
+  search:
+    terms:
+      - breakfast
+      - chicken
+      - yolk
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7fc
   voted: false
 eject:
   changes:
@@ -8828,6 +9273,7 @@ erlang:
   changes:
     - 5.0.0
     - 5.0.3
+    - 5.7.0
   label: Erlang
   search:
     terms: []
@@ -9170,6 +9616,7 @@ eye:
   changes:
     - '1'
     - 5.0.0
+    - 5.7.0
   label: Eye
   search:
     terms:
@@ -9226,6 +9673,7 @@ eye-slash:
   changes:
     - '1'
     - 5.0.0
+    - 5.7.0
   label: Eye Slash
   search:
     terms:
@@ -9402,6 +9850,7 @@ fedex:
 fedora:
   changes:
     - 5.6.0
+    - 5.6.3
   label: Fedora
   search:
     terms:
@@ -9468,6 +9917,7 @@ fighter-jet:
 figma:
   changes:
     - 5.6.0
+    - 5.7.0
   label: Figma
   search:
     terms:
@@ -9519,6 +9969,7 @@ file-archive:
   changes:
     - '4.1'
     - 5.0.0
+    - 5.7.0
   label: Archive File
   search:
     terms:
@@ -9605,6 +10056,7 @@ file-check:
       - select
       - success
       - synced
+      - tick
       - todo
   styles:
     - solid
@@ -9660,7 +10112,8 @@ file-download:
     - 5.1.0
   label: File Download
   search:
-    terms: []
+    terms:
+      - export
   styles:
     - solid
     - regular
@@ -9713,9 +10166,11 @@ file-exclamation:
 file-export:
   changes:
     - 5.1.0
+    - 5.7.0
   label: File Export
   search:
-    terms: []
+    terms:
+      - download
   styles:
     - solid
     - regular
@@ -9738,9 +10193,11 @@ file-image:
 file-import:
   changes:
     - 5.1.0
+    - 5.7.0
   label: File Import
   search:
-    terms: []
+    terms:
+      - upload
   styles:
     - solid
     - regular
@@ -9931,7 +10388,8 @@ file-upload:
     - 5.1.0
   label: File Upload
   search:
-    terms: []
+    terms:
+      - import
   styles:
     - solid
     - regular
@@ -9978,6 +10436,21 @@ file-word:
     - regular
     - light
   unicode: f1c2
+  voted: false
+files-medical:
+  changes:
+    - 5.7.0
+  label: Medical Files
+  search:
+    terms:
+      - health
+      - prescription
+      - record
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7fd
   voted: false
 fill:
   changes:
@@ -10079,6 +10552,7 @@ fire:
     - '1'
     - 5.0.0
     - 5.6.0
+    - 5.6.3
   label: fire
   search:
     terms:
@@ -10093,6 +10567,22 @@ fire:
     - light
   unicode: f06d
   voted: false
+fire-alt:
+  changes:
+    - 5.6.3
+  label: Alternate Fire
+  search:
+    terms:
+      - caliente
+      - flame
+      - heat
+      - hot
+      - popular
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7e4
 fire-extinguisher:
   changes:
     - '3.1'
@@ -10201,6 +10691,7 @@ fish:
     terms:
       - fauna
       - gold
+      - seafood
       - swimming
   styles:
     - solid
@@ -10208,6 +10699,23 @@ fish:
     - light
   unicode: f578
   voted: true
+fish-cooked:
+  changes:
+    - 5.7.0
+  label: Cooked Fish
+  search:
+    terms:
+      - grilled
+      - health
+      - salmon
+      - seafood
+      - tuna
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7fe
+  voted: false
 fist-raised:
   changes:
     - 5.4.0
@@ -10273,6 +10781,7 @@ flag-checkered:
   changes:
     - '3.1'
     - 5.0.0
+    - 5.7.0
   label: flag-checkered
   search:
     terms:
@@ -10416,6 +10925,52 @@ flipboard:
     - brands
   unicode: f44d
   voted: true
+flower:
+  changes:
+    - 5.7.0
+  label: Flower
+  search:
+    terms:
+      - daffodil
+      - nature
+      - spring
+      - summer
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f7ff
+  voted: true
+flower-daffodil:
+  changes:
+    - 5.7.0
+  label: Flower Daffodil
+  search:
+    terms:
+      - nature
+      - spring
+      - summer
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f800
+  voted: false
+flower-tulip:
+  changes:
+    - 5.7.0
+  label: Flower Tulip
+  search:
+    terms:
+      - nature
+      - spring
+      - summer
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f801
+  voted: false
 flushed:
   changes:
     - 5.1.0
@@ -10531,6 +11086,21 @@ folder-times:
     - light
   unicode: f65f
   voted: false
+folder-tree:
+  changes:
+    - 5.7.0
+  label: Folder Tree
+  search:
+    terms:
+      - directory
+      - search
+      - structure
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f802
+  voted: true
 folders:
   changes:
     - 5.3.0
@@ -10759,6 +11329,24 @@ freebsd:
   styles:
     - brands
   unicode: f3a4
+  voted: false
+french-fries:
+  changes:
+    - 5.7.0
+  label: French Fries
+  search:
+    terms:
+      - chips
+      - fast food
+      - fried
+      - ketchup
+      - potato
+      - poutine
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f803
   voted: false
 frog:
   changes:
@@ -11105,7 +11693,6 @@ gingerbread-man:
     terms:
       - cookie
       - decoration
-      - food
       - frosting
       - holiday
   styles:
@@ -11185,6 +11772,7 @@ gitlab:
   changes:
     - '4.6'
     - 5.0.0
+    - 5.7.0
   label: GitLab
   search:
     terms:
@@ -11203,6 +11791,23 @@ gitter:
     - brands
   unicode: f426
   voted: false
+glass:
+  changes:
+    - 5.7.0
+  label: Glass
+  search:
+    terms:
+      - alcohol
+      - beverage
+      - drink
+      - glass
+      - water
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f804
+  voted: true
 glass-champagne:
   changes:
     - 5.6.0
@@ -11666,6 +12271,7 @@ google-wallet:
 gopuram:
   changes:
     - 5.3.0
+    - 5.7.0
   label: Gopuram
   search:
     terms:
@@ -12168,6 +12774,28 @@ hackerrank:
     - brands
   unicode: f5f7
   voted: true
+hamburger:
+  changes:
+    - 5.7.0
+  label: Hamburger
+  search:
+    terms:
+      - bacon
+      - beef
+      - burger
+      - burger king
+      - cheeseburger
+      - fast food
+      - grill
+      - ground beef
+      - mcdonalds
+      - sandwich
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f805
+  voted: false
 hammer:
   changes:
     - 5.4.0
@@ -12349,6 +12977,22 @@ hand-lizard:
     - light
   unicode: f258
   voted: false
+hand-middle-finger:
+  changes:
+    - 5.7.0
+  label: Hand with Middle Finger Raised
+  search:
+    terms:
+      - flip the bird
+      - gesture
+      - hate
+      - rude
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f806
+  voted: true
 hand-paper:
   changes:
     - '4.4'
@@ -12618,6 +13262,22 @@ hanukiah:
     - light
   unicode: f6e6
   voted: false
+hard-hat:
+  changes:
+    - 5.7.0
+  label: Hard Hat
+  search:
+    terms:
+      - construction
+      - hardhat
+      - helmet
+      - safety
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f807
+  voted: true
 hashtag:
   changes:
     - '4.5'
@@ -12759,6 +13419,38 @@ head-side:
     - regular
     - light
   unicode: f6e9
+  voted: false
+head-side-brain:
+  changes:
+    - 5.7.0
+  label: Head Side with Brain
+  search:
+    terms:
+      - diagnosis
+      - mental health
+      - psychiatric
+      - psychiatry
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f808
+  voted: false
+head-side-medical:
+  changes:
+    - 5.7.0
+  label: Head Side with Medical Symbol
+  search:
+    terms:
+      - diagnosis
+      - mental health
+      - psychiatric
+      - psychiatry
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f809
   voted: false
 head-vr:
   changes:
@@ -13150,6 +13842,7 @@ home:
   changes:
     - '1'
     - 5.0.0
+    - 5.7.0
   label: home
   search:
     terms:
@@ -13162,9 +13855,22 @@ home:
     - light
   unicode: f015
   voted: false
+home-alt:
+  changes:
+    - 5.7.0
+  label: Alternate Home
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80a
+  voted: false
 home-heart:
   changes:
     - 5.0.9
+    - 5.7.0
   label: Home Heart
   search:
     terms: []
@@ -13174,6 +13880,28 @@ home-heart:
     - light
   unicode: f4c9
   voted: false
+home-lg:
+  changes:
+    - 5.7.0
+  label: Home Large
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80b
+home-lg-alt:
+  changes:
+    - 5.7.0
+  label: Alternative Home Large
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80c
 hood-cloak:
   changes:
     - 5.4.0
@@ -13197,6 +13925,7 @@ hood-cloak:
 hooli:
   changes:
     - 5.0.0
+    - 5.7.0
   label: Hooli
   search:
     terms: []
@@ -13288,6 +14017,36 @@ hospital-symbol:
     - light
   unicode: f47e
   voted: false
+hospital-user:
+  changes:
+    - 5.7.0
+  label: Hospital with User
+  search:
+    terms:
+      - doctor
+      - network
+      - patient
+      - primary care
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80d
+  voted: false
+hospitals:
+  changes:
+    - 5.7.0
+  label: Hospitals
+  search:
+    terms:
+      - insurance
+      - network
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80e
+  voted: false
 hot-tub:
   changes:
     - 5.1.0
@@ -13299,6 +14058,28 @@ hot-tub:
     - regular
     - light
   unicode: f593
+  voted: false
+hotdog:
+  changes:
+    - 5.7.0
+  label: Hot Dog
+  search:
+    terms:
+      - bun
+      - chili
+      - frankfurt
+      - frankfurter
+      - kosher
+      - polish
+      - sandwich
+      - sausage
+      - vienna
+      - weiner
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f80f
   voted: false
 hotel:
   changes:
@@ -13494,6 +14275,26 @@ i-cursor:
     - regular
     - light
   unicode: f246
+  voted: false
+ice-cream:
+  changes:
+    - 5.7.0
+  label: Ice Cream
+  search:
+    terms:
+      - chocolate
+      - cone
+      - dessert
+      - frozen
+      - scoop
+      - sorbet
+      - vanilla
+      - yogurt
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f810
   voted: false
 ice-skate:
   changes:
@@ -13887,6 +14688,21 @@ ioxhost:
     - brands
   unicode: f208
   voted: false
+island-tropical:
+  changes:
+    - 5.7.0
+  label: Tropical Island
+  search:
+    terms:
+      - castaway
+      - summer
+      - vacation
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f811
+  voted: true
 italic:
   changes:
     - '1'
@@ -13943,6 +14759,7 @@ jack-o-lantern:
 java:
   changes:
     - 5.0.10
+    - 5.7.0
   label: Java
   search:
     terms: []
@@ -13966,6 +14783,7 @@ jedi:
 jedi-order:
   changes:
     - 5.0.12
+    - 5.7.0
   label: Jedi Order
   search:
     terms:
@@ -14298,6 +15116,7 @@ kiss-wink-heart:
 kite:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Kite
   search:
     terms:
@@ -14468,6 +15287,21 @@ laptop-code:
     - regular
     - light
   unicode: f5fc
+  voted: false
+laptop-medical:
+  changes:
+    - 5.7.0
+  label: Laptop Medical
+  search:
+    terms:
+      - ehr
+      - electronic health records
+      - history
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f812
   voted: false
 laravel:
   changes:
@@ -14696,7 +15530,10 @@ lemon:
   label: Lemon
   search:
     terms:
-      - food
+      - citrus
+      - lemonade
+      - lime
+      - tart
   styles:
     - solid
     - regular
@@ -15440,9 +16277,26 @@ mail-bulk:
     - light
   unicode: f674
   voted: false
+mailbox:
+  changes:
+    - 5.7.0
+  label: Mailbox
+  search:
+    terms:
+      - envelope
+      - letter
+      - post office
+      - postcard
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f813
+  voted: true
 mailchimp:
   changes:
     - 5.1.0
+    - 5.7.0
   label: Mailchimp
   search:
     terms: []
@@ -15637,7 +16491,11 @@ map-marker-check:
     - 5.2.0
   label: Map Marker Check
   search:
-    terms: []
+    terms:
+      - select
+      - success
+      - tick
+      - todo
   styles:
     - solid
     - regular
@@ -15798,6 +16656,7 @@ map-signs:
 markdown:
   changes:
     - 5.2.0
+    - 5.7.0
   label: Markdown
   search:
     terms: []
@@ -15925,6 +16784,23 @@ maxcdn:
   styles:
     - brands
   unicode: f136
+  voted: false
+meat:
+  changes:
+    - 5.7.0
+  label: Meat
+  search:
+    terms:
+      - beef
+      - ham
+      - mutton
+      - pork
+      - veal
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f814
   voted: false
 medal:
   changes:
@@ -16845,7 +17721,6 @@ mug-marshmallows:
       - coffee
       - cup
       - drink
-      - food
       - seasonal
       - sweet
       - warmth
@@ -17203,6 +18078,7 @@ optin-monster:
   changes:
     - '4.4'
     - 5.0.0
+    - 5.7.0
   label: Optin Monster
   search:
     terms: []
@@ -17289,6 +18165,21 @@ pagelines:
   styles:
     - brands
   unicode: f18c
+  voted: false
+pager:
+  changes:
+    - 5.7.0
+  label: Pager
+  search:
+    terms:
+      - beeper
+      - cellphone
+      - communication
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f815
   voted: false
 paint-brush:
   changes:
@@ -17839,6 +18730,27 @@ people-carry:
     - light
   unicode: f4ce
   voted: false
+pepper-hot:
+  changes:
+    - 5.7.0
+  label: Hot Pepper
+  search:
+    terms:
+      - buffalo wings
+      - capsicum
+      - chili
+      - chilli
+      - habanero
+      - jalapeno
+      - mexican
+      - spicy
+      - tabasco
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f816
+  voted: true
 percent:
   changes:
     - '4.5'
@@ -18074,6 +18986,7 @@ phone-volume:
     - '4.6'
     - 5.0.0
     - 5.0.3
+    - 5.7.0
   label: Phone Volume
   search:
     terms:
@@ -18110,9 +19023,17 @@ pi:
 pie:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Pie
   search:
-    terms: []
+    terms:
+      - apple
+      - bakery
+      - cake
+      - crust
+      - dessert
+      - pumpkin
+      - tart
   styles:
     - solid
     - regular
@@ -18135,6 +19056,7 @@ pied-piper-alt:
   changes:
     - '4.1'
     - 5.0.0
+    - 5.7.0
   label: Alternate Pied Piper Logo
   search:
     terms: []
@@ -18242,6 +19164,50 @@ pinterest-square:
     - brands
   unicode: f0d3
   voted: false
+pizza:
+  changes:
+    - 5.7.0
+  label: Pizza
+  search:
+    terms:
+      - cheese
+      - chicago
+      - italian
+      - mozzarella
+      - new york
+      - pepperoni
+      - pie
+      - slice
+      - teenage mutant ninja turtles
+      - tomato
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f817
+  voted: false
+pizza-slice:
+  changes:
+    - 5.7.0
+  label: Pizza Slice
+  search:
+    terms:
+      - cheese
+      - chicago
+      - italian
+      - mozzarella
+      - new york
+      - pepperoni
+      - pie
+      - slice
+      - teenage mutant ninja turtles
+      - tomato
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f818
+  voted: true
 place-of-worship:
   changes:
     - 5.3.0
@@ -18630,6 +19596,26 @@ poop:
     - light
   unicode: f619
   voted: false
+popcorn:
+  changes:
+    - 5.7.0
+  label: Popcorn
+  search:
+    terms:
+      - bucket
+      - butter
+      - corn
+      - junk food
+      - kernels
+      - movie
+      - snack
+      - theater
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f819
+  voted: false
 portrait:
   changes:
     - 5.0.0
@@ -18781,6 +19767,18 @@ print:
     - light
   unicode: f02f
   voted: false
+print-search:
+  changes:
+    - 5.7.0
+  label: Print Search
+  search:
+    terms: []
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81a
+  voted: true
 print-slash:
   changes:
     - 5.3.0
@@ -18966,6 +19964,7 @@ quidditch:
 quinscape:
   changes:
     - 5.0.5
+    - 5.7.0
   label: QuinScape
   search:
     terms: []
@@ -19659,6 +20658,25 @@ ring:
     - light
   unicode: f70b
   voted: false
+rings-wedding:
+  changes:
+    - 5.7.0
+  label: Rings Wedding
+  search:
+    terms:
+      - diamond
+      - engagement
+      - gold
+      - marriage
+      - matrimony
+      - platinum
+      - proposal
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81b
+  voted: true
 road:
   changes:
     - '1'
@@ -19690,6 +20708,7 @@ rocket:
   changes:
     - '3.1'
     - 5.0.0
+    - 5.7.0
   label: rocket
   search:
     terms:
@@ -19906,6 +20925,40 @@ rv:
     - regular
     - light
   unicode: f7be
+sack:
+  changes:
+    - 5.7.0
+  label: Sack
+  search:
+    terms:
+      - burlap
+      - money
+      - santa
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81c
+  voted: false
+sack-dollar:
+  changes:
+    - 5.7.0
+  label: Sack of Money
+  search:
+    terms:
+      - burlap
+      - cash
+      - dollar
+      - money
+      - robber
+      - santa
+      - usd
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81d
+  voted: true
 sad-cry:
   changes:
     - 5.1.0
@@ -19949,6 +21002,40 @@ safari:
   styles:
     - brands
   unicode: f267
+  voted: false
+salad:
+  changes:
+    - 5.7.0
+  label: Salad
+  search:
+    terms:
+      - bowl
+      - health
+      - lettuce
+      - spinach
+      - vegetable
+      - vegetarian
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81e
+  voted: false
+sandwich:
+  changes:
+    - 5.7.0
+  label: Sandwich
+  search:
+    terms:
+      - bread
+      - deli
+      - grilled cheese
+      - toast
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f81f
   voted: false
 sass:
   changes:
@@ -19994,6 +21081,31 @@ satellite-dish:
     - light
   unicode: f7c0
   voted: true
+sausage:
+  changes:
+    - 5.7.0
+  label: Sausage
+  search:
+    terms:
+      - bratwurst
+      - breakfast
+      - chorizo
+      - frankfurt
+      - frankfurter
+      - hot dog
+      - hotdog
+      - kielbasa
+      - kosher
+      - pepperoni
+      - polish
+      - vienna
+      - weiner
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f820
+  voted: false
 save:
   changes:
     - '2'
@@ -20204,14 +21316,17 @@ scrubber:
 scythe:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Scythe
   search:
     terms:
       - Dungeons & Dragons
       - blade
       - d&d
+      - death
       - dnd
       - fantasy
+      - grim reaper
       - weapon
   styles:
     - solid
@@ -20545,7 +21660,10 @@ shield-check:
       - block
       - defend
       - security
+      - select
       - success
+      - tick
+      - todo
       - winner
   styles:
     - solid
@@ -20617,12 +21735,32 @@ shirtsinbulk:
   changes:
     - '4.3'
     - 5.0.0
+    - 5.7.0
   label: Shirts in Bulk
   search:
     terms: []
   styles:
     - brands
   unicode: f214
+  voted: false
+shish-kebab:
+  changes:
+    - 5.7.0
+  label: Shish Kebab
+  search:
+    terms:
+      - grill
+      - kabob
+      - kebob
+      - meat
+      - shawarma
+      - skewer
+      - souvlaki
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f821
   voted: false
 shoe-prints:
   changes:
@@ -20772,6 +21910,24 @@ shuttlecock:
     - regular
     - light
   unicode: f45b
+  voted: false
+sickle:
+  changes:
+    - 5.7.0
+  label: Sickle
+  search:
+    terms:
+      - blade
+      - d&d
+      - dnd
+      - dungeons & dragons
+      - fantasy
+      - weapon
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f822
   voted: false
 sigma:
   changes:
@@ -21338,6 +22494,7 @@ slack:
   changes:
     - '4.1'
     - 5.0.0
+    - 5.7.0
   label: Slack Logo
   search:
     terms:
@@ -21946,6 +23103,27 @@ soundcloud:
     - brands
   unicode: f1be
   voted: false
+soup:
+  changes:
+    - 5.7.0
+  label: Soup
+  search:
+    terms:
+      - bisque
+      - bouillon
+      - bowl
+      - broth
+      - chicken
+      - chowder
+      - gazpacho
+      - ramen
+      - stew
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f823
+  voted: false
 sourcetree:
   changes:
     - 5.6.0
@@ -22410,6 +23588,22 @@ staylinked:
     - brands
   unicode: f3f5
   voted: false
+steak:
+  changes:
+    - 5.7.0
+  label: Steak
+  search:
+    terms:
+      - beef
+      - grill
+      - meat
+      - sirloin
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f824
+  voted: false
 steam:
   changes:
     - '4.1'
@@ -22505,6 +23699,7 @@ stethoscope:
 sticker-mule:
   changes:
     - 5.0.0
+    - 5.7.0
   label: Sticker Mule
   search:
     terms: []
@@ -22627,6 +23822,7 @@ strava:
   changes:
     - 5.0.0
     - 5.0.1
+    - 5.7.0
   label: Strava
   search:
     terms: []
@@ -22660,6 +23856,20 @@ street-view:
     - regular
     - light
   unicode: f21d
+  voted: false
+stretcher:
+  changes:
+    - 5.7.0
+  label: Stretcher
+  search:
+    terms:
+      - ambulance
+      - er
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f825
   voted: false
 strikethrough:
   changes:
@@ -22702,7 +23912,6 @@ stroopwafel:
   search:
     terms:
       - dessert
-      - food
       - sweets
       - waffle
   styles:
@@ -23383,6 +24592,23 @@ tachometer-slowest:
     - light
   unicode: f62d
   voted: false
+taco:
+  changes:
+    - 5.7.0
+  label: Taco
+  search:
+    terms:
+      - corn
+      - maize
+      - mexican
+      - salsa
+      - tortilla
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f826
+  voted: false
 tag:
   changes:
     - '1'
@@ -23423,6 +24649,21 @@ tally:
     - light
   unicode: f69c
   voted: false
+tanakh:
+  changes:
+    - 5.7.0
+  label: Tanakh
+  search:
+    terms:
+      - book
+      - jewish
+      - judaism
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f827
+  voted: false
 tape:
   changes:
     - 5.0.9
@@ -23442,16 +24683,38 @@ tasks:
   label: Tasks
   search:
     terms:
+      - checklist
       - downloading
       - downloads
       - loading
       - progress
+      - project management
       - settings
+      - to do
   styles:
     - solid
     - regular
     - light
   unicode: f0ae
+  voted: false
+tasks-alt:
+  changes:
+    - 5.7.0
+  label: Alternate Tasks
+  search:
+    terms:
+      - downloading
+      - downloads
+      - loading
+      - poll
+      - progress
+      - project management
+      - settings
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f828
   voted: false
 taxi:
   changes:
@@ -23681,6 +24944,7 @@ th:
   changes:
     - '1'
     - 5.0.0
+    - 5.7.0
   label: th
   search:
     terms:
@@ -23734,6 +24998,7 @@ th-list:
 the-red-yeti:
   changes:
     - 5.3.0
+    - 5.7.0
   label: The Red Yeti
   search:
     terms: []
@@ -24445,6 +25710,7 @@ toothbrush:
 torah:
   changes:
     - 5.3.0
+    - 5.7.0
   label: Torah
   search:
     terms:
@@ -24649,6 +25915,7 @@ trash:
   changes:
     - '4.2'
     - 5.0.0
+    - 5.7.0
   label: Trash
   search:
     terms:
@@ -24665,6 +25932,7 @@ trash:
 trash-alt:
   changes:
     - 5.0.0
+    - 5.7.0
   label: Alternate Trash
   search:
     terms:
@@ -24680,6 +25948,38 @@ trash-alt:
     - light
   unicode: f2ed
   voted: false
+trash-restore:
+  changes:
+    - 5.7.0
+  label: Trash Restore
+  search:
+    terms:
+      - back
+      - control z
+      - oops
+      - undo
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f829
+  voted: true
+trash-restore-alt:
+  changes:
+    - 5.7.0
+  label: Alternative Trash Restore
+  search:
+    terms:
+      - back
+      - control z
+      - oops
+      - undo
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82a
+  voted: true
 treasure-chest:
   changes:
     - 5.4.0
@@ -24797,6 +26097,21 @@ tree-large:
     - regular
     - light
   unicode: f7dd
+tree-palm:
+  changes:
+    - 5.7.0
+  label: Palm Tree
+  search:
+    terms:
+      - coconut
+      - frond
+      - tropical
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82b
+  voted: false
 trees:
   changes:
     - 5.4.0
@@ -25029,6 +26344,7 @@ tty:
   changes:
     - '4.2'
     - 5.0.0
+    - 5.7.0
   label: TTY
   search:
     terms: []
@@ -25063,13 +26379,14 @@ tumblr-square:
 turkey:
   changes:
     - 5.4.0
+    - 5.7.0
   label: Turkey
   search:
     terms:
       - bird
-      - fall
-      - food
+      - chicken
       - meal
+      - meat
       - poultry
       - seasonal
       - thanksgiving
@@ -25427,7 +26744,7 @@ upload:
   label: Upload
   search:
     terms:
-      - export
+      - import
       - publish
   styles:
     - solid
@@ -25696,6 +27013,40 @@ user-graduate:
     - light
   unicode: f501
   voted: false
+user-hard-hat:
+  changes:
+    - 5.7.0
+  label: Construction Worker
+  search:
+    terms:
+      - construction
+      - hardhat
+      - helmet
+      - safety
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82c
+  voted: false
+user-headset:
+  changes:
+    - 5.7.0
+  label: User Headset
+  search:
+    terms:
+      - gaming
+      - headphones
+      - help
+      - support
+      - telemarketer
+      - telemarketing
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82d
+  voted: true
 user-injured:
   changes:
     - 5.4.0
@@ -25730,20 +27081,38 @@ user-md:
     - 5.0.3
     - 5.0.7
     - 5.0.11
-  label: user-md
+  label: Doctor
   search:
     terms:
-      - doctor
       - job
       - medical
       - nurse
       - occupation
+      - physician
       - profile
+      - surgeon
   styles:
     - solid
     - regular
     - light
   unicode: f0f0
+  voted: false
+user-md-chat:
+  changes:
+    - 5.7.0
+  label: Chat with Doctor
+  search:
+    terms:
+      - advice
+      - comment
+      - diagnosis
+      - opinion
+      - prescription
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82e
   voted: false
 user-minus:
   changes:
@@ -25776,6 +27145,22 @@ user-ninja:
     - regular
     - light
   unicode: f504
+  voted: false
+user-nurse:
+  changes:
+    - 5.7.0
+  label: Nurse
+  search:
+    terms:
+      - doctor
+      - midwife
+      - practitioner
+      - surgeon
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f82f
   voted: false
 user-plus:
   changes:
@@ -25943,6 +27328,20 @@ users-crown:
     - regular
     - light
   unicode: f6a5
+  voted: false
+users-medical:
+  changes:
+    - 5.7.0
+  label: Users with Medical Symbol
+  search:
+    terms:
+      - patients
+      - physician
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f830
   voted: false
 usps:
   changes:
@@ -26140,6 +27539,7 @@ viadeo-square:
   changes:
     - '4.6'
     - 5.0.0
+    - 5.7.0
   label: Video Square
   search:
     terms: []
@@ -26504,6 +27904,20 @@ vuejs:
     - brands
   unicode: f41f
   voted: false
+walker:
+  changes:
+    - 5.7.0
+  label: Walker
+  search:
+    terms:
+      - assistance
+      - wheelchair
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f831
+  voted: false
 walking:
   changes:
     - 5.0.13
@@ -26664,6 +28078,44 @@ water-rise:
     - light
   unicode: f775
   voted: false
+webcam:
+  changes:
+    - 5.7.0
+  label: Webcam
+  search:
+    terms:
+      - chat
+      - conference call
+      - facetime
+      - podcast
+      - video
+      - videoconferencing
+      - youtube
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f832
+  voted: true
+webcam-slash:
+  changes:
+    - 5.7.0
+  label: Webcam Slash
+  search:
+    terms:
+      - chat
+      - conference call
+      - facetime
+      - podcast
+      - video
+      - videoconferencing
+      - youtube
+  styles:
+    - solid
+    - regular
+    - light
+  unicode: f833
+  voted: true
 weebly:
   changes:
     - 5.1.0
@@ -26772,7 +28224,6 @@ wheat:
       - argriculture
       - fall
       - farming
-      - food
       - grain
       - seasonal
   styles:
@@ -27343,6 +28794,7 @@ yelp:
   changes:
     - '4.2'
     - 5.0.0
+    - 5.7.0
   label: Yelp
   search:
     terms: []

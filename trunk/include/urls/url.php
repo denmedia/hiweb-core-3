@@ -48,7 +48,7 @@
 		private function prepare(){
 			if( !is_array( $this->prepare_data ) ){
 				$this->prepare_data = [];
-				$pattern = apply_filters( '\hiweb\urls\url::prepare-pattern', '/((?<schema>https?):\/\/)?(?<domain>[\w\d\-\_]{2,}\.[\w\d\-\_]{1,}(?>\.[\w\d\-\_]+)?)?(?<dirs>[^\?]*)(?<params>.*)/i', $this );
+				$pattern = apply_filters( '\hiweb\urls\url::prepare-pattern', '/((?<schema>https?):\/\/)?(?<domain>[\w\d\-\_]{2,}\.[\w\d\-\_]{1,}(?>\.[\w\d\-\_]+)?(?>\.[\w\d\-\_]+)?)?(?<dirs>[^\?]*)(?<params>.*)/i', $this );
 				preg_match( $pattern, $this->url, $this->prepare_data );
 				$this->prepare_data = apply_filters( '\hiweb\urls\url::prepare-data', $this->prepare_data, $this );
 				///SCHEMA
