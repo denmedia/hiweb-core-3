@@ -31,14 +31,14 @@
 
 		/**
 		 * Print messages script
-		 * @version 1.2
+		 * @version 1.3
 		 */
 		static function the(){
 			if( is_array( self::$messages ) && !context::is_ajax() && ( context::is_frontend_page() || context::is_login_page() || context::is_admin_page() ) ){
 				foreach( self::$messages as $groupTitle => $messages ){
 					if( $groupTitle != '' ){
 						?>
-						<script>console.groupCollapsed("%c<?=htmlentities( $groupTitle )?>","color: #888;font-size: 1.2em;");</script><?php
+					<script>console.groupCollapsed("%c<?=addslashes( $groupTitle)?>","color: #888;font-size: 1.2em;");</script><?php
 					}
 					///
 					foreach( $messages as $message ){

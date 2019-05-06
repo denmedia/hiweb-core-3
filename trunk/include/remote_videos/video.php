@@ -24,9 +24,9 @@
 		private $data_is_setuped = false;
 
 
-		public function __construct( $url ) {
+		public function __construct( $url ){
 			$this->url = $url;
-			$this->id  = $this->get_id();
+			$this->id = $this->get_id();
 			$this->setup_data();
 		}
 
@@ -34,11 +34,11 @@
 		/**
 		 * @return bool|string
 		 */
-		public function get_id() {
-			if ( is_null( $this->id ) ) {
-				if ( $this->is_youtube() ) {
-					$this->id = urls::get($this->url )->param('v');
-				} elseif ( $this->is_vimeo() ) {
+		public function get_id(){
+			if( is_null( $this->id ) ){
+				if( $this->is_youtube() ){
+					$this->id = urls::get( $this->url )->param( 'v' );
+				} elseif( $this->is_vimeo() ) {
 					$this->id = trim( parse_url( $this->url )['path'], '/' );
 				} else {
 					$this->id = false;
@@ -52,7 +52,7 @@
 		/**
 		 * @return bool
 		 */
-		public function is_youtube() {
+		public function is_youtube(){
 			return strpos( $this->url, 'youtube' ) !== false;
 		}
 
@@ -60,18 +60,18 @@
 		/**
 		 * @return bool
 		 */
-		public function is_vimeo() {
+		public function is_vimeo(){
 			return strpos( $this->url, 'vimeo' ) !== false;
 		}
 
 
-		private function setup_data() {
-			if ( $this->data_is_setuped ) {
+		private function setup_data(){
+			if( $this->data_is_setuped ){
 				//do nothing
 			} else {
-				if ( $this->is_youtube() ) {
+				if( $this->is_youtube() ){
 					$youtube = "http://www.youtube.com/oembed?url=" . $this->url . "&format=json";
-					if ( ! cache::is_exists( $youtube ) ) {
+					if( !cache::is_exists( $youtube ) ){
 						$curl = curl_init( $youtube );
 						curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
 						$return = curl_exec( $curl );
@@ -81,18 +81,18 @@
 					} else {
 						$data = cache::get( $youtube );
 					}
-					if ( isset( $data['thumbnail_url'] ) ) {
+					if( isset( $data['thumbnail_url'] ) ){
 						$this->thumbnail_url = $data['thumbnail_url'];
 					}
-					if ( isset( $data['title'] ) ) {
+					if( isset( $data['title'] ) ){
 						$this->title = $data['title'];
 					}
-					if ( isset( $data['html'] ) ) {
+					if( isset( $data['html'] ) ){
 						$this->html = '<div class="hiweb-remote-video-html">' . $data['html'] . '</div>';
 					}
-				} elseif ( $this->is_vimeo() ) {
+				} elseif( $this->is_vimeo() ) {
 					$vimeo = "http://vimeo.com/api/v2/video/" . $this->get_id() . ".json";
-					if ( ! cache::is_exists( $vimeo ) ) {
+					if( !cache::is_exists( $vimeo ) ){
 						$curl = curl_init( $vimeo );
 						curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
 						$return = curl_exec( $curl );
@@ -102,10 +102,10 @@
 					} else {
 						$data = cache::get( $vimeo );
 					}
-					if ( isset( $data[0] ) ) {
+					if( isset( $data[0] ) ){
 						$this->thumbnail_url = $data[0]['thumbnail_large'];
-						$this->title         = $data[0]['title'];
-						$this->html          = '<div class="hiweb-remote-video-html"><iframe src="https://player.vimeo.com/video/' . $data[0]['id'] . '?api=1&amp;color=#FFFFFF&amp;portrait=0&amp;title=0&amp;byline=0" frameborder="0" wmode="opaque" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" ></iframe></div>';
+						$this->title = $data[0]['title'];
+						$this->html = '<div class="hiweb-remote-video-html"><iframe src="https://player.vimeo.com/video/' . $data[0]['id'] . '?api=1&amp;color=#FFFFFF&amp;portrait=0&amp;title=0&amp;byline=0" frameborder="0" wmode="opaque" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" ></iframe></div>';
 					}
 				}
 				$this->data_is_setuped = true;
@@ -116,15 +116,15 @@
 		/**
 		 * @return string|false
 		 */
-		public function get_thumbnail_url() {
+		public function get_thumbnail_url(){
 			$this->setup_data();
 
 			return $this->thumbnail_url;
 		}
 
 
-		public function html() {
-			if ( $this->is_exist() ) {
+		public function html(){
+			if( $this->is_exist() ){
 				return $this->html;
 			} else {
 				console_warn( 'Не удалось вывести шаблон видео файла: он не существует [' . $this->url . ']' );
@@ -134,7 +134,7 @@
 		}
 
 
-		public function is_exist() {
+		public function is_exist(){
 			$this->setup_data();
 
 			return $this->html != false;

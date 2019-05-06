@@ -9,7 +9,8 @@
 	namespace hiweb;
 
 
-	use hiweb\js\file;
+	use hiweb\_js\options;
+	use hiweb\paths\path;
 
 
 	/**
@@ -18,41 +19,55 @@
 	 */
 	class js{
 
-		/** @var file[] */
-		private static $queue = [];
-		/** @var file[] */
-		private static $registred = [];
-		/**
-		 * @var array
-		 */
-		private static $past_line = [];
+		/** @var js[] */
+		static $registred = [];
+		/** @var js[] */
+		static $queue = [];
+		/** @var js[] */
+		static $done = [];
+		/** @var array */
+		static $handles = [];
+
 
 		/**
-		 * @var array
+		 * Register file in queue
+		 * @param $pathOrUrl
+		 * @return options
 		 */
-		private static $handles = [];
+		static function add( $pathOrUrl ){
+			require_once __DIR__ . '/includes/options.php';
+			require_once __DIR__ . '/includes/hooks.php';
+			$handle = self::get_handle( $pathOrUrl );
+			if( !array_key_exists( $handle, self::$registred ) ){
+				$js = new js( $pathOrUrl );
+				self::$queue[ $handle ] = $js;
+				self::$registred[ $handle ] = $js;
+				wp_register_script( $handle, $js->file()->get_url(), $js->options()->get_deeps(), filemtime( $js->file()->get_path() ), $js->options()->is_in_footer() );
+				wp_enqueue_script( $handle );
+			}
+			return self::$registred[ $handle ]->options();
+		}
 
 
 		/**
 		 * @param string $pathOrHandle
 		 * @return mixed
 		 */
-		static public function get_handle( $pathOrHandle = 'jquery-core' ){
+		public static function get_handle( $pathOrHandle = 'jquery-core' ){
 			if( !array_key_exists( $pathOrHandle, self::$handles ) ){
 				global $wp_scripts;
-				if( is_array( $wp_scripts->registered ) && array_key_exists( $pathOrHandle, $wp_scripts->registered ) ){
-					self::$handles[ $pathOrHandle ] = $pathOrHandle;//$wp_scripts->registeredх[ $pathOrHandle ]->src;
+				if( is_object( $wp_scripts ) && property_exists( $wp_scripts, 'registered' ) && is_array( $wp_scripts->registered ) && array_key_exists( $pathOrHandle, $wp_scripts->registered ) ){
+					self::$handles[ $pathOrHandle ] = $pathOrHandle;//$wp_scripts->registered[ $pathOrHandle ]->src;
 				} else {
 					$path = paths::get( $pathOrHandle );
 					self::$handles[ $pathOrHandle ] = $path->handle();
-					if( is_array( $wp_scripts->registered ) )
-						foreach( $wp_scripts->registered as $handle => $file_data ){
-							$test_path = paths::get( $file_data->src );
-							if( $path->get_path_relative() == $test_path->get_path_relative() ){
-								self::$handles[ $pathOrHandle ] = $handle;
-								break;
-							}
+					if( is_object( $wp_scripts ) && property_exists( $wp_scripts, 'registered' ) && is_array( $wp_scripts->registered ) ) foreach( $wp_scripts->registered as $handle => $file_data ){
+						$test_path = paths::get( $file_data->src );
+						if( $path->get_path_relative() == $test_path->get_path_relative() ){
+							self::$handles[ $pathOrHandle ] = $handle;
+							break;
 						}
+					}
 				}
 			}
 			return self::$handles[ $pathOrHandle ];
@@ -60,101 +75,87 @@
 
 
 		/**
-		 * Register file in queue
-		 * @param $pathOrUrl
-		 * @return file
+		 * @param $js
+		 * @return string|null
 		 */
-		static function add( $pathOrUrl ){
-			require_once __DIR__ . '/-hooks.php';
-			$handle = self::get_handle( $pathOrUrl );
-			if( !array_key_exists( $handle, self::$registred ) ){
-				$new_file = new file( $pathOrUrl );
-				self::$queue[ $handle ] = $new_file;
-				self::$registred[ $handle ] = $new_file;
-			}
-			return self::$registred[ $handle ];
-		}
-
-
-		/**
-		 * Enqueue Scripts
-		 */
-		static function _enqueue_scripts(){
-			if( did_action( 'admin_print_footer_scripts' ) === 0 && did_action( 'wp_print_footer_scripts' ) === 0 ){
-				///
-				while( $file = self::next_queue( 1 ) ){
-					if( $file instanceof file ){
-						$handle = self::get_handle( $file->get() );
-						foreach( $file->get_deeps() as $deep_handle ){
-							self::$queue[ $deep_handle ];
-						}
-						wp_register_script( $handle, $file->get_url(), $file->get_deeps(), filemtime( $file->get_path() ), $file->is_in_footer() );
-						wp_enqueue_script( $handle );
-					}
-				}
-				///
-			} else {
-				///
-				while( $file = self::next_queue( - 1 ) ){
-					self::the_prefetch_deeps_from_file( $file );
-				}
-				///
-			}
-		}
-
-
-		/**
-		 * @param $file
-		 */
-		static private function the_prefetch_deeps_from_file( $file ){
-			if( !$file instanceof file )
-				return;
+		static function get_queue_html( $js ){
+			if( !$js instanceof js ) return '';
+			$R = '';
 			///
-			foreach( $file->get_deeps() as $handle ){
+			foreach( $js->options()->get_deeps() as $handle ){
 				if( array_key_exists( $handle, self::$queue ) ){
 					$pre_file = self::$queue[ $handle ];
+					self::$done[ $handle ] = self::$queue[ $handle ];
 					unset( self::$queue[ $handle ] );
-					self::$past_line[] = $handle;
-					self::the_prefetch_deeps_from_file( $pre_file );
+					$R .= self::get_queue_html( $pre_file );
 				}
 			}
 			///
-			$file->the();
+			self::$done[ $js->handle() ] = self::$queue[ $js->handle() ];
+			unset( self::$queue[ $js->handle() ] );
+			$R .= $js->html();
+			return $R;
+		}
+
+
+		///ITEM
+
+		public $pathOrUrl;
+		protected $file;
+		protected $options;
+
+
+		public function __construct( $pathOrUrl ){
+			$this->pathOrUrl = $pathOrUrl;
 		}
 
 
 		/**
-		 * @param int $footer_status - 1 | true - in footer, 0 | false - in header | -1 - irrelevant
-		 * @return false|file
+		 * @return path
 		 */
-		static private function next_queue( $footer_status = - 1 ){
-			$footer_status = (int)$footer_status;
-			foreach( self::$queue as $handle => $file ){
-				if( $footer_status < 0 || ( $footer_status == 0 && $file->is_in_footer() ) || ( $footer_status > 0 && !$file->is_in_footer() ) ){
-					unset( self::$queue[ $handle ] );
-					self::$past_line[] = $handle;
-					return $file;
-				}
+		public function file(){
+			if( !$this->file instanceof path ){
+				$this->file = paths::get( $this->pathOrUrl );
 			}
-			return false;
+			return $this->file;
 		}
 
 
 		/**
-		 * @param $tag
-		 * @param $handle
-		 * @param $src
+		 * @return options
+		 */
+		public function options(){
+			if( !$this->options instanceof options ){
+				$this->options = new options( $this );
+				$this->options->put_to_footer();
+			}
+			return $this->options;
+		}
+
+
+		/**
+		 * Return (echo) link rel html
 		 * @return null|string
 		 */
-		static public function _add_filter_script_loader_tag( $tag, $handle, $src ){
-			if( array_key_exists( $handle, self::$registred ) ){
-				$js = self::$registred[ $handle ];
-				if( $js instanceof file ){
-					self::$past_line[] = $handle;
-					return $js->html();
-				}
-			}
-			return $tag;
+		public function html(){
+			return "<script {$this->options()->get_async()} data-handle=\"{$this->handle()}\" src=\"{$this->file()->get_url()}\"></script>\n";
 		}
+
+
+		/**
+		 *
+		 */
+		public function the(){
+			echo $this->html();
+		}
+
+
+		/**
+		 * @return string
+		 */
+		public function handle(){
+			return js::get_handle( $this->file()->get_path_relative() );
+		}
+
 
 	}

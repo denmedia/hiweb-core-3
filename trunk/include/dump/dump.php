@@ -124,7 +124,7 @@
 			$returnStr .= $separatorHtml;
 			$fileContent = '';
 			if( file_exists( $filePath ) && is_file( $filePath ) ){
-				$time = date::time();
+				$time = time();
 				$filetime = filemtime( $filePath );
 				$timeDelta = $time - $filetime;
 				if( $autoDeleteOldFile === false || $timeDelta > $autoDeleteOldFile ){

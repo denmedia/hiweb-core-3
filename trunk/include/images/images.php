@@ -101,7 +101,7 @@
 		 * @return path
 		 */
 		static function get_upload_dirs(){
-			if( !self::$upload_dirs[ get_current_blog_id() ] instanceof path ){
+			if(!isset(self::$upload_dirs[get_current_blog_id()]) || !self::$upload_dirs[ get_current_blog_id() ] instanceof path ){
 				if( function_exists( 'wp_get_upload_dir' ) ){
 					self::$upload_dirs[ get_current_blog_id() ] = paths::get( arrays::get_temp( wp_get_upload_dir() )->value_by_key( 'basedir' ) );
 				} else {

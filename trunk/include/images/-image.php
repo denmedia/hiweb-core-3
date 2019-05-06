@@ -573,11 +573,13 @@
 						$srcset[] = $size_d2->get_url() . ' ' . $size_d2->width() . 'w';
 						$sizes[] = "(max-width: {$size_d2->width()}px) " . ceil( $size_d2->width() * .9 ) . "px";
 					}
-					///size x 2
-					$size_x2 = $this->get_size_by_dimension( [ $size_current->width() * 1.8, $size_current->height() * 1.8 ], 1, false, $extension );
-					if( $size_x2->is_readable() && $size_x2->get_pixels() / 1.5 > $size_current->get_pixels() && $size_x2->get_pixels() <= [ 1920 * 1920 ] ){
-						$srcset[] = $size_x2->get_url() . ' ' . $size_x2->width() . 'w';
-						$sizes[] = "(max-width: {$size_x2->width()}px) " . ceil( $size_x2->width() * .9 ) . "px";
+					if(!wp_is_mobile()){
+						///size x 2
+						$size_x2 = $this->get_size_by_dimension( [ $size_current->width() * 1.8, $size_current->height() * 1.8 ], 1, false, $extension );
+						if( $size_x2->is_readable() && $size_x2->get_pixels() / 1.5 > $size_current->get_pixels() && $size_x2->get_pixels() <= [ 1920 * 1920 ] ){
+							$srcset[] = $size_x2->get_url() . ' ' . $size_x2->width() . 'w';
+							$sizes[] = "(max-width: {$size_x2->width()}px) " . ceil( $size_x2->width() * .9 ) . "px";
+						}
 					}
 					$sizes[] = $size_current->width() . 'px';
 					///
@@ -646,11 +648,13 @@
 					$srcset[] = $size_d2->get_url() . ' ' . $size_d2->width() . 'w';
 					$sizes[] = "(max-width: {$size_d2->width()}px) " . ceil( $size_d2->width() * .9 ) . "px";
 				}
-				///size x 2
-				$size_x2 = $this->get_size_by_dimension( [ $size_current->width() * 1.8, $size_current->height() * 1.8 ], 1, false, $extension_priority );
-				if( $size_x2->is_readable() && $size_x2->get_pixels() / 1.5 > $size_current->get_pixels() ){
-					$srcset[] = $size_x2->get_url() . ' ' . $size_x2->width() . 'w';
-					$sizes[] = "(max-width: {$size_x2->width()}px) " . ceil( $size_x2->width() * .9 ) . "px";
+				if(!wp_is_mobile()){
+					///size x 2
+					$size_x2 = $this->get_size_by_dimension( [ $size_current->width() * 1.8, $size_current->height() * 1.8 ], 1, false, $extension_priority );
+					if( $size_x2->is_readable() && $size_x2->get_pixels() / 1.5 > $size_current->get_pixels() ){
+						$srcset[] = $size_x2->get_url() . ' ' . $size_x2->width() . 'w';
+						$sizes[] = "(max-width: {$size_x2->width()}px) " . ceil( $size_x2->width() * .9 ) . "px";
+					}
 				}
 				$sizes[] = $size_current->width() . 'px';
 				if( count( $srcset ) > 0 )
