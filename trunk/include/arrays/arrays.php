@@ -44,11 +44,12 @@
 
 		/**
 		 * Use this functions to economy ram memory
-		 * @param $array
+		 * @param      $array
+		 * @param bool $new_instance
 		 * @return array_
 		 */
-		static function get_temp( $array ){
-			if( !self::$arr instanceof array_ ){
+		static function get_temp( $array, $new_instance = true ){
+			if( !self::$arr instanceof array_ || $new_instance ){
 				self::$arr = new array_( $array );
 			} else {
 				self::$arr->set( $array );

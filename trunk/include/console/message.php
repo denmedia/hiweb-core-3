@@ -39,9 +39,18 @@
 
 		/**
 		 * @return string
+		 * @version 1.1
 		 */
 		public function html(){
-			$params = [ json_encode( $this->content ) ];
+			if( is_object( $this->content ) ){
+				$R = [];
+				$pattern = '/^[\s\S]*'.preg_quote( get_class( $this->content ) ).'/';
+				foreach( (array)$this->content as $key => $value ){
+					$key = preg_replace( $pattern, '', $key );
+					$R[ $key ] = $value;
+				}
+				$params = [ json_encode( $R ) ];
+			} else $params = [ json_encode( $this->content ) ];
 			if( is_array( $this->addition_data ) ) foreach( $this->addition_data as $data ){
 				$params[] = json_encode( $data );
 			}

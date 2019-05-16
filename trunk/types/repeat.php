@@ -344,9 +344,7 @@
 				}
 				ob_start();
 				css( HIWEB_URL_CSS . '/field-repeat.css' );
-				wp_enqueue_script( 'jquery-ui-sortable' );
-				js( HIWEB_URL_JS . '/deepMerge.min.js' );
-				js( HIWEB_URL_JS . '/field-repeat.js' );
+				js( HIWEB_URL_JS . '/field-repeat.js', [js( HIWEB_URL_JS . '/deepMerge.min.js', ['jquery-ui-sortable'])] );
 				?>
 				<div class="hiweb-field-repeat" name="<?= $this->name() ?>" data-input-name="<?= $this->name() ?>"
 					 data-global-id="<?= $this->get_parent_field()->global_id() ?>"

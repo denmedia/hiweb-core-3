@@ -6,16 +6,18 @@
 	 * Time: 00:35
 	 */
 
+	use hiweb\arrays;
 	use hiweb\arrays\array_;
 
 
 	if( !function_exists( 'get_array' ) ){
 		/**
 		 * Возвращает объект array для работы с массивом
-		 * @param $array
+		 * @param array $array
+		 * @param bool  $new_instance
 		 * @return array_
 		 */
-		function get_array( $array ){
-			return \hiweb\arrays::get_temp( $array );
+		function get_array( $array = [], $new_instance = true ){
+			return arrays::get_temp( $array, $new_instance );
 		}
 	}

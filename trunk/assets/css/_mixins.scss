@@ -76,6 +76,18 @@
 	left: $padding;
 }
 
+@mixin image_stretch($object_fit: cover){
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: $object_fit;
+	-o-object-fit: $object_fit;
+}
+
 @mixin opacity($opacity) {
 	-webkit-opacity: $opacity;
 	-moz-opacity: $opacity;
