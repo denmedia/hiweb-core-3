@@ -47,6 +47,37 @@
 
 
 		/**
+		 * @return array
+		 */
+		public function get_keys(){
+			return array_keys($this->get());
+		}
+
+
+		/**
+		 * @param      $key
+		 * @param null $default
+		 * @return mixed|null
+		 */
+		public function get_value( $key, $default = null ){
+			if( !$this->key_exists( $key ) ) return $default;
+			return $this->array[ $key ];
+		}
+
+
+		/**
+		 * @param      $index
+		 * @param null $default
+		 * @return mixed|null
+		 */
+		public function get_value_by_index( $index, $default = null ){
+			$values = array_values( $this->get() );
+			if( !array_key_exists( $index, $values ) ) return $default;
+			return $values[ $index ];
+		}
+
+
+		/**
 		 * @return int
 		 */
 		public function count(){
@@ -187,7 +218,7 @@
 			} else {
 				$this->array[ $keyOrValue ] = $value;
 			}
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 		}
 
 
@@ -196,7 +227,7 @@
 		 */
 		public function pop(){
 			$value = array_pop( $this->array );
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 			return $value;
 		}
 
@@ -207,7 +238,7 @@
 		 */
 		public function set( $array = [] ){
 			$this->array = (array)$array;
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 			return $this;
 		}
 
@@ -217,7 +248,7 @@
 		 */
 		public function shift(){
 			$value = array_shift( $this->array );
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 			return $value;
 		}
 
@@ -234,7 +265,7 @@
 				$this->array[ $keyOrValue ] = $value;
 			}
 			$this->array = array_reverse( $this->array, true );
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 		}
 
 
@@ -354,7 +385,7 @@
 				$new_array = $this->get();
 				if( $low_priority ) array_unshift( $new_array, $mixedOrArray ); else array_push( $new_array, $mixedOrArray );
 			}
-//			arrays::_renew( $this );
+			//			arrays::_renew( $this );
 			return $this;
 		}
 
@@ -392,7 +423,7 @@
 				$value = $this->array[ $key ];
 				unset( $this->array[ $key ] );
 				$this->array[ $new_key ] = $value;
-//				arrays::_renew( $this );
+				//				arrays::_renew( $this );
 				return true;
 			}
 			return false;

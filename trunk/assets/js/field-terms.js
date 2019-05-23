@@ -44,8 +44,10 @@ jQuery(document).ready(function ($) {
         // }
 
     };
-    $('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function (e, col, row, root) {
-        col.find('.hiweb-field-terms').each(hiweb_field_terms.make);
+    $('body').on('hiweb-field-repeat-added-row-fadein', '[data-col]', function (e, col, row, root) {
+        col.find(hiweb_field_terms.selector_root).each(function(){
+            hiweb_field_terms.make($(this));
+        });
     });
     $(hiweb_field_terms.selector_root).each(function () {
         hiweb_field_terms.make(this);

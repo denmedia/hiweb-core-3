@@ -681,7 +681,7 @@
 		 * @return string
 		 */
 		public function html( $dimensionsOrSizeName = 'thumbnail', $resize_mod = 1, $attr = [], $extension_priority = [], $make_new_file = true ){
-			return $this->html_picture($dimensionsOrSizeName, $resize_mod, $attr, $extension_priority, $make_new_file);
+			return $this->html_img($dimensionsOrSizeName, $resize_mod, $attr, $extension_priority, $make_new_file);
 		}
 
 	}
