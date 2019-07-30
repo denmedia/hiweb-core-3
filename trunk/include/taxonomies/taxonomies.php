@@ -13,9 +13,8 @@
 
 
 		/**
-		 * @param              $taxonomy_name
+		 * @param               $taxonomy_name
 		 * @param strings|array $object_type - post type / post types
-		 *
 		 * @return taxonomy
 		 */
 		static function register( $taxonomy_name, $object_type ){
@@ -29,7 +28,7 @@
 
 		static function do_register_taxonomies(){
 			/**
-			 * @var strings   $taxonomy_name
+			 * @var strings  $taxonomy_name
 			 * @var taxonomy $taxonomy
 			 */
 			foreach( self::$taxonomies as $taxonomy_name => $taxonomy ){
@@ -41,13 +40,12 @@
 					$wp_taxonomy = get_taxonomy( $taxonomy_name );
 					foreach( $taxonomy->get_args() as $key => $value ){
 						if( property_exists( $wp_taxonomy, $key ) ){
-							if($wp_taxonomy->{$key} instanceof \stdClass){
-								if(!is_array($value)) $value = [$value];
-								foreach($value as $subkey => $subval){
+							if( $wp_taxonomy->{$key} instanceof \stdClass ){
+								if( !is_array( $value ) ) $value = [ $value ];
+								foreach( $value as $subkey => $subval ){
 									$wp_taxonomy->{$key}->{$subkey} = $subval;
 								}
-							}
-							elseif( is_array( $wp_taxonomy->{$key} ) ){
+							} elseif( is_array( $wp_taxonomy->{$key} ) ) {
 								$wp_taxonomy->{$key} = array_merge( $wp_taxonomy->{$key}, is_array( $value ) ? $value : [ $value ] );
 							} else $wp_taxonomy->{$key} = $value;
 						}
@@ -56,7 +54,7 @@
 				} else {
 					$result = register_taxonomy( $taxonomy_name, $taxonomy->object_type, $taxonomy->get_args() );
 					if( !$result instanceof \WP_Error ){
-						$taxonomy->wp_taxonomy = get_taxonomy($taxonomy_name);
+						$taxonomy->wp_taxonomy = get_taxonomy( $taxonomy_name );
 					} else {
 						console::debug_error( 'Во время регистрации типа поста произошла ошибка', $taxonomy_name );
 					}

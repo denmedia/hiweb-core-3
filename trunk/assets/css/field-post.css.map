@@ -1,7 +1,1 @@
-{
-"version": 3,
-"mappings": "AAEC,8BAAa;EACZ,OAAO,EAAE,EAAE",
-"sources": ["field-post.scss"],
-"names": [],
-"file": "field-post.css"
-}
+{"version":3,"sourceRoot":"","sources":["field-post.scss"],"names":[],"mappings":"AAEC;EACC","file":"field-post.css"}

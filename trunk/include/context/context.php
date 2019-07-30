@@ -6,11 +6,19 @@
 	class context{
 
 		/**
-		 * @version 1.5
 		 * @return bool
+		 * @version 1.6
 		 */
 		static function is_frontend_page(){
-			return ( preg_match( '/^\/index(-hiweb-cache)?\.php(\/.*)?$/i', $_SERVER['PHP_SELF'] ) > 0 && !self::is_rest_api() && !self::is_ajax() && preg_match('~(?>[\w-_\.]+\.(xml|txt))~i',$_SERVER['REQUEST_URI']) == 0 );
+			return ( preg_match( '/^\/index(-hiweb-cache)?\.php(\/.*)?$/i', $_SERVER['PHP_SELF'] ) > 0 && !self::is_rest_api() && !self::is_ajax() && preg_match( '~(?>[\w-_\.]+\.(xml|txt))~i', $_SERVER['REQUEST_URI'] ) == 0 && !self::is_feed() );
+		}
+
+
+		/**
+		 * @return bool
+		 */ 
+		static function is_feed(){
+			return \is_feed();
 		}
 
 
@@ -43,7 +51,7 @@
 		 * @return bool
 		 */
 		static function is_admin_page(){
-			if(self::is_ajax() || self::is_rest_api()) return false;
+			if( self::is_ajax() || self::is_rest_api() ) return false;
 			return \is_admin();
 		}
 
@@ -63,7 +71,7 @@
 		 * @return bool
 		 */
 		static function is_ajax(){
-			return ( (defined( 'DOING_AJAX' ) && DOING_AJAX == 1) || (defined('WC_DOING_AJAX') && WC_DOING_AJAX == 1) );
+			return ( ( defined( 'DOING_AJAX' ) && DOING_AJAX == 1 ) || ( defined( 'WC_DOING_AJAX' ) && WC_DOING_AJAX == 1 ) );
 		}
 
 

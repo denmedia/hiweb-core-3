@@ -3,12 +3,12 @@
 	Plugin Name: hiWeb Core 3
 	Plugin URI: http://plugins.hiweb.moscow/core
 	Description: Special framework plugin for WordPress min v4.8
-	Version: 3.7.4.0
+	Version: 3.7.8.0
 	Author: Den Media
 	Author URI: http://hiweb.moscow
 	*/
 
-	if( version_compare( PHP_VERSION, '5.4.0' ) >= 0 ){
+	if( version_compare( PHP_VERSION, '5.6.0' ) >= 0 ){
 		///
 		require_once __DIR__ . '/include/spl_autoload_register.php';
 		require_once __DIR__ . '/traits/hidden_methods.php';

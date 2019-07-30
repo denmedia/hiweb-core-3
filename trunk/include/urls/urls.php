@@ -22,27 +22,29 @@
 		/** @var url[] */
 		private static $urls = [];
 		/** @var string */
-		private static $current_url;
+		private static $current_url = [];
 		static $use_noscheme_urls = true;
 
 
 		/**
 		 * Возвращает текущий адрес URL
-		 * @version 1.0.2
 		 * @param bool $trimSlashes
 		 * @return string
+		 * @version 1.1.0
 		 */
-		static private function get_current_url( $trimSlashes = true ){
-			if( !is_string( self::$current_url ) ){
+		static function get_current_url( $trimSlashes = true ){
+			$key = $trimSlashes ? 'trimSlashes:true' : 'trimSlashes:false';
+			if( !isset( self::$current_url[ $key ] ) ){
+				self::$current_url[ $key ] = '';
 				$https = ( !empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] !== 'off' ) || $_SERVER['SERVER_PORT'] == 443;
-				self::$current_url = rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'], '/' ) . ( $trimSlashes ? rtrim( $_SERVER['REQUEST_URI'], '/\\' ) : $_SERVER['REQUEST_URI'] );
+				self::$current_url[ $key ] = rtrim( 'http' . ( $https ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'], '/' ) . ( $trimSlashes ? rtrim( $_SERVER['REQUEST_URI'], '/\\' ) : $_SERVER['REQUEST_URI'] );
 			}
-			return self::$current_url;
+			return self::$current_url[ $key ];
 		}
 
 
 		static function set_current_url( $url ){
-			self::$current_url = $url;
+			self::$current_url['trimSlashes:false'] = $url;
 		}
 
 
@@ -64,7 +66,7 @@
 		 * @param string $test_url_string
 		 * @return bool
 		 */
-		static function is_url($test_url_string){
+		static function is_url( $test_url_string ){
 			return is_string( $test_url_string ) && ( strpos( $test_url_string, '//' ) === 0 || filter_var( $test_url_string, FILTER_VALIDATE_URL ) );
 		}
 
@@ -75,8 +77,8 @@
 		 * @return string
 		 * @version 1.0
 		 */
-		static function root($use_noscheme = null){
-			return self::get()->root($use_noscheme);
+		static function root( $use_noscheme = null ){
+			return self::get()->root( $use_noscheme );
 		}
 
 

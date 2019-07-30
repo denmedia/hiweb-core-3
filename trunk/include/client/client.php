@@ -9,6 +9,11 @@
 	namespace hiweb;
 
 
+	/**
+	 * Class client
+	 * @version 1.1
+	 * @package hiweb
+	 */
 	class client{
 
 		static function get_os(){
@@ -190,6 +195,9 @@
 		}
 
 
+		/**
+		 * @return mixed
+		 */
 		static function get_ip(){
 			if( !empty( $_SERVER['HTTP_CLIENT_IP'] ) )   //check ip from share internet
 			{
@@ -209,6 +217,17 @@
 		 */
 		static function get_id_OsIp(){
 			return md5( self::get_ip().'-'.self::get_os2() );
+		}
+
+
+		/**
+		 * @return bool
+		 */
+		static function is_webBot(){
+			return (
+				isset($_SERVER['HTTP_USER_AGENT'])
+				&& preg_match('/bot|crawl|slurp|spider|mediapartners/i', $_SERVER['HTTP_USER_AGENT'])
+			);
 		}
 
 	}

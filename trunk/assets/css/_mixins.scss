@@ -53,11 +53,11 @@
 }
 
 @mixin filter($filter: blur(5px)) {
-	-webkit-filter: unquote($filter);
-	-moz-filter: unquote($filter);
-	-o-filter: unquote($filter);
-	-ms-filter: unquote($filter);
-	filter: unquote($filter);
+	-webkit-filter: $filter;
+	-moz-filter: $filter;
+	-o-filter: $filter;
+	-ms-filter: $filter;
+	filter: $filter;
 }
 
 @mixin position_stretch($top: 0, $right: 0, $bottom: 0, $left: 0) {
@@ -230,6 +230,11 @@
 	-ms-flex-order: $order;
 	-webkit-order: $order;
 	order: $order;
+}
+
+@mixin object-fit($object-fit: contain){
+	object-fit: $object-fit;
+	-o-object-fit: $object-fit;
 }
 
 @mixin media-size($css_name: 'font-size', $size: 12px) {

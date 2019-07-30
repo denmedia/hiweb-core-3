@@ -3,10 +3,13 @@
 	namespace {
 
 
+		use hiweb\fields\types\post\field;
+
+
 		if( !function_exists( 'add_field_post' ) ){
 			/**
 			 * @param $id
-			 * @return \hiweb\fields\types\post\field
+			 * @return field
 			 */
 			function add_field_post( $id ){
 				$new_field = new hiweb\fields\types\post\field( $id );
@@ -19,10 +22,10 @@
 	namespace hiweb\fields\types\post {
 
 
-		use function hiweb\css;
+		use hiweb\fields;
 		use hiweb\fields\value;
-		use hiweb\images;
-		use function hiweb\js;
+		use WP_Post;
+		use WP_Query;
 
 
 		class field extends \hiweb\fields\field{
@@ -32,6 +35,7 @@
 			protected $placeholder = '';
 			protected $meta_key = '';
 			protected $multiple = false;
+			protected $max_items = 99;
 
 
 			/**
@@ -80,45 +84,47 @@
 				parent::__construct( $field, $value );
 				add_action( 'wp_ajax_hiweb-type-post', function(){
 
-					add_filter( 'posts_where', function( $where, &$wp_query ){
-						global $wpdb;
-						if( $wpse18703_title = $_POST['search'] ){
-							$where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'' . esc_sql( $wpdb->esc_like( $wpse18703_title ) ) . '%\'';
-						}
-						return $where;
-					}, 10, 2 );
-
-					$post_types = $this->get_parent_field()->post_type();
-					$wp_query = new \WP_Query( [
+					//					add_filter( 'posts_where', function( $where, &$wp_query ){
+					//						global $wpdb;
+					//						if( $wpse18703_title = $_POST['search'] ){
+					//							$where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'' . esc_sql( $wpdb->esc_like( $wpse18703_title ) ) . '%\'';
+					//						}
+					//						return $where;
+					//					}, 10, 2 );
+					$field = fields::$field_by_globalId[ $_POST['global_id'] ][0];
+					$post_types = $field->post_type();
+					$query = [
 						'post_type' => $post_types,
+						//'wpse18703_title' => $_POST['search'],
 						'posts_per_page' => 99,
 						'post_status' => 'any',
 						's' => $_POST['search'],
 						'orderby' => 'title',
 						'order' => 'ASC'
-					] );
+					];
+					$wp_query = new WP_Query( $query );
 					$R = [];
-					$post_types_names = [];
-					if( is_array( $post_types ) ) foreach( $post_types as $post_type ){
-						if( post_type_exists( $post_type ) ){
-							$post_types_names[ $post_type ] = get_post_type_object( $post_type )->label;
-						} else {
-							$post_types_names[ $post_type ] = 'неизвестный тип записи';
-						}
-					}
-					/** @var \WP_Post $wp_post */
+					//					$post_types_names = [];
+					//					if( is_array( $post_types ) ) foreach( $post_types as $post_type ){
+					//						if( post_type_exists( $post_type ) ){
+					//							$post_types_names[ $post_type ] = get_post_type_object( $post_type )->label;
+					//						} else {
+					//							$post_types_names[ $post_type ] = 'неизвестный тип записи';
+					//						}
+					//					}
+					/** @var WP_Post $wp_post */
 					foreach( $wp_query->get_posts() as $wp_post ){
 						$R[] = [
 							'value' => $wp_post->ID,
-							//'text' => '<img src="' . get_image( get_post_thumbnail_id( $wp_post ) )->get_src( 'thumbnail' ) . '">' . $wp_post->post_title,
-							'name' => '<img src="' . get_image( get_post_thumbnail_id( $wp_post ) )->get_src( 'thumbnail' ) . '">' . $wp_post->post_title
+							'title' => $wp_post->post_title,
+							//'name' => '<img src="' . get_image( get_post_thumbnail_id( $wp_post ) )->get_src( 'thumbnail' ) . '">' . $wp_post->post_title
 						];
 					}
 
 					//wp_send_json_success( $R );
 					echo json_encode( [
 						'success' => true,
-						'results' => $R
+						'items' => $R
 					] );
 					die;
 				} );
@@ -126,10 +132,10 @@
 
 
 			public function html(){
-				//\hiweb\css( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.css' );
-				\hiweb\css( HIWEB_DIR_CSS . '/field-post.css' );
-				//$js_id = \hiweb\js( HIWEB_DIR_VENDORS . '/fm.selectator.jquery/fm.selectator.jquery.js', [ 'jquery' ], true );
-				\hiweb\js( HIWEB_DIR_JS . '/field-post.js', [ 'jquery'], true );
+				include_css( HIWEB_DIR_VENDORS . '/selectize.js/css/selectize.css' );
+				include_css( HIWEB_DIR_ASSETS . '/css/field-post.css' );
+				$handler = include_js( HIWEB_DIR_VENDORS . '/selectize.js/js/standalone/selectize.min.js', [ 'jquery' ] );
+				include_js( HIWEB_DIR_ASSETS . '/js/field-post.min.js', [ $handler ] );
 
 				$post_types = $this->get_parent_field()->post_type();
 				if( is_string( $post_types ) ) $post_types = [ $post_types ];
@@ -142,85 +148,38 @@
 					}
 				}
 
-				ob_start();
-				///
-				$wp_query = new \WP_Query( [ 'post_type' => $post_types, 'posts_per_page' => 20, 'post_status' => 'any' ] );
-
+				$selected = [];
+				if(is_array($this->VALUE()->get()) && count($this->VALUE()->get()) > 0) {
+					///
+					$wp_query = new \WP_Query( [
+						'post_type' => $post_types,
+						'posts_per_page' => 20,
+						'post_status' => 'any',
+						'post__in' => $this->VALUE()->get()
+					] );
+					foreach( $wp_query->get_posts() as $post ){
+						$selected[$post->ID] = $post->post_title;
+					}
+				}
 				///
 				$this->attributes['data-global-id'] = $this->get_parent_field()->global_id();
 				if( $this->get_parent_field()->multiple( null ) ){
 					$this->attributes['multiple'] = 'multiple';
 					$this->attributes['size'] = 1;
+					if( $this->attributes['name'] != '' ) $this->attributes['name'] .= '[]';
 				}
+				ob_start();
 				?>
 				<div class="hiweb-field-post">
-					<div class="ui fluid search selection dropdown">
-						<input type="hidden" name="<?= $this->name() ?>" value="<?= intval( $this->VALUE()->get() ) ?>">
-						<i class="dropdown icon"></i>
-						<div class="default text"><?= $this->get_parent_field()->placeholder() ?></div>
-						<div class="menu">
-							<?php
-								if( $wp_query->post_count > 0 ){
-									/** @var \WP_Post $WP_POST */
-									$selected_ids = is_array( $this->VALUE()->get() ) ? $this->VALUE()->get() : [ $this->VALUE()->get() ];
-									$prepen_post_ids = $selected_ids;
-									foreach( $wp_query->get_posts() as $WP_POST ){
-										if( \hiweb\arrays::in_array( $WP_POST->ID, $selected_ids ) ){
-											\hiweb\arrays::unset_by_value( $prepen_post_ids, $WP_POST->ID );
-										}
-									}
-									$wp_query->set( 'post__not_in', $prepen_post_ids );
-									foreach( $prepen_post_ids as $id ){
-										$WP_POST = get_post( $id );
-										if( $WP_POST instanceof \WP_Post && \hiweb\arrays::in_array( $WP_POST->post_type, $post_types ) ){
-											$thumbnail_src = get_image( get_post_thumbnail_id( $WP_POST ) )->get_src( 'thumbnail' );
-											?>
-											<div class="item" data-value="<?= $WP_POST->ID ?>"><img src="<?= $thumbnail_src ?>"><?= $WP_POST->post_title ?></div>
-											<!--<option selected data-left="<?= $thumbnail_src ?>" data-right="" data-subtitle="<?= $post_types_names[ $WP_POST->post_type ] ?> от <?= get_the_date( '', $WP_POST ) ?>" value="<?= $WP_POST->ID ?>"><?= $WP_POST->post_title ?></option>-->
-											<?php
-										}
-									}
-									foreach( $wp_query->get_posts() as $WP_POST ){
-										$thumbnail_src = get_image( get_post_thumbnail_id( $WP_POST ) )->get_src( 'thumbnail' );
-										$selected = \hiweb\arrays::in_array( $WP_POST->ID, $selected_ids );
-										?>
-										<div class="item" data-value="<?= $WP_POST->ID ?>"><img src="<?= $thumbnail_src ?>"><?= $WP_POST->post_title ?></div>
-										<!--<option <?= $selected ? 'selected' : '' ?> data-left="<?= $thumbnail_src ?>" data-right="" data-subtitle="<?= $post_types_names[ $WP_POST->post_type ] ?> от <?= get_the_date( '', $WP_POST ) ?>" value="<?= $WP_POST->ID ?>"><?= $WP_POST->post_title ?></option>-->
-										<?php
-									}
-								} ?>
-						</div>
-					</div>
-					<!--<select <?= $this->sanitize_attributes() ?>>
-						<option value="">--выберите--</option>
+					<select <?= get_array( $this->attributes )->get_param_html_tags() ?> data-oprions="<?= htmlentities( json_encode( [ 'post_type' => $this->get_parent_field()->post_type() ] ) ) ?>" data-value="<?= htmlentities( json_encode( $this->VALUE()->get() ) ) ?>">
 						<?php
-						if( $wp_query->post_count > 0 ){
-							/** @var \WP_Post $WP_POST */
-							$selected_ids = is_array( $this->VALUE()->get() ) ? $this->VALUE()->get() : [ $this->VALUE()->get() ];
-							$prepen_post_ids = $selected_ids;
-							foreach( $wp_query->get_posts() as $WP_POST ){
-								if( \hiweb\arrays::in_array( $WP_POST->ID, $selected_ids ) ){
-									\hiweb\arrays::unset_by_value( $prepen_post_ids, $WP_POST->ID );
-								}
-							}
-							foreach( $prepen_post_ids as $id ){
-								$WP_POST = get_post( $id );
-								if( $WP_POST instanceof \WP_Post && \hiweb\arrays::in_array( $WP_POST->post_type, $post_types ) ){
-									$thumbnail_src = get_image( get_post_thumbnail_id( $WP_POST ) )->get_similar_src( 20, 20 );
-									?>
-										<option selected data-left="<?= $thumbnail_src ?>" data-right="" data-subtitle="<?= $post_types_names[ $WP_POST->post_type ] ?> от <?= get_the_date( '', $WP_POST ) ?>" value="<?= $WP_POST->ID ?>"><?= $WP_POST->post_title ?></option>
-										<?php
-								}
-							}
-							foreach( $wp_query->get_posts() as $WP_POST ){
-								$thumbnail_src = get_image( get_post_thumbnail_id( $WP_POST ) )->get_similar_src( 20, 20 );
-								$selected = \hiweb\arrays::in_array( $WP_POST->ID, $selected_ids );
+							foreach($selected as $val => $title) {
 								?>
-									<option <?= $selected ? 'selected' : '' ?> data-left="<?= $thumbnail_src ?>" data-right="" data-subtitle="<?= $post_types_names[ $WP_POST->post_type ] ?> от <?= get_the_date( '', $WP_POST ) ?>" value="<?= $WP_POST->ID ?>"><?= $WP_POST->post_title ?></option>
-									<?php
+								<option value="<?=$val?>" selected><?=$title?></option>
+								<?php
 							}
-						} ?>
-					</select>-->
+						?>
+					</select>
 				</div>
 				<?php
 				return ob_get_clean();

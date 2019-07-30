@@ -6,82 +6,67 @@
 var hw_input_post = {
 
     init: function () {
-        jQuery('body').on('hiweb-field-repeat-added-new-row', '[data-col]', function(e, col, row, root){
-            col.find('.hiweb-field-post').each(hw_input_post.make_dropdown);
-        });
-        jQuery('.hiweb-field-post').each(hw_input_post.make_dropdown);
+        jQuery('.hiweb-field-post select').each(hw_input_post.make_selectize);
     },
 
-    make_dropdown: function () {
-        var select = jQuery(this).find('select');
-        var global_id = select.attr('data-global-id');
-        var dropdown = jQuery(this).find('.selection.dropdown');
-        dropdown.dropdown({
-            //ignoreCase: true,
-            //forceSelection: false,
-            //sortSelect: true,
-            apiSettings: {
-                // this url just returns a list of tags (with API response expected above)
-                url: ajaxurl + '?action=hiweb-type-post&search={query}'
+    _load_posts: function ($root, query, callback) {
+        if (typeof query !== 'string') query = '';
+        jQuery.ajax({
+            //url: ajaxurl + '?action=hiweb-type-post' + (typeof query === 'undefined') ? '' : '&' + encodeURIComponent(query),
+            url: ajaxurl + '?action=hiweb-type-post',
+            type: 'POST',
+            dataType: 'json',
+            data: {global_id: $root.attr('data-global-id'), search: query},
+            error: function () {
+                if (callback === 'function') {
+                    callback();
+                }
             },
-            saveRemoteData: false,
-            filterRemoteData: true,
-            message: {
-                count: '{count} выбрано',
-                maxSelections: 'Максимум {maxCount} элементов',
-                noResults: 'Ничего не найдено.'
-            }
-            // onShow: function () {
-            //     dropdown.addClass('loading');
-            //     jQuery.ajax({
-            //         url: ajaxurl + '?action=hiweb-type-post',
-            //         type: 'post',
-            //         data: {global_id: global_id, search: 'при'},
-            //         dataType: 'json',
-            //         success: function (resp) {
-            //             console.info(resp.data);
-            //         },
-            //         error: function (err) {
-            //             console.error(err);
-            //             //callback([]);
-            //         },
-            //         complete: function(){
-            //             dropdown.removeClass('loading');
-            //         }
-            //     });
-            // }
-        });
-    },
-
-    _event_init: function () {
-        var select = jQuery(this).find('select');
-        var global_id = select.attr('data-global-id');
-        select.selectator({
-            height: 'auto',
-            useDimmer: false,
-            useSearch: true,
-            delay: 2000,
-            keepOpen: true,
-            minSearchLength: 2,
-            placeholder: 'Выберите запись / страницу',
-            load: function (search, callback) {
-                jQuery.ajax({
-                    url: ajaxurl + '?action=hiweb-type-post',
-                    type: 'post',
-                    data: {global_id: global_id, search: search},
-                    dataType: 'json',
-                    success: function (resp) {
-                        callback(resp.data);
-                    },
-                    error: function (err) {
-                        console.error(err);
-                        callback([]);
+            success: function (res) {
+                if (res.hasOwnProperty('success')) {
+                    if (res.success && typeof callback === 'function') {
+                        callback(res.items);
+                    } else {
+                        console.warn(res);
                     }
+                } else {
+                    console.error('hiweb-input-post: Не удалорсь загрузить список записей');
+                }
+
+            }
+        });
+    },
+
+    make_selectize: function () {
+        var $this = jQuery(this);
+        $this.selectize({
+            closeAfterSelect: true,
+            allowEmptyOption: true,
+            valueField: 'value',
+            labelField: 'title',
+            searchField: 'title',
+            options: [],
+            create: false,
+            onInitialize: function () {
+                hw_input_post._load_posts($this, '', function (items) {
+                    let value = jQuery.parseJSON($this.attr('data-value'));
+                    $this.each(function () {
+                        for (let index in items) {
+                            this.selectize.addOption(items[index]);
+                        }
+                        this.selectize.addItem(value);
+                    });
                 });
-                //callback(results);
             },
-            labels: {
-                search: 'Поиск...'
+            // score: function (search) {
+            //     var score = this.getScoreFunction(search);
+            //     return function (item) {
+            //         return score(item);
+            //     };
+            // },
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                hw_input_post._load_posts($this, query, callback);
             }
         });
     }
@@ -89,3 +74,6 @@ var hw_input_post = {
 };
 
 jQuery(document).ready(hw_input_post.init);
+jQuery(document).on('hiweb-field-repeat-added-new-row', '[data-col]', function (e, col, row, root) {
+    col.find('.hiweb-field-post select').each(hw_input_post.make_selectize);
+});

@@ -178,14 +178,19 @@
 		///SAVE POST
 
 		static function save_post( $post_id, $post, $update ){
+			if( isset( $_POST['_status'] ) ) return;
 			$location = locations::get_abstractLocation_from_contextObject( $post );
 			unset( $location->POST_TYPES()->options['position'] );
 			$fields = locations::get_fields_by_contextLocation( $location );
 			foreach( $fields as $field_id => $field ){
+				if( strpos( $field->get_type(), '\\types\\separator\\' ) !== false ) continue;
 				if( isset( $_POST[ $field->INPUT()->name() ] ) ){
 					update_post_meta( $post_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
 				} else {
-					//Не удалять мета-данные, если они не передаются
+				    if( strpos( $field->get_type(), '\\types\\checkbox\\' ) != false ){
+    					//Удалять мета-данные, если они не передаются?
+    					update_post_meta( $post_id, $field->id(), null );
+				    }
 				}
 			}
 		}
@@ -196,8 +201,7 @@
 			$context_location->TAXONOMIES( $taxonomy );
 			$fields = locations::get_fields_by_contextLocation( $context_location );
 			foreach( $fields as $field ){
-				if( trim( $field->template() ) == 'default' )
-					$field->template( 'term-add' );
+				if( trim( $field->template() ) == 'default' ) $field->template( 'term-add' );
 			}
 			forms::the_form_by_fields( $fields );
 		}
@@ -216,6 +220,7 @@
 				$location = locations::get_abstractLocation_from_contextObject( $term );
 				$fields = locations::get_fields_by_contextLocation( $location );
 				foreach( $fields as $field_id => $field ){
+					if( strpos( $field->get_type(), '\\types\\separator\\' ) !== false ) continue;
 					if( isset( $_POST[ $field->INPUT()->name() ] ) ){
 						update_term_meta( $term_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
 					} else {
@@ -307,7 +312,12 @@
 				unset( $location->USERS()->options['position'] );
 				$fields = locations::get_fields_by_contextLocation( $location );
 				foreach( $fields as $field_id => $field ){
-					update_user_meta( $user_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
+					if( strpos( $field->get_type(), '\\types\\separator\\' ) !== false ) continue;
+					if( isset( $_POST[ $field->INPUT()->name() ] ) ){
+						update_user_meta( $user_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
+					} else {
+						update_user_meta( $user_id, $field->id(), '' );
+					}
 				}
 			}
 		}
@@ -317,37 +327,31 @@
 			///
 			/** @var location[] $theme_locations */
 			$theme_locations = [];
-			if( is_array( locations::$locations ) )
-				foreach( locations::$locations as $location_global_id => $location ){
-					if( isset( $location->options['hiweb_theme'] ) ){
-						$theme_locations[ $location_global_id ] = $location;
-					}
+			if( is_array( locations::$locations ) ) foreach( locations::$locations as $location_global_id => $location ){
+				if( isset( $location->options['hiweb_theme'] ) ){
+					$theme_locations[ $location_global_id ] = $location;
 				}
+			}
 			///
-			if( !is_array( $theme_locations ) || count( $theme_locations ) == 0 )
-				return;
+			if( !is_array( $theme_locations ) || count( $theme_locations ) == 0 ) return;
 			///
 			$sections = [];
 			foreach( $theme_locations as $location_id => $location ){
 				$options = $location->options['hiweb_theme']->options;
 				$section_id = \hiweb\strings::sanitize_id( $options['section_title'] );
-				if( !isset( $sections[ $section_id ] ) )
-					$sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
-				if( !isset( $sections[ $section_id ]['args']['title'] ) )
-					$sections[ $section_id ]['args']['title'] = $options['section_title'];
-				if( !isset( $sections[ $section_id ]['args']['description'] ) )
-					$sections[ $section_id ]['args']['description'] = $options['section_description'];
+				if( !isset( $sections[ $section_id ] ) ) $sections[ $section_id ]['args'] = [ 'capability' => 'edit_theme_options' ];
+				if( !isset( $sections[ $section_id ]['args']['title'] ) ) $sections[ $section_id ]['args']['title'] = $options['section_title'];
+				if( !isset( $sections[ $section_id ]['args']['description'] ) ) $sections[ $section_id ]['args']['description'] = $options['section_description'];
 				$sections[ $section_id ]['fields'][] = $location->_get_parent_field();
 			}
 			/// ADD SECTIONS and SETTING FIELDS
 			foreach( $sections as $section_id => $section ){
 				$wp_customize->add_section( $section_id, $section['args'] );
-				if( is_array( $section['fields'] ) && count( $section['fields'] ) > 0 )
-					foreach( $section['fields'] as $field ){
-						/** @var field $field */
-						$wp_customize->add_setting( $field->id(), [ 'default' => '', 'type' => 'theme_mod' ] );
-						$wp_customize->add_control( $field->INPUT()->THEME_CONTROL( $wp_customize, $section_id ) );
-					}
+				if( is_array( $section['fields'] ) && count( $section['fields'] ) > 0 ) foreach( $section['fields'] as $field ){
+					/** @var field $field */
+					$wp_customize->add_setting( $field->id(), [ 'default' => '', 'type' => 'theme_mod' ] );
+					$wp_customize->add_control( $field->INPUT()->THEME_CONTROL( $wp_customize, $section_id ) );
+				}
 			}
 		}
 
@@ -358,15 +362,13 @@
 		 */
 		static function add_meta_boxes_comment( $comment ){
 			$locations = [];
-			if( is_array( locations::$locations ) )
-				foreach( locations::$locations as $location_global_id => $location ){
-					if( isset( $location->options['comments'] ) ){
-						$locations[ $location_global_id ] = $location;
-					}
+			if( is_array( locations::$locations ) ) foreach( locations::$locations as $location_global_id => $location ){
+				if( isset( $location->options['comments'] ) ){
+					$locations[ $location_global_id ] = $location;
 				}
+			}
 			///
-			if( !is_array( $locations ) || count( $locations ) == 0 )
-				return;
+			if( !is_array( $locations ) || count( $locations ) == 0 ) return;
 			///
 			foreach( $locations as $location ){
 				forms::the_form_by_contextLocation( $location, $comment );
@@ -379,19 +381,18 @@
 		 */
 		static function comment_edit_redirect( $in_location, $comment_id ){
 			$locations = [];
-			if( is_array( locations::$locations ) )
-				foreach( locations::$locations as $location_global_id => $location ){
-					if( isset( $location->options['comments'] ) ){
-						$locations[ $location_global_id ] = $location;
-					}
+			if( is_array( locations::$locations ) ) foreach( locations::$locations as $location_global_id => $location ){
+				if( isset( $location->options['comments'] ) ){
+					$locations[ $location_global_id ] = $location;
 				}
+			}
 			///
-			if( !is_array( $locations ) || count( $locations ) == 0 )
-				return;
+			if( !is_array( $locations ) || count( $locations ) == 0 ) return;
 			///
 			foreach( $locations as $location ){
 				$fields = locations::get_fields_by_contextLocation( $location );
 				foreach( $fields as $field_id => $field ){
+					if( strpos( $field->get_type(), '\\types\\separator\\' ) !== false ) continue;
 					if( isset( $_POST[ $field->INPUT()->name() ] ) ){
 						update_comment_meta( $comment_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
 					} else {

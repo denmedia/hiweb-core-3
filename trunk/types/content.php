@@ -193,7 +193,7 @@
 				$this->attributes['id'] = $rand_id;
 				add_action( 'in_admin_footer', function(){
 					self::print_mceInit();
-				} );
+				}, 999999 );
 				?>
 			<div class="hiweb-field-content" data-rand-id="<?= $rand_id ?>" data-baseurl="<?= urls::root() ?>">
 				<div id="wp-<?= $rand_id ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active has-dfw">

@@ -13,5 +13,5 @@
 			return taxonomies::register( $taxonomy_name, $object_type );
 		}
 	} else {
-		\hiweb\console::debug_warn( 'Функция [add_taxonomy] существует!' );
+		hiweb\console::debug_warn( 'Функция [add_taxonomy] существует!' );
 	}

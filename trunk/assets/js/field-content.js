@@ -10,7 +10,7 @@ jQuery(document).ready(function ($) {
             if (window.wpActiveEditor) {
 
             }
-            tinyMCEPreInit = {
+            let tinyMCEPreInit = {
                 baseURL: $(hiweb_field_content.root_selector).attr('data-baseurl') + "/wp-includes/js/tinymce",
                 suffix: ".min",
                 mceInit: {},
@@ -27,31 +27,31 @@ jQuery(document).ready(function ($) {
                 hiweb_field_content.make(this);
             });
             ////WP Editor Mode Switch
-            if ( typeof tinymce !== 'undefined' ) {
-                if ( tinymce.Env.ie && tinymce.Env.ie < 11 ) {
-                    tinymce.$( '.wp-editor-wrap ' ).removeClass( 'tmce-active' ).addClass( 'html-active' );
+            if (typeof tinymce !== 'undefined') {
+                if (tinymce.Env.ie && tinymce.Env.ie < 11) {
+                    tinymce.$('.wp-editor-wrap ').removeClass('tmce-active').addClass('html-active');
                     return;
                 }
 
-                for ( id in tinyMCEPreInit.mceInit ) {
+                for (id in tinyMCEPreInit.mceInit) {
                     init = tinyMCEPreInit.mceInit[id];
-                    $wrap = tinymce.$( '#wp-' + id + '-wrap' );
+                    $wrap = tinymce.$('#wp-' + id + '-wrap');
 
-                    if ( ( $wrap.hasClass( 'tmce-active' ) || ! tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) && ! init.wp_skip_init ) {
-                        tinymce.init( init );
+                    if (($wrap.hasClass('tmce-active') || !tinyMCEPreInit.qtInit.hasOwnProperty(id)) && !init.wp_skip_init) {
+                        tinymce.init(init);
 
-                        if ( ! window.wpActiveEditor ) {
+                        if (!window.wpActiveEditor) {
                             window.wpActiveEditor = id;
                         }
                     }
                 }
             }
 
-            if ( typeof quicktags !== 'undefined' ) {
-                for (let id in tinyMCEPreInit.qtInit ) {
-                    quicktags( tinyMCEPreInit.qtInit[id] );
+            if (typeof quicktags !== 'undefined') {
+                for (let id in tinyMCEPreInit.qtInit) {
+                    quicktags(tinyMCEPreInit.qtInit[id]);
 
-                    if ( ! window.wpActiveEditor ) {
+                    if (!window.wpActiveEditor) {
                         window.wpActiveEditor = id;
                     }
                 }
@@ -80,20 +80,20 @@ jQuery(document).ready(function ($) {
             settings.selector = '#' + id;
             hiweb_field_content.tinymces[id] = tinymce.init(settings);
             ////WP Editor Mode Switch
-            $(document).on('click', '#' + id + '-tmce', function(){
+            $(document).on('click', '#' + id + '-tmce', function () {
                 var $wrap = $('#wp-' + id + '-wrap');
                 var $tmce = $('#wp-' + id + '-wrap .mce-container');
                 var $html = $('#wp-' + id + '-wrap .wp-editor-area');
-                tinymce.get(id).setContent( $html.val() );
+                tinymce.get(id).setContent($html.val());
                 $wrap.addClass('tmce-active').removeClass('html-active');
                 $tmce.show();
                 $html.hide();
             });
-            $(document).on('click', '#' + id + '-html', function(){
+            $(document).on('click', '#' + id + '-html', function () {
                 var $wrap = $('#wp-' + id + '-wrap');
                 var $tmce = $('#wp-' + id + '-wrap .mce-container');
                 var $html = $('#wp-' + id + '-wrap .wp-editor-area');
-                $html.val( tinymce.get(id).getContent() );
+                $html.val(tinymce.get(id).getContent());
                 $wrap.addClass('html-active').removeClass('tmce-active');
                 $tmce.hide();
                 $html.show();
@@ -102,9 +102,6 @@ jQuery(document).ready(function ($) {
     };
 
     hiweb_field_content.init();
-    // $('body').on('init_3 drag_stop', '.hiweb-field-content', function () {
-    //     hiweb_field_content.make(this);
-    // });
     jQuery('body').on('hiweb-field-repeat-added-new-row-fadein hiweb-field-repeat-drag-stop', '[data-col]', function (e, col, row, root) {
         col.find('.hiweb-field-content').each(function () {
             hiweb_field_content.make(this);
