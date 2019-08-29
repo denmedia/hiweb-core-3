@@ -187,7 +187,7 @@
 				if( isset( $_POST[ $field->INPUT()->name() ] ) ){
 					update_post_meta( $post_id, $field->id(), $_POST[ $field->INPUT()->name() ] );
 				} else {
-				    if( strpos( $field->get_type(), '\\types\\checkbox\\' ) != false ){
+				    if( strpos( $field->get_type(), '\\types\\checkbox\\' ) != false || strpos( $field->get_type(), '\\types\\images\\' ) != false ){
     					//Удалять мета-данные, если они не передаются?
     					update_post_meta( $post_id, $field->id(), null );
 				    }

@@ -76,7 +76,7 @@
 	left: $padding;
 }
 
-@mixin image_stretch($object_fit: cover){
+@mixin image_stretch($object_fit: cover) {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -88,14 +88,25 @@
 	-o-object-fit: $object_fit;
 }
 
-@mixin opacity($opacity) {
-	-webkit-opacity: $opacity;
-	-moz-opacity: $opacity;
-	-ms-opacity: $opacity;
-	-o-opacity: $opacity;
-	opacity: $opacity;
-	$opacity-ie: $opacity * 100;
-	filter: alpha(opacity=$opacity-ie); //IE8
+@mixin opacity($opacity, $important: false) {
+	@if($important) {
+		-webkit-opacity: $opacity !important;
+		-moz-opacity: $opacity !important;
+		-ms-opacity: $opacity !important;
+		-o-opacity: $opacity !important;
+		opacity: $opacity !important;
+		$opacity-ie: $opacity * 100 !important;
+		filter: alpha(opacity=$opacity-ie) !important; //IE8
+	}
+	@else {
+		-webkit-opacity: $opacity;
+		-moz-opacity: $opacity;
+		-ms-opacity: $opacity;
+		-o-opacity: $opacity;
+		opacity: $opacity;
+		$opacity-ie: $opacity * 100;
+		filter: alpha(opacity=$opacity-ie); //IE8
+	}
 }
 
 @mixin box-shadow($size: 5px, $opacity: .35, $offset_x: 0px, $offset_y: 0px, $inset: false, $color: #000) {
@@ -232,7 +243,7 @@
 	order: $order;
 }
 
-@mixin object-fit($object-fit: contain){
+@mixin object-fit($object-fit: contain) {
 	object-fit: $object-fit;
 	-o-object-fit: $object-fit;
 }
@@ -295,4 +306,16 @@
 
 @mixin font-size-media-x3($font-size) {
 	@include media-size-x3(font-size, $font-size);
+}
+
+
+@mixin linear_gradient($top, $bottom, $start: 0%, $end: 100%) {
+	background: $top;
+	background: -moz-linear-gradient(top, $top $start, $bottom $end);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop($start, $top), color-stop($end, $bottom));
+	background: -webkit-linear-gradient(top, $top $start, $bottom $end);
+	background: -o-linear-gradient(top, $top $start, $bottom $end);
+	background: -ms-linear-gradient(top, $top $start, $bottom $end);
+	background: linear-gradient(to bottom, $top $start, $bottom $end);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000', GradientType=0);
 }

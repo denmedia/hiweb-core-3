@@ -21,6 +21,9 @@
 		/** @var json */
 		private $json;
 
+		private $rows = null;
+		private $row = null;
+
 
 		public function __construct( $array = [] ){
 			$this->array = (array)$array;
@@ -50,7 +53,7 @@
 		 * @return array
 		 */
 		public function get_keys(){
-			return array_keys($this->get());
+			return array_keys( $this->get() );
 		}
 
 
@@ -427,6 +430,62 @@
 				return true;
 			}
 			return false;
+		}
+
+
+		/**
+		 * @return int
+		 */
+		public function reset_rows(){
+			if( $this->is_empty() ) return 0;
+			$this->rows = $this->get();
+			return count( $this->rows );
+		}
+
+
+		public function have_rows(){
+			if( $this->is_empty() ) return false;
+			if( !is_array( $this->rows ) ) $this->reset_rows();
+			if( count( $this->rows ) == 0 ) return false;
+			return true;
+		}
+
+
+		/**
+		 * @return mixed|null
+		 */
+		public function the_row(){
+			if( is_array( $this->rows ) && count( $this->rows ) > 0 ){
+				$this->row = array_shift( $this->rows );
+				return $this->row;
+			}
+			return null;
+		}
+
+
+		/**
+		 * @return null
+		 */
+		public function get_current_row(){
+			return $this->row;
+		}
+
+
+		/**
+		 * @return bool
+		 */
+		public function is_first_row(){
+			if( !is_array( $this->rows ) || $this->is_empty() ) return false;
+			return ( count( $this->rows ) + 1 ) == $this->count();
+		}
+
+
+		/**
+		 * @return bool
+		 */
+		public function is_last_row(){
+			if( !is_array( $this->rows ) || $this->is_empty() ) return false;
+			return count( $this->rows ) == 0;
 		}
 
 	}

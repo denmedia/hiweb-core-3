@@ -22,7 +22,7 @@
 					$field = fields::$fields[ $field_global_id ];
 					/** @var fields\types\repeat\input $input */
 					$input = $field->INPUT();
-					$R['data'] = $input->ajax_html_row( \hiweb\urls::request( 'input_name' ), \hiweb\urls::request( 'row_index' ), \hiweb\urls::request( 'values' ) );
+					$R['data'] = $input->ajax_html_row( \hiweb\urls::request( 'input_name' ), \hiweb\urls::request( 'index' , 0), \hiweb\urls::request( 'values' ) );
 					$R['values'] = $input->ajax_filter_values( \hiweb\urls::request( 'values' ) );
 				}
 			}

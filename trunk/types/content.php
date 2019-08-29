@@ -199,7 +199,8 @@
 				<div id="wp-<?= $rand_id ?>-wrap" class="wp-core-ui wp-editor-wrap tmce-active has-dfw">
 					<div id="wp-<?= $rand_id ?>-editor-tools" class="wp-editor-tools hide-if-no-js">
 						<div id="wp-<?= $rand_id ?>-media-buttons" class="wp-media-buttons">
-							<button type="button" id="insert-media-button" class="button insert-media add_media" data-editor="<?= $rand_id ?>"><span class="wp-media-buttons-icon"></span> Добавить медиафайл</button>
+<!--							<button type="button" id="insert-media-button" class="button insert-media add_media" data-editor="--><?//= $rand_id ?><!--"><span class="wp-media-buttons-icon"></span> Добавить медиафайл</button>-->
+							<?=do_action( 'media_buttons', $rand_id );?>
 						</div>
 						<div class="wp-editor-tabs">
 							<button type="button" id="<?= $rand_id ?>-tmce" class="wp-switch-editor switch-tmce" data-wp-editor-id="<?= $rand_id ?>">Визуально</button>
