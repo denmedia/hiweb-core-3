@@ -103,23 +103,28 @@
 		}
 
 
+		/**
+		 * @version 1.1
+		 * @param      $css_string
+		 * @param bool $exclude_comments
+		 * @return string|string[]|null
+		 */
 		private function filter_css_string( $css_string, $exclude_comments = true ){
 			if( $exclude_comments ){
 				$css_string = preg_replace( '/' . self::$prepare_patterns['comment'] . '/im', '', $css_string );
 			}
 			if( $this->set_relative_urls && $this->path_object instanceof path ){
 				///URL REPLACE
-				preg_match_all( '/url\(\s?[\'"]?(?<url>(?!data:|http[s]?:\/\/)[^)\'"]+)[\'"]?\s?\)/im', $css_string, $matches );
+				preg_match_all( '/(?<url_full>url\(\s?[\'"]?(?<url>(?!data:|http[s]?:\/\/)[^)\'"]+)[\'"]?\s?\))/im', $css_string, $matches );
 				$strtr = [];
-				foreach( $matches['url'] as $url ){
+				foreach( $matches['url'] as $index => $url ){
 					$result = preg_match( '/^(\.\.\/)+/i', trim( $url, '"\'' ) );
 					$url_dest = $this->path_object->dirname();
 					for( $n = 0; $n < $result; $n ++ ){
 						$url_dest = dirname( $url_dest );
 					}
 					$url_dest = 'url(' . paths::get( $url_dest )->get_url() . '/' . preg_replace( '/^(\.\.\/)+/i', '', $url ) . ')';
-					$url = "url({$url})";
-					$strtr[ $url ] = $url_dest;
+					$strtr[ $matches['url_full'][$index] ] = $url_dest;
 				}
 				$css_string = strtr( $css_string, $strtr );
 			}

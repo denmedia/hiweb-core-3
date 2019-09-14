@@ -88,7 +88,8 @@
 						$this->title = $data['title'];
 					}
 					if( isset( $data['html'] ) ){
-						$this->html = '<div class="hiweb-remote-video-html">' . $data['html'] . '</div>';
+						//$this->html = '<div class="hiweb-remote-video-html">' . $data['html'] . '</div>';
+						$this->html = '<div class="hiweb-remote-video-html"><iframe src="https://www.youtube.com/embed/'.$this->get_id().'?feature=oembed" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>';
 					}
 				} elseif( $this->is_vimeo() ) {
 					$vimeo = "http://vimeo.com/api/v2/video/" . $this->get_id() . ".json";

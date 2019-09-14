@@ -40,6 +40,7 @@
 
 
 			/**
+			 * @version 1.1
 			 * @param      $fieldId
 			 * @param null $contextObject
 			 * @return bool
@@ -56,7 +57,7 @@
 				///Check field
 				if( !fields::is_register( $fieldId ) ) return false;
 				///Get field-context-id
-				$field = fields::get( $fieldId );
+				$field = fields::get_by_context( $fieldId, $contextObject );
 				$context = $field->CONTEXT( $contextObject );
 				$field_context_id = self::get_field_context_id( $field, $contextObject );
 				///

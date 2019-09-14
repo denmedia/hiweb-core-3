@@ -92,7 +92,15 @@
 					//						return $where;
 					//					}, 10, 2 );
 					$field = fields::$field_by_globalId[ $_POST['global_id'] ][0];
+					$post_types = '';
+					if( $field instanceof field ){
 					$post_types = $field->post_type();
+					} elseif( isset( $_POST['post_type'] ) ) {
+						$post_types = $_POST['post_type'];
+					}
+					if( $post_types == '' ){
+						$post_types = [ 'post', 'page' ];
+					}
 					$query = [
 						'post_type' => $post_types,
 						//'wpse18703_title' => $_POST['search'],
@@ -116,7 +124,7 @@
 					foreach( $wp_query->get_posts() as $wp_post ){
 						$R[] = [
 							'value' => $wp_post->ID,
-							'title' => $wp_post->post_title,
+							'title' => $wp_post->post_title == '' ? '--без названия: ' . $wp_post->ID . '--' : $wp_post->post_title,
 							//'name' => '<img src="' . get_image( get_post_thumbnail_id( $wp_post ) )->get_src( 'thumbnail' ) . '">' . $wp_post->post_title
 						];
 					}

@@ -11,12 +11,13 @@ var hw_input_post = {
 
     _load_posts: function ($root, query, callback) {
         if (typeof query !== 'string') query = '';
+        let data_options = JSON.parse($root.attr('data-oprions'));
         jQuery.ajax({
             //url: ajaxurl + '?action=hiweb-type-post' + (typeof query === 'undefined') ? '' : '&' + encodeURIComponent(query),
             url: ajaxurl + '?action=hiweb-type-post',
             type: 'POST',
             dataType: 'json',
-            data: {global_id: $root.attr('data-global-id'), search: query},
+            data: {global_id: $root.attr('data-global-id'), search: query, post_type: data_options.post_type},
             error: function () {
                 if (callback === 'function') {
                     callback();

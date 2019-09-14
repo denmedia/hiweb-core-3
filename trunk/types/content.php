@@ -211,6 +211,7 @@
 						<div id="qt_<?= $rand_id ?>_toolbar" class="quicktags-toolbar"></div>
 						<textarea class="wp-editor-area" <?= $this->sanitize_attributes() ?> style="height: 300px" autocomplete="off" cols="40" data-rand-id="<?= $rand_id ?>"><?= $this->VALUE()->get() ?></textarea></div>
 				</div>
+				</div>
 				<?php
 
 				return ob_get_clean();
